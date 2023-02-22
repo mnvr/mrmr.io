@@ -1,0 +1,7 @@
+node_modules/
+.DS_Store
+
+# Gatsby
+.cache/
+public
+src/gatsby-types.d.ts
