@@ -8,6 +8,7 @@ const config: GatsbyConfig = {
     graphqlTypegen: true,
     plugins: [
         "gatsby-plugin-styled-components",
+        "gatsby-plugin-root-import",
         "gatsby-plugin-image",
         "gatsby-plugin-react-helmet",
         "gatsby-plugin-sitemap",

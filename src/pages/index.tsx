@@ -1,5 +1,6 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
+import Code from "components/code";
 
 const pageStyles = {
     color: "#232129",
@@ -19,14 +20,6 @@ const headingAccentStyles = {
 
 const paragraphStyles = {
     marginBottom: 48,
-};
-
-const codeStyles = {
-    color: "#8A6534",
-    padding: 4,
-    backgroundColor: "#FFF4DB",
-    fontSize: "1.25rem",
-    borderRadius: 4,
 };
 
 const listStyles = {
@@ -154,8 +147,8 @@ const IndexPage: React.FC<PageProps> = () => {
                 </span>
             </h1>
             <p style={paragraphStyles}>
-                Edit <code style={codeStyles}>src/pages/index.tsx</code> to see
-                this page update in real-time. 😎
+                Edit <Code>src/pages/index.tsx</Code> to see this page update in
+                real-time. 😎
             </p>
             <ul style={doclistStyles}>
                 {docLinks.map((doc) => (
