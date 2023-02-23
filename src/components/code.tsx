@@ -1,15 +1,11 @@
-import React, { PropsWithChildren } from "react";
+import styled from "styled-components";
 
-const codeStyles = {
-    color: "#8A6534",
-    padding: 4,
-    backgroundColor: "#FFF4DB",
-    fontSize: "1.25rem",
-    borderRadius: 4,
-};
-
-const Code: React.FC<PropsWithChildren> = ({ children }) => {
-    return <code style={codeStyles}>{children}</code>;
-};
+const Code = styled.code`
+    color: #8a6534;
+    padding: 4px;
+    background-color: #fff4db;
+    font-size: 1.25rem;
+    border-radius: 4px;
+`;
 
 export default Code;
