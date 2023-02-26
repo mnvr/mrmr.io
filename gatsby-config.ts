@@ -2,12 +2,13 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
     siteMetadata: {
-        title: `mrmr`,
-        siteUrl: `https://mrmr.io`,
+        title: "mrmr.io",
+        siteUrl: "https://mrmr.io",
     },
     graphqlTypegen: true,
     trailingSlash: "never",
     plugins: [
+        // CSS-in-JS
         "gatsby-plugin-styled-components",
 
         // Allow us to use absolute imports for accessing our own components.

@@ -34,16 +34,12 @@ export const createPages: GatsbyNode["createPages"] = async ({
     // Create a page for each MDX node
     const { data, errors } = await graphql<Queries.ContentPagesQuery>(`
         query ContentPages {
-            allMdx {
+            allMdx(sort: { frontmatter: { date: DESC } }) {
                 nodes {
-                    frontmatter {
-                        title
-                        key
-                    }
+                    id
                     fields {
                         slug
                     }
-                    body
                 }
             }
         }
@@ -63,21 +59,17 @@ export const createPages: GatsbyNode["createPages"] = async ({
 
     try {
         nodes.forEach((node) => {
-            const template = 'default';
-
+            const template = "default";
+            const id = node.id;
             const slug = node.fields?.slug;
             if (!slug) {
-                throw new Error(`Missing field "slug" in MDX node`);
+                throw new Error(`Missing field "slug" in MDX node ${id}`);
             }
 
             createPage({
                 path: slug,
                 component: path.resolve(`src/templates/${template}.tsx`),
-                context: {
-                    ...node.frontmatter,
-                    ...node.fields,
-                    body: node.body,
-                },
+                context: { id },
             });
         });
     } catch (err) {
