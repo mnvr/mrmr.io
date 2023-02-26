@@ -6,6 +6,7 @@ const config: GatsbyConfig = {
         siteUrl: `https://mrmr.io`,
     },
     graphqlTypegen: true,
+    trailingSlash: "never",
     plugins: [
         "gatsby-plugin-styled-components",
 
