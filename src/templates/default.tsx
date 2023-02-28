@@ -1,9 +1,10 @@
+import Column from "components/Column";
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import React from "react";
+import styled from "styled-components";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
-import styled from "styled-components";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     data,
@@ -13,8 +14,10 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
     return (
         <main>
-            <h1>{title}</h1>
-            {children}
+            <Column>
+                <h1>{title}</h1>
+                {children}
+            </Column>
         </main>
     );
 };
