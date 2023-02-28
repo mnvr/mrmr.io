@@ -9,7 +9,7 @@ const config: GatsbyConfig = {
     trailingSlash: "never",
     plugins: [
         // CSS-in-JS
-        "gatsby-plugin-styled-components",
+        "gatsby-plugin-emotion",
 
         // Allow us to use absolute imports for accessing our own components.
         // Requires `baseUrl` to be set in `tsconfig.json`.

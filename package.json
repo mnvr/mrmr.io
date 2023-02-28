@@ -16,26 +16,24 @@
         "lint": "tsc --noEmit && yarn prettier --check ."
     },
     "dependencies": {
+        "@emotion/react": "^11.10.6",
+        "@emotion/styled": "^11.10.6",
         "@mdx-js/mdx": "^2.3.0",
         "@mdx-js/react": "^2.3.0",
-        "babel-plugin-styled-components": "^2.0.7",
         "gatsby": "^5.7.0",
+        "gatsby-plugin-emotion": "^8.7.0",
         "gatsby-plugin-image": "^3.7.0",
         "gatsby-plugin-mdx": "^5.7.0",
         "gatsby-plugin-sharp": "^5.7.0",
-        "gatsby-plugin-sitemap": "^6.7.0",
-        "gatsby-plugin-styled-components": "^6.7.0",
         "gatsby-source-filesystem": "^5.7.0",
         "gatsby-transformer-sharp": "^5.7.0",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "styled-components": "^5.3.6"
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
         "@types/node": "^18.14.0",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
-        "@types/styled-components": "^5.1.26",
         "gatsby-plugin-root-import": "^2.0.9",
         "prettier": "^2.8.4",
         "typescript": "^4.9.5"

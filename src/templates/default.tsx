@@ -1,7 +1,7 @@
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import React from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -26,7 +26,7 @@ export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
 
     return (
         <CustomHead {...{ title }}>
-            <Body />
+            <body />
         </CustomHead>
     );
 };
@@ -81,9 +81,9 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
     return { backgroundColor, foregroundColor };
 };
 
-const Body = styled.body`
-    background-color: tomato;
-`;
+// const Body = styled.body`
+//     background-color: tomato;
+// `;
 
 const Main = styled.main`
     background-color: aliceblue;
