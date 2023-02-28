@@ -4,24 +4,20 @@ import styled from "styled-components";
 const Column: React.FC<PropsWithChildren> = ({ children }) => {
     return (
         <Grid>
-            <Left />
+            <div />
             <Middle>{children}</Middle>
-            <Right />
+            <div />
         </Grid>
     );
 };
 
 const Grid = styled.div`
     display: grid;
-    background-color: teal;
-    grid-template-columns: 1fr min(24rem, 100%) 4fr;
+    grid-template-columns: 1fr min(24rem, 100%) 3fr;
 `;
 
-const Left = styled.div``;
-const Right = styled.div``;
-
 const Middle = styled.div`
-    background-color: rebeccapurple;
+    padding: 0 1rem;
 `;
 
 export default Column;
