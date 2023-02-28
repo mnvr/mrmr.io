@@ -1,6 +1,7 @@
 import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
+import { Context } from "types";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -24,7 +25,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     }
 };
 
-export const createPages: GatsbyNode["createPages"] = async ({
+export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     graphql,
     reporter,
     actions,
@@ -53,7 +54,7 @@ export const createPages: GatsbyNode["createPages"] = async ({
     const nodes = data.allMdx.nodes;
 
     const activity = reporter.activityTimer(
-        `Creating pages from ${nodes.length} MDX files`
+        `Creating pages from MDX files [${nodes.length}]`
     );
     activity.start();
 
@@ -66,7 +67,7 @@ export const createPages: GatsbyNode["createPages"] = async ({
                 throw new Error(`Missing field "slug" in MDX node ${id}`);
             }
 
-            createPage({
+            createPage<Context>({
                 path: slug,
                 component: path.resolve(`src/templates/${template}.tsx`),
                 context: { id },

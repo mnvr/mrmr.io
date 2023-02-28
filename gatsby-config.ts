@@ -15,9 +15,6 @@ const config: GatsbyConfig = {
         // Requires `baseUrl` to be set in `tsconfig.json`.
         "gatsby-plugin-root-import",
 
-        // Generate a sitemap
-        "gatsby-plugin-sitemap",
-
         // Images
         "gatsby-plugin-image",
         "gatsby-plugin-sharp",
