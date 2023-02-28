@@ -7,6 +7,8 @@ const config: GatsbyConfig = {
     },
     graphqlTypegen: true,
     trailingSlash: "never",
+    jsxRuntime: "automatic",
+    jsxImportSource: "@emotion/react",
     plugins: [
         // CSS-in-JS
         "gatsby-plugin-emotion",

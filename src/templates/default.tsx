@@ -13,7 +13,14 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
     return (
         <main>
-            <h1>{title}</h1>
+            <h1
+                css={css`
+                    font-family: -apple-system-font, system-ui, sans-serif;
+                    text-decoration: underline;
+                `}
+            >
+                {title}
+            </h1>
             {children}
         </main>
     );
@@ -90,8 +97,16 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
 const bodyCSS = (pd: ParsedData) => {
     const { backgroundColor, foregroundColor } = pd;
     return css`
+        /* Reset the margin */
+        margin: 0;
+
+        /* Set the colors as per the MDX frontmatter */
         background-color: ${backgroundColor};
         color: ${foregroundColor};
-        margin: 0;
+
+        /* Set the font */
+        * {
+            font-family: Arial, system-ui, sans-serif;
+        }
     `;
 };
