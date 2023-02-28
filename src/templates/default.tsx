@@ -14,7 +14,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
     return (
         <Main>
-            <h1>{title}</h1>
+            <div>{title}</div>
             {children}
         </Main>
     );
@@ -30,6 +30,7 @@ export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
             <body
                 css={css`
                     background-color: ${backgroundColor};
+                    margin: 0;
                 `}
             />
         </CustomHead>
