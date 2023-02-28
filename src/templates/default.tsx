@@ -7,19 +7,9 @@ import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
-    data,
     children,
 }) => {
-    const { title } = parseData(data);
-
-    return (
-        <main>
-            <Column>
-                <h1>{title}</h1>
-                {children}
-            </Column>
-        </main>
-    );
+    return <main>{children}</main>;
 };
 
 export default Page;

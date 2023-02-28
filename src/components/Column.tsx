@@ -14,7 +14,7 @@ const Column: React.FC<PropsWithChildren> = ({ children }) => {
 const Grid = styled.div`
     display: grid;
     background-color: teal;
-    grid-template-columns: 1fr min(30rem, 100%) 4fr;
+    grid-template-columns: 1fr min(24rem, 100%) 4fr;
 `;
 
 const Left = styled.div``;
