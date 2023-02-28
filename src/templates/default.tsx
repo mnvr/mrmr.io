@@ -1,8 +1,7 @@
+import { css } from "@emotion/react";
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import React from "react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -10,29 +9,24 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     data,
     children,
 }) => {
-    const { title, backgroundColor, foregroundColor } = parseData(data);
+    const { title } = parseData(data);
 
     return (
-        <Main>
-            <div>{title}</div>
+        <main>
+            <h1>{title}</h1>
             {children}
-        </Main>
+        </main>
     );
 };
 
 export default Page;
 
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
-    const { title, backgroundColor, foregroundColor } = parseData(data);
+    const pd = parseData(data);
 
     return (
-        <CustomHead {...{ title }}>
-            <body
-                css={css`
-                    background-color: ${backgroundColor};
-                    margin: 0;
-                `}
-            />
+        <CustomHead title={pd.title}>
+            <body css={bodyCSS(pd)} />
         </CustomHead>
     );
 };
@@ -47,6 +41,12 @@ export const query = graphql`
         }
     }
 `;
+
+interface ParsedData {
+    title: string;
+    backgroundColor: string;
+    foregroundColor: string;
+}
 
 const parseData = (data: Queries.DefaultPageQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
@@ -79,7 +79,7 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
         throw new Error("Background color is required by the default template");
     }
 
-    const foregroundColor = colors[0];
+    const foregroundColor = colors[1];
     if (!foregroundColor) {
         throw new Error("Foreground color is required by the default template");
     }
@@ -87,6 +87,11 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
     return { backgroundColor, foregroundColor };
 };
 
-const Main = styled.main`
-    background-color: aliceblue;
-`;
+const bodyCSS = (pd: ParsedData) => {
+    const { backgroundColor, foregroundColor } = pd;
+    return css`
+        background-color: ${backgroundColor};
+        color: ${foregroundColor};
+        margin: 0;
+    `;
+};
