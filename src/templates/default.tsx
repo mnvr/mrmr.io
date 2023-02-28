@@ -9,16 +9,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     data,
     children,
 }) => {
-    const mdx = replaceNullsWithUndefineds(data.mdx);
-
-    const title = mdx?.frontmatter?.title;
-    if (!title) {
-        throw new Error("Required `title` property is missing in page query");
-    }
-
-    const { backgroundColor, foregroundColor } = parseColors(
-        mdx?.frontmatter?.colors
-    );
+    const { title, backgroundColor, foregroundColor } = parseData(data);
 
     return (
         <Main>
@@ -31,10 +22,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 export default Page;
 
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
-    const title = data.mdx?.frontmatter?.title;
-    if (!title) {
-        throw new Error("Required `title` property is missing in page query");
-    }
+    const { title, backgroundColor, foregroundColor } = parseData(data);
 
     return (
         <CustomHead {...{ title }}>
@@ -53,6 +41,21 @@ export const query = graphql`
         }
     }
 `;
+
+const parseData = (data: Queries.DefaultPageQuery) => {
+    const mdx = replaceNullsWithUndefineds(data.mdx);
+
+    const title = mdx?.frontmatter?.title;
+    if (!title) {
+        throw new Error("Required `title` property is missing in page query");
+    }
+
+    const { backgroundColor, foregroundColor } = parseColors(
+        mdx?.frontmatter?.colors
+    );
+
+    return { title, backgroundColor, foregroundColor };
+};
 
 const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
     if (!colors) {
