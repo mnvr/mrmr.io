@@ -1,6 +1,7 @@
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import React from "react";
+import styled from "styled-components";
 import type { Context } from "types";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
@@ -13,10 +14,10 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     }
 
     return (
-        <main>
+        <Main>
             <h1>{title}</h1>
             {children}
-        </main>
+        </Main>
     );
 };
 
@@ -28,7 +29,11 @@ export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
         throw new Error("Required `title` property is missing in page query");
     }
 
-    return <CustomHead {...{ title }} />;
+    return (
+        <CustomHead {...{ title }}>
+            <Body />
+        </CustomHead>
+    );
 };
 
 export const query = graphql`
@@ -39,4 +44,12 @@ export const query = graphql`
             }
         }
     }
+`;
+
+const Body = styled.body`
+    background-color: tomato;
+`;
+
+const Main = styled.main`
+    background-color: aliceblue;
 `;
