@@ -7,11 +7,6 @@ const config: GatsbyConfig = {
     },
     graphqlTypegen: true,
     trailingSlash: "never",
-    flags: {
-        /* Perform (unused) SSR even when doing gatsby develop. This helps catch
-           differences earlier without needing to do a separate gatsby build */
-        DEV_SSR: true,
-    },
     plugins: [
         // CSS-in-JS
         "gatsby-plugin-styled-components",

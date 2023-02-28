@@ -87,24 +87,14 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
     return { backgroundColor, foregroundColor };
 };
 
-const Body = (pd: ParsedData) => {
-    const { backgroundColor, foregroundColor } = pd;
-    /* Set the colors as per the MDX frontmatter */
-
-    return (
-        <BodyBase
-            style={{
-                backgroundColor: backgroundColor,
-                color: foregroundColor,
-            }}
-        />
-    );
-};
-
-const BodyBase = styled.body`
+const Body = styled.body<ParsedData>`
     /* Reset the margin */
     margin: 0;
 
     /* Set the font */
     font-family: system-ui, sans-serif;
+
+    /* Set the colors as per the MDX frontmatter */
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.foregroundColor};
 `;
