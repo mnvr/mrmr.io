@@ -1,3 +1,3 @@
 export type Context = {
-    id: string
-}
+    readonly id: string;
+};

@@ -54,6 +54,8 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
         return;
     }
 
+    // As of writing (Gatsby 5.7), we can't seem to be able to use
+    // `replaceNullsWithUndefineds` here without freaking Gatsby out.
     const nodes = data.allMdx.nodes;
 
     const activity = reporter.activityTimer(

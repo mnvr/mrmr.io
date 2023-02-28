@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { HeadFC, PageProps } from "gatsby";
-import Code from "components/code";
+import Code from "components/Code";
 
 const pageStyles = {
     color: "#232129",
