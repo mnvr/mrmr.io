@@ -1,9 +1,9 @@
-import { css } from "@emotion/react";
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import React from "react";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
+import styled from "styled-components";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     data,
@@ -13,14 +13,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
     return (
         <main>
-            <h1
-                css={css`
-                    font-family: -apple-system-font, system-ui, sans-serif;
-                    text-decoration: underline;
-                `}
-            >
-                {title}
-            </h1>
+            <h1>{title}</h1>
             {children}
         </main>
     );
@@ -33,7 +26,7 @@ export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
 
     return (
         <CustomHead title={pd.title}>
-            <body css={bodyCSS(pd)} />
+            <Body {...pd} />
         </CustomHead>
     );
 };
@@ -94,19 +87,24 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
     return { backgroundColor, foregroundColor };
 };
 
-const bodyCSS = (pd: ParsedData) => {
+const Body = (pd: ParsedData) => {
     const { backgroundColor, foregroundColor } = pd;
-    return css`
-        /* Reset the margin */
-        margin: 0;
+    /* Set the colors as per the MDX frontmatter */
 
-        /* Set the colors as per the MDX frontmatter */
-        background-color: ${backgroundColor};
-        color: ${foregroundColor};
-
-        /* Set the font */
-        * {
-            font-family: Arial, system-ui, sans-serif;
-        }
-    `;
+    return (
+        <BodyBase
+            style={{
+                backgroundColor: backgroundColor,
+                color: foregroundColor,
+            }}
+        />
+    );
 };
+
+const BodyBase = styled.body`
+    /* Reset the margin */
+    margin: 0;
+
+    /* Set the font */
+    font-family: system-ui, sans-serif;
+`;

@@ -7,11 +7,14 @@ const config: GatsbyConfig = {
     },
     graphqlTypegen: true,
     trailingSlash: "never",
-    jsxRuntime: "automatic",
-    jsxImportSource: "@emotion/react",
+    flags: {
+        /* Perform (unused) SSR even when doing gatsby develop. This helps catch
+           differences earlier without needing to do a separate gatsby build */
+        DEV_SSR: true,
+    },
     plugins: [
         // CSS-in-JS
-        "gatsby-plugin-emotion",
+        "gatsby-plugin-styled-components",
 
         // Allow us to use absolute imports for accessing our own components.
         // Requires `baseUrl` to be set in `tsconfig.json`.
