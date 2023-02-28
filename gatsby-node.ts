@@ -41,6 +41,9 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
                     fields {
                         slug
                     }
+                    internal {
+                        contentFilePath
+                    }
                 }
             }
         }
@@ -62,14 +65,21 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
         nodes.forEach((node) => {
             const template = "default";
             const id = node.id;
+
             const slug = node.fields?.slug;
             if (!slug) {
-                throw new Error(`Missing field "slug" in MDX node ${id}`);
+                throw new Error(`Missing "slug" in MDX node ${id}`);
             }
 
+            const contentFilePath = node.internal?.contentFilePath;
+            if (!contentFilePath) {
+                throw new Error(`Missing "contentFilePath" in MDX node ${id}`);
+            }
+
+            const templatePath = path.resolve(`src/templates/${template}.tsx`);
             createPage<Context>({
                 path: slug,
-                component: path.resolve(`src/templates/${template}.tsx`),
+                component: `${templatePath}?__contentFilePath=${contentFilePath}`,
                 context: { id },
             });
         });
