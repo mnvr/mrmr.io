@@ -78,9 +78,8 @@ const Body = styled.body`
 
 const Main = styled.main`
     min-height: 90svh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    place-content: center;
 `;
 
 const H1 = styled.h1`
