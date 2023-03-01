@@ -32,13 +32,46 @@ const Body = styled.body`
     @media (prefers-color-scheme: dark) {
         background-color: #444;
         color: #eee;
+    }
 
+    /* Styling links
+     *
+     * Anchor tags with an attached href do not inherit color.
+     *
+     * An anchor can be in the different states, which can be targeted
+     * using the following pseudo classes:
+     * - a:link    / an anchor tag with a destination
+     * - a:visited / exists in the browser history
+     * - a:hover
+     * - a:focused / using a keyboard, e.g. option + tab on macOS
+                     by default, shows a blue box border around the link
+     * - a:active  / when the user actually presses the link (red)
+     */
+    a {
+        color: #666;
+    }
+
+    a:hover {
+        color: #111;
+    }
+
+    a:active {
+        color: #000;
+        background-color: #efefef;
+    }
+
+    @media (prefers-color-scheme: dark) {
         a {
             color: #9a9a9a;
         }
 
         a:hover {
             color: #cdcdcd;
+        }
+
+        a:active {
+            color: #fff;
+            background-color: #555;
         }
     }
 `;
