@@ -28,10 +28,10 @@ const Body = styled.body`
 
     /* Set pleasant, readable, mode specific colors */
     background-color: white;
-    color: #555;
+    color: hsl(0, 0%, 33.3%);
     @media (prefers-color-scheme: dark) {
-        background-color: #444;
-        color: #eee;
+        background-color: hsl(0, 0%, 26.6%);
+        color: hsl(0, 0%, 93.3%);
     }
 
     /* Styling links
@@ -48,30 +48,30 @@ const Body = styled.body`
      * - a:active  / when the user actually presses the link (red)
      */
     a {
-        color: #666;
+        color: hsl(0, 0%, 40%);
     }
 
     a:hover {
-        color: #111;
+        color: hsl(0, 0%, 6.6%);
     }
 
     a:active {
-        color: #000;
-        background-color: #efefef;
+        color: hsl(0, 0%, 0%);
+        background-color: hsl(0, 0%, 93.3%);
     }
 
     @media (prefers-color-scheme: dark) {
         a {
-            color: #9a9a9a;
+            color: hsl(0, 0%, 60%);
         }
 
         a:hover {
-            color: #cdcdcd;
+            color: hsl(0, 0%, 80%);
         }
 
         a:active {
-            color: #fff;
-            background-color: #555;
+            color: hsl(0, 0%, 100%);
+            background-color: hsl(0, 0%, 33.3%);
         }
     }
 `;
