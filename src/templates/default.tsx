@@ -1,7 +1,6 @@
-import Column from "components/Column";
 import CustomHead from "components/CustomHead";
 import { graphql, HeadFC, PageProps } from "gatsby";
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";

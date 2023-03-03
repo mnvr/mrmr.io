@@ -1,7 +1,7 @@
-import React, { PropsWithChildren } from "react";
+import * as React from "react";
 import styled from "styled-components";
 
-const Column: React.FC<PropsWithChildren> = ({ children }) => {
+const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Grid>
             <div />

@@ -1,6 +1,6 @@
 import CustomHead from "components/CustomHead";
 import { HeadFC, Link, PageProps } from "gatsby";
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 
 const NotFoundPage: React.FC<PageProps> = () => {

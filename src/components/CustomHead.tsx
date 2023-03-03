@@ -1,5 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby";
-import React from "react";
+import * as React from "react";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 interface CustomHeadProps {
