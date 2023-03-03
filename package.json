@@ -2,11 +2,8 @@
     "name": "mrmr.io",
     "version": "1.0.0",
     "private": true,
-    "description": "Source code for mrmr.io /murmur dot io/",
-    "author": "Manav Rathi",
-    "keywords": [
-        "gatsby"
-    ],
+    "description": "mrmr.io /murmur dot io/",
+    "author": "Manav Rathi <manav@mrmr.io>",
     "scripts": {
         "dev": "gatsby develop",
         "start": "gatsby develop",
