@@ -32,7 +32,7 @@ const Body = styled.body`
      * that Firefox uses 1.2 usually. However, on Safari macOS, the default with
      * system-ui seemed to be lesser than 1.2 even and quite scrunchy.
      */
-    line-height: 1.3;
+    /* line-height: 1.3; */
 
     /* Set pleasant, readable, mode specific colors */
     background-color: white;
@@ -95,7 +95,7 @@ const H1 = styled.h1`
 `;
 
 const Quote = styled.p`
-    margin: 0.66rem 0;
+    margin: 0.7rem 0;
     font-family: serif;
     font-size: 1.5rem;
     color: #888;
