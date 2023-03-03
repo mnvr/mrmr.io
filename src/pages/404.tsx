@@ -101,6 +101,10 @@ const Quote = styled.p`
     color: #888;
 `;
 
+const Text = styled.p`
+    line-height: 1.3;
+`;
+
 const Content: React.FC = () => {
     return (
         <div>
@@ -108,14 +112,12 @@ const Content: React.FC = () => {
             <Quote>
                 <i>like a tear in the rain</i>
             </Quote>
-            <p>
+            <Text>
                 The page you're looking for,
                 <br />
                 doesn't exist anymore.
-                <br />
-                Or maybe it never did.
-                <br />
-            </p>
+            </Text>
+            <p>Or maybe it never did.</p>
             <p>
                 <Link to="/">You can always start again</Link>
             </p>
