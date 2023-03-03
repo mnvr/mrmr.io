@@ -1,0 +1,15 @@
+diff --git a/node_modules/gatsby/cache-dir/fast-refresh-overlay/components/overlay.js b/node_modules/gatsby/cache-dir/fast-refresh-overlay/components/overlay.js
+index 9360e39..f2aff2b 100644
+--- a/node_modules/gatsby/cache-dir/fast-refresh-overlay/components/overlay.js
++++ b/node_modules/gatsby/cache-dir/fast-refresh-overlay/components/overlay.js
+@@ -41,7 +41,9 @@ export function Overlay({ children }) {
+     setOverlay(el)
+   }, [])
+ 
+-  React.useEffect(() => {
++  // Prevent gatsby from stealing focus when we're in the middle of writing code
++  // and syntax errors due to partially written code get autosaved.
++  false && React.useEffect(() => {
+     if (overlay === null) {
+       return
+     }
