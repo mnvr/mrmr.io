@@ -1,9 +1,10 @@
 import { graphql, useStaticQuery } from "gatsby";
 import * as React from "react";
+import { removeUndefineds } from "utils/array";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 interface CustomHeadProps {
-    title: string;
+    title?: string;
     description?: string;
 }
 
@@ -24,7 +25,7 @@ const CustomHead: React.FC<React.PropsWithChildren<CustomHeadProps>> = ({
 
     const site = replaceNullsWithUndefineds(data.site);
     const siteTitle = site?.siteMetadata?.title;
-    const pageTitle = siteTitle ? `${title} | ${siteTitle}` : title;
+    const pageTitle = removeUndefineds([siteTitle, title]).join(" | ");
 
     return (
         <>

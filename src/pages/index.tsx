@@ -1,3 +1,4 @@
+import CustomHead from "components/CustomHead";
 import type { HeadFC, PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -14,7 +15,13 @@ const IndexPage: React.FC<PageProps> = () => {
 
 export default IndexPage;
 
-export const Head: HeadFC = () => <title>Home</title>;
+export const Head: HeadFC = () => {
+    return (
+        <CustomHead>
+            <Body />
+        </CustomHead>
+    );
+};
 
 const items = [
     {
@@ -24,16 +31,32 @@ const items = [
     },
 ];
 
+const Body = styled.body`
+    margin: 0;
+
+    background-color: hsl(0, 0%, 100%);
+    color: hsl(0, 0%, 13%);
+    --title-color: hsl(0, 0%, 18%);
+    @media (prefers-color-scheme: dark) {
+        background-color: hsl(240, 12%, 10%);
+        color: hsl(240, 12%, 90%);
+        --title-color: hsl(240, 12%, 85%);
+    }
+`;
+
 const Main = styled.main`
-    margin: auto;
+    margin: 0;
 `;
 
 const H1 = styled.h1`
+    margin-top: 0;
+    padding-top: 40svh;
     font-size: 4rem;
     font-family: system-ui, sans-serif;
-    text-align: center;
-    margin-top: 40svh;
-    color: hsl(0, 0%, 13.3%);
+    text-align: centter;
+    margin-left: 1.8rem;
+    margin-bottom: 0;
+    color: var(--title-color);
 `;
 
 const Items: React.FC = () => {
@@ -54,8 +77,8 @@ const Poem: React.FC = () => {
     );
 };
 
-const PoemC = styled.p`
-    margin: 40svh 2rem;
+const PoemC = styled.div`
+    margin: 0svh 2rem;
     font-family: serif;
     display: flex;
 `;
