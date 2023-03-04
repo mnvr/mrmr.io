@@ -38,9 +38,9 @@ const Body = styled.body`
     color: hsl(0, 0%, 13%);
     --title-color: hsl(0, 0%, 18%);
     @media (prefers-color-scheme: dark) {
-        background-color: hsl(240, 12%, 10%);
+        background-color: hsl(240, 6%, 20%);
         color: hsl(240, 12%, 90%);
-        --title-color: hsl(240, 12%, 85%);
+        --title-color: hsla(240, 12%, 85%);
     }
 `;
 
