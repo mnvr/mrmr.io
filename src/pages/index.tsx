@@ -6,8 +6,10 @@ import styled from "styled-components";
 const IndexPage: React.FC<PageProps> = () => {
     return (
         <Main>
-            <H1>mrmr</H1>
-            <Poem />
+            <div>
+                <H1>mrmr</H1>
+                <Poem />
+            </div>
             <Items />
         </Main>
     );
@@ -23,10 +25,16 @@ export const Head: HeadFC = () => {
     );
 };
 
-const items = [
+interface ItemType {
+    text: string;
+    href: string;
+    color: string;
+}
+
+const items: ItemType[] = [
     {
         text: "come dream with me",
-        url: "/come",
+        href: "/come",
         color: "#3C1DFE",
     },
 ];
@@ -45,7 +53,9 @@ const Body = styled.body`
 `;
 
 const Main = styled.main`
-    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
 `;
 
 const H1 = styled.h1`
@@ -53,21 +63,10 @@ const H1 = styled.h1`
     padding-top: 40svh;
     font-size: 4rem;
     font-family: system-ui, sans-serif;
-    text-align: centter;
     margin-left: 1.8rem;
     margin-bottom: 0;
     color: var(--title-color);
 `;
-
-const Items: React.FC = () => {
-    return (
-        <ul style={{ color: "white" }}>
-            {items.map(({ url, text }) => (
-                <li key={url}>{text}</li>
-            ))}
-        </ul>
-    );
-};
 
 const Poem: React.FC = () => {
     return (
@@ -96,3 +95,29 @@ const PoemText: React.FC = () => {
         </p>
     );
 };
+
+const Items: React.FC = () => {
+    return (
+        <ItemsUL>
+            {items.map(({ href, color, text }) => (
+                <ItemLI key={href} color={color}>
+                    {text}
+                </ItemLI>
+            ))}
+        </ItemsUL>
+    );
+};
+
+const ItemsUL = styled.ul`
+    padding: 4rem;
+
+    list-style: none;
+    font-family: system-ui, sans-serif;
+    font-weight: 500;
+`;
+
+const ItemLI = styled.li`
+    background-color: ${(props) => props.color};
+    color: white;
+    padding: 0.2rem 0.4rem;
+`;
