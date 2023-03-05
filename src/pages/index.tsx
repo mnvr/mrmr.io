@@ -1,6 +1,6 @@
 import { DefaultGlobalStyle } from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
-import { graphql, HeadFC, PageProps } from "gatsby";
+import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure, parseDefaultTemplateColors } from "utils/parse";
@@ -115,26 +115,38 @@ const PoemText: React.FC = () => {
 
 const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
     return (
-        <ItemsUL>
-            {pages.map(({ title, slug, backgroundColor, color }) => (
-                <ItemLI key={slug} color={backgroundColor}>
-                    {title}
-                </ItemLI>
-            ))}
-        </ItemsUL>
+        <PageGrid>
+            {[...pages, ...pages].map(
+                ({ title, slug, backgroundColor, color }) => (
+                    <Link to={slug} key={slug}>
+                        <PageItem {...{ backgroundColor, color }}>
+                            {title}
+                        </PageItem>
+                    </Link>
+                )
+            )}
+        </PageGrid>
     );
 };
 
-const ItemsUL = styled.ul`
-    padding: 4rem;
-
-    list-style: none;
-    font-family: system-ui, sans-serif;
+const PageGrid = styled.div`
+    display: grid;
     font-weight: 500;
+    padding: 1.9rem;
+
+    a {
+        text-decoration: none;
+    }
 `;
 
-const ItemLI = styled.li`
-    background-color: ${(props) => props.color};
-    color: white;
-    padding: 0.2rem 0.4rem;
+interface PageItemProps {
+    backgroundColor: string;
+    color: string;
+}
+
+const PageItem = styled.div<PageItemProps>`
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.color};
+    width: 12ch;
+    padding: 1rem;
 `;

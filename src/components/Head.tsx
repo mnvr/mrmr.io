@@ -44,36 +44,4 @@ const DefaultBody = styled.body`
 
     /* Set the font */
     font-family: system-ui, sans-serif;
-
-    /*
-     * Styling links
-     *
-     * Anchor tags with an attached href do not inherit color.
-     *
-     * An anchor can be in the different states, which can be targeted
-     * using the following pseudo classes:
-     * - a:link    / an anchor tag with a destination
-     * - a:visited / exists in the browser history
-     * - a:hover
-     * - a:focused / using a keyboard, e.g. option + tab on macOS
-                     by default, shows a blue box border around the link
-     * - a:active  / when the user actually presses the link (red)
-     */
-    a {
-        text-decoration: none;
-        border-bottom: 1px solid currentColor;
-
-        // Pages should override this:
-        // color:
-    }
-
-    a:hover {
-        // Pages should override these:
-        // color:
-        // background-color:
-    }
-
-    a:active {
-        background-color: yellow;
-    }
 `;
