@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-interface GlobalStyleProps {
+export interface GlobalStyleProps {
     backgroundColor: string;
     color: string;
     /** Optional dark mode overrides */
@@ -18,5 +18,7 @@ export const DefaultGlobalStyle = createGlobalStyle<GlobalStyleProps>`
                 props.darkBackgroundColor ?? props.backgroundColor};
             color: ${(props) => props.darkColor ?? props.color};
         }
+
+        transition: background-color 200ms ease-out;
     }
 `;

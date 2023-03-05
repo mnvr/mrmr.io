@@ -1,4 +1,4 @@
-import { DefaultGlobalStyle } from "components/GlobalStyle";
+import { GlobalStyleProps, DefaultGlobalStyle } from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
@@ -7,7 +7,7 @@ import { ensure, parseDefaultTemplateColors } from "utils/parse";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const defaultColors = {
+    const defaultColors: GlobalStyleProps = {
         backgroundColor: "hsl(0, 0%, 100%)",
         color: "hsl(0, 0%, 13%)",
         darkBackgroundColor: "hsl(240, 6%, 20%)",
@@ -16,11 +16,13 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
 
     const pages = parsePages(data);
 
+    const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
+
     return (
         <Main>
-            <DefaultGlobalStyle {...defaultColors} />
+            <DefaultGlobalStyle {...(hoverPage ?? defaultColors)} />
             <IndexTitle />
-            <PageListing pages={pages} />
+            <PageListing {...{ pages, setHoverPage }} />
         </Main>
     );
 };
@@ -113,18 +115,24 @@ const PoemText: React.FC = () => {
     );
 };
 
-const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
+interface PageListingProps {
+    pages: Page[];
+    setHoverPage: (page: Page | undefined) => void;
+}
+
+const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
     return (
         <PageGrid>
-            {[...pages, ...pages].map(
-                ({ title, slug, backgroundColor, color }) => (
-                    <Link to={slug} key={slug}>
-                        <PageItem {...{ backgroundColor, color }}>
-                            {title.toLowerCase()}
-                        </PageItem>
-                    </Link>
-                )
-            )}
+            {[...pages, ...pages].map((page) => (
+                <Link
+                    key={page.slug}
+                    to={page.slug}
+                    onMouseEnter={() => setHoverPage(page)}
+                    onMouseLeave={() => setHoverPage(undefined)}
+                >
+                    <PageItem {...page}>{page.title.toLowerCase()}</PageItem>
+                </Link>
+            ))}
         </PageGrid>
     );
 };
@@ -140,12 +148,7 @@ const PageGrid = styled.div`
     }
 `;
 
-interface PageItemProps {
-    backgroundColor: string;
-    color: string;
-}
-
-const PageItem = styled.div<PageItemProps>`
+const PageItem = styled.div<Page>`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.color};
     width: 11ch;
