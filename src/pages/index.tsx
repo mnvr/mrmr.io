@@ -120,7 +120,7 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
                 ({ title, slug, backgroundColor, color }) => (
                     <Link to={slug} key={slug}>
                         <PageItem {...{ backgroundColor, color }}>
-                            {title}
+                            {title.toLowerCase()}
                         </PageItem>
                     </Link>
                 )
@@ -132,6 +132,7 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
 const PageGrid = styled.div`
     display: grid;
     font-weight: 500;
+    font-variant: small-caps;
     padding: 1.9rem;
 
     a {
@@ -147,6 +148,7 @@ interface PageItemProps {
 const PageItem = styled.div<PageItemProps>`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.color};
-    width: 12ch;
-    padding: 1rem;
+    width: 11ch;
+    min-height: 8ch;
+    padding: 0.33rem 0.66rem;
 `;
