@@ -1,5 +1,5 @@
 /// Remove `undefined` values from an array
-export function removeUndefineds<T>(xs: (T | undefined)[]): T[] {
+export function removeUndefineds<T>(xs: readonly (T | undefined)[]): T[] {
     return xs.filter(isNotUndefined);
 }
 

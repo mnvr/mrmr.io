@@ -45,7 +45,8 @@ const DefaultBody = styled.body`
     /* Set the font */
     font-family: system-ui, sans-serif;
 
-    /* Styling links
+    /*
+     * Styling links
      *
      * Anchor tags with an attached href do not inherit color.
      *

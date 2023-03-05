@@ -5,7 +5,6 @@ import * as React from "react";
 import styled from "styled-components";
 
 const NotFoundPage: React.FC<PageProps> = () => {
-    /* Set pleasant, readable, mode specific colors */
     const colors = {
         backgroundColor: "hsl(0, 0%, 100%)",
         color: "hsl(0, 0%, 33.3%)",

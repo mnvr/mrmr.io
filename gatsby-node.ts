@@ -2,6 +2,7 @@ import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
 import { Context } from "types";
+import { ensure } from "utils/parse";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -35,7 +36,7 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     // Create a page for each MDX node
     const { data, errors } = await graphql<Queries.ContentPagesQuery>(`
         query ContentPages {
-            allMdx(sort: { frontmatter: { date: DESC } }) {
+            allMdx {
                 nodes {
                     id
                     fields {
@@ -67,18 +68,10 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
         nodes.forEach((node) => {
             const template = "default";
             const id = node.id;
-
-            const slug = node.fields?.slug;
-            if (!slug) {
-                throw new Error(`Missing "slug" in MDX node ${id}`);
-            }
-
-            const contentFilePath = node.internal?.contentFilePath;
-            if (!contentFilePath) {
-                throw new Error(`Missing "contentFilePath" in MDX node ${id}`);
-            }
-
+            const slug = ensure(node.fields?.slug);
+            const contentFilePath = ensure(node.internal?.contentFilePath);
             const templatePath = path.resolve(`src/templates/${template}.tsx`);
+
             createPage<Context>({
                 path: slug,
                 component: `${templatePath}?__contentFilePath=${contentFilePath}`,
