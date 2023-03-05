@@ -1,11 +1,12 @@
 import CustomHead from "components/CustomHead";
 import type { HeadFC, PageProps } from "gatsby";
 import * as React from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 const IndexPage: React.FC<PageProps> = () => {
     return (
         <Main>
+            <GlobalStyle />
             <div>
                 <H1>mrmr</H1>
                 <Poem />
@@ -35,20 +36,25 @@ const items: ItemType[] = [
     {
         text: "come dream with me",
         href: "/come",
-        color: "#3C1DFE",
+        color: "hsl(248, 99.1%, 55.5%)",
     },
 ];
 
 const Body = styled.body`
     margin: 0;
+`;
 
-    background-color: hsl(0, 0%, 100%);
-    color: hsl(0, 0%, 13%);
-    --title-color: hsl(0, 0%, 18%);
-    @media (prefers-color-scheme: dark) {
-        background-color: hsl(240, 6%, 20%);
-        color: hsl(240, 12%, 90%);
-        --title-color: hsla(240, 12%, 85%);
+interface GlobalStyleProps {}
+
+const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
+    body {
+        background-color: hsl(0, 0%, 100%);
+        color: hsl(0, 0%, 13%);
+
+        @media (prefers-color-scheme: dark) {
+            background-color: hsl(240, 6%, 20%);
+            color: hsl(240, 12%, 90%);
+        }
     }
 `;
 
@@ -65,7 +71,7 @@ const H1 = styled.h1`
     font-family: system-ui, sans-serif;
     margin-left: 1.8rem;
     margin-bottom: 0;
-    color: var(--title-color);
+    filter: opacity(0.92);
 `;
 
 const Poem: React.FC = () => {
