@@ -1,26 +1,31 @@
-import CustomHead from "components/CustomHead";
+import { DefaultGlobalStyle } from "components/GlobalStyle";
+import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
-import styled from "styled-components";
 import type { Context } from "types";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
+    data,
     children,
 }) => {
-    return <main>{children}</main>;
+    /* Set the colors as per the MDX frontmatter */
+    const { backgroundColor, color } = parseData(data);
+
+    return (
+        <main>
+            <DefaultGlobalStyle {...{ backgroundColor, color }} />
+            {children}
+        </main>
+    );
 };
 
 export default Page;
 
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
-    const pd = parseData(data);
+    const { title } = parseData(data);
 
-    return (
-        <CustomHead title={pd.title}>
-            <Body {...pd} />
-        </CustomHead>
-    );
+    return <DefaultHead title={title} />;
 };
 
 export const query = graphql`
@@ -34,12 +39,6 @@ export const query = graphql`
     }
 `;
 
-interface ParsedData {
-    title: string;
-    backgroundColor: string;
-    foregroundColor: string;
-}
-
 const parseData = (data: Queries.DefaultPageQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
 
@@ -48,11 +47,9 @@ const parseData = (data: Queries.DefaultPageQuery) => {
         throw new Error("Required `title` property is missing in page query");
     }
 
-    const { backgroundColor, foregroundColor } = parseColors(
-        mdx?.frontmatter?.colors
-    );
+    const { backgroundColor, color } = parseColors(mdx?.frontmatter?.colors);
 
-    return { title, backgroundColor, foregroundColor };
+    return { title, backgroundColor, color };
 };
 
 const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
@@ -71,22 +68,10 @@ const parseColors = (colors: readonly (string | undefined)[] | undefined) => {
         throw new Error("Background color is required by the default template");
     }
 
-    const foregroundColor = colors[1];
-    if (!foregroundColor) {
+    const color = colors[1];
+    if (!color) {
         throw new Error("Foreground color is required by the default template");
     }
 
-    return { backgroundColor, foregroundColor };
+    return { backgroundColor, color };
 };
-
-const Body = styled.body<ParsedData>`
-    /* Reset the margin */
-    margin: 0;
-
-    /* Set the font */
-    font-family: system-ui, sans-serif;
-
-    /* Set the colors as per the MDX frontmatter */
-    background-color: ${(props) => props.backgroundColor};
-    color: ${(props) => props.foregroundColor};
-`;

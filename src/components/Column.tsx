@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
-const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Grid>
             <div />
@@ -19,5 +19,3 @@ const Grid = styled.div`
 const Middle = styled.div`
     padding: 0 1rem;
 `;
-
-export default Column;

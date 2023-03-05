@@ -1,12 +1,20 @@
-import CustomHead from "components/CustomHead";
+import { DefaultGlobalStyle } from "components/GlobalStyle";
+import { DefaultHead } from "components/Head";
 import type { HeadFC, PageProps } from "gatsby";
 import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 
 const IndexPage: React.FC<PageProps> = () => {
+    const colors = {
+        backgroundColor: "hsl(0, 0%, 100%)",
+        color: "hsl(0, 0%, 13%)",
+        darkBackgroundColor: "hsl(240, 6%, 20%)",
+        darkColor: "hsl(240, 12%, 90%)",
+    };
+
     return (
         <Main>
-            <GlobalStyle />
+            <DefaultGlobalStyle {...colors} />
             <div>
                 <H1>mrmr</H1>
                 <Poem />
@@ -18,13 +26,7 @@ const IndexPage: React.FC<PageProps> = () => {
 
 export default IndexPage;
 
-export const Head: HeadFC = () => {
-    return (
-        <CustomHead>
-            <Body />
-        </CustomHead>
-    );
-};
+export const Head: HeadFC = () => <DefaultHead />;
 
 interface ItemType {
     text: string;
@@ -39,24 +41,6 @@ const items: ItemType[] = [
         color: "hsl(248.2, 99.1%, 55.5%)",
     },
 ];
-
-const Body = styled.body`
-    margin: 0;
-`;
-
-interface GlobalStyleProps {}
-
-const GlobalStyle = createGlobalStyle<GlobalStyleProps>`
-    body {
-        background-color: hsl(0, 0%, 100%);
-        color: hsl(0, 0%, 13%);
-
-        @media (prefers-color-scheme: dark) {
-            background-color: hsl(240, 6%, 20%);
-            color: hsl(240, 12%, 90%);
-        }
-    }
-`;
 
 const Main = styled.main`
     display: flex;

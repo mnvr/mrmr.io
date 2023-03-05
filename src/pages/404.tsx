@@ -1,11 +1,21 @@
-import CustomHead from "components/CustomHead";
+import { DefaultGlobalStyle } from "components/GlobalStyle";
+import { DefaultHead } from "components/Head";
 import { HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 
 const NotFoundPage: React.FC<PageProps> = () => {
+    /* Set pleasant, readable, mode specific colors */
+    const colors = {
+        backgroundColor: "hsl(0, 0%, 100%)",
+        color: "hsl(0, 0%, 33.3%)",
+        darkBackgroundColor: "hsl(0, 0%, 26.6%)",
+        darkColor: "hsl(0, 0%, 93.3%)",
+    };
+
     return (
         <Main>
+            <DefaultGlobalStyle {...colors} />
             <Content />
         </Main>
     );
@@ -13,53 +23,20 @@ const NotFoundPage: React.FC<PageProps> = () => {
 
 export default NotFoundPage;
 
-export const Head: HeadFC = () => {
-    return (
-        <CustomHead title="Page not found">
-            <Body />
-        </CustomHead>
-    );
-};
+export const Head: HeadFC = () => <DefaultHead title="Page not found" />;
 
-const Body = styled.body`
-    margin: 0;
-    font-family: system-ui, sans-serif;
+const Main = styled.main`
+    min-height: 90svh;
+    display: grid;
+    place-content: center;
 
-    /* Set pleasant, readable, mode specific colors */
-    background-color: white;
-    color: hsl(0, 0%, 33.3%);
-    @media (prefers-color-scheme: dark) {
-        background-color: hsl(0, 0%, 26.6%);
-        color: hsl(0, 0%, 93.3%);
-    }
-
-    /* Styling links
-     *
-     * Anchor tags with an attached href do not inherit color.
-     *
-     * An anchor can be in the different states, which can be targeted
-     * using the following pseudo classes:
-     * - a:link    / an anchor tag with a destination
-     * - a:visited / exists in the browser history
-     * - a:hover
-     * - a:focused / using a keyboard, e.g. option + tab on macOS
-                     by default, shows a blue box border around the link
-     * - a:active  / when the user actually presses the link (red)
-     */
     a {
-        text-decoration: none;
-        border-bottom: 1px solid currentColor;
-
         color: hsl(0, 0%, 40%);
     }
 
     a:hover {
         color: hsl(0, 0%, 6.6%);
         background-color: hsl(0, 0%, 93.3%);
-    }
-
-    a:active {
-        background-color: yellow;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -71,17 +48,7 @@ const Body = styled.body`
             color: hsl(0, 0%, 6.6%);
             background-color: hsl(0, 0%, 80%);
         }
-
-        a:active {
-            background-color: yellow;
-        }
     }
-`;
-
-const Main = styled.main`
-    min-height: 90svh;
-    display: grid;
-    place-content: center;
 `;
 
 const H1 = styled.h1`
@@ -92,7 +59,7 @@ const Quote = styled.p`
     margin: 0.7rem 0;
     font-family: serif;
     font-size: 1.5rem;
-    color: #888;
+    color: hsl(0, 0%, 54%);
 `;
 
 const Text = styled.p`
