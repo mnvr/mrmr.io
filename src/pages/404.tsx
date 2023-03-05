@@ -24,15 +24,6 @@ export const Head: HeadFC = () => {
 const Body = styled.body`
     margin: 0;
     font-family: system-ui, sans-serif;
-    text-underline-position: under;
-
-    /* Give more breathing space to the lines.
-     *
-     * The default is apparently browser / font dependent, with MDN mentioning
-     * that Firefox uses 1.2 usually. However, on Safari macOS, the default with
-     * system-ui seemed to be lesser than 1.2 even and quite scrunchy.
-     */
-    /* line-height: 1.3; */
 
     /* Set pleasant, readable, mode specific colors */
     background-color: white;
@@ -56,16 +47,19 @@ const Body = styled.body`
      * - a:active  / when the user actually presses the link (red)
      */
     a {
+        text-decoration: none;
+        border-bottom: 1px solid currentColor;
+
         color: hsl(0, 0%, 40%);
     }
 
     a:hover {
         color: hsl(0, 0%, 6.6%);
+        background-color: hsl(0, 0%, 93.3%);
     }
 
     a:active {
-        color: hsl(0, 0%, 0%);
-        background-color: hsl(0, 0%, 93.3%);
+        background-color: yellow;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -74,12 +68,12 @@ const Body = styled.body`
         }
 
         a:hover {
-            color: hsl(0, 0%, 80%);
+            color: hsl(0, 0%, 6.6%);
+            background-color: hsl(0, 0%, 80%);
         }
 
         a:active {
-            color: hsl(0, 0%, 100%);
-            background-color: hsl(0, 0%, 33.3%);
+            background-color: yellow;
         }
     }
 `;
@@ -102,6 +96,11 @@ const Quote = styled.p`
 `;
 
 const Text = styled.p`
+    /* Give more breathing space to the lines.
+     *
+     * The default is browser / font dependent, with MDN mentioning that Firefox
+     * uses 1.2 usually. Safari on macOS with system-ui felt lesser than 1.2.
+     */
     line-height: 1.3;
 `;
 
@@ -119,7 +118,11 @@ const Content: React.FC = () => {
             </Text>
             <p>Or maybe it never did.</p>
             <p>
-                <Link to="/">You can always start again</Link>
+                <Link to="/">
+                    You can always start again
+                    <br />
+                    <i>like a tear, in the rain</i>
+                </Link>
             </p>
         </div>
     );

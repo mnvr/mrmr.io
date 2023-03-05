@@ -86,13 +86,6 @@ const Body = styled.body<ParsedData>`
     /* Set the font */
     font-family: system-ui, sans-serif;
 
-    /* When underlining stuff, put the underline below the descenders (e.g.
-     * below the lower part of g).
-     *
-     * Gives more breathing space.
-     */
-    text-underline-position: under;
-
     /* Set the colors as per the MDX frontmatter */
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.foregroundColor};
