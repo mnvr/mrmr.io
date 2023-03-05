@@ -36,7 +36,7 @@ const items: ItemType[] = [
     {
         text: "come dream with me",
         href: "/come",
-        color: "hsl(248, 99.1%, 55.5%)",
+        color: "hsl(248.2, 99.1%, 55.5%)",
     },
 ];
 
