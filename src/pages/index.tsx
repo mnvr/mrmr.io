@@ -100,7 +100,6 @@ const H1 = styled.h1`
     @media (min-width: 700px) {
         padding-top: 40svh;
     }
-    font-size: 4rem;
     margin-left: 1.8rem;
     margin-bottom: 0;
     filter: opacity(0.92);
