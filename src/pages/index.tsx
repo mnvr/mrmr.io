@@ -95,7 +95,11 @@ const IndexTitle: React.FC = () => {
 
 const H1 = styled.h1`
     margin-top: 0;
-    padding-top: 40svh;
+    /* increase top padding when the title and items side by side */
+    padding-top: 10svh;
+    @media (min-width: 700px) {
+        padding-top: 40svh;
+    }
     font-size: 4rem;
     margin-left: 1.8rem;
     margin-bottom: 0;
