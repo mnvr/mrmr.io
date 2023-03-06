@@ -88,9 +88,7 @@ const IndexTitle: React.FC = () => {
     return (
         <div>
             <H1>mrmr</H1>
-            <PoemP>
-                <PoemText />
-            </PoemP>
+            <Poem />
         </div>
     );
 };
@@ -104,16 +102,9 @@ const H1 = styled.h1`
     filter: opacity(0.92);
 `;
 
-const PoemP = styled.p`
-    margin-left: 2rem;
-    font-family: serif;
-    margin-bottom: 1.9rem;
-    filter: opacity(0.72);
-`;
-
-const PoemText: React.FC = () => {
+const Poem: React.FC = () => {
     return (
-        <>
+        <PoemP>
             <i>murmur</i> to me softly
             <br />
             &nbsp;&nbsp;tell me it is <i>all right</i>
@@ -121,9 +112,16 @@ const PoemText: React.FC = () => {
             in the <i>wind</i> rustle leaves
             <br />
             &nbsp;&nbsp;the moon, <i>and</i> the <i>night</i>
-        </>
+        </PoemP>
     );
 };
+
+const PoemP = styled.p`
+    margin-left: 2rem;
+    font-family: serif;
+    margin-bottom: 1.9rem;
+    filter: opacity(0.72);
+`;
 
 interface PageListingProps {
     pages: Page[];
@@ -133,14 +131,16 @@ interface PageListingProps {
 const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
     return (
         <PageGrid>
-            {[...pages, ...pages].map((page) => (
+            {pages.map((page) => (
                 <Link
                     key={page.slug}
                     to={page.slug}
                     onMouseEnter={() => setHoverPage(page)}
                     onMouseLeave={() => setHoverPage(undefined)}
                 >
-                    <PageItem {...page}>{page.title.toLowerCase()}</PageItem>
+                    <PageItem {...page}>
+                        <PageItemP>{page.title.toLowerCase()}</PageItemP>
+                    </PageItem>
                 </Link>
             ))}
         </PageGrid>
@@ -148,9 +148,13 @@ const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
 };
 
 const PageGrid = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-end;
+    display: grid;
+    /* 2 columns on large enough screens */
+    grid-template-columns: auto;
+    @media (min-width: 460px) {
+        grid-template-columns: auto auto;
+    }
+    align-content: end;
     gap: 1.9rem;
 
     font-weight: 500;
@@ -165,7 +169,13 @@ const PageGrid = styled.div`
 const PageItem = styled.div<Page>`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.color};
-    width: 11ch;
-    height: 7.7ch;
+    width: 13ch;
+    height: 11.7ch;
     padding: 0.33rem 0.66rem;
+`;
+
+const PageItemP = styled.p`
+    margin: 0.25rem 0;
+    /* Setting the width to 1rem causes each word to be on its own line */
+    width: 1rem;
 `;
