@@ -15,6 +15,9 @@ const config: GatsbyConfig = {
         // Requires `baseUrl` to be set in `tsconfig.json`.
         "gatsby-plugin-root-import",
 
+        // Use the Gatsby Link component for relative links in MDX
+        "gatsby-plugin-catch-links",
+
         // Images
         "gatsby-plugin-image",
         "gatsby-plugin-sharp",
@@ -22,6 +25,7 @@ const config: GatsbyConfig = {
 
         // Write our content in markdown + JSX
         "gatsby-plugin-mdx",
+
         // Process files in /src/content/, creating a page for each (see
         // `gatsby-node.ts`).
         {
