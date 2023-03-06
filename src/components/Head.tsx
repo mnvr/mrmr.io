@@ -32,11 +32,18 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
         <>
             <title>{pageTitle}</title>
             {description && <meta name="description" content={description} />}
+            <DefaultHTML />
             <DefaultBody />
             {children}
         </>
     );
 };
+
+const DefaultHTML = styled.html`
+    /* Increase the root font size size a bit from the browser default of 16px
+       to improve legibility. */
+    font-size: 18px;
+`;
 
 const DefaultBody = styled.body`
     /* Reset the margin */
