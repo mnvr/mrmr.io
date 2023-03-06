@@ -110,7 +110,7 @@ const Poem: React.FC = () => {
         <PoemP>
             <i>murmur</i> to me softly
             <br />
-            &nbsp;&nbsp;tell me it is <i>all right</i>
+            &nbsp;&nbsp;tell me <i>it’s all right</i>
             <br />
             in the <i>wind</i> rustle leaves
             <br />
