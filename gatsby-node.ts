@@ -2,7 +2,10 @@ import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
 import { Context } from "types";
-import { ensure } from "utils/parse";
+
+// Need to use the full path here to import the `ensure` function
+// Weirdly enough, importing `Context` from types works with a relative path.
+import { ensure } from "./src/utils/parse";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
