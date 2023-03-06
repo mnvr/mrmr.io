@@ -142,8 +142,7 @@ const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
                     onMouseEnter={() => setHoverPage(page)}
                     onMouseLeave={() => setHoverPage(undefined)}
                 >
-                    {/* Set title to an empty string to suppress the tooltip */}
-                    <PageItem {...page} title="">
+                    <PageItem {...page}>
                         <PageItemP>{page.title.toLowerCase()}</PageItemP>
                         <PageItemCount>{n - i}</PageItemCount>
                     </PageItem>
