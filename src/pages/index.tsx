@@ -108,6 +108,7 @@ const PoemP = styled.p`
     margin-left: 2rem;
     font-family: serif;
     margin-bottom: 1.9rem;
+    filter: opacity(0.72);
 `;
 
 const PoemText: React.FC = () => {
@@ -119,7 +120,7 @@ const PoemText: React.FC = () => {
             <br />
             in the <i>wind</i> rustle leaves
             <br />
-            &nbsp;&nbsp;the moon, and the <i>night</i>
+            &nbsp;&nbsp;the moon, <i>and</i> the <i>night</i>
         </>
     );
 };
