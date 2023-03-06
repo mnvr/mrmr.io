@@ -79,6 +79,7 @@ const GlobalStyle = createGlobalStyle`
 
 const Main = styled.main`
     display: flex;
+    align-content: space-around;
     flex-wrap: wrap;
     gap: 2rem;
 `;
@@ -106,6 +107,7 @@ const H1 = styled.h1`
 const PoemP = styled.p`
     margin-left: 2rem;
     font-family: serif;
+    margin-bottom: 1.9rem;
 `;
 
 const PoemText: React.FC = () => {
@@ -145,7 +147,11 @@ const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
 };
 
 const PageGrid = styled.div`
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-end;
+    gap: 1.9rem;
+
     font-weight: 500;
     font-variant: small-caps;
     padding: 1.9rem;
@@ -159,6 +165,6 @@ const PageItem = styled.div<Page>`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.color};
     width: 11ch;
-    min-height: 8ch;
+    height: 7.7ch;
     padding: 0.33rem 0.66rem;
 `;
