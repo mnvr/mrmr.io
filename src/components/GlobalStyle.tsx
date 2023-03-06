@@ -18,7 +18,5 @@ export const DefaultGlobalStyle = createGlobalStyle<GlobalStyleProps>`
                 props.darkBackgroundColor ?? props.backgroundColor};
             color: ${(props) => props.darkColor ?? props.color};
         }
-
-        transition: background-color 200ms ease-out;
     }
 `;

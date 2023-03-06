@@ -2,7 +2,7 @@ import { GlobalStyleProps, DefaultGlobalStyle } from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { ensure, parseDefaultTemplateColors } from "utils/parse";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -21,6 +21,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     return (
         <Main>
             <DefaultGlobalStyle {...(hoverPage ?? defaultColors)} />
+            <GlobalStyle />
             <IndexTitle />
             <PageListing {...{ pages, setHoverPage }} />
         </Main>
@@ -69,6 +70,12 @@ const parsePages = (data: Queries.IndexPageQuery) => {
         return { title, slug, backgroundColor, color };
     });
 };
+
+const GlobalStyle = createGlobalStyle`
+    body {
+        transition: background-color 200ms ease-out;
+    }
+`;
 
 const Main = styled.main`
     display: flex;
