@@ -102,7 +102,7 @@ const H1 = styled.h1`
     }
     margin-left: 1.8rem;
     margin-bottom: 0;
-    filter: opacity(0.92);
+    opacity: 0.92;
 `;
 
 const Poem: React.FC = () => {
@@ -123,7 +123,7 @@ const PoemP = styled.p`
     margin-left: 2rem;
     font-family: serif;
     margin-bottom: 1.9rem;
-    filter: opacity(0.72);
+    opacity: 0.72;
 `;
 
 interface PageListingProps {
@@ -132,9 +132,10 @@ interface PageListingProps {
 }
 
 const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
+    const n = pages.length;
     return (
         <PageGrid>
-            {pages.map((page) => (
+            {pages.map((page, i) => (
                 <Link
                     key={page.slug}
                     to={page.slug}
@@ -143,6 +144,7 @@ const PageListing: React.FC<PageListingProps> = ({ pages, setHoverPage }) => {
                 >
                     <PageItem {...page}>
                         <PageItemP>{page.title.toLowerCase()}</PageItemP>
+                        <PageItemCount>{n - i}</PageItemCount>
                     </PageItem>
                 </Link>
             ))}
@@ -175,10 +177,20 @@ const PageItem = styled.div<Page>`
     width: 13ch;
     height: 11.7ch;
     padding: 0.33rem 0.66rem;
+    position: relative;
 `;
 
 const PageItemP = styled.p`
     margin: 0.25rem 0;
     /* Setting the width to 1rem causes each word to be on its own line */
     width: 1rem;
+`;
+
+const PageItemCount = styled.div`
+    position: absolute;
+    bottom: 0.59rem;
+    right: 0.66rem;
+    font-size: 80%;
+    font-style: italic;
+    opacity: 0.8;
 `;
