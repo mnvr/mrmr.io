@@ -27,4 +27,6 @@ const P = styled.p`
     margin: 1.8rem;
     margin-top: 1.3rem;
     font-weight: 300;
+    letter-spacing: 0.025ch;
+    color: hsl(0, 0%, 98%);
 `;
