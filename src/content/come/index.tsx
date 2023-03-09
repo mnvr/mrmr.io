@@ -10,7 +10,8 @@ export const Page: React.FC = () => {
     return (
         <Container>
             <Text />
-            <HydraCanvas vis={vis} />
+            {/* <HydraCanvas vis={vis} /> */}
+            <Placeholder />
         </Container>
     );
 };
@@ -18,8 +19,14 @@ export const Page: React.FC = () => {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: stretch;
     height: 100svh;
+    background-color: navy;
+`;
+
+const Placeholder = styled.div`
+    background-color: bisque;
+gca    flex-grow: 1;
+    margin-bottom: 1.8rem;
 `;
 
 const Text: React.FC = () => {
@@ -46,7 +53,7 @@ const H1 = styled.h1`
 const P = styled.p`
     margin: 1.8rem;
     margin-top: 1.3rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.8rem;
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: hsl(0, 0%, 98%);
@@ -56,6 +63,7 @@ interface HydraCanvasProps {
     vis: (hr: HydraRenderer) => void;
 }
 
+/** A HTML5 canvas that renders the `vis`, passing it a Hydra instance */
 const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const hydraRendererRef = React.useRef<HydraRenderer | null>(null);
@@ -74,8 +82,6 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             // Do not ask for microphone permissions, we currently don't even
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
-            // width: 1920,
-            // height: 1920,
         });
         hydraRendererRef.current = hr;
         extendHydraRenderer(hr);
@@ -86,7 +92,7 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
 };
 
 const Canvas = styled.canvas`
-    /* width: 100%; */
+    width: 100%;
     /* height: 100%; */
     /* width: 1920px; */
     /* height: 60svh; */
