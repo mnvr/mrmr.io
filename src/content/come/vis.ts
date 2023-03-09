@@ -2,5 +2,5 @@
 import HydraRenderer from "hydra-synth";
 
 export const vis = ({ synth: h }: HydraRenderer) => {
-    h.shape(4).square().debug().out();
+    h.shape(4).aspect().debug().out();
 };

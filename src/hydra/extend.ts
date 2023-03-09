@@ -4,27 +4,22 @@ import HydraRenderer from "hydra-synth";
 /**
  * Add various extra methods and shaders to Hydra
  *
- * - .square: "fix" the aspect ratio
+ * - .aspect: "fix" the aspect ratio so that squares appear as squares
  * - .debug: print the GLSL to console
  **/
 export const extendHydraRenderer = (hr: HydraRenderer) => {
-    addSquare(hr);
+    addAspect(hr);
     addDebug(hr);
 };
 
 const _proto = (hr: HydraRenderer) => hr.synth.osc().constructor.prototype;
 
 /** Modify the aspect ratio to ensure that squares render as squares */
-const addSquare = (hr: HydraRenderer) => {
+const addAspect = (hr: HydraRenderer) => {
     const h = hr.synth;
     // https://hydra-book.glitch.me/#/textures
-    _proto(hr).square = function () {
-        // TODO: Doesn't work yet, need the size here
-        // const that = this.synth;
-        return this.scale(1, 1, () => {
-            console.log(h);
-            return h.width / h.height;
-        });
+    _proto(hr).aspect = function () {
+        return this.scale(1, 1, () => h.width / h.height);
     };
 };
 
