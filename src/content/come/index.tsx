@@ -4,18 +4,22 @@ import styled from "styled-components";
 import HydraRenderer from "hydra-synth";
 import { extendHydraRenderer } from "hydra/extend";
 
+import { vis } from "./vis";
+
 export const Page: React.FC = () => {
     return (
         <Container>
             <Text />
-            <HydraCanvas />
+            <HydraCanvas vis={vis} />
         </Container>
     );
 };
 
 const Container = styled.div`
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100svh;
 `;
 
 const Text: React.FC = () => {
@@ -48,7 +52,11 @@ const P = styled.p`
     color: hsl(0, 0%, 98%);
 `;
 
-const HydraCanvas: React.FC = () => {
+interface HydraCanvasProps {
+    vis: (hr: HydraRenderer) => void;
+}
+
+const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const hydraRendererRef = React.useRef<HydraRenderer | null>(null);
 
@@ -71,19 +79,7 @@ const HydraCanvas: React.FC = () => {
         });
         hydraRendererRef.current = hr;
         extendHydraRenderer(hr);
-
-        const h = hr.synth;
-        // h.setResolution(1920, 700);
-        // h.setResolution(200, 20);
-        // @ts-ignore
-        h.osc(() => 5 * Math.sin(h.time * 0.1))
-            .debug()
-            .out();
-        // @ts-ignore
-        h.osc(3).color(1, 0, 0).out(h.o1);
-        // @ts-ignore
-        h.shape(3).out(h.o3);
-        h.render();
+        vis(hr);
     }, []);
 
     return <Canvas ref={canvasRef} />;
@@ -91,10 +87,8 @@ const HydraCanvas: React.FC = () => {
 
 const Canvas = styled.canvas`
     /* width: 100%; */
+    /* height: 100%; */
     /* width: 1920px; */
-    /* height: 70svh; */
-    image-rendering: -moz-crisp-edges;
-    image-rendering: -webkit-crisp-edges;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
+    /* height: 60svh; */
+    /* margin-bottom: 1.5rem; */
 `;
