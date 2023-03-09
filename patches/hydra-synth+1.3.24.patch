@@ -1,0 +1,26 @@
+diff --git a/node_modules/hydra-synth/dist/hydra-synth.js b/node_modules/hydra-synth/dist/hydra-synth.js
+index 83e7e76..8338564 100644
+--- a/node_modules/hydra-synth/dist/hydra-synth.js
++++ b/node_modules/hydra-synth/dist/hydra-synth.js
+@@ -2889,7 +2889,7 @@ class HydraRenderer {
+ 
+     this._initCanvas(canvas);
+ 
+-    global.window.test = 'hi'; // object that contains all properties that will be made available on the global context and during local evaluation
++    //global.window.test = 'hi'; // object that contains all properties that will be made available on the global context and during local evaluation
+ 
+     this.synth = {
+       time: 0,
+diff --git a/node_modules/hydra-synth/src/hydra-synth.js b/node_modules/hydra-synth/src/hydra-synth.js
+index ea0e3b1..e91fcab 100644
+--- a/node_modules/hydra-synth/src/hydra-synth.js
++++ b/node_modules/hydra-synth/src/hydra-synth.js
+@@ -44,7 +44,7 @@ class HydraRenderer {
+ 
+     this._initCanvas(canvas)
+ 
+-    global.window.test = 'hi'
++    //global.window.test = 'hi'
+     // object that contains all properties that will be made available on the global context and during local evaluation
+     this.synth = {
+       time: 0,

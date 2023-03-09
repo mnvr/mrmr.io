@@ -13,8 +13,8 @@ export const Page: React.FC = () => {
 };
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
 `;
 
 const Text: React.FC = () => {
@@ -66,6 +66,7 @@ const HydraCanvas: React.FC = () => {
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
             // width: 1920,
+            // height: 1920,
         });
         hydraRendererRef.current = hr;
 
@@ -77,7 +78,7 @@ const HydraCanvas: React.FC = () => {
         // @ts-ignore
         h.osc(3).color(1, 0, 0).out(h.o1);
         // @ts-ignore
-        h.shape(3).out(h.o3)
+        h.shape(3).out(h.o3);
         h.render();
     }, []);
 
@@ -85,7 +86,11 @@ const HydraCanvas: React.FC = () => {
 };
 
 const Canvas = styled.canvas`
-    width: 100%;
+    /* width: 100%; */
     /* width: 1920px; */
-    height: 70svh;
+    /* height: 70svh; */
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 `;
