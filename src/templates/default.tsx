@@ -26,7 +26,20 @@ export default Page;
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
     const { title } = parseData(data);
 
-    return <DefaultHead title={title} />;
+    // Workaround for undefined `global` error
+    //
+    // Line 47 or hydra-synth.js has the following line
+    //
+    //     global.window.test = 'hi'
+    //
+    // This causes a runtime error because of `global` not being defined.
+    const hydraGlobalWorkaround = `global = { window: {} };`;
+
+    return (
+        <DefaultHead title={title}>
+            <script>{hydraGlobalWorkaround}</script>
+        </DefaultHead>
+    );
 };
 
 export const query = graphql`
