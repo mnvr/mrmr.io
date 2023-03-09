@@ -61,7 +61,7 @@ const HydraCanvas: React.FC = () => {
             // Buffers and functions can be accessed via the `synth` property of
             // the `HydraRenderer` instance. Note that this is known to be a bit
             // buggy still.
-            makeGlobal: true,
+            makeGlobal: false,
             // Do not ask for microphone permissions, we currently don't even
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
@@ -74,7 +74,7 @@ const HydraCanvas: React.FC = () => {
         // h.setResolution(1920, 700);
         // h.setResolution(200, 20);
         // @ts-ignore
-        h.osc(() => 5 * Math.sin(time * 0.1)).out();
+        h.osc(() => 5 * Math.sin(h.time * 0.1)).out();
         // @ts-ignore
         h.osc(3).color(1, 0, 0).out(h.o1);
         // @ts-ignore
