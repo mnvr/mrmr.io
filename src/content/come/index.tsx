@@ -1,18 +1,21 @@
 import * as React from "react";
 import { Column } from "components/Column";
 import styled from "styled-components";
-import { ensure } from "utils/parse";
-import HydraRenderer, * as Hyd from "hydra-synth";
-// import { Hydra } from "hydra-ts";
+import HydraRenderer from "hydra-synth";
 
 export const Page: React.FC = () => {
     return (
-        <div>
-            {/* <Text /> */}
+        <Container>
+            <Text />
             <HydraCanvas />
-        </div>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 const Text: React.FC = () => {
     return (
@@ -38,6 +41,7 @@ const H1 = styled.h1`
 const P = styled.p`
     margin: 1.8rem;
     margin-top: 1.3rem;
+    margin-bottom: 1.5rem;
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: hsl(0, 0%, 98%);
@@ -61,13 +65,27 @@ const HydraCanvas: React.FC = () => {
             // Do not ask for microphone permissions, we currently don't even
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
+            // width: 1920,
         });
         hydraRendererRef.current = hr;
 
         const h = hr.synth;
+        // h.setResolution(1920, 700);
+        // h.setResolution(200, 20);
         // @ts-ignore
-        h.osc().out();
+        h.osc(() => 5 * Math.sin(time * 0.1)).out();
+        // @ts-ignore
+        h.osc(3).color(1, 0, 0).out(h.o1);
+        // @ts-ignore
+        h.shape(3).out(h.o3)
+        h.render();
     }, []);
 
-    return <canvas ref={canvasRef} />;
+    return <Canvas ref={canvasRef} />;
 };
+
+const Canvas = styled.canvas`
+    width: 100%;
+    /* width: 1920px; */
+    height: 70svh;
+`;

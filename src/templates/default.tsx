@@ -33,7 +33,7 @@ export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
     //     global.window.test = 'hi'
     //
     // This causes a runtime error because of `global` not being defined.
-    const hydraGlobalWorkaround = `global = { window: {} };`;
+    const hydraGlobalWorkaround = `globalThis.global = { window: {} };`;
 
     return (
         <DefaultHead title={title}>
