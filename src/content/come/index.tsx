@@ -2,6 +2,7 @@ import * as React from "react";
 import { Column } from "components/Column";
 import styled from "styled-components";
 import HydraRenderer from "hydra-synth";
+import { extendHydraRenderer } from "hydra/extend";
 
 export const Page: React.FC = () => {
     return (
@@ -69,12 +70,15 @@ const HydraCanvas: React.FC = () => {
             // height: 1920,
         });
         hydraRendererRef.current = hr;
+        extendHydraRenderer(hr);
 
         const h = hr.synth;
         // h.setResolution(1920, 700);
         // h.setResolution(200, 20);
         // @ts-ignore
-        h.osc(() => 5 * Math.sin(h.time * 0.1)).out();
+        h.osc(() => 5 * Math.sin(h.time * 0.1))
+            .debug()
+            .out();
         // @ts-ignore
         h.osc(3).color(1, 0, 0).out(h.o1);
         // @ts-ignore
