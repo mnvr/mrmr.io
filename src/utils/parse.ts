@@ -1,6 +1,6 @@
 import { removeUndefineds } from "./array";
 
-/** Throw if the given value is null undefined */
+/** Throw if the given value is null or undefined */
 export function ensure<T>(x: T | null | undefined): T {
     if (x === undefined || x == null) {
         throw new Error(`Required value is missing`);

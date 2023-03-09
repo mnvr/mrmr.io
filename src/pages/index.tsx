@@ -1,4 +1,7 @@
-import { GlobalStyleProps, DefaultGlobalStyle } from "components/GlobalStyle";
+import {
+    DefaultGlobalStyle,
+    type GlobalStyleProps,
+} from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
