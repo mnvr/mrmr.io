@@ -44,15 +44,10 @@ export const handleUpdateResizingIfNeeded = (hr: HydraRenderer) => {
     };
 };
 
-const getDevicePixelRatio = () => {
-    if (typeof window !== "undefined") return window.devicePixelRatio || 1;
-    return 1;
-};
-
 const resizeIfNeeded = (hr: HydraRenderer) => {
     const { canvas, width, height } = hr;
 
-    const devicePixelRatio = getDevicePixelRatio();
+    const devicePixelRatio = window.devicePixelRatio || 1;
     const displayWidth = canvas.clientWidth * devicePixelRatio;
     const displayHeight = canvas.clientHeight * devicePixelRatio;
 
