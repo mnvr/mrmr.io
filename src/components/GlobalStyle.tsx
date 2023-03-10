@@ -10,13 +10,13 @@ export interface GlobalStyleProps {
 
 export const DefaultGlobalStyle = createGlobalStyle<GlobalStyleProps>`
     body {
-        background-color: ${(props) => props.backgroundColor};
-        color: ${(props) => props.color};
+        --mrmr-background-color: ${(props) => props.backgroundColor};
+        --mrmr-color: ${(props) => props.color};
 
         @media (prefers-color-scheme: dark) {
-            background-color: ${(props) =>
+            --mrmr-background-color: ${(props) =>
                 props.darkBackgroundColor ?? props.backgroundColor};
-            color: ${(props) => props.darkColor ?? props.color};
+            --mrmr-color: ${(props) => props.darkColor ?? props.color};
         }
     }
 `;

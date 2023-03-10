@@ -7,9 +7,17 @@ import { ensure, parseDefaultTemplateColors } from "utils/parse";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
+    data,
     children,
 }) => {
-    return <main>{children}</main>;
+    const { backgroundColor, color } = parseData(data);
+
+    return (
+        <main>
+            <DefaultGlobalStyle {...{ backgroundColor, color }} />
+            {children}
+        </main>
+    );
 };
 
 export default Page;
@@ -17,11 +25,7 @@ export default Page;
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
     const { title, backgroundColor, color } = parseData(data);
 
-    return (
-        <DefaultHead title={title}>
-            <DefaultGlobalStyle {...{ backgroundColor, color }} />
-        </DefaultHead>
-    );
+    return <DefaultHead title={title} />;
 };
 
 export const query = graphql`

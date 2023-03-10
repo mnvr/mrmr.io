@@ -11,3 +11,10 @@ body {
     /* Set the font */
     font-family: system-ui, sans-serif;
 }
+
+/* Use CSS variable to define background colors. This simplifies changing them
+   around on page load using styled components without causing FOUC */
+body {
+    background-color: var(--mrmr-background-color);
+    color: var(--mrmr-color);
+}
