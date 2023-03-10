@@ -98,7 +98,7 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
 
 const Canvas = styled.canvas`
     width: 100%;
-    /* height: 100%; */
+    height: 100%;
     /* width: 1920px; */
     /* height: 60svh; */
     /* margin-bottom: 1.5rem; */
