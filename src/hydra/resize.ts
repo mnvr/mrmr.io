@@ -1,5 +1,4 @@
 import HydraRenderer from "hydra-synth";
-import { snapToPixels } from "utils/canvas";
 
 /**
  * Resize the Hydra canvas to match the display size.
@@ -38,6 +37,21 @@ import { snapToPixels } from "utils/canvas";
  * In our case, since Hydra already does a RAF loop, we don't need to attach
  * separate observers and can just hook into the requestAnimationFrame and fix
  * up the sizes to match if needed.
+ *
+ * ### Pixel snapping
+ *
+ * As mentioned in the WebGL WG links above, the canvas can appear blurry if it
+ * ends up being positioned in the CSS at a non-pixel boundary. There is some
+ * sample code to also snap it to the nearest pixel boundary in the Khronos
+ * wiki. In our case, this might not be needed since the canvas is always edge
+ * to edge horizontally. It still might be needed vertically though, but might
+ * have a performance impact if we do it here.
+ *
+ * So we let that be for now. If this seems to be a problem in the future, we
+ * can switch to resize observers which are now supposed to provide the physical
+ * device pixels in the callback (unfortunately not supported in Safari as of
+ * today, March 2023). For more about this, see
+ * https://web.dev/device-pixel-content-box/
  */
 export const resizeIfNeeded = (hr: HydraRenderer) => {
     const { canvas, width, height } = hr;
@@ -48,6 +62,5 @@ export const resizeIfNeeded = (hr: HydraRenderer) => {
 
     if (width != displayWidth || height != displayHeight) {
         hr.setResolution(displayWidth, displayHeight);
-        snapToPixels(canvas);
     }
 };
