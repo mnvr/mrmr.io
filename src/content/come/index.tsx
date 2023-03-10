@@ -5,7 +5,7 @@ import HydraRenderer from "hydra-synth";
 import { extendHydraRenderer } from "hydra/extend";
 import { vis } from "./vis";
 import { ensure } from "utils/parse";
-import { handleUpdateResizingIfNeeded } from "hydra/resize";
+import { resizeIfNeeded } from "hydra/resize";
 
 export const Page: React.FC = () => {
     return (
@@ -86,7 +86,9 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             detectAudio: false,
         });
         hydraRendererRef.current = hr;
-        handleUpdateResizingIfNeeded(hr);
+        hr.synth.update = () => {
+            resizeIfNeeded(hr);
+        };
         extendHydraRenderer(hr);
         vis(hr);
     }, []);

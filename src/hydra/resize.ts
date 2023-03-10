@@ -38,13 +38,7 @@ import HydraRenderer from "hydra-synth";
  * separate observers and can just hook into the requestAnimationFrame and fix
  * up the sizes to match if needed.
  */
-export const handleUpdateResizingIfNeeded = (hr: HydraRenderer) => {
-    hr.synth.update = (dt: number) => {
-        resizeIfNeeded(hr);
-    };
-};
-
-const resizeIfNeeded = (hr: HydraRenderer) => {
+export const resizeIfNeeded = (hr: HydraRenderer) => {
     const { canvas, width, height } = hr;
 
     const devicePixelRatio = window.devicePixelRatio || 1;
