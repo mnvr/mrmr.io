@@ -38,7 +38,7 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
         };
         extendHydraRenderer(hr);
         vis(hr);
-    }, []);
+    }, [vis]);
 
     return <Canvas ref={canvasRef} />;
 };
