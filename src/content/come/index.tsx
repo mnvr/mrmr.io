@@ -7,9 +7,12 @@ import { vis } from "./vis";
 export const Page: React.FC = () => {
     return (
         <Container>
-            {/* <Text /> */}
-            <HydraCanvas vis={vis} />
-            <Placeholder />
+            <Text />
+            <CanvasContainer>
+                {/* <HydraCanvas vis={vis} /> */}
+                <Placeholder />
+                <Placeholder2 />
+            </CanvasContainer>
         </Container>
     );
 };
@@ -18,13 +21,24 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     height: 100svh;
-    background-color: navy;
+`;
+
+const CanvasContainer = styled.div`
+    flex-grow: 1;
+    margin-bottom: 1.8rem;
+
+    display: grid;
+    background-color: aliceblue;
 `;
 
 const Placeholder = styled.div`
     background-color: bisque;
-    flex-grow: 1;
-    margin-bottom: 1.8rem;
+    grid-area: 1/-1;
+`;
+
+const Placeholder2 = styled.div`
+    background-color: red;
+    grid-area: 1/-1;
 `;
 
 const Text: React.FC = () => {
