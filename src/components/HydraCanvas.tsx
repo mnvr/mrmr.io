@@ -42,7 +42,13 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
 };
 
 const Canvas = styled.canvas`
+    /* Our container needs to have position relative for this to work */
+    position: absolute;
     width: 100%;
     height: 100%;
+
+    /* Despite its name, this does effect the drawing of graphics primitives
+       too. Pixelated is the value that Hydra also uses by default on its web
+       version - it leads to sharp, less blurry, edges. */
     image-rendering: pixelated;
 `;

@@ -10,7 +10,7 @@ export const Page: React.FC = () => {
             <Text />
             <CanvasGrid>
                 <CanvasContainer>
-                    {/* <HydraCanvas vis={vis} /> */}
+                    <HydraCanvas vis={vis} />
                 </CanvasContainer>
                 <PlayButtonOverlay>
                     <PlayButton />
@@ -37,11 +37,14 @@ const CanvasGrid = styled.div`
 const CanvasContainer = styled.div`
     background-color: bisque;
     grid-area: 1/-1;
+
+    /* The canvas itself is "position: absolute" */
+    position: relative;
 `;
 
 const PlayButtonOverlay = styled.div`
     background-color: red;
-    opacity: 0.5;
+    opacity: 0.1;
     grid-area: 1/-1;
 
     display: grid;
