@@ -1,4 +1,5 @@
 import HydraRenderer from "hydra-synth";
+import { snapToPixels } from "utils/canvas";
 
 /**
  * Resize the Hydra canvas to match the display size.
@@ -47,5 +48,6 @@ export const resizeIfNeeded = (hr: HydraRenderer) => {
 
     if (width != displayWidth || height != displayHeight) {
         hr.setResolution(displayWidth, displayHeight);
+        snapToPixels(canvas);
     }
 };
