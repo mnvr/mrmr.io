@@ -4,9 +4,7 @@ import styled from "styled-components";
 export const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Grid>
-            <div />
             <Middle>{children}</Middle>
-            <div />
         </Grid>
     );
 };
@@ -17,5 +15,6 @@ const Grid = styled.div`
 `;
 
 const Middle = styled.div`
+    grid-column: 2/3;
     padding: 0 1rem;
 `;
