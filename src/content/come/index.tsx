@@ -3,14 +3,15 @@ import { Column } from "components/Column";
 import styled from "styled-components";
 import HydraRenderer from "hydra-synth";
 import { extendHydraRenderer } from "hydra/extend";
-
 import { vis } from "./vis";
+import { ensure } from "utils/parse";
+import { handleUpdateResizingIfNeeded } from "hydra/resize";
 
 export const Page: React.FC = () => {
     return (
         <Container>
-            <Text />
-            {/* <HydraCanvas vis={vis} /> */}
+            {/* <Text /> */}
+            <HydraCanvas vis={vis} />
             <Placeholder />
         </Container>
     );
@@ -25,7 +26,7 @@ const Container = styled.div`
 
 const Placeholder = styled.div`
     background-color: bisque;
-gca    flex-grow: 1;
+    flex-grow: 1;
     margin-bottom: 1.8rem;
 `;
 
@@ -69,10 +70,11 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
     const hydraRendererRef = React.useRef<HydraRenderer | null>(null);
 
     React.useEffect(() => {
+        const canvas = ensure(canvasRef.current);
         // Create a new Hydra renderer, asking it to use our canvas.
         const hr = new HydraRenderer({
             // `canvas` element to render to
-            canvas: canvasRef.current,
+            canvas,
             // Non-global mode
             //
             // Buffers and functions can be accessed via the `synth` property of
@@ -84,6 +86,7 @@ const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             detectAudio: false,
         });
         hydraRendererRef.current = hr;
+        handleUpdateResizingIfNeeded(hr);
         extendHydraRenderer(hr);
         vis(hr);
     }, []);

@@ -6,7 +6,7 @@ import HydraRenderer from "hydra-synth";
  *
  * - .aspect: "fix" the aspect ratio so that squares appear as squares
  * - .debug: print the GLSL to console
- **/
+ */
 export const extendHydraRenderer = (hr: HydraRenderer) => {
     addAspect(hr);
     addDebug(hr);
