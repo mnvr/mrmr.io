@@ -29,6 +29,8 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             // Do not ask for microphone permissions, we currently don't even
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
+            // We're not using this, so might as well turn it off
+            enableStreamCapture: false,
         });
         hydraRendererRef.current = hr;
         hr.synth.update = () => {
