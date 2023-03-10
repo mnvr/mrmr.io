@@ -1,0 +1,13 @@
+html {
+    /* Increase the root font size size a bit from the browser default of 16px
+       to improve legibility. */
+    font-size: 18px;
+}
+
+body {
+    /* Reset the margin */
+    margin: 0;
+
+    /* Set the font */
+    font-family: system-ui, sans-serif;
+}
