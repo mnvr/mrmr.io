@@ -12,7 +12,7 @@ export const Page: React.FC = () => {
                 <CanvasContainer>
                     <HydraCanvas vis={vis} />
                 </CanvasContainer>
-                <PlayButtonOverlay>
+                <PlayButtonOverlay style={{ display: "none" }}>
                     <PlayButton />
                 </PlayButtonOverlay>
             </CanvasGrid>
