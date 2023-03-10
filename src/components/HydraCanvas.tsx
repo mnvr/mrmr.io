@@ -1,13 +1,14 @@
-import * as React from "react";
-import styled from "styled-components";
 import HydraRenderer from "hydra-synth";
 import { extendHydraRenderer } from "hydra/extend";
-import { ensure } from "utils/parse";
 import { resizeIfNeeded } from "hydra/resize";
+import * as React from "react";
+import styled from "styled-components";
+import { ensure } from "utils/parse";
 
 interface HydraCanvasProps {
     vis: (hr: HydraRenderer) => void;
 }
+
 /** A HTML5 canvas that renders the `vis`, passing it a Hydra instance */
 export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
