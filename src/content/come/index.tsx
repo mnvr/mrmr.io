@@ -8,11 +8,14 @@ export const Page: React.FC = () => {
     return (
         <Container>
             <Text />
-            <CanvasContainer>
-                {/* <HydraCanvas vis={vis} /> */}
-                <Placeholder />
-                <Placeholder2 />
-            </CanvasContainer>
+            <CanvasGrid>
+                <CanvasContainer>
+                    {/* <HydraCanvas vis={vis} /> */}
+                </CanvasContainer>
+                <PlayButtonOverlay>
+                    <PlayButton />
+                </PlayButtonOverlay>
+            </CanvasGrid>
         </Container>
     );
 };
@@ -23,7 +26,7 @@ const Container = styled.div`
     height: 100svh;
 `;
 
-const CanvasContainer = styled.div`
+const CanvasGrid = styled.div`
     flex-grow: 1;
     margin-bottom: 1.8rem;
 
@@ -31,14 +34,18 @@ const CanvasContainer = styled.div`
     background-color: aliceblue;
 `;
 
-const Placeholder = styled.div`
+const CanvasContainer = styled.div`
     background-color: bisque;
     grid-area: 1/-1;
 `;
 
-const Placeholder2 = styled.div`
+const PlayButtonOverlay = styled.div`
     background-color: red;
+    opacity: 0.5;
     grid-area: 1/-1;
+
+    display: grid;
+    place-items: center;
 `;
 
 const Text: React.FC = () => {
@@ -70,3 +77,7 @@ const P = styled.p`
     letter-spacing: 0.025ch;
     color: hsl(0, 0%, 98%);
 `;
+
+const PlayButton: React.FC = () => {
+    return <span>Play</span>;
+};
