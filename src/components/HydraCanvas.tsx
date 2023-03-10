@@ -40,6 +40,7 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
 
     return <Canvas ref={canvasRef} />;
 };
+
 const Canvas = styled.canvas`
     width: 100%;
     height: 100%;

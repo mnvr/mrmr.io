@@ -5,16 +5,8 @@ import * as React from "react";
 import styled from "styled-components";
 
 const NotFoundPage: React.FC<PageProps> = () => {
-    const colors = {
-        backgroundColor: "hsl(0, 0%, 100%)",
-        color: "hsl(0, 0%, 33.3%)",
-        darkBackgroundColor: "hsl(0, 0%, 26.6%)",
-        darkColor: "hsl(0, 0%, 93.3%)",
-    };
-
     return (
         <Main>
-            <DefaultGlobalStyle {...colors} />
             <Content />
         </Main>
     );
@@ -22,7 +14,20 @@ const NotFoundPage: React.FC<PageProps> = () => {
 
 export default NotFoundPage;
 
-export const Head: HeadFC = () => <DefaultHead title="Page not found" />;
+export const Head: HeadFC = () => {
+    return (
+        <DefaultHead title="Page not found">
+            <DefaultGlobalStyle {...colors} />
+        </DefaultHead>
+    );
+};
+
+const colors = {
+    backgroundColor: "hsl(0, 0%, 100%)",
+    color: "hsl(0, 0%, 33.3%)",
+    darkBackgroundColor: "hsl(0, 0%, 26.6%)",
+    darkColor: "hsl(0, 0%, 93.3%)",
+};
 
 const Main = styled.main`
     min-height: 90svh;

@@ -7,26 +7,21 @@ import { ensure, parseDefaultTemplateColors } from "utils/parse";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
-    data,
     children,
 }) => {
-    /* Set the colors as per MDX frontmatter */
-    const { backgroundColor, color } = parseData(data);
-
-    return (
-        <main>
-            <DefaultGlobalStyle {...{ backgroundColor, color }} />
-            {children}
-        </main>
-    );
+    return <main>{children}</main>;
 };
 
 export default Page;
 
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
-    const { title } = parseData(data);
+    const { title, backgroundColor, color } = parseData(data);
 
-    return <DefaultHead title={title} />;
+    return (
+        <DefaultHead title={title}>
+            <DefaultGlobalStyle {...{ backgroundColor, color }} />
+        </DefaultHead>
+    );
 };
 
 export const query = graphql`
