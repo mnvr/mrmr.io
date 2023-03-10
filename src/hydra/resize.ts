@@ -13,12 +13,11 @@ import HydraRenderer from "hydra-synth";
  * resizes according to the CSS but will appear blurry since it is still
  * rendering as per the default render size.
  *
- * Apparently, one does not simply resize the canvas
+ * Apparently, it is quite tricky to resize the canvas:
  * https://github.com/KhronosGroup/WebGL/issues/2460
  *
  * The current best recommendation is to ask the browser what size the canvas is
- * displayed and using that to set the size of the drawing buffer (they go on
- * further about snapping to nearest pixels, we skip that for now).
+ * displayed and using that to set the size of the drawing buffer:
  * https://www.khronos.org/webgl/wiki/HandlingHighDPI
  *
  *     const devicePixelRatio = window.devicePixelRatio || 1;
@@ -31,6 +30,7 @@ import HydraRenderer from "hydra-synth";
  * https://github.com/pmndrs/react-use-measure/blob/master/src/web/index.ts
  *
  * Such a package would handle 2 things that we'd also need:
+ *
  * - attaching resize-observers
  * - debouncing
  *
@@ -40,23 +40,32 @@ import HydraRenderer from "hydra-synth";
  *
  * ### Pixel snapping
  *
- * As mentioned in the WebGL WG links above, the canvas can appear blurry if it
- * ends up being positioned in the CSS at a non-pixel boundary. There is some
- * sample code to also snap it to the nearest pixel boundary in the Khronos
- * wiki. In our case, this might not be needed since the canvas is always edge
- * to edge horizontally. It still might be needed vertically though, but might
- * have a performance impact if we do it here.
+ * The canvas can appear blurry if it ends up being positioned in the CSS at a
+ * non-pixel boundary (there is some sample code to also snap it to the nearest
+ * pixel boundary in the Khronos wiki). In our case, this might not be needed
+ * since the canvas is always edge to edge horizontally. It still might be
+ * needed vertically, but for now it is one more moving part which we'll avoid,
+ * and we'll let that be for now.
  *
- * So we let that be for now. If this seems to be a problem in the future, we
- * can switch to resize observers which are now supposed to provide the physical
- * device pixels in the callback (unfortunately not supported in Safari as of
- * today, March 2023). For more about this, see
+ * A future solution for this would be to use resize-observers which now also
+ * provide the physical device pixels in the callback - unfortunately not
+ * supported in Safari as of today, March 2023.
  * https://web.dev/device-pixel-content-box/
  */
 export const resizeIfNeeded = (hr: HydraRenderer) => {
     const { canvas, width, height } = hr;
 
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    // Whilst technically this is correct:
+    //
+    //     const devicePixelRatio = window.devicePixelRatio || 1;
+    //
+    // Alternatively, we can we hardcode this to 1 to match the rendering
+    // behaviour of Hydra itself. If we don't multiply by the DPR, then things
+    // end up looking sharper (even though it has lesser resolution).
+    //
+    //     const devicePixelRatio = 1;
+    //
+    const devicePixelRatio = 1;
     const displayWidth = canvas.clientWidth * devicePixelRatio;
     const displayHeight = canvas.clientHeight * devicePixelRatio;
 
