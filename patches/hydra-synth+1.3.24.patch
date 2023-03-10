@@ -1,7 +1,16 @@
 diff --git a/node_modules/hydra-synth/dist/hydra-synth.js b/node_modules/hydra-synth/dist/hydra-synth.js
-index 83e7e76..8338564 100644
+index 83e7e76..b3024c7 100644
 --- a/node_modules/hydra-synth/dist/hydra-synth.js
 +++ b/node_modules/hydra-synth/dist/hydra-synth.js
+@@ -2861,7 +2861,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
+ 
+ // import strudel from './lib/strudel.js'
+ // const window = global.window
+-const Mouse = (0, _mouse.default)(); // to do: add ability to pass in certain uniforms and transforms
++const Mouse = undefined;//(0, _mouse.default)(); // to do: add ability to pass in certain uniforms and transforms
+ 
+ class HydraRenderer {
+   constructor({
 @@ -2889,7 +2889,7 @@ class HydraRenderer {
  
      this._initCanvas(canvas);
@@ -12,9 +21,18 @@ index 83e7e76..8338564 100644
      this.synth = {
        time: 0,
 diff --git a/node_modules/hydra-synth/src/hydra-synth.js b/node_modules/hydra-synth/src/hydra-synth.js
-index ea0e3b1..e91fcab 100644
+index ea0e3b1..27eade0 100644
 --- a/node_modules/hydra-synth/src/hydra-synth.js
 +++ b/node_modules/hydra-synth/src/hydra-synth.js
+@@ -14,7 +14,7 @@ import regl from 'regl'
+ 
+ 
+ 
+-const Mouse = MouseTools()
++const Mouse = undefined;//MouseTools()
+ // to do: add ability to pass in certain uniforms and transforms
+ class HydraRenderer {
+ 
 @@ -44,7 +44,7 @@ class HydraRenderer {
  
      this._initCanvas(canvas)
