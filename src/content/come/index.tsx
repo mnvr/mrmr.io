@@ -1,9 +1,10 @@
+import { IconButton } from "components/Buttons";
 import { Column } from "components/Column";
+import { HydraCanvas } from "components/HydraCanvas";
 import * as React from "react";
-import styled from "styled-components";
-import { HydraCanvas } from "../../components/HydraCanvas";
-import { vis } from "./vis";
 import { BsPlayFill } from "react-icons/bs";
+import styled from "styled-components";
+import { vis } from "./vis";
 
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -22,8 +23,8 @@ export const Page: React.FC = () => {
     const handleClick: React.MouseEventHandler = (e) => {
         // Toggle the isPlaying state.
         setIsPlaying(!isPlaying);
-        // Show the canvas (note that we never hide it again, see the comment
-        // for `shouldShowCanvas` above).
+        // Show the canvas (note that we never hide it again; see the comment
+        // above `shouldShowCanvas` for more details).
         setShouldShowCanvas(true);
         e.preventDefault();
     };
@@ -112,10 +113,12 @@ const P = styled.p`
     color: hsl(0, 0%, 98%);
 `;
 
-const PlayButton: React.FC = () => {
+const PlayButton: React.FC<React.HTMLAttributes<HTMLButtonElement>> = (
+    props
+) => {
     return (
-        <span>
-            <BsPlayFill />
-        </span>
+        <IconButton hoverColor="hsl(0, 0%, 100%)" {...props}>
+            <BsPlayFill size="2rem" title="Play" />
+        </IconButton>
     );
 };
