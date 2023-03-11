@@ -7,9 +7,23 @@ import { vis } from "./vis";
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
 
+    // Keep the canvas hidden until the first playback
+    //
+    // Hydra clears the canvas to a black color. This causes the black canvas to
+    // be displayed until we render the first frame, which only happens if the
+    // user starts playing.
+    //
+    // We could patch Hydra to instead clear to our background color. However,
+    // it is perhaps simpler for now for us to just not show the canvas until
+    // the first frame is rendered.
+    const [shouldShowCanvas, setShouldShowCanvas] = React.useState(false);
+
     const handleClick: React.MouseEventHandler = (e) => {
         // Toggle the isPlaying state.
         setIsPlaying(!isPlaying);
+        // Show the canvas (note that we never hide it again, see the comment
+        // for `shouldShowCanvas` above).
+        setShouldShowCanvas(true);
         e.preventDefault();
     };
 
@@ -17,7 +31,7 @@ export const Page: React.FC = () => {
         <Container>
             <Text />
             <CanvasGrid onClick={handleClick} title="">
-                <CanvasContainer>
+                <CanvasContainer isVisible={shouldShowCanvas}>
                     <HydraCanvas {...{ vis, isPlaying }} />
                 </CanvasContainer>
                 <PlayButtonOverlay isVisible={!isPlaying} title="Play | Pause">
@@ -41,7 +55,12 @@ const CanvasGrid = styled.div`
     display: grid;
 `;
 
-const CanvasContainer = styled.div`
+interface CanvasContainerProps {
+    isVisible: boolean;
+}
+
+const CanvasContainer = styled.div<CanvasContainerProps>`
+    display: ${(props) => (props.isVisible ? "block" : "none")};
     grid-area: 1/-1;
 
     /* The canvas itself is "position: absolute" */
