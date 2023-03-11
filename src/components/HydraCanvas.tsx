@@ -22,10 +22,6 @@ interface HydraCanvasProps {
      * @default false
      */
     isPlaying: boolean;
-    /**
-     * Change the `isPlaying` state.
-     */
-    setIsPlaying: (isPlaying: boolean) => void;
 }
 
 /**
@@ -87,12 +83,7 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({
         isPlaying === true ? rafLoop.start() : rafLoop.stop();
     }, [isPlaying]);
 
-    const handleClick: React.MouseEventHandler = (e) => {
-        setIsPlaying(!isPlaying);
-        e.preventDefault();
-    };
-
-    return <Canvas ref={canvasRef} onClick={handleClick} />;
+    return <Canvas ref={canvasRef} />;
 };
 
 const Canvas = styled.canvas`

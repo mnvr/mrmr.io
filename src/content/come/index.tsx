@@ -7,14 +7,20 @@ import { vis } from "./vis";
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
 
+    const handleClick: React.MouseEventHandler = (e) => {
+        // Toggle the isPlaying state.
+        setIsPlaying(!isPlaying);
+        e.preventDefault();
+    };
+
     return (
         <Container>
             <Text />
-            <CanvasGrid>
+            <CanvasGrid onClick={handleClick} title="">
                 <CanvasContainer>
-                    <HydraCanvas {...{ vis, isPlaying, setIsPlaying }} />
+                    <HydraCanvas {...{ vis, isPlaying }} />
                 </CanvasContainer>
-                <PlayButtonOverlay style={{ display: "none" }}>
+                <PlayButtonOverlay isVisible={!isPlaying} title="Play | Pause">
                     <PlayButton />
                 </PlayButtonOverlay>
             </CanvasGrid>
@@ -33,23 +39,26 @@ const CanvasGrid = styled.div`
     margin-bottom: 1.8rem;
 
     display: grid;
-    background-color: aliceblue;
 `;
 
 const CanvasContainer = styled.div`
-    background-color: bisque;
     grid-area: 1/-1;
 
     /* The canvas itself is "position: absolute" */
     position: relative;
 `;
 
-const PlayButtonOverlay = styled.div`
-    background-color: red;
-    opacity: 0.1;
+interface PlayButtonOverlayProps {
+    isVisible: boolean;
+}
+
+const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
+    background-color: rgba(72, 65, 79, 0.15);
+    backdrop-filter: blur(13px);
+
     grid-area: 1/-1;
 
-    display: grid;
+    display: ${(props) => (props.isVisible ? "grid" : "none")};
     place-items: center;
 `;
 
