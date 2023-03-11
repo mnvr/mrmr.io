@@ -1929,6 +1929,13 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
+"@strudel.cycles/core@^0.6.8":
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.6.8.tgz#84006388efc65f095bef9bf6dd40cfa30ee4d0d5"
+  integrity sha512-HE7YEkkeoH2dgRgvM0HxunpWgDMeY8ghaN/VZBA9DLrgrKi2EimqFABPRPYbUUh64KlVKidoEiArSY8lmB/9wQ==
+  dependencies:
+    fraction.js "^4.2.0"
+
 "@swc/helpers@^0.4.12":
   version "0.4.14"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.4.14.tgz#1352ac6d95e3617ccb7c1498ff019654f1e12a74"

@@ -5,6 +5,7 @@ import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 import { vis } from "./vis";
+import { test } from "strudel/init";
 
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -28,6 +29,8 @@ export const Page: React.FC = () => {
         setShouldShowCanvas(true);
         e.preventDefault();
     };
+
+    React.useEffect(test);
 
     return (
         <Container>
