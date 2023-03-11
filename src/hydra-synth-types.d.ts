@@ -4,33 +4,31 @@ declare module "hydra-synth" {
     /**
      * HydraRenderer is the default export for the hydra package.
      *
-     * The renderer exposes a synth property, which is what we usually interact
-     * with after the initial setup.
+     * The renderer exposes a `synth` property (an `HydraSynth`), which is what
+     * we usually interact with after the initial setup.
      */
     class HydraRenderer {
-        /** Create a new HydraRenderer instance */
-        constructor({
-            autoLoop,
-            canvas,
-            detectAudio,
-            enableStreamCapture,
-            extendTransforms,
-            height,
-            makeGlobal,
-            numOutputs,
-            numSources,
-            pb,
-            precision,
-            width,
-        }?: {
+        /**
+         * Create a new HydraRenderer instance.
+         *
+         * To create multiple of these, enable non-global mode (@see
+         * `makeGlobal`).
+         */
+        constructor(opts?: {
             /** Control automatic looping
              *
              * If true (the default), Hydra will automatically loop using
              * requestAnimationFrame, updating the graphics. It'll also call the
              * `update` function for each animation frame.
              *
-             * If you set this to false, then you'll need to implement your own
-             * loop function and attach it to the `tick` method.
+             * You can use your own render loop for triggering hydra updates,
+             * instead of the automatic looping. To use, set `autoLoop` to
+             * false, and call
+             *
+             *     synth.tick(dt)
+             *
+             * where `dt` is the time elapsed in milliseconds since the last
+             * update.
              *
              * - @default true
              */
@@ -70,7 +68,7 @@ declare module "hydra-synth" {
              * Set this to false to disable the stream capture functionality.
              *
              * - @default true
-             * */
+             */
             enableStreamCapture?: boolean;
             extendTransforms?: {};
             /**
@@ -97,7 +95,17 @@ declare module "hydra-synth" {
             precision?: any;
         });
         pb: any;
+        /**
+         * Current width.
+         *
+         * @see `setResolution`
+         */
         width: number;
+        /**
+         * Current height.
+         *
+         * @see `setResolution`
+         */
         height: number;
         renderAll: boolean;
         /**
@@ -114,31 +122,7 @@ declare module "hydra-synth" {
          * In particular, in non-global mode, all Hydra functions and buffers
          * need to be access using this synth.
          */
-        synth: {
-            time: number;
-            bpm: number;
-            width: number;
-            height: number;
-            fps: any;
-            stats: {
-                fps: number;
-            };
-            speed: number;
-            mouse: {
-                element: any;
-            };
-            render: any;
-            setResolution: any;
-            /**
-             * The `update` function is called each time a new frame is
-             * rendered.
-             *
-             * @param dt time elapsed in milliseconds since the last update
-             */
-            update?: (dt: number) => void;
-            hush: any;
-            tick: any;
-        };
+        synth: HydraSynth;
         timeSinceLastUpdate: number;
         precision: any;
         extendTransforms: {};
@@ -170,6 +154,68 @@ declare module "hydra-synth" {
         s: any[];
         createSource(i: any): Source;
         isRenderingAll: boolean;
-        tick(dt: any, uniforms: any): void;
+    }
+
+    /**
+     * The synth is what we'd usually consider to be "Hydra".
+     *
+     * In particular, in non-global mode, all Hydra functions and buffers need
+     * to be accessed using this synth.
+     *
+     * The `HydraRenderer` (the default export of the library) will create a new
+     * instance of `HydraSynth`, and store it as its `synth` property.
+     *
+     * In global mode, it'll also add all the methods of this `synth` to the global
+     * namespace; so you can do e.g. `osc()` instead of `synth.osc()`. If you
+     * would like to keep the same syntax in non-global mode, you can
+     * destructure the object further:
+     *
+     *     const { src, osc, gradient, shape, voronoi, noise, s0, s1, s2, s3, o0, o1, o2, o3, render } = hydra
+     *     shape(4).diff(osc(2, 0.1, 1.2)).out()
+     *
+     */
+    export interface HydraSynth {
+        time: number;
+        bpm: number;
+        /** unused, instead @see `HydraRenderer.width` */
+        width: number;
+        /** unused, instead @see `HydraRenderer.height` */
+        height: number;
+        fps: any;
+        stats: {
+            fps: number;
+        };
+        speed: number;
+        mouse: {
+            element: any;
+        };
+        render: any;
+        /** Alias for `HydraRenderer.setResolution` */
+        setResolution: any;
+        /**
+         * User defined update function.
+         *
+         * The `update` function is called each time a new frame is
+         * rendered. It is passed the time elapsed (in milliseconds) since the
+         * last update.
+         *
+         * @param dt milliseconds since the last update
+         */
+        update?: (dt: number) => void;
+        hush: any;
+        /**
+         * An individual Hydra tick.
+         *
+         * The renderer will automatically call this once per frame using
+         * requestAnimationFrame, passing it the milliseconds since the last
+         * update.
+         *
+         * However, if you wish to manually control the looping you can pass
+         * `autoLoop` as false when creating the HydraRenderer, and then invoke
+         * this to advance the frame.
+         *
+         * @param dt milliseconds since last update.
+         */
+        tick(dt: number): void;
     }
 }

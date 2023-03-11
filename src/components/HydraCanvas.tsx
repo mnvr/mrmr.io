@@ -4,15 +4,48 @@ import { resizeIfNeeded } from "hydra/resize";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/parse";
+import Engine from "raf-loop";
 
 interface HydraCanvasProps {
+    /**
+     * The Hydra visualization to render on the canvas.
+     *
+     * @param hr the `HydraRenderer` instance attached to the canvas.
+     */
     vis: (hr: HydraRenderer) => void;
+    /**
+     * Animate the Hydra visualization.
+     *
+     * If true, we start a requestAnimationFrame loop to advance the frames of
+     * the Hydra visualization.
+     *
+     * @default false
+     */
+    isPlaying: boolean;
+    /**
+     * Change the `isPlaying` state.
+     */
+    setIsPlaying: (isPlaying: boolean) => void;
 }
 
-/** A HTML5 canvas that renders the `vis`, passing it a Hydra instance */
-export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
+/**
+ * A HTML5 canvas that renders a Hydra visualization
+ *
+ * A new instance of HydraRenderer will be automatically created and attached to
+ * the (newly created) canvas.
+ *
+ * The canvas will resize itself to cover 100% of its nearest relatively
+ * positioned parent. The render size of the canvas will also be updated to
+ * match its display size.
+ */
+export const HydraCanvas: React.FC<HydraCanvasProps> = ({
+    vis,
+    isPlaying,
+    setIsPlaying,
+}) => {
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const hydraRendererRef = React.useRef<HydraRenderer | null>(null);
+    const rafLoopRef = React.useRef<Engine | null>(null);
 
     React.useEffect(() => {
         const canvas = ensure(canvasRef.current);
@@ -26,6 +59,9 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             // the `HydraRenderer` instance. Note that this is known to be a bit
             // buggy still.
             makeGlobal: false,
+            // We will loop ourselves (so that we can play / pause on user
+            // demand).
+            autoLoop: false,
             // Do not ask for microphone permissions, we currently don't even
             // need them anyways since we don't process incoming audio.
             detectAudio: false,
@@ -37,10 +73,26 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis }) => {
             resizeIfNeeded(hr);
         };
         extendHydraRenderer(hr);
+
+        rafLoopRef.current = new Engine(hr.synth.tick);
+    }, []);
+
+    React.useEffect(() => {
+        const hr = ensure(hydraRendererRef.current);
         vis(hr);
     }, [vis]);
 
-    return <Canvas ref={canvasRef} />;
+    React.useEffect(() => {
+        const rafLoop = ensure(rafLoopRef.current);
+        isPlaying === true ? rafLoop.start() : rafLoop.stop();
+    }, [isPlaying]);
+
+    const handleClick: React.MouseEventHandler = (e) => {
+        setIsPlaying(!isPlaying);
+        e.preventDefault();
+    };
+
+    return <Canvas ref={canvasRef} onClick={handleClick} />;
 };
 
 const Canvas = styled.canvas`

@@ -5,12 +5,13 @@ import { HydraCanvas } from "../../components/HydraCanvas";
 import { vis } from "./vis";
 
 export const Page: React.FC = () => {
+    const [isPlaying, setIsPlaying] = React.useState(false);
     return (
         <Container>
             <Text />
             <CanvasGrid>
                 <CanvasContainer>
-                    <HydraCanvas vis={vis} />
+                    <HydraCanvas {...{ vis, isPlaying, setIsPlaying }} />
                 </CanvasContainer>
                 <PlayButtonOverlay style={{ display: "none" }}>
                     <PlayButton />
