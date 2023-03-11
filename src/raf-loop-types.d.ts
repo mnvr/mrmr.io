@@ -14,11 +14,13 @@ declare module "raf-loop" {
          * The function will be called with delta time as the first parameter,
          * in milliseconds.
          *
-         * @param fn the function to call for each RAF frame. This tick function
-         * will be passed `dt` (milliseconds since last update).
+         * @param `fn` the function to call for each RAF frame. This tick
+         * function will be passed `dt` (milliseconds since last update).
          */
         constructor(fn?: (dt: number) => void);
-        /** Starts the render loop and returns this engine, for chaining. */
+        /**
+         * Starts the render loop and returns this engine, for chaining.
+         */
         start: () => void;
         /**
          * Stops the render loop and cancels the currently requested animation

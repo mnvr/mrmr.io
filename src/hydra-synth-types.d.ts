@@ -4,20 +4,20 @@ declare module "hydra-synth" {
     /**
      * HydraRenderer is the default export for the hydra package.
      *
-     * The renderer exposes a `synth` property (an `HydraSynth`), which is what
-     * we usually interact with after the initial setup.
+     * The renderer exposes a {@link synth} property (a {@link HydraSynth}),
+     * which is what we usually interact with after the initial setup.
      */
     class HydraRenderer {
         /**
-         * Create a new HydraRenderer instance.
+         * Create a new {@link HydraRenderer} instance.
          *
-         * To create multiple of these, enable non-global mode (@see
-         * `makeGlobal`).
+         * To create multiple of these, enable non-global mode (
+         * {@link makeGlobal}).
          */
         constructor(opts?: {
             /** Control automatic looping
              *
-             * If true (the default), Hydra will automatically loop using
+             * If `true` (the default), Hydra will automatically loop using
              * requestAnimationFrame, updating the graphics. It'll also call the
              * `update` function for each animation frame.
              *
@@ -30,7 +30,7 @@ declare module "hydra-synth" {
              * where `dt` is the time elapsed in milliseconds since the last
              * update.
              *
-             * - @default true
+             * * @default true
              */
             autoLoop?: boolean;
             /**
@@ -46,7 +46,7 @@ declare module "hydra-synth" {
              * Defaults to the width of the `canvas` if specified, otherwise is
              * set to 1280.
              *
-             * @see `setResolution`
+             * @see {@link setResolution}
              */
             width?: number;
             /**
@@ -55,28 +55,28 @@ declare module "hydra-synth" {
              * Defaults to the height of the `canvas` if specified, otherwise is
              * set to 720.
              *
-             * @see `setResolution`
+             * @see {@link setResolution}
              */
             height?: number;
             /**
-             * Set this to false to avoid asking for microphone permissions
+             * Set this to `false` to avoid asking for microphone permissions
              *
              * - @default true
              */
             detectAudio?: boolean;
             /**
-             * Set this to false to disable the stream capture functionality.
+             * Set this to `false` to disable the stream capture functionality.
              *
              * - @default true
              */
             enableStreamCapture?: boolean;
             extendTransforms?: {};
             /**
-             * Set this to false to run Hydra in non-global mode.
+             * Set this to `false` to run Hydra in non-global mode.
              *
              * By default, Hydra adds its various functions to the global
              * namespace. This can be disabled by running in non-global mode by
-             * setting `makeGlobal` to false.
+             * setting `makeGlobal` to `false`.
              *
              * In non-global mode, buffers and functions can be accessed via the
              * synth property of the hydra instance.
@@ -98,13 +98,13 @@ declare module "hydra-synth" {
         /**
          * Current width.
          *
-         * @see `setResolution`
+         * @see {@link setResolution}
          */
         width: number;
         /**
          * Current height.
          *
-         * @see `setResolution`
+         * @see {@link setResolution}
          */
         height: number;
         renderAll: boolean;
@@ -112,8 +112,9 @@ declare module "hydra-synth" {
          * By default, Hydra attempts to access the microphone to allow for the
          * audio reactive functionality.
          *
-         * It is recommend setting this flag to false when creating a new
-         * HydraRenderer to avoid asking for microphone
+         * When not using the audio FFTs, it  is recommend setting this flag to
+         * `false` when creating a new HydraRenderer to avoid asking for
+         * microphone permissions.
          */
         detectAudio: boolean;
         /**
@@ -137,11 +138,11 @@ declare module "hydra-synth" {
          * Update the canvas size and other internal state of Hydra to use the
          * given size.
          *
-         * - @param `width` the new render width of Hydra's canvas
-         * - @param `height` the new render height of Hydra's canvas
+         * @param `width` the new render width of Hydra's canvas
+         * @param `height` the new render height of Hydra's canvas
          *
-         * The current values of the size can be read off the `width` and
-         * `height` properties. Initial values for the canvas size can be
+         * The current values of the size can be read off the {@link width} and
+         * {@link height} properties. Initial values for the canvas size can be
          * provided in the constructor.
          */
         setResolution(width: number, height: number): void;
@@ -162,12 +163,12 @@ declare module "hydra-synth" {
      * In particular, in non-global mode, all Hydra functions and buffers need
      * to be accessed using this synth.
      *
-     * The `HydraRenderer` (the default export of the library) will create a new
-     * instance of `HydraSynth`, and store it as its `synth` property.
+     * The {@link HydraRenderer} (the default export of the library) will create
+     * a new instance of `HydraSynth`, and store it as its `synth` property.
      *
-     * In global mode, it'll also add all the methods of this `synth` to the global
-     * namespace; so you can do e.g. `osc()` instead of `synth.osc()`. If you
-     * would like to keep the same syntax in non-global mode, you can
+     * In global mode, it'll also add all the methods of this `synth` to the
+     * global namespace; so you can do e.g. `osc()` instead of `synth.osc()`. If
+     * you would like to keep the same syntax in non-global mode, you can
      * destructure the object further:
      *
      *     const { src, osc, gradient, shape, voronoi, noise, s0, s1, s2, s3, o0, o1, o2, o3, render } = hydra
@@ -177,9 +178,9 @@ declare module "hydra-synth" {
     export interface HydraSynth {
         time: number;
         bpm: number;
-        /** unused, instead @see `HydraRenderer.width` */
+        /** unused, instead @see {@link HydraRenderer.width} */
         width: number;
-        /** unused, instead @see `HydraRenderer.height` */
+        /** unused, instead @see {@link HydraRenderer.height} */
         height: number;
         fps: any;
         stats: {
@@ -190,16 +191,15 @@ declare module "hydra-synth" {
             element: any;
         };
         render: any;
-        /** Alias for `HydraRenderer.setResolution` */
+        /** Alias for {@link HydraRenderer.setResolution} */
         setResolution: any;
         /**
          * User defined update function.
          *
-         * The `update` function is called each time a new frame is
-         * rendered. It is passed the time elapsed (in milliseconds) since the
-         * last update.
+         * The `update` function is called each time a new frame is rendered. It
+         * is passed the time elapsed (in milliseconds) since the last update.
          *
-         * @param dt milliseconds since the last update
+         * @param `dt` milliseconds since the last update
          */
         update?: (dt: number) => void;
         hush: any;
@@ -214,7 +214,7 @@ declare module "hydra-synth" {
          * `autoLoop` as false when creating the HydraRenderer, and then invoke
          * this to advance the frame.
          *
-         * @param dt milliseconds since last update.
+         * @param `dt` milliseconds since last update.
          */
         tick(dt: number): void;
     }

@@ -10,16 +10,16 @@ interface HydraCanvasProps {
     /**
      * The Hydra visualization to render on the canvas.
      *
-     * @param hr the `HydraRenderer` instance attached to the canvas.
+     * @param `hr` the {@link HydraRenderer} instance attached to the canvas.
      */
     vis: (hr: HydraRenderer) => void;
     /**
      * Animate the Hydra visualization.
      *
-     * If true, we start a requestAnimationFrame loop to advance the frames of
+     * If `true`, we start a requestAnimationFrame loop to advance the frames of
      * the Hydra visualization.
      *
-     * @default false
+     * - @default `false`
      */
     isPlaying: boolean;
 }
