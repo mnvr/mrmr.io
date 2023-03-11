@@ -3,6 +3,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { HydraCanvas } from "../../components/HydraCanvas";
 import { vis } from "./vis";
+import { BsPlayFill } from "react-icons/bs";
 
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -34,7 +35,7 @@ export const Page: React.FC = () => {
                 <CanvasContainer isVisible={shouldShowCanvas}>
                     <HydraCanvas {...{ vis, isPlaying }} />
                 </CanvasContainer>
-                <PlayButtonOverlay isVisible={!isPlaying} title="Play | Pause">
+                <PlayButtonOverlay isVisible={!isPlaying}>
                     <PlayButton />
                 </PlayButtonOverlay>
             </CanvasGrid>
@@ -112,5 +113,9 @@ const P = styled.p`
 `;
 
 const PlayButton: React.FC = () => {
-    return <span>Play</span>;
+    return (
+        <span>
+            <BsPlayFill />
+        </span>
+    );
 };

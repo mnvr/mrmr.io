@@ -34,11 +34,7 @@ interface HydraCanvasProps {
  * positioned parent. The render size of the canvas will also be updated to
  * match its display size.
  */
-export const HydraCanvas: React.FC<HydraCanvasProps> = ({
-    vis,
-    isPlaying,
-    setIsPlaying,
-}) => {
+export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis, isPlaying }) => {
     const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
     const hydraRendererRef = React.useRef<HydraRenderer | null>(null);
     const rafLoopRef = React.useRef<Engine | null>(null);
