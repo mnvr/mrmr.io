@@ -5,8 +5,28 @@ declare module "@strudel.cycles/core" {
      * A Pattern is something that can be queried to ask it which Events (aka
      * {@link Hap}s) occur during a given Timespan. {@link Timespan}s are spans
      * of cycles. By convention, 1 cycle maps to 1 second of simulated time.
+     *
+     * Internally, patterns are just functions. Give it a starting cycle and an
+     * ending cycle, and it'll give you back all the events that should happen
+     * between those two points in time. This is what we mean by "querying" a
+     * pattern.
+     *
+     * Surprisingly, all the abstractions that we see can be implemented by
+     * combinations of this primitive.
      */
-    export class Pattern {}
+    export class Pattern {
+        /**
+         * Render a visual representation of the pattern on the console.
+         *
+         * Intended for debugging; will break in ways more than one.
+         *
+         * Legend:
+         * - "|" cycle
+         * - "-" hold
+         * - "." silence
+         */
+        drawLine: () => void;
+    }
 
     /**
      * A pattern, or something which can be converted into a pattern.

@@ -34,4 +34,5 @@ import { sequence } from "@strudel.cycles/core";
 export const test = () => {
     const pattern = sequence("a", ["b", "c"]);
     console.log("pattern", pattern);
+    pattern.drawLine();
 };
