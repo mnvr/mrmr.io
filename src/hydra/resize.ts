@@ -59,12 +59,23 @@ export const resizeIfNeeded = (hr: HydraRenderer) => {
     //
     //     const devicePixelRatio = window.devicePixelRatio || 1;
     //
-    // Alternatively, we can we hardcode this to 1 to match the rendering
-    // behaviour of Hydra itself. If we don't multiply by the DPR, then things
-    // end up looking sharper (even though it has lesser resolution).
+    // The default version of Hydra source currently has hardcoded the
+    // `pixelRatio` parameter that it passes to regl to be 1, and we'll need to
+    // also hardcode this to 1 to match the rendering behaviour of Hydra itself.
     //
     //     const devicePixelRatio = 1;
     //
+    // However, by default regl uses the devicePixelRatio already. So we use a
+    // patched version of Hydra that doesn't pass the `pixelRatio` to regl.
+    //
+    // If you need to observe the difference, you can run Hydra on a Retina
+    // screen (e.g. macOS), and use the following vis:
+    // `h.shape(4).aspect().out()`
+    //
+    // Even after passing the correct DPR to regl, using the DPR here also
+    // results in a slightly less crisp shape. So we let this be 1 for now; that
+    // also removes the need for us to worry about pixel alignment for the
+    // canvas for now.
     const devicePixelRatio = 1;
     const displayWidth = canvas.clientWidth * devicePixelRatio;
     const displayHeight = canvas.clientHeight * devicePixelRatio;

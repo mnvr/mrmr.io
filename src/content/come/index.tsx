@@ -6,6 +6,7 @@ import { vis } from "./vis";
 
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
+
     return (
         <Container>
             <Text />
