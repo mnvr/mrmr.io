@@ -31,7 +31,7 @@ declare module "@strudel.cycles/core" {
     /**
      * A pattern, or something which can be converted into a pattern.
      */
-    export type Patternable = Pattern | string;
+    export type Patternable = Pattern | Pattern[] | string | string[];
 
     /**
      * Concatenate the patterns, one each per cycle.
@@ -58,6 +58,9 @@ declare module "@strudel.cycles/core" {
      *
      * Contrast with {@link cat}, where each of the patterns individually takes
      * a single cycle.
+     *
+     * > A sequence is equivalent to writing an array of patterns. i.e. both
+     *  `[1, 2]` and `sequence(1, 2)` describe the same phenomena.
      *
      * @synonyms {@link fastcat}, {@link seq}
      */
