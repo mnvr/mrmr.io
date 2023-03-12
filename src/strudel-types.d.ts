@@ -48,13 +48,13 @@ declare module "@strudel.cycles/core" {
     /**
      * A pattern, or something which can be converted into a pattern.
      */
-    export type Patternable =
+    export type Patternable<T = number> =
         | Pattern
         | Pattern[]
         | string
         | string[]
-        | number
-        | number[];
+        | T
+        | T[];
 
     /**
      * A function with takes one or more pattern-like inputs, transforms it in
@@ -65,7 +65,9 @@ declare module "@strudel.cycles/core" {
      * {@link sequence}-d to produce a single Pattern. This is the Pattern that
      * this function then acts on to produce the output pattern
      */
-    export type PatternTransform = (...pats: Patternable[]) => Pattern;
+    export type PatternTransform<T = number> = (
+        ...pats: Patternable<T>[]
+    ) => Pattern;
 
     /**
      * A cycle, or a point in the midst of one.
@@ -196,7 +198,33 @@ declare module "@strudel.cycles/core" {
     abstract class Controls {
         note: PatternTransform;
         cutoff: PatternTransform;
+        /** Set the synth or sample to use
+         *
+         * - @default `triangle`.
+         */
+        s: PatternTransform<SynthType>;
     }
 
+    /**
+     * Supported synth types that can be passed to {@link s}
+     *
+     * Currently, these are the same as the `OscillatorType` supported by
+     * WebAudio's {@link AudioContext.createOscillator} method.
+     */
+    export type SynthType =
+        | "sawtooth"
+        | "sine"
+        | "square"
+        | "triangle";
+
     export const controls: Controls;
+}
+
+declare module "@strudel.cycles/webaudio" {
+    /**
+     * Initialize WebAudio on first user initiated interaction
+     *
+     * Trying to use audio otherwise makes the browser unhappy.
+     */
+    export const initAudioOnFirstClick: () => void;
 }

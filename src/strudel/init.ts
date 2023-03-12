@@ -1,4 +1,5 @@
 import { controls, Pattern, sequence } from "@strudel.cycles/core";
+import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 
 /**
  * ## Strudel
@@ -37,6 +38,8 @@ import { controls, Pattern, sequence } from "@strudel.cycles/core";
  *
  */
 export const test = () => {
+    initAudioOnFirstClick();
+
     const pattern = sequence("a", ["b", "f5"]);
     console.log("pattern", pattern);
     pattern.drawLine();
