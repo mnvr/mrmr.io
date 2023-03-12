@@ -51,12 +51,13 @@ export const test = () => {
     const { note } = controls;
     debugPrint(note("a"));
 
-    debugPrint(note("f").cutoff(sequence(500, 900)), "prefix")
-    debugPrint(sequence(1).note("f").cutoff(sequence(500, 900)), "inline")
+    // new Pattern().
+    debugPrint(note("f").cutoff(sequence(500, 900)), "prefix");
+    debugPrint(sequence(1).note("f").cutoff(sequence(500, 900)), "inline");
 };
 
 const debugPrint = (pattern: Pattern, preamble?: string) => {
     const events = pattern.queryArc(0, 1);
-    if (preamble) console.log(preamble)
+    if (preamble) console.log(preamble);
     events.forEach((e) => console.log(e.show()));
 };

@@ -14,7 +14,7 @@ declare module "@strudel.cycles/core" {
      * Surprisingly, all the abstractions that we see can be implemented by
      * combinations of this primitive.
      */
-    export class Pattern {
+    export class Pattern extends Controls {
         /**
          * Render a visual representation of the pattern on the console.
          *
@@ -48,7 +48,24 @@ declare module "@strudel.cycles/core" {
     /**
      * A pattern, or something which can be converted into a pattern.
      */
-    export type Patternable = Pattern | Pattern[] | string | string[];
+    export type Patternable =
+        | Pattern
+        | Pattern[]
+        | string
+        | string[]
+        | number
+        | number[];
+
+    /**
+     * A function with takes one or more pattern-like inputs, transforms it in
+     * some way, and produces an output pattern.
+     *
+     * Note that if multiple Patternables are provided (either explicitly as an
+     * array, or implicitly as multiple arguments to the function), then they're
+     * {@link sequence}-d to produce a single Pattern. This is the Pattern that
+     * this function then acts on to produce the output pattern
+     */
+    export type PatternTransform = (...pats: Patternable[]) => Pattern;
 
     /**
      * A cycle, or a point in the midst of one.
@@ -80,9 +97,9 @@ declare module "@strudel.cycles/core" {
      *
      * @synonyms {@link slowcat}
      */
-    export const cat: (...pats: Patternable[]) => Pattern;
+    export const cat: PatternTransform;
     /** @see {@link cat} */
-    export const slowcat: (...pats: Patternable[]) => Pattern;
+    export const slowcat: PatternTransform;
 
     /**
      * Sequence the patterns subdividing a cycle equally between them.
@@ -99,11 +116,11 @@ declare module "@strudel.cycles/core" {
      *
      * @synonyms {@link fastcat}, {@link seq}
      */
-    export const sequence: (...pats: Patternable[]) => Pattern;
+    export const sequence: PatternTransform;
     /** @see {@link sequence} */
-    export const fastcat: (...pats: Patternable[]) => Pattern;
+    export const fastcat: PatternTransform;
     /** @see {@link sequence} */
-    export const seq: (...pats: Patternable[]) => Pattern;
+    export const seq: PatternTransform;
 
     /**
      * An Event
@@ -172,8 +189,14 @@ declare module "@strudel.cycles/core" {
      *     const { note } = controls;
      *     note("f").cutoff(sequence(500, 900))
      *
+     * > d.ts note: this is more of an interface than an abstract class.
+     * > However, tsc doesn't seem to infer that all methods in Controls would
+     * > also be part of Pattern if we make this an interface.
      */
-    export const controls = {
-        note: any,
-    };
+    abstract class Controls {
+        note: PatternTransform;
+        cutoff: PatternTransform;
+    }
+
+    export const controls: Controls;
 }
