@@ -1929,12 +1929,19 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@strudel.cycles/core@^0.6.8":
+"@strudel.cycles/core@0.6.8", "@strudel.cycles/core@^0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.6.8.tgz#84006388efc65f095bef9bf6dd40cfa30ee4d0d5"
   integrity sha512-HE7YEkkeoH2dgRgvM0HxunpWgDMeY8ghaN/VZBA9DLrgrKi2EimqFABPRPYbUUh64KlVKidoEiArSY8lmB/9wQ==
   dependencies:
     fraction.js "^4.2.0"
+
+"@strudel.cycles/webaudio@^0.6.1":
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.6.1.tgz#161b058ffd563c243349b9ad58983b83c6bd0c2c"
+  integrity sha512-YZLALc4LdVKEVINBcckTkyVqutUXc29E0WWZhS0toPFmaAKSXn3RNma7s4bXdJclNBIzxEFSGAaI05yL2SHinA==
+  dependencies:
+    "@strudel.cycles/core" "0.6.8"
 
 "@swc/helpers@^0.4.12":
   version "0.4.14"
