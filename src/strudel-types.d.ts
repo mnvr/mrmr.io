@@ -26,12 +26,47 @@ declare module "@strudel.cycles/core" {
          * - "." silence
          */
         drawLine: () => void;
+
+        /**
+         * Ask the pattern what all events will happen between start and end.
+         *
+         * This is the fundamental operation in terms of the implementation, but
+         * as a user of Strudel we'll (almost) never need to do this. As a user,
+         * we just create patterns. Then, the implementation queries the top
+         * level pattern what's up for the next cycle or so. This propogates
+         * recursively, and the resultant stew is handed back to the
+         * implementation.
+         *
+         * The implementation then renders the obtained events. In the main
+         * context in which Strudel is used, the rendering takes those events
+         * and maps those to an WebAudio orchestra to produce (hopefully
+         * musical) sound.
+         */
+        queryArc: (start: Cycle, end: Cycle) => Hap[];
     }
 
     /**
      * A pattern, or something which can be converted into a pattern.
      */
     export type Patternable = Pattern | Pattern[] | string | string[];
+
+    /**
+     * A cycle, or a point in the midst of one.
+     *
+     * A cycle is a rotation over a unit circle. But not all rotations are the
+     * same. Some phenomena, like a sine wave, can be completely described by
+     * their behaviour over a single rotation. Other phenomena unfold over
+     * multiple cycles.
+     *
+     * And not all phenomena are periodic, or deterministic. Like the digits of
+     * an irrational number, or the {@link rand} pattern.
+     */
+    export type Cycle = number;
+
+    /** A duration in time */
+    export class TimeSpan {
+        constructor(begin: Cycle, end: Cycle);
+    }
 
     /**
      * Concatenate the patterns, one each per cycle.
@@ -69,4 +104,28 @@ declare module "@strudel.cycles/core" {
     export const fastcat: (...pats: Patternable[]) => Pattern;
     /** @see {@link sequence} */
     export const seq: (...pats: Patternable[]) => Pattern;
+
+    /**
+     * An Event
+     *
+     * Event is (practically) a reserved word is JS, so this is instead called
+     * Hap. {@link Pattern}s produce events. Renderers like WebAudio query
+     * patterns to obtain upcoming events and make sound.
+     */
+    export class Hap {}
+
+    /**
+     * A continuous pattern of random numbers [0, 1)
+     *
+     * > Continuous patterns are also referred to as signals.
+     *
+     * @see {@link rand2} - a bipolar version of this
+     */
+    export const rand: () => Pattern;
+    /**
+     * A continuous pattern of random numbers [-1, 1)
+     *
+     * @see {@link rand} - a unipolar version of this
+     */
+    export const rand2: () => Pattern;
 }
