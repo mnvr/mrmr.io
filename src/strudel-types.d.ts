@@ -112,7 +112,18 @@ declare module "@strudel.cycles/core" {
      * Hap. {@link Pattern}s produce events. Renderers like WebAudio query
      * patterns to obtain upcoming events and make sound.
      */
-    export class Hap {}
+    export class Hap<T> {
+        /**
+         * Arbitrary data attached to the event.
+         *
+         * The Renderer will interpret this. e.g. this could be a note frequency
+         * if we're trying to render audio.
+         */
+        value: T;
+
+        /** A string representation of the event, intended for debugging. */
+        show: () => string;
+    }
 
     /**
      * A continuous pattern of random numbers [0, 1)

@@ -27,12 +27,15 @@ import { sequence } from "@strudel.cycles/core";
  * ### WebAudio
  *
  * A pattern is something you can query to ask what all events happen over a
- * cycle (By convention, 1 cycle is 1 second). Events are arbitrary things, but
- * particularly are things that can be rendered as audio using WebAudio.
+ * cycle (By convention, 1 cycle is 1 second). Events can be arbitrary things,
+ * but the ones we're dealing with are things that can be rendered as audio
+ * by the WebAudio renderer.
  *
  */
 export const test = () => {
-    const pattern = sequence("a", sequence("b", "c"));
+    const pattern = sequence("a", ["b", "c"]);
     console.log("pattern", pattern);
     pattern.drawLine();
+    const events = pattern.queryArc(0, 2);
+    events.forEach((e) => console.log(e.show()));
 };
