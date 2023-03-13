@@ -1,14 +1,17 @@
-import { controls, Pattern } from "@strudel.cycles/core";
+import { controls, Pattern, stack } from "@strudel.cycles/core";
+import * as x from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import { isDevelopment } from "utils/debug";
 import { connectWebAudio } from "./webaudio";
+import { m } from "./mini";
+import { mini } from "@strudel.cycles/mini";
 
 /**
- * ## Strudel
+ * **Strudel**
  *
  * Tidal for JavaScript.
  *
- * ### Installation
+ * ## Installation
  *
  * Strudel is split into a number of small packages. For our purposes, we need
  * the following:
@@ -16,7 +19,7 @@ import { connectWebAudio } from "./webaudio";
  * - `@strudel.cycles/core` - as it says on the tin
  * - `@strudel.cycles/webaudio` - to allow us to emit sounds using
  *   [WebAudio](https://www.w3.org/TR/webaudio/)
- * - TODO `@strudel.cycles/mini` - to allow us to use the mini notation
+ * - `@strudel.cycles/mini` - to allow us to use the mini notation
  *
  * ### Core
  *
@@ -46,6 +49,12 @@ import { connectWebAudio } from "./webaudio";
  * ### Mini
  *
  * The mini notation is syntax sugar to simplify writing patterns.
+ *
+ * ## Extensions
+ *
+ * ### m``
+ *
+ * @see {@link m}.
  */
 export const test = () => {
     const { note } = controls;
@@ -55,7 +64,13 @@ export const test = () => {
     const scheduler = connectWebAudio();
     console.log(scheduler);
 
-    const pattern = note("a", ["b", "f5"]);
+    const p1 = note(
+        // @ts-ignore
+        x.sequence("c", x.cat("a", x.silence, x.silence, x.sequence("f", "e")))
+    );
+    // @ts-ignore
+    const p2 = note(mini(`c <a ~ ~ [f e]>`)).add(12).s("sawtooth").gain(0.1);
+    const pattern = stack(p1, p2);
     debugPrint(pattern);
     console.log("pattern", pattern);
 
@@ -69,7 +84,7 @@ export const test = () => {
 const debugPrint = (pattern: Pattern, preamble?: string) => {
     if (!isDevelopment()) return;
 
-    const events = pattern.queryArc(0, 1);
+    const events = pattern.queryArc(0, 10);
     if (preamble) console.log(preamble);
     events.forEach((e) => console.log(e.show()));
 };

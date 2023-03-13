@@ -125,6 +125,13 @@ declare module "@strudel.cycles/core" {
     export const seq: PatternTransform;
 
     /**
+     * Play two patterns in parallel
+     *
+     * They'll both take the same length.
+     */
+    export const stack: PatternTransform;
+
+    /**
      * An Event
      *
      * Event is (practically) a reserved word is JS, so this is instead called
@@ -196,8 +203,9 @@ declare module "@strudel.cycles/core" {
      * > also be part of Pattern if we make this an interface.
      */
     export abstract class Controls {
+        /** Convert the pattern elements into musical notes */
         note: PatternTransform;
-        cutoff: PatternTransform;
+
         /**
          * Set the synth or sample to use
          *
@@ -210,6 +218,39 @@ declare module "@strudel.cycles/core" {
          * - @default `triangle`.
          */
         s: PatternTransform<SynthType | SampleSpecifier>;
+
+        /** Playback level, exponential */
+        gain: PatternTransform;
+
+        /** Control the _A_ of ADSR envelope */
+        attack: PatternTransform;
+        /** Control the _D_ of ADSR envelope */
+        decay: PatternTransform;
+        /** Control the _S_ of ADSR envelope */
+        sustain: PatternTransform;
+        /** Control the _R_ of ADSR envelope */
+        release: PatternTransform;
+
+        /**
+         * Detune the oscillator
+         *
+         * - Input should be between 0 and 1
+         * - Only supported by SuperDirt synths.
+         */
+        detune: PatternTransform;
+
+        /** Filter cutoff frequency, and an optional ":resonance" */
+        cutoff: PatternTransform;
+
+        /**
+         * Add the given number to each item in the pattern
+         *
+         * When used with vanilla notes, this has the effect of increasing pitch
+         * by adding semitones
+         */
+        add: PatternTransform;
+        /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
+        sub: PatternTransform;
     }
 
     export const controls: Controls;
@@ -292,8 +333,8 @@ declare module "@strudel.cycles/mini" {
      * Parse a string specified in the "mini" notation into a Strudel pattern.
      *
      * The "mini" notation is a subset of the OG Tidal notation. In particular,
-     * it makes it easier to specify notes. e.g. `c <a ~ [f e]>` instead of
-     * `sequence("c", cat(a, silence, sequence(f, e))`.
+     * it makes it easier to specify notes. e.g. `c <a ~ ~ [f e]>` instead of
+     * `sequence("c", cat("a", silence, silence, sequence("f", "e"))`.
      *
      * Multiple strings can be passed, and each will be individually converted
      * into patterns.
