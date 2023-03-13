@@ -1936,6 +1936,13 @@
   dependencies:
     fraction.js "^4.2.0"
 
+"@strudel.cycles/mini@^0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.6.0.tgz#88cc6d35d441c194b96f86bd4044d679beb04e9f"
+  integrity sha512-9d8JFt+s+sIM+fpw71eBvNrGOqhLSSp2nqKy7kw0kuUg5AxyU063ttsMBD2i2dNadolvXx6v4THUhBIdfQ7W0g==
+  dependencies:
+    "@strudel.cycles/core" "0.6.8"
+
 "@strudel.cycles/webaudio@^0.6.1":
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.6.1.tgz#161b058ffd563c243349b9ad58983b83c6bd0c2c"

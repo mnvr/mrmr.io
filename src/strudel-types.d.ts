@@ -255,6 +255,8 @@ declare module "@strudel.cycles/core" {
 }
 
 declare module "@strudel.cycles/webaudio" {
+    import type { StrudelOutput } from "@strudel.cycles/core";
+
     /**
      * Initialize WebAudio on first user initiated interaction.
      *
@@ -281,4 +283,23 @@ declare module "@strudel.cycles/webaudio" {
     export const getAudioContext: () => {
         currentTime: any;
     };
+}
+
+declare module "@strudel.cycles/mini" {
+    import type { Pattern } from "@strudel.cycles/core";
+
+    /**
+     * Parse a string specified in the "mini" notation into a Strudel pattern.
+     *
+     * The "mini" notation is a subset of the OG Tidal notation. In particular,
+     * it makes it easier to specify notes. e.g. `c <a ~ [f e]>` instead of
+     * `sequence("c", cat(a, silence, sequence(f, e))`.
+     *
+     * Multiple strings can be passed, and each will be individually converted
+     * into patterns.
+     *
+     * For more mini-notation syntax, see:
+     * https://strudel.tidalcycles.org/learn/mini-notation
+     */
+    export const mini = (...strings) => [Pattern];
 }
