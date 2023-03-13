@@ -1,10 +1,8 @@
 import { controls, Pattern, stack } from "@strudel.cycles/core";
-import * as x from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import { isDevelopment } from "utils/debug";
-import { connectWebAudio } from "./webaudio";
 import { m } from "./mini";
-import { mini } from "@strudel.cycles/mini";
+import { connectWebAudio } from "./webaudio";
 
 /**
  * **Strudel**
@@ -62,16 +60,14 @@ export const test = () => {
     initAudioOnFirstClick();
 
     const scheduler = connectWebAudio();
-    console.log(scheduler);
 
-    const p1 = note(
-        // @ts-ignore
-        x.sequence("c", x.cat("a", x.silence, x.silence, x.sequence("f", "e")))
-    );
-    const p2 = note(mini(`c <a ~ ~ [f e]>`)).add(12).s("sawtooth").gain(0.1);
+    const p1 = note(m`c <a ~ ~ [f e]>`);
+    const p2 = note(m`c <a ~ ~ [f e]>`)
+        .add(12)
+        .s("sawtooth")
+        .gain(0.1);
     const pattern = stack(p1, p2);
     debugPrint(pattern);
-    console.log("pattern", pattern);
 
     scheduler.setPattern(pattern);
     scheduler.start();

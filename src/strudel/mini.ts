@@ -14,4 +14,4 @@ import { mini } from "@strudel.cycles/mini";
  * mini notation, we define a template literal `m``` that reduces the characters
  * needed to wrap a string in `mini(...)`.
  */
-export const m = (strings: [string], ...args: any) => mini(strings);
+export const m = (strings: TemplateStringsArray, ...args: any) => mini(strings);
