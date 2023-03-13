@@ -195,29 +195,45 @@ declare module "@strudel.cycles/core" {
      * > However, tsc doesn't seem to infer that all methods in Controls would
      * > also be part of Pattern if we make this an interface.
      */
-    abstract class Controls {
+    export abstract class Controls {
         note: PatternTransform;
         cutoff: PatternTransform;
-        /** Set the synth or sample to use
+        /**
+         * Set the synth or sample to use
+         *
+         * Synth can be specified as one of the enum values in
+         * {@link SynthType}.
+         *
+         * Otherwise it is taken to be the name of a {@link Sample} (with
+         * optional ":n:gain" suffixes when using mini-notation).
          *
          * - @default `triangle`.
          */
-        s: PatternTransform<SynthType>;
+        s: PatternTransform<SynthType | SampleSpecifier>;
     }
+
+    export const controls: Controls;
 
     /**
      * Supported synth types that can be passed to {@link s}
      *
      * Currently, these are the same as the `OscillatorType` supported by
-     * WebAudio's {@link AudioContext.createOscillator} method.
+     * WebAudio's {@link AudioContext.createOscillator} method (except the type
+     * "custom", which is not supported yet).
      */
-    export type SynthType =
-        | "sawtooth"
-        | "sine"
-        | "square"
-        | "triangle";
+    type SynthType = "sawtooth" | "sine" | "square" | "triangle";
 
-    export const controls: Controls;
+    /**
+     * A sample can be specified as name (e.g. when passing it as an argument to
+     * {@link s}).
+     *
+     * In the mini notation, optionally an ":n" can be specified to choose a
+     * particular variation of the sample. Further, ":gain" can be specified to
+     * set the sample's gain.
+     *
+     * @example "bd:0", "bd:1:1.4"
+     */
+    type SampleSpecifier = string;
 }
 
 declare module "@strudel.cycles/webaudio" {
