@@ -55,18 +55,11 @@ import { connectWebAudio } from "./webaudio";
  * @see {@link m}.
  */
 export const test = () => {
-    const { note } = controls;
-
     initAudioOnFirstClick();
 
     const scheduler = connectWebAudio();
 
-    const p1 = note(m`c <a ~ ~ [f e]>`);
-    const p2 = note(m`c <a ~ ~ [f e]>`)
-        .add(12)
-        .s("sawtooth")
-        .gain(0.1);
-    const pattern = stack(p1, p2);
+    const pattern = song();
     debugPrint(pattern);
 
     scheduler.setPattern(pattern);
@@ -74,6 +67,17 @@ export const test = () => {
     setTimeout(() => {
         scheduler.stop();
     }, 10000);
+};
+
+export const song = () => {
+    const { note } = controls;
+
+    const p1 = note(m`c <a ~ ~ [f e]>`);
+    const p2 = note(m`c <a ~ ~ [f e]>`)
+        .add(12)
+        .s("sawtooth")
+        .gain(0.1);
+    return stack(p1, p2);
 };
 
 const debugPrint = (pattern: Pattern, preamble?: string) => {
