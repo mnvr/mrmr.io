@@ -68,7 +68,6 @@ export const test = () => {
         // @ts-ignore
         x.sequence("c", x.cat("a", x.silence, x.silence, x.sequence("f", "e")))
     );
-    // @ts-ignore
     const p2 = note(mini(`c <a ~ ~ [f e]>`)).add(12).s("sawtooth").gain(0.1);
     const pattern = stack(p1, p2);
     debugPrint(pattern);

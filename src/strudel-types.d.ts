@@ -327,7 +327,7 @@ declare module "@strudel.cycles/webaudio" {
 }
 
 declare module "@strudel.cycles/mini" {
-    import type { Pattern } from "@strudel.cycles/core";
+    import type { Patternable } from "@strudel.cycles/core";
 
     /**
      * Parse a string specified in the "mini" notation into a Strudel pattern.
@@ -342,5 +342,5 @@ declare module "@strudel.cycles/mini" {
      * For more mini-notation syntax, see:
      * https://strudel.tidalcycles.org/learn/mini-notation
      */
-    export const mini = (...strings) => [Pattern];
+    export const mini = (...strings) => [Patternable];
 }
