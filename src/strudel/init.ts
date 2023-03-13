@@ -1,5 +1,6 @@
-import { controls, Pattern, sequence } from "@strudel.cycles/core";
+import { controls, Pattern } from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
+import { isDevelopment } from "utils/debug";
 import { connectWebAudio } from "./webaudio";
 
 /**
@@ -66,6 +67,8 @@ export const test = () => {
 };
 
 const debugPrint = (pattern: Pattern, preamble?: string) => {
+    if (!isDevelopment()) return;
+
     const events = pattern.queryArc(0, 1);
     if (preamble) console.log(preamble);
     events.forEach((e) => console.log(e.show()));
