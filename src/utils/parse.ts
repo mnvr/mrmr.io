@@ -1,12 +1,17 @@
+// This file is referenced in `gatsby-node.ts`, and absolute imports like this:
+//
+//     import { removeUndefineds } from "util/array";
+//
+// are not working when referenced from there. So use a relative import instead.
 import { removeUndefineds } from "./array";
 
 /** Throw if the given value is null or undefined */
-export function ensure<T>(x: T | null | undefined): T {
+export const ensure = <T>(x: T | null | undefined): T => {
     if (x === undefined || x == null) {
         throw new Error(`Required value is missing`);
     }
     return x;
-}
+};
 
 /**
  * Parse a colors array specified in the MDX frontmatter of a file that is

@@ -234,13 +234,51 @@ declare module "@strudel.cycles/core" {
      * @example "bd:0", "bd:1:1.4"
      */
     type SampleSpecifier = string;
+
+    /**
+     * Start a loop, connecting {@link Pattern} to some output.
+     *
+     * @see {@link webaudioOutput} and {@link getAudioContext}
+     */
+    export const repl = ({ defaultOutput: StrudelOutput, getTime: any }) => ({
+        scheduler: Scheduler,
+    });
+
+    type StrudelOutput = any;
+
+    export interface Scheduler {
+        setPattern: (Pattern) => void;
+        start: () => void;
+        stop: () => void;
+        pause: () => void;
+    }
 }
 
 declare module "@strudel.cycles/webaudio" {
     /**
-     * Initialize WebAudio on first user initiated interaction
+     * Initialize WebAudio on first user initiated interaction.
      *
      * Trying to use audio otherwise makes the browser unhappy.
      */
     export const initAudioOnFirstClick: () => void;
+
+    /**
+     * Pass this to the core's {@link repl} to get it to render patterns using
+     * [WebAudio](https://www.w3.org/TR/webaudio/).
+     *
+     * > We probably don't need to care about the internals yet, so this is
+     *   effectively untyped, we just are saying that this exists.
+     */
+    export const webaudioOutput: StrudelOutput;
+
+    /**
+     * Pass this to the core's {@link repl} to get it to pick the current time
+     * from the WebAudio's AudioContext.
+     *
+     * > We probably don't need to care about the internals yet, so this is
+     *   untyped, we just are saying that this exists.
+     */
+    export const getAudioContext: () => {
+        currentTime: any;
+    };
 }

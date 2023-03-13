@@ -19,11 +19,10 @@ const _proto = (hr: HydraRenderer) => hr.synth.osc().constructor.prototype;
 /** Modify the aspect ratio to ensure that squares render as squares */
 const addAspect = (hr: HydraRenderer) => {
     const h = hr.synth;
-    // The rationale is explained here:
-    // https://hydra-book.glitch.me/#/textures
+    // The rationale is explained here: https://hydra-book.glitch.me/#/textures
     //
-    // In particular, this should be an arrow function so that it adapts to
-    // changes in the width and height of the canvas.
+    // In particular, this should be an function so that it adapts to changes in
+    // the width and height of the canvas.
     _proto(hr).aspect = function () {
         return this.scale(1, 1, () => h.width / h.height);
     };

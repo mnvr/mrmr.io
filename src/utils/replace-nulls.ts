@@ -18,9 +18,9 @@ type RecursivelyReplaceNullWithUndefined<T> = T extends null
 /// Skips object classes (that have a `.__proto__.constructor`).
 ///
 /// If nulls were a billion dollar mistake, Javascript made two of them.
-export function replaceNullsWithUndefineds<T>(
+export const replaceNullsWithUndefineds = <T>(
     obj: T
-): RecursivelyReplaceNullWithUndefined<T> {
+): RecursivelyReplaceNullWithUndefined<T> => {
     const newObj: any = {};
     Object.keys(obj as any).forEach((k) => {
         const v: any = (obj as any)[k];
@@ -34,4 +34,4 @@ export function replaceNullsWithUndefineds<T>(
                 : v;
     });
     return newObj;
-}
+};

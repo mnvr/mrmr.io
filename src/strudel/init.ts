@@ -1,5 +1,6 @@
 import { controls, Pattern, sequence } from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
+import { connectWebAudio } from "./webaudio";
 
 /**
  * ## Strudel
@@ -10,10 +11,11 @@ import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
  *
  * Strudel is split into a number of small packages. For our purposes, we need
  * the following:
+ *
  * - `@strudel.cycles/core` - as it says on the tin
- * - TODO `@strudel.cycles/mini` - to allow us to use the mini notation
- * - TODO `@strudel.cycles/webaudio` - to allow us to emit sounds using
+ * - `@strudel.cycles/webaudio` - to allow us to emit sounds using
  *   [WebAudio](https://www.w3.org/TR/webaudio/)
+ * - TODO `@strudel.cycles/mini` - to allow us to use the mini notation
  *
  * ### Core
  *
@@ -25,10 +27,6 @@ import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
  * that incorporate the effects of the control parameter. The control parameter
  * itself can be parameterized by a pattern to change its value.
  *
- * ### Mini
- *
- * The mini notation is syntax sugar to simplify writing patterns.
- *
  * ### WebAudio
  *
  * A pattern is something you can query to ask what all events happen over a
@@ -36,27 +34,35 @@ import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
  * but the ones we're dealing with are things that can be rendered as audio by
  * the WebAudio renderer.
  *
+ * To connect core to WebAudio, we need to import `getAudioContext`,
+ * `webaudioOutput` from "@strudel.cycles/webaudio", and then pass those to the
+ * core's `repl` object. Thereafter, communication between core and webaudio
+ * happens implicitly via control parameters attached to events.
+ *
+ * The webaudio package also exports `initAudioOnFirstClick`, which we need to
+ * call once. And a `samples` function, which can be used to load samples.
+ *
+ * ### Mini
+ *
+ * The mini notation is syntax sugar to simplify writing patterns.
  */
 export const test = () => {
+    const { note } = controls;
+
     initAudioOnFirstClick();
 
-    const pattern = sequence("a", ["b", "f5"]);
+    const scheduler = connectWebAudio();
+    console.log(scheduler);
+
+    const pattern = note("a", ["b", "f5"]);
+    debugPrint(pattern);
     console.log("pattern", pattern);
-    pattern.drawLine();
-    const events = pattern.queryArc(0, 2);
-    events.forEach((e) => console.log(e.show()));
 
-    // @ts-ignore
-    debugPrint(controls.note(pattern));
-
-    console.log(controls);
-
-    const { note } = controls;
-    debugPrint(note("a"));
-
-    // new Pattern().
-    debugPrint(note("f").cutoff(sequence(500, 900)), "prefix");
-    debugPrint(sequence(1).note("f").cutoff(sequence(500, 900)), "inline");
+    scheduler.setPattern(pattern);
+    scheduler.start();
+    setTimeout(() => {
+        scheduler.stop();
+    }, 10000);
 };
 
 const debugPrint = (pattern: Pattern, preamble?: string) => {
