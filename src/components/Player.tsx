@@ -57,8 +57,8 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
 
     React.useEffect(() => {
         // Creating an AudioContext if the user has not clicked on the webpage
-        // casues Safari (and maybe others) to print a warning on the console.
-        // So only proceed after the first playback has started.
+        // casues the browser to print a warning on the console. So only proceed
+        // after the first playback has started.
         if (!hasUserInitiatedPlayback) return;
 
         const scheduler = connectWebAudio();
