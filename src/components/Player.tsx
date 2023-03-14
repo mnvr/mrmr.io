@@ -1,14 +1,12 @@
 import { Scheduler } from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import { IconButton } from "components/Buttons";
-import { Column } from "components/Column";
 import { HydraCanvas } from "components/HydraCanvas";
 import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { connectWebAudio } from "strudel/webaudio";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
-import { ensure } from "utils/parse";
 
 interface PlayerProps {
     /** The visualization to render */
@@ -41,14 +39,15 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
     // We could patch Hydra to instead clear to our background color. However,
     // it is perhaps simpler for now for us to just not show the canvas until
     // the first frame is rendered.
-    const [shouldShowCanvas, setShouldShowCanvas] = React.useState(false);
+    const [hasUserInitiatedPlayback, setHasUserInitiatedPlayback] =
+        React.useState(false);
 
     const handleClick: React.MouseEventHandler = (e) => {
         // Toggle the isPlaying state.
         setIsPlaying(!isPlaying);
         // Show the canvas (note that we never hide it again; see the comment
-        // above `shouldShowCanvas` for more details).
-        setShouldShowCanvas(true);
+        // above `hasUserInitiatedPlayback` for more details).
+        setHasUserInitiatedPlayback(true);
         e.preventDefault();
     };
 
@@ -57,6 +56,11 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
     }, []);
 
     React.useEffect(() => {
+        // Creating an AudioContext if the user has not clicked on the webpage
+        // casues Safari (and maybe others) to print a warning on the console.
+        // So only proceed after the first playback has started.
+        if (!hasUserInitiatedPlayback) return;
+
         const scheduler = connectWebAudio();
         schedulerRef.current = scheduler;
 
@@ -67,10 +71,14 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
         // Destroy the current scheduler, we'll recreate a new one, when the
         // song changes.
         return () => scheduler.stop();
-    }, [song]);
+    }, [hasUserInitiatedPlayback, song]);
 
     React.useEffect(() => {
-        const scheduler = ensure(schedulerRef.current);
+        const scheduler = schedulerRef.current;
+
+        // Initial playback has not been initiated.
+        if (!scheduler) return;
+
         if (isPlaying) {
             scheduler.start();
         } else {
@@ -82,7 +90,7 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
         <Container>
             {children}
             <CanvasGrid onClick={handleClick} title="">
-                <CanvasContainer isVisible={shouldShowCanvas}>
+                <CanvasContainer isVisible={hasUserInitiatedPlayback}>
                     <HydraCanvas {...{ vis, isPlaying }} />
                 </CanvasContainer>
                 <PlayButtonOverlay isVisible={!isPlaying}>
