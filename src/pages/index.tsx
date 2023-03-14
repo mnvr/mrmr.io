@@ -1,9 +1,8 @@
-import {
-    DefaultGlobalStyle,
-    globalStylePropsFromPageColors,
-    type GlobalStyleProps,
-} from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
+import {
+    createPageColorStyleProps,
+    PageColorStyle,
+} from "components/PageColorStyle";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
@@ -12,11 +11,15 @@ import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const defaultColors: GlobalStyleProps = {
+    const defaultColors = {
         backgroundColor: "hsl(0, 0%, 100%)",
-        color: "hsl(0, 0%, 13%)",
+        color1: "hsl(0, 0%, 13%)",
+        color2: "hsl(0, 0%, 13%)",
+        color3: "hsl(0, 0%, 13%)",
         darkBackgroundColor: "hsl(240, 6%, 20%)",
-        darkColor: "hsl(240, 12%, 90%)",
+        darkColor1: "hsl(240, 12%, 90%)",
+        darkColor2: "hsl(240, 12%, 90%)",
+        darkColor3: "hsl(240, 12%, 90%)",
     };
 
     const pages = parsePages(data);
@@ -24,13 +27,13 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
 
     // If the user is hovering on the link to a page, use that page's colors.
-    let gsProps = hoverPage
-        ? globalStylePropsFromPageColors(hoverPage.colors)
+    let csProps = hoverPage
+        ? createPageColorStyleProps(hoverPage.colors)
         : defaultColors;
 
     return (
         <Main>
-            <DefaultGlobalStyle {...gsProps} />
+            <PageColorStyle {...csProps} />
             <GlobalStyle />
             <IndexTitle />
             <PageListing {...{ pages, setHoverPage }} />
@@ -180,7 +183,7 @@ const PageGrid = styled.div`
 
 const PageItem = styled.div<Page>`
     background-color: ${(props) => props.colors.background};
-    color: ${(props) => props.colors.foreground};
+    color: ${(props) => props.colors.color1};
     width: 13ch;
     height: 11.7ch;
     padding: 0.33rem 0.66rem;

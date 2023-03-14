@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
-interface IconButtonProps {
-    hoverColor?: string;
-}
-
-export const IconButton = styled.button<IconButtonProps>`
+export const IconButton = styled.button`
     /* Show the hand icon on hover */
     cursor: pointer;
 
@@ -13,6 +9,6 @@ export const IconButton = styled.button<IconButtonProps>`
     color: inherit;
 
     :hover {
-        color: ${(props) => props.hoverColor ?? "inherit"};
+        color: var(--mrmr-color-3);
     }
 `;

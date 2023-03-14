@@ -1,8 +1,8 @@
-import {
-    DefaultGlobalStyle,
-    globalStylePropsFromPageColors,
-} from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
+import {
+    createPageColorStyleProps,
+    PageColorStyle,
+} from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
 import type { Context } from "types";
@@ -18,7 +18,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
     return (
         <main>
-            <DefaultGlobalStyle {...globalStylePropsFromPageColors(colors)} />
+            <PageColorStyle {...createPageColorStyleProps(colors)} />
             {children}
         </main>
     );

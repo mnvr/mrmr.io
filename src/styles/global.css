@@ -16,5 +16,5 @@ body {
    around on page load using styled components without causing FOUC */
 body {
     background-color: var(--mrmr-background-color);
-    color: var(--mrmr-color);
+    color: var(--mrmr-color-1);
 }

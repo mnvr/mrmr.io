@@ -14,15 +14,20 @@ export interface PageColors {
      *
      * Meant for use as the foreground of the page.
      */
-    foreground: string;
+    color1: string;
     /**
      * An alternative foreground color, with a fallback to the foreground color
      * if only 2 colors are specified in the frontmatter.
-     *
-     * Useful for foreground elements like hover states that need to be
-     * distinguished from the main text.
      */
-    foreground2: string;
+    color2: string;
+    /**
+     * An alternative foreground color, with a fallback to the previous
+     * foreground color(s) if it is not specified.
+     *
+     * Useful for foreground elements like hover states that need higher
+     * contrast to be distinguished from the main content.
+     */
+    color3: string;
 
     /** The underlying colors (without any implicit fallbacks) */
     all: string[];
@@ -43,8 +48,9 @@ export const parsePageColors = (
     }
 
     const background = all[0];
-    const foreground = all[1];
-    const foreground2 = all.length > 2 ? all[2] : foreground;
+    const color1 = all[1];
+    const color2 = all.length > 2 ? all[2] : color1;
+    const color3 = all.length > 3 ? all[3] : color2;
 
-    return { background, foreground, foreground2, all };
+    return { background, color1, color2, color3, all };
 };

@@ -150,11 +150,9 @@ const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
     place-items: center;
 `;
 
-const PlayButton: React.FC<React.HTMLAttributes<HTMLButtonElement>> = (
-    props
-) => {
+const PlayButton: React.FC = () => {
     return (
-        <IconButton hoverColor="hsl(0, 0%, 100%)" {...props}>
+        <IconButton>
             <BsPlayFill size="2rem" title="Play" />
         </IconButton>
     );
