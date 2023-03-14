@@ -15,4 +15,3 @@ writing WIP code that doesn't compile.
 
 This patch doesn't seem to work on Safari though (not sure if it is some caching
 issue).
-
