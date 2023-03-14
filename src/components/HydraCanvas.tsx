@@ -4,6 +4,7 @@ import { resizeIfNeeded } from "hydra/resize";
 import Engine from "raf-loop";
 import * as React from "react";
 import styled from "styled-components";
+import { HydraVis } from "types";
 import { ensure } from "utils/parse";
 
 interface HydraCanvasProps {
@@ -12,7 +13,7 @@ interface HydraCanvasProps {
      *
      * @param `hr` the {@link HydraRenderer} instance attached to the canvas.
      */
-    vis: (hr: HydraRenderer) => void;
+    vis: HydraVis;
     /**
      * Animate the Hydra visualization.
      *
@@ -71,7 +72,8 @@ export const HydraCanvas: React.FC<HydraCanvasProps> = ({ vis, isPlaying }) => {
 
     React.useEffect(() => {
         const hr = ensure(hydraRendererRef.current);
-        vis(hr);
+        const h = hr.synth;
+        vis({ hr, h });
     }, [vis]);
 
     React.useEffect(() => {
