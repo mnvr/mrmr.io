@@ -55,14 +55,17 @@ import { m } from "./mini";
 export const documentationPlaceholder = () => {};
 
 /**
- * Print out the first 10 bars of the pattern
+ * Print out the first 10 bars of the pattern to the console.
  *
- * Useful for debugging
+ * Useful for debugging; it only prints when running under `yarn dev`.
+ *
+ * @param n number of bars to print (default 10)
+ * @returns the original pattern (useful for chaining)
  */
-export const debugPrint = (pattern: Pattern, preamble?: string) => {
+export const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
     if (!isDevelopment()) return;
 
-    const events = pattern.queryArc(0, 10);
+    const events = pattern.queryArc(0, n);
     if (preamble) console.log(preamble);
     events.forEach((e) => console.log(e.show()));
 };
