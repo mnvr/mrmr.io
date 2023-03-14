@@ -1,14 +1,19 @@
+import { Scheduler } from "@strudel.cycles/core";
+import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import { IconButton } from "components/Buttons";
 import { Column } from "components/Column";
 import { HydraCanvas } from "components/HydraCanvas";
 import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
+import { connectWebAudio } from "strudel/webaudio";
 import styled from "styled-components";
+import { ensure } from "utils/parse";
+import { song } from "./song";
 import { vis } from "./vis";
-import { test } from "strudel/init";
 
 export const Page: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
+    const schedulerRef = React.useRef<Scheduler | null>(null);
 
     // Keep the canvas hidden until the first playback
     //
@@ -30,7 +35,31 @@ export const Page: React.FC = () => {
         e.preventDefault();
     };
 
-    React.useEffect(test);
+    React.useEffect(() => {
+        initAudioOnFirstClick();
+    }, []);
+
+    React.useEffect(() => {
+        const scheduler = connectWebAudio();
+        schedulerRef.current = scheduler;
+
+        scheduler.setPattern(song());
+
+        if (isPlaying) scheduler.start();
+
+        // Destroy the current scheduler, we'll recreate a new one, when the
+        // song changes.
+        return () => scheduler.stop();
+    }, [song]);
+
+    React.useEffect(() => {
+        const scheduler = ensure(schedulerRef.current);
+        if (isPlaying) {
+            scheduler.start();
+        } else {
+            scheduler.pause();
+        }
+    }, [isPlaying]);
 
     return (
         <Container>

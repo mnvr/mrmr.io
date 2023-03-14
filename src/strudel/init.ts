@@ -1,8 +1,6 @@
-import { controls, Pattern, stack } from "@strudel.cycles/core";
-import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
+import { Pattern } from "@strudel.cycles/core";
 import { isDevelopment } from "utils/debug";
 import { m } from "./mini";
-import { connectWebAudio } from "./webaudio";
 
 /**
  * **Strudel**
@@ -54,33 +52,14 @@ import { connectWebAudio } from "./webaudio";
  *
  * @see {@link m}.
  */
-export const test = () => {
-    initAudioOnFirstClick();
+export const documentationPlaceholder = () => {};
 
-    const scheduler = connectWebAudio();
-
-    const pattern = song();
-    debugPrint(pattern);
-
-    scheduler.setPattern(pattern);
-    scheduler.start();
-    setTimeout(() => {
-        scheduler.stop();
-    }, 10000);
-};
-
-export const song = () => {
-    const { note } = controls;
-
-    const p1 = note(m`c <a ~ ~ [f e]>`);
-    const p2 = note(m`c <a ~ ~ [f e]>`)
-        .add(12)
-        .s("sawtooth")
-        .gain(0.1);
-    return stack(p1, p2);
-};
-
-const debugPrint = (pattern: Pattern, preamble?: string) => {
+/**
+ * Print out the first 10 bars of the pattern
+ *
+ * Useful for debugging
+ */
+export const debugPrint = (pattern: Pattern, preamble?: string) => {
     if (!isDevelopment()) return;
 
     const events = pattern.queryArc(0, 10);
