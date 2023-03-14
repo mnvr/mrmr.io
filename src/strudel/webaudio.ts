@@ -1,5 +1,5 @@
 import { repl } from "@strudel.cycles/core";
-import { webaudioOutput, getAudioContext } from "@strudel.cycles/webaudio";
+import { getAudioContext, webaudioOutput } from "@strudel.cycles/webaudio";
 
 /** Connect Strudel's core to the WebAudio renderer */
 export const connectWebAudio = () => {

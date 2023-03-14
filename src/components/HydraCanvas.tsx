@@ -1,10 +1,10 @@
 import HydraRenderer from "hydra-synth";
 import { extendHydraRenderer } from "hydra/extend";
 import { resizeIfNeeded } from "hydra/resize";
+import Engine from "raf-loop";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/parse";
-import Engine from "raf-loop";
 
 interface HydraCanvasProps {
     /**

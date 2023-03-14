@@ -327,7 +327,13 @@ declare module "@strudel.cycles/webaudio" {
 }
 
 declare module "@strudel.cycles/mini" {
-    import type { Patternable } from "@strudel.cycles/core";
+    // As of v3.2.2, the Prettier plugin to organize imports is removing this
+    // line (incorrectly?). So disable the plugin for this file (can't be done
+    // on a line-basis).
+    // See: https://github.com/simonhaenisch/prettier-plugin-organize-imports
+    //
+    // organize-imports-ignore
+    import { Patternable } from "@strudel.cycles/core";
 
     /**
      * Parse a string specified in the "mini" notation into a Strudel pattern.
