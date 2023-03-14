@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 
+/** An width limited column that is positioned slightly towards the left */
 export const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Grid>
