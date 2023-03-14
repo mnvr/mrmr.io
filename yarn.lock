@@ -2276,6 +2276,11 @@
     "@types/react" "*"
     csstype "^3.0.2"
 
+"@types/tinycolor2@^1.4.3":
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/@types/tinycolor2/-/tinycolor2-1.4.3.tgz#ed4a0901f954b126e6a914b4839c77462d56e706"
+  integrity sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==
+
 "@types/tmp@^0.0.33":
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.0.33.tgz#1073c4bc824754ae3d10cfab88ab0237ba964e4d"
@@ -10139,6 +10144,11 @@ timers-ext@^0.1.7:
   dependencies:
     es5-ext "~0.10.46"
     next-tick "1"
+
+tinycolor2@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/tinycolor2/-/tinycolor2-1.6.0.tgz#f98007460169b0263b97072c5ae92484ce02d09e"
+  integrity sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==
 
 title-case@^3.0.3:
   version "3.0.3"
