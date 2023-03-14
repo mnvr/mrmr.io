@@ -5,12 +5,11 @@ import {
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
-import type { Context } from "types";
 import { ensure } from "utils/ensure";
 import { parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
+const Page: React.FC<PageProps<Queries.DefaultPageQuery>> = ({
     data,
     children,
 }) => {
@@ -26,7 +25,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 
 export default Page;
 
-export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
+export const Head: HeadFC<Queries.DefaultPageQuery> = ({ data }) => {
     const { title } = parseData(data);
 
     return <DefaultHead title={title} />;

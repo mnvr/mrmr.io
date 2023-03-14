@@ -10,6 +10,13 @@ import { ensure } from "utils/ensure";
 import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
+/**
+ * The home page for mrmr.io
+ *
+ * > What it displays is arbitrary. Currently it lists my artwork, but it can
+ *   also show nothing. It's like a polythene blowing in the wind, don't rely
+ *   on, and you don't know, where it'll go. – @mnvr
+ */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const defaultColors = {
         backgroundColor: "hsl(0, 0%, 100%)",
@@ -47,7 +54,12 @@ export const Head: HeadFC = () => <DefaultHead />;
 
 export const query = graphql`
     query IndexPage {
-        allMdx(sort: { frontmatter: { date: DESC } }) {
+        allMdx(
+            filter: {
+                fields: { template: { eq: "page" }, username: { eq: "mnvr" } }
+            }
+            sort: { frontmatter: { date: DESC } }
+        ) {
             nodes {
                 frontmatter {
                     title

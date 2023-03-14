@@ -14,10 +14,13 @@ type RecursivelyReplaceNullWithUndefined<T> = T extends null
               : RecursivelyReplaceNullWithUndefined<T[K]>;
       };
 
-/// Recursively replaces all nulls with undefineds.
-/// Skips object classes (that have a `.__proto__.constructor`).
-///
-/// If nulls were a billion dollar mistake, Javascript made two of them.
+/**
+ * Recursively replaces all `null`s with `undefined`s.
+ *
+ * Skips object classes (that have a `.__proto__.constructor`).
+ *
+ * If nulls were a billion dollar mistake, Javascript made two of them.
+ */
 export const replaceNullsWithUndefineds = <T>(
     obj: T
 ): RecursivelyReplaceNullWithUndefined<T> => {

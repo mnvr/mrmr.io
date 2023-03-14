@@ -23,16 +23,16 @@ const config: GatsbyConfig = {
         "gatsby-plugin-sharp",
         "gatsby-transformer-sharp",
 
-        // Write our content in markdown + JSX
+        // Write our pages in markdown + JSX
         "gatsby-plugin-mdx",
 
-        // Process files in /src/content/, creating a page for each (see
+        // Process files in /users/, creating a page for each (see
         // `gatsby-node.ts`).
         {
             resolve: "gatsby-source-filesystem",
             options: {
-                name: "content",
-                path: "./src/content/",
+                name: "users",
+                path: "./users/",
             },
         },
     ],

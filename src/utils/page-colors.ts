@@ -34,17 +34,15 @@ export interface PageColors {
 }
 
 /**
- * Parse a colors array specified in the MDX frontmatter of a file that is
- * meant to be rendered with the default template.
+ * Parse a colors array specified in the MDX frontmatter of a file that is meant
+ * to be rendered with the default page template.
  */
 export const parsePageColors = (
     colors: readonly (string | undefined)[] | undefined
 ) => {
     const all = removeUndefineds(ensure(colors));
     if (all.length < 2) {
-        throw new Error(
-            "At least 2 colors are required by the default template"
-        );
+        throw new Error("At least 2 colors are required by the template");
     }
 
     const background = all[0];

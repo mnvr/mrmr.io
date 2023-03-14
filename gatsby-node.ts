@@ -1,10 +1,14 @@
 import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
-import { Context } from "types";
 
-// Need to use the full path here to import the `ensure` function
-// Weirdly enough, importing `Context` from types works with a relative path.
+// Need to use the full path here to, using absolute paths with automatic "src"
+// prefixing doesn't work in gatsby-node.ts.
+import {
+    ensureTemplateName,
+    PageTemplateContext,
+    UserTemplateContext,
+} from "./src/types/gatsby";
 import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
@@ -14,20 +18,61 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
     const { createNodeField } = actions;
 
-    // Create and attach a "slug" field to all MDX nodes
+    // Create and attach a "slug" field to all MDX nodes.
+    //
+    // Use the slug to determine and attach "username" and "template" fields
+    // too.
     if (node.internal.type == "Mdx") {
         // Do not add a trailing slash to the generated paths.
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
 
-        createNodeField({
-            node,
-            name: "slug",
-            value: slug,
+        const username = ensureValidUsername(slug);
+        const template = isUserIndex(slug) ? "user" : "page";
+
+        const newFields = { slug, username, template };
+
+        Object.entries(newFields).forEach(([name, value]) => {
+            createNodeField({
+                node,
+                name,
+                value,
+            });
         });
     }
 };
+
+/**
+ * Extract and return the username from the slug.
+ *
+ * Throw an error if the username is not cool.
+ */
+const ensureValidUsername = (slug: string) => {
+    // First (logical) component of the slug is the username.
+    //
+    // Since the slug begins with a slash, the first array component is the
+    // empty string, e.g.
+    //
+    //     split("/mnvr/page") => ["", "mnvr", "page"]
+    const username = ensure(slug.split("/", 2)[1]);
+
+    // Run through the checks ---
+
+    // Should be at last 4 characters in length
+    if (username.length < 4) {
+        throw new Error(
+            `Invalid username "${username}" - it should be at least 4 characters in length.`
+        );
+    }
+
+    return username;
+};
+
+/** Return `true` if the given slug is for a user's home / index page. */
+const isUserIndex = (slug: string) => slug.split("/").length === 2;
+
+type Context = PageTemplateContext | UserTemplateContext;
 
 export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     graphql,
@@ -44,6 +89,8 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
                     id
                     fields {
                         slug
+                        username
+                        template
                     }
                     internal {
                         contentFilePath
@@ -69,16 +116,17 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
 
     try {
         nodes.forEach((node) => {
-            const template = "default";
             const id = node.id;
             const slug = ensure(node.fields?.slug);
+            const username = ensure(node.fields?.username);
+            const template = ensureTemplateName(ensure(node.fields?.template));
             const contentFilePath = ensure(node.internal?.contentFilePath);
             const templatePath = path.resolve(`src/templates/${template}.tsx`);
 
             createPage<Context>({
                 path: slug,
                 component: `${templatePath}?__contentFilePath=${contentFilePath}`,
-                context: { id },
+                context: template == "user" ? { username } : { id },
             });
         });
     } catch (err) {

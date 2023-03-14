@@ -26,6 +26,7 @@
     },
     "include": [
         "./src/**/*",
+        "./users/**/*",
         "./gatsby-node.ts",
         "./gatsby-config.ts",
         "./plugins/**/*"
