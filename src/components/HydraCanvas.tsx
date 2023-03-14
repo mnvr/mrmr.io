@@ -5,7 +5,7 @@ import Engine from "raf-loop";
 import * as React from "react";
 import styled from "styled-components";
 import { HydraVis } from "types";
-import { ensure } from "utils/parse";
+import { ensure } from "utils/ensure";
 
 interface HydraCanvasProps {
     /**

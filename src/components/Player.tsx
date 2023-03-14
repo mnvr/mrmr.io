@@ -7,12 +7,15 @@ import { BsPlayFill } from "react-icons/bs";
 import { connectWebAudio } from "strudel/webaudio";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
+import type { PageColors } from "utils/page-colors";
 
 interface PlayerProps {
     /** The visualization to render */
     vis: HydraVis;
     /** The song to play */
     song: TidalSong;
+    /** Page colors */
+    colors?: PageColors;
 }
 
 /**
@@ -88,20 +91,27 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
 
     return (
         <Container>
-            {children}
-            <CanvasGrid onClick={handleClick} title="">
-                <CanvasContainer isVisible={hasUserInitiatedPlayback}>
-                    <HydraCanvas {...{ vis, isPlaying }} />
-                </CanvasContainer>
-                <PlayButtonOverlay isVisible={!isPlaying}>
-                    <PlayButton />
-                </PlayButtonOverlay>
-            </CanvasGrid>
+            <FirstScreen>
+                {children}
+                <CanvasGrid onClick={handleClick} title="">
+                    <CanvasContainer isVisible={hasUserInitiatedPlayback}>
+                        <HydraCanvas {...{ vis, isPlaying }} />
+                    </CanvasContainer>
+                    <PlayButtonOverlay isVisible={!isPlaying}>
+                        <PlayButton />
+                    </PlayButtonOverlay>
+                </CanvasGrid>
+            </FirstScreen>
         </Container>
     );
 };
 
 const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const FirstScreen = styled.div`
     display: flex;
     flex-direction: column;
     height: 100svh;

@@ -1,20 +1,24 @@
-import { DefaultGlobalStyle } from "components/GlobalStyle";
+import {
+    DefaultGlobalStyle,
+    globalStylePropsFromPageColors,
+} from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
 import type { Context } from "types";
-import { ensure, parseDefaultTemplateColors } from "utils/parse";
+import { ensure } from "utils/ensure";
+import { parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
     data,
     children,
 }) => {
-    const { backgroundColor, color } = parseData(data);
+    const { colors } = parseData(data);
 
     return (
         <main>
-            <DefaultGlobalStyle {...{ backgroundColor, color }} />
+            <DefaultGlobalStyle {...globalStylePropsFromPageColors(colors)} />
             {children}
         </main>
     );
@@ -23,7 +27,7 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery, Context>> = ({
 export default Page;
 
 export const Head: HeadFC<Queries.DefaultPageQuery, Context> = ({ data }) => {
-    const { title, backgroundColor, color } = parseData(data);
+    const { title } = parseData(data);
 
     return <DefaultHead title={title} />;
 };
@@ -42,9 +46,7 @@ export const query = graphql`
 const parseData = (data: Queries.DefaultPageQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
     const title = ensure(mdx?.frontmatter?.title);
-    const { backgroundColor, color } = parseDefaultTemplateColors(
-        mdx?.frontmatter?.colors
-    );
+    const colors = parsePageColors(mdx?.frontmatter?.colors);
 
-    return { title, backgroundColor, color };
+    return { title, colors };
 };

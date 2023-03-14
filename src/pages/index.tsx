@@ -1,12 +1,14 @@
 import {
     DefaultGlobalStyle,
+    globalStylePropsFromPageColors,
     type GlobalStyleProps,
 } from "components/GlobalStyle";
 import { DefaultHead } from "components/Head";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
-import { ensure, parseDefaultTemplateColors } from "utils/parse";
+import { ensure } from "utils/ensure";
+import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
@@ -21,9 +23,14 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
 
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
 
+    // If the user is hovering on the link to a page, use that page's colors.
+    let gsProps = hoverPage
+        ? globalStylePropsFromPageColors(hoverPage.colors)
+        : defaultColors;
+
     return (
         <Main>
-            <DefaultGlobalStyle {...(hoverPage ?? defaultColors)} />
+            <DefaultGlobalStyle {...gsProps} />
             <GlobalStyle />
             <IndexTitle />
             <PageListing {...{ pages, setHoverPage }} />
@@ -54,8 +61,7 @@ export const query = graphql`
 interface Page {
     title: string;
     slug: string;
-    backgroundColor: string;
-    color: string;
+    colors: PageColors;
 }
 
 const parsePages = (data: Queries.IndexPageQuery) => {
@@ -66,11 +72,9 @@ const parsePages = (data: Queries.IndexPageQuery) => {
         const { frontmatter, fields } = node;
         const title = ensure(frontmatter?.title);
         const slug = ensure(fields?.slug);
-        const { backgroundColor, color } = parseDefaultTemplateColors(
-            frontmatter?.colors
-        );
+        const colors = parsePageColors(frontmatter?.colors);
 
-        return { title, slug, backgroundColor, color };
+        return { title, slug, colors };
     });
 };
 
@@ -175,8 +179,8 @@ const PageGrid = styled.div`
 `;
 
 const PageItem = styled.div<Page>`
-    background-color: ${(props) => props.backgroundColor};
-    color: ${(props) => props.color};
+    background-color: ${(props) => props.colors.background};
+    color: ${(props) => props.colors.foreground};
     width: 13ch;
     height: 11.7ch;
     padding: 0.33rem 0.66rem;

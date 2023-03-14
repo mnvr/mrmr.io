@@ -5,7 +5,7 @@ import { Context } from "types";
 
 // Need to use the full path here to import the `ensure` function
 // Weirdly enough, importing `Context` from types works with a relative path.
-import { ensure } from "./src/utils/parse";
+import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,

@@ -327,12 +327,6 @@ declare module "@strudel.cycles/webaudio" {
 }
 
 declare module "@strudel.cycles/mini" {
-    // As of v3.2.2, the Prettier plugin to organize imports is removing this
-    // line (incorrectly?). So disable the plugin for this file (can't be done
-    // on a line-basis).
-    // See: https://github.com/simonhaenisch/prettier-plugin-organize-imports
-    //
-    // organize-imports-ignore
     import { Patternable } from "@strudel.cycles/core";
 
     /**
@@ -347,6 +341,10 @@ declare module "@strudel.cycles/mini" {
      *
      * For more mini-notation syntax, see:
      * https://strudel.tidalcycles.org/learn/mini-notation
+     *
+     * > Setting the return type to Patternable[] doesn't work, we seem to need
+     *   to explicitly mark it as an Array<T> (which is fine, they're
+     *   semantically equivalent).
      */
-    export const mini = (...strings) => [Patternable];
+    export const mini = (...strings) => Array<Patternable>;
 }

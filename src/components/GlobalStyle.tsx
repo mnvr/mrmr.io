@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { PageColors } from "utils/page-colors";
 
 export interface GlobalStyleProps {
     backgroundColor: string;
@@ -20,3 +21,17 @@ export const DefaultGlobalStyle = createGlobalStyle<GlobalStyleProps>`
         }
     }
 `;
+
+/**
+ * Convenience method to construct an instance of {@link @GlobalStyleProps}
+ * from an instance of {@link PageColors}.
+ */
+export const globalStylePropsFromPageColors = (colors: PageColors) => {
+    // Content pages have fixed colors and render the same in both light and
+    // dark, so we only specify the light versions (the dark mode will use the
+    // same too).
+    return {
+        backgroundColor: colors.background,
+        color: colors.foreground,
+    };
+};
