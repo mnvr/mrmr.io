@@ -34,7 +34,8 @@
         "react-dom": "^18.2.0",
         "react-icons": "^4.8.0",
         "styled-components": "^5.3.8",
-        "tinycolor2": "^1.6.0"
+        "tinycolor2": "^1.6.0",
+        "tldts": "^5.7.111"
     },
     "devDependencies": {
         "@types/node": "^18.15.0",

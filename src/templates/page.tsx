@@ -4,9 +4,9 @@ import {
     PageColorStyle,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { parsePageColors } from "parsers/page-colors";
 import * as React from "react";
 import { ensure } from "utils/ensure";
-import { parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const Page: React.FC<PageProps<Queries.DefaultPageQuery>> = ({

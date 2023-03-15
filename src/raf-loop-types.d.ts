@@ -14,7 +14,7 @@ declare module "raf-loop" {
          * The function will be called with delta time as the first parameter,
          * in milliseconds.
          *
-         * @param `fn` the function to call for each RAF frame. This tick
+         * @param `fn` The function to call for each RAF frame. This tick
          * function will be passed `dt` (milliseconds since last update).
          */
         constructor(fn?: (dt: number) => void);

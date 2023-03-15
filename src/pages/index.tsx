@@ -4,10 +4,10 @@ import {
     PageColorStyle,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
+import { PageColors, parsePageColors } from "parsers/page-colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { ensure } from "utils/ensure";
-import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**

@@ -138,8 +138,8 @@ declare module "hydra-synth" {
          * Update the canvas size and other internal state of Hydra to use the
          * given size.
          *
-         * @param `width` the new render width of Hydra's canvas
-         * @param `height` the new render height of Hydra's canvas
+         * @param `width` The new render width of Hydra's canvas
+         * @param `height` The new render height of Hydra's canvas
          *
          * The current values of the size can be read off the {@link width} and
          * {@link height} properties. Initial values for the canvas size can be
@@ -199,7 +199,7 @@ declare module "hydra-synth" {
          * The `update` function is called each time a new frame is rendered. It
          * is passed the time elapsed (in milliseconds) since the last update.
          *
-         * @param `dt` milliseconds since the last update
+         * @param `dt` Milliseconds since the last update
          */
         update?: (dt: number) => void;
         hush: any;
@@ -214,7 +214,7 @@ declare module "hydra-synth" {
          * `autoLoop` as false when creating the HydraRenderer, and then invoke
          * this to advance the frame.
          *
-         * @param `dt` milliseconds since last update.
+         * @param `dt` Milliseconds since last update.
          */
         tick(dt: number): void;
     }

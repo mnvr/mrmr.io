@@ -2,12 +2,12 @@ import { Scheduler } from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import { IconButton } from "components/Buttons";
 import { HydraCanvas } from "components/HydraCanvas";
+import type { PageColors } from "parsers/page-colors";
 import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { connectWebAudio } from "strudel/webaudio";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
-import type { PageColors } from "utils/page-colors";
 
 interface PlayerProps {
     /** The visualization to render */

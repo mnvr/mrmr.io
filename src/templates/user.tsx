@@ -5,9 +5,10 @@ import {
     PageColorStyle,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { ParsedLink, parseUserLinks } from "parsers/links";
+import { PageColors, parsePageColors } from "parsers/page-colors";
 import * as React from "react";
 import { ensure } from "utils/ensure";
-import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
@@ -46,6 +47,7 @@ export const query = graphql`
                     name
                     title
                     colors
+                    links
                 }
                 fields {
                     slug
@@ -60,6 +62,7 @@ interface User {
     name: string;
     colors?: PageColors;
     pages: Page[];
+    links?: ParsedLink[];
 }
 
 interface Page {
@@ -81,8 +84,9 @@ const parseUser = (data: Queries.UserIndexQuery) => {
 
         if (template == "user") {
             const name = ensure(frontmatter?.name);
+            const links = parseUserLinks(frontmatter?.links);
 
-            parsedUser = { name, colors, pages: [] };
+            parsedUser = { name, colors, links, pages: [] };
         } else {
             const title = ensure(frontmatter?.title);
             const slug = ensure(fields?.slug);

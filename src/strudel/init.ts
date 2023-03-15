@@ -59,8 +59,8 @@ export const documentationPlaceholder = () => {};
  *
  * Useful for debugging; it only prints when running under `yarn dev`.
  *
- * @param n number of bars to print (default 10)
- * @returns the original pattern (useful for chaining)
+ * @param n Number of bars to print (default 10)
+ * @returns The original pattern (useful for chaining)
  */
 export const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
     if (!isDevelopment()) return;

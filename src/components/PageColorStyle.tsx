@@ -1,5 +1,5 @@
+import { PageColors } from "parsers/page-colors";
 import { createGlobalStyle } from "styled-components";
-import { PageColors } from "utils/page-colors";
 
 export interface PageColorStyleProps {
     backgroundColor: string;

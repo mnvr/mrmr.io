@@ -11,7 +11,7 @@ interface HydraCanvasProps {
     /**
      * The Hydra visualization to render on the canvas.
      *
-     * @param `hr` the {@link HydraRenderer} instance attached to the canvas.
+     * @param `hr` The {@link HydraRenderer} instance attached to the canvas.
      */
     vis: HydraVis;
     /**
