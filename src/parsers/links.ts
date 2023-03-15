@@ -22,8 +22,16 @@ export const isKnownDomain = (s: string): s is KnownDomain => {
 
 /** A parsed link, with a {@link KnownDomain} (if any) attached */
 export interface ParsedLink {
+    /** The original string with with this link was constructed */
     url: string;
+    /** A known domain which we were able to deduce for the {@link url} */
     knownDomain?: KnownDomain;
+    /**
+     * Title that should be used to override the default.
+     *
+     * This is optional: if it is not provided then a title will be deduced from
+     * the KnownDomain if needed */
+    title?: string;
 }
 
 /** General link parser */
@@ -73,9 +81,10 @@ export const parsePageLinks = (
     const userLinks = parseLinks(userURLs);
 
     // Construct a link to the page's source on GitHub using the slug.
-    const sourceLink = parseLink(
-        `https://github.com/mrmr-io/m/tree/main/${slug}`
-    );
+    const sourceLink = {
+        ...parseLink(`https://github.com/mrmr-io/m/tree/main/${slug}`),
+        title: "View source on GitHub",
+    };
 
     const seenDomains = new Set<KnownDomain>();
 

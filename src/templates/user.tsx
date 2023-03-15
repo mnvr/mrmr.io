@@ -4,6 +4,7 @@ import {
     createPageColorStyleProps,
     PageColorStyle,
 } from "components/PageColorStyle";
+import { ParsedLinkButtons } from "components/ParsedLinks";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import { PageColors, parsePageColors } from "parsers/page-colors";
@@ -101,10 +102,11 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     return { ...user, pages };
 };
 
-const Header: React.FC<User> = ({ name }) => {
+const Header: React.FC<User> = ({ name, links }) => {
     return (
         <>
             <h1>{name}</h1>
+            {links && <ParsedLinkButtons links={links} />}
         </>
     );
 };
