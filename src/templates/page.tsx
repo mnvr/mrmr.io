@@ -13,11 +13,11 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery>> = ({
     data,
     children,
 }) => {
-    const { colors } = parseData(data);
+    const page = parseData(data);
 
     return (
         <main>
-            <PageColorStyle {...createPageColorStyleProps(colors)} />
+            <PageColorStyle {...createPageColorStyleProps(page)} />
             {children}
         </main>
     );
@@ -37,6 +37,7 @@ export const query = graphql`
             frontmatter {
                 title
                 colors
+                dark_colors
             }
         }
     }
@@ -46,6 +47,7 @@ const parseData = (data: Queries.DefaultPageQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
     const title = ensure(mdx?.frontmatter?.title);
     const colors = parsePageColors(mdx?.frontmatter?.colors);
+    const darkColors = parsePageColors(mdx?.frontmatter?.dark_colors);
 
-    return { title, colors };
+    return { title, colors, darkColors };
 };

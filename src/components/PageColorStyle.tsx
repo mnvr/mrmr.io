@@ -33,30 +33,37 @@ export const PageColorStyle = createGlobalStyle<PageColorStyleProps>`
 
 /**
  * Convenience method to construct an instance of {@link @PageColorStyleProps}
- * from an instance of {@link PageColors}.
+ * from an collection of {@link PageColors}.
  *
- * @param pageColors The colors to use. These are usually specified in the
- * frontmatter of MDX files.
+ * @param colorable A thing that provides two properties, named `colors` and
+ * `darkColors`, which are taken as the colors to use. These are usually
+ * specified in the frontmatter of MDX files.
  * @param fallbackProps If specified, these fallback set of colors will be
- * returned as the props when `pageColors` are not specified.
+ * returned as the props when `colorable` are not specified, or if colorable
+ * doesn't have its `colors` set.
  *
- * If neither `pageColors` nor `fallbackProps` are specified, then this function
- * returns {@link DefaultPageColorStyleProps}.
+ * If neither `colorable?.colors` nor `fallbackProps` are specified, then this
+ * function returns {@link DefaultPageColorStyleProps}.
  */
 export const createPageColorStyleProps = (
-    pageColors?: PageColors,
+    colorable?: { colors?: PageColors; darkColors?: PageColors },
     fallbackProps?: PageColorStyleProps
 ) => {
-    if (!pageColors) return fallbackProps ?? DefaultPageColorStyleProps;
+    const { colors, darkColors } = colorable ?? {};
+    if (!colors) return fallbackProps ?? DefaultPageColorStyleProps;
 
     // Content pages have fixed colors and render the same in both light and
     // dark, so we only specify the light versions (the dark mode will use the
     // same too).
     return {
-        backgroundColor: pageColors.background,
-        color1: pageColors.color1,
-        color2: pageColors.color2,
-        color3: pageColors.color3,
+        backgroundColor: colors.background,
+        color1: colors.color1,
+        color2: colors.color2,
+        color3: colors.color3,
+        darkBackgroundColor: darkColors?.background,
+        darkColor1: darkColors?.color1,
+        darkColor2: darkColors?.color2,
+        darkColor3: darkColors?.color3,
     };
 };
 

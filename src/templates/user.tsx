@@ -20,7 +20,7 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
 
     return (
         <main>
-            <PageColorStyle {...createPageColorStyleProps(user.colors)} />
+            <PageColorStyle {...createPageColorStyleProps(user)} />
             <Column>
                 <Header {...user} />
                 {children}
@@ -48,6 +48,7 @@ export const query = graphql`
                     name
                     title
                     colors
+                    dark_colors
                     links
                 }
                 fields {
@@ -62,6 +63,7 @@ export const query = graphql`
 interface User {
     name: string;
     colors?: PageColors;
+    darkColors?: PageColors;
     pages: Page[];
     links?: ParsedLink[];
 }
@@ -70,6 +72,7 @@ interface Page {
     title: string;
     slug: string;
     colors?: PageColors;
+    darkColors?: PageColors;
 }
 
 const parseUser = (data: Queries.UserIndexQuery) => {
@@ -82,17 +85,18 @@ const parseUser = (data: Queries.UserIndexQuery) => {
         const { frontmatter, fields } = node;
         const template = ensure(fields?.template);
         const colors = parsePageColors(frontmatter?.colors);
+        const darkColors = parsePageColors(frontmatter?.dark_colors);
 
         if (template == "user") {
             const name = ensure(frontmatter?.name);
             const links = parseUserLinks(frontmatter?.links);
 
-            parsedUser = { name, colors, links, pages: [] };
+            parsedUser = { name, colors, darkColors, links, pages: [] };
         } else {
             const title = ensure(frontmatter?.title);
             const slug = ensure(fields?.slug);
 
-            const page = { title, slug, colors };
+            const page = { title, slug, colors, darkColors };
 
             pages.push(page);
         }

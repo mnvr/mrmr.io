@@ -34,7 +34,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
 
     // If the user is hovering on the link to a page, use that page's colors.
-    let csProps = createPageColorStyleProps(hoverPage?.colors, baseColors);
+    let csProps = createPageColorStyleProps(hoverPage, baseColors);
 
     return (
         <Main>
@@ -62,6 +62,7 @@ export const query = graphql`
                 frontmatter {
                     title
                     colors
+                    dark_colors
                 }
                 fields {
                     slug
@@ -75,6 +76,7 @@ interface Page {
     title: string;
     slug: string;
     colors?: PageColors;
+    darkColors?: PageColors;
 }
 
 const parsePages = (data: Queries.IndexPageQuery) => {
@@ -86,8 +88,9 @@ const parsePages = (data: Queries.IndexPageQuery) => {
         const title = ensure(frontmatter?.title);
         const slug = ensure(fields?.slug);
         const colors = parsePageColors(frontmatter?.colors);
+        const darkColors = parsePageColors(frontmatter?.dark_colors);
 
-        return { title, slug, colors };
+        return { title, slug, colors, darkColors };
     });
 };
 
