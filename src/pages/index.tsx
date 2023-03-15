@@ -18,7 +18,7 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  *   on, and you don't know, where it'll go. – @mnvr
  */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const defaultColors = {
+    const baseColors = {
         backgroundColor: "hsl(0, 0%, 100%)",
         color1: "hsl(0, 0%, 13%)",
         color2: "hsl(0, 0%, 13%)",
@@ -34,9 +34,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
 
     // If the user is hovering on the link to a page, use that page's colors.
-    let csProps = hoverPage
-        ? createPageColorStyleProps(hoverPage.colors)
-        : defaultColors;
+    let csProps = createPageColorStyleProps(hoverPage?.colors, baseColors);
 
     return (
         <Main>
@@ -76,7 +74,7 @@ export const query = graphql`
 interface Page {
     title: string;
     slug: string;
-    colors: PageColors;
+    colors?: PageColors;
 }
 
 const parsePages = (data: Queries.IndexPageQuery) => {
@@ -194,8 +192,8 @@ const PageGrid = styled.div`
 `;
 
 const PageItem = styled.div<Page>`
-    background-color: ${(props) => props.colors.background};
-    color: ${(props) => props.colors.color1};
+    background-color: ${(props) => props.colors?.background ?? "inherit"};
+    color: ${(props) => props.colors?.color1 ?? "inherit"};
     width: 13ch;
     height: 11.7ch;
     padding: 0.33rem 0.66rem;

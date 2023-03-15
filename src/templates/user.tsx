@@ -1,6 +1,9 @@
 import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
-import { PageColorStyle } from "components/PageColorStyle";
+import {
+    createPageColorStyleProps,
+    PageColorStyle,
+} from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
 import { ensure } from "utils/ensure";
@@ -11,22 +14,11 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
     data,
     children,
 }) => {
-    const defaultColors = {
-        backgroundColor: "hsl(0, 0%, 100%)",
-        color1: "hsl(0, 0%, 15%)",
-        color2: "hsl(0, 0%, 15%)",
-        color3: "hsl(0, 0%, 13%)",
-        darkBackgroundColor: "hsl(198, 13%, 8%)",
-        darkColor1: "hsl(0, 0%, 87%)",
-        darkColor2: "hsl(0, 0%, 87%)",
-        darkColor3: "hsl(0, 0%, 87%)",
-    };
-
     const user = parseUser(data);
 
     return (
         <main>
-            <PageColorStyle {...defaultColors} />
+            <PageColorStyle {...createPageColorStyleProps(user.colors)} />
             <Column>
                 <Header {...user} />
                 {children}
@@ -66,13 +58,14 @@ export const query = graphql`
 
 interface User {
     name: string;
+    colors?: PageColors;
     pages: Page[];
 }
 
 interface Page {
     title: string;
     slug: string;
-    colors: PageColors;
+    colors?: PageColors;
 }
 
 const parseUser = (data: Queries.UserIndexQuery) => {
@@ -84,15 +77,15 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     nodes.forEach((node) => {
         const { frontmatter, fields } = node;
         const template = ensure(fields?.template);
+        const colors = parsePageColors(frontmatter?.colors);
 
         if (template == "user") {
             const name = ensure(frontmatter?.name);
 
-            parsedUser = { name, pages: [] };
+            parsedUser = { name, colors, pages: [] };
         } else {
             const title = ensure(frontmatter?.title);
             const slug = ensure(fields?.slug);
-            const colors = parsePageColors(frontmatter?.colors);
 
             const page = { title, slug, colors };
 

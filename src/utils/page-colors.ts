@@ -1,5 +1,4 @@
 import { removeUndefineds } from "utils/array";
-import { ensure } from "utils/ensure";
 
 /** A structure that wraps the colors parsed from the frontmatter of pages */
 export interface PageColors {
@@ -40,7 +39,9 @@ export interface PageColors {
 export const parsePageColors = (
     colors: readonly (string | undefined)[] | undefined
 ) => {
-    const all = removeUndefineds(ensure(colors));
+    if (!colors) return;
+
+    const all = removeUndefineds(colors);
     if (all.length < 2) {
         throw new Error("At least 2 colors are required by the template");
     }
