@@ -1,7 +1,10 @@
 import { ExternalLink } from "components/ExternalLink";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import { FiGithub, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
+import { RiRedditLine } from "react-icons/ri";
+
 import styled from "styled-components";
 
 /**
@@ -24,7 +27,7 @@ export const ParsedLinkButtons: React.FC<{ links: ParsedLink[] }> = ({
 const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 0.6rem;
+    gap: 0.8rem;
 `;
 
 /**
@@ -35,16 +38,75 @@ const ParsedLinkRow = styled.div`
  *
  * @see {@link ParsedLinkButtons}
  */
-export const ParsedLinkButton: React.FC<{ link: ParsedLink }> = ({ link }) => {
-    const { url, knownDomain } = link;
+export const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
+    const { url } = link;
     return (
         <ExternalLink href={url}>
-            <GithubIcon link={link} />
+            <IconContainer>
+                <KnownLinkIcon link={link} />
+            </IconContainer>
         </ExternalLink>
     );
 };
 
-const GithubIcon: React.FC<{ link: ParsedLink }> = ({ link }) => {
-    const title = link.title ?? "GitHub";
-    return <FaGithub size="1.5rem" title={title} />;
+const IconContainer = styled.div`
+    /** Ensure sufficient tap area for mobile devices */
+    min-width: 44px;
+    min-height: 44px;
+
+    /** 
+     * Center the SVG within the tap area if the SVG is smaller than the mininum
+     * dimensions (this'll usually be the case).
+     */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Show the hand icon on hover */
+    cursor: pointer;
+
+    /* Set the size of the icon */
+    font-size: 2rem;
+`;
+
+type IconProps = { link: ParsedLink };
+
+const KnownLinkIcon: React.FC<IconProps> = ({ link }) => {
+    const { knownDomain } = link;
+    if (knownDomain == "github") return <GithubIcon link={link} />;
+    if (knownDomain == "twitter") return <TwittterIcon link={link} />;
+    if (knownDomain == "instagram") return <InstagramIcon link={link} />;
+    if (knownDomain == "youtube") return <YouTubeIcon link={link} />;
+    if (knownDomain == "reddit") return <RedditIcon link={link} />;
+    // If it is not one of the known domains, return the generic link icon.
+    return <GenericLinkIcon link={link} />;
+};
+
+const GithubIcon: React.FC<IconProps> = ({ link }) => {
+    // Reduce the size a bit to make it fit better with the rest of the gang.
+    //
+    // Note the use of "em" to scale it relative to the computed font size of
+    // these icons – if we'd used rem it'd have scaled it relative to the root
+    // font size.
+    return <FiGithub size="0.96em" title={link.title ?? "GitHub"} />;
+};
+
+const TwittterIcon: React.FC<IconProps> = ({ link }) => {
+    return <FiTwitter title={link.title ?? "Twitter"} />;
+};
+
+const InstagramIcon: React.FC<IconProps> = ({ link }) => {
+    return <FaInstagram title={link.title ?? "Instagram"} />;
+};
+
+const YouTubeIcon: React.FC<IconProps> = ({ link }) => {
+    return <FiYoutube title={link.title ?? "YouTube"} />;
+};
+
+const RedditIcon: React.FC<IconProps> = ({ link }) => {
+    return <RiRedditLine title={link.title ?? "Reddit"} />;
+};
+
+const GenericLinkIcon: React.FC<IconProps> = ({ link }) => {
+    return <FiLink size="0.95em" title={link.title ?? link.url} />;
 };

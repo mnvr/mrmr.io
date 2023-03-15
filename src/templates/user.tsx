@@ -9,6 +9,7 @@ import { graphql, HeadFC, PageProps } from "gatsby";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import { PageColors, parsePageColors } from "parsers/page-colors";
 import * as React from "react";
+import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -110,7 +111,32 @@ const Header: React.FC<User> = ({ name, links }) => {
     return (
         <>
             <h1>{name}</h1>
-            {links && <ParsedLinkButtons links={links} />}
+            {links && <LinkButtons links={links} />}
         </>
     );
 };
+
+interface LinkButtonsProps {
+    links: ParsedLink[];
+}
+
+const LinkButtons: React.FC<LinkButtonsProps> = ({ links }) => {
+    return (
+        <LinkButtonsContainer>
+            <ParsedLinkButtons links={links} />
+        </LinkButtonsContainer>
+    );
+};
+
+const LinkButtonsContainer = styled.div`
+    padding: 0 0rem;
+
+    a {
+        color: inherit;
+        opacity: 0.7;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
+`;
