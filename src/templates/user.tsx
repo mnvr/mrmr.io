@@ -1,30 +1,43 @@
+import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
+import { PageColorStyle } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import * as React from "react";
-import { UserTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { PageColors, parsePageColors } from "utils/page-colors";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-const UserPage: React.FC<
-    PageProps<Queries.UserIndexQuery, UserTemplateContext>
-> = ({ data, children }) => {
+const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
+    data,
+    children,
+}) => {
+    const defaultColors = {
+        backgroundColor: "hsl(0, 0%, 100%)",
+        color1: "hsl(0, 0%, 15%)",
+        color2: "hsl(0, 0%, 15%)",
+        color3: "hsl(0, 0%, 13%)",
+        darkBackgroundColor: "hsl(198, 13%, 8%)",
+        darkColor1: "hsl(0, 0%, 87%)",
+        darkColor2: "hsl(0, 0%, 87%)",
+        darkColor3: "hsl(0, 0%, 87%)",
+    };
+
     const user = parseUser(data);
 
     return (
         <main>
-            {/* <PageColorStyle {...createPageColorStyleProps(colors)} /> */}
-            {children}
+            <PageColorStyle {...defaultColors} />
+            <Column>
+                <Header {...user} />
+                {children}
+            </Column>
         </main>
     );
 };
 
 export default UserPage;
 
-export const Head: HeadFC<Queries.UserIndexQuery, UserTemplateContext> = ({
-    data,
-    pageContext,
-}) => {
+export const Head: HeadFC<Queries.UserIndexQuery> = ({ data }) => {
     const { name } = parseUser(data);
 
     return <DefaultHead title={name} />;
@@ -89,4 +102,12 @@ const parseUser = (data: Queries.UserIndexQuery) => {
 
     const user = ensure(parsedUser);
     return { ...user, pages };
+};
+
+const Header: React.FC<User> = ({ name }) => {
+    return (
+        <>
+            <h1>{name}</h1>
+        </>
+    );
 };
