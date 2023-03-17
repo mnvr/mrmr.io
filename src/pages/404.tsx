@@ -1,8 +1,10 @@
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
 import { HeadFC, Link, PageProps } from "gatsby";
+import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled from "styled-components";
+import { ensure } from "utils/ensure";
 
 const NotFoundPage: React.FC<PageProps> = () => {
     return (
@@ -17,20 +19,16 @@ export default NotFoundPage;
 export const Head: HeadFC = () => {
     return (
         <DefaultHead title="Page not found">
-            <PageColorStyle {...colors} />
+            <PageColorStyle {...colorPalettes} />
         </DefaultHead>
     );
 };
 
-const colors = {
-    backgroundColor: "hsl(0, 0%, 100%)",
-    color1: "hsl(0, 0%, 33.3%)",
-    color2: "hsl(0, 0%, 33.3%)",
-    color3: "hsl(0, 0%, 33.3%)",
-    darkBackgroundColor: "hsl(0, 0%, 26.6%)",
-    darkColor1: "hsl(0, 0%, 93.3%)",
-    darkColor2: "hsl(0, 0%, 93.3%)",
-    darkColor3: "hsl(0, 0%, 93.3%)",
+const colorPalettes = {
+    colors: ensure(
+        parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 33.3%)"])
+    ),
+    darkColors: parseColorPalette(["hsl(0, 0%, 26.6%)", "hsl(0, 0%, 93.3%)"]),
 };
 
 const Main = styled.main`

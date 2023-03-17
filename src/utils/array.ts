@@ -1,9 +1,10 @@
-/** Remove `undefined` values from an array */
-export const removeUndefineds = <T>(xs: readonly (T | undefined)[]): T[] => {
-    return xs.filter(isNotUndefined);
-};
-
-/** A type guard to let the compiler know the type impact of the filter */
-const isNotUndefined = <T>(x: T | undefined): x is T => {
+/**
+ * A type guard that returns false for `undefined` values.
+ *
+ * This is useful e.g. for removing undefined values from an array:
+ *
+ *     xs?.filter(isDefined)
+ */
+export const isDefined = <T>(x: T | undefined): x is T => {
     return x !== undefined;
 };

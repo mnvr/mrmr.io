@@ -1,84 +1,74 @@
-import { PageColors } from "parsers/page-colors";
+import {
+    ColorPalette,
+    parseColorPalette,
+    type ColorPaletteSet,
+} from "parsers/colors";
 import { createGlobalStyle } from "styled-components";
+import { isDefined } from "utils/array";
+import { ensure } from "utils/ensure";
 
-export interface PageColorStyleProps {
-    backgroundColor: string;
-    color1: string;
-    color2: string;
-    color3: string;
-
-    /** Optional dark mode overrides */
-    darkBackgroundColor?: string;
-    darkColor1?: string;
-    darkColor2?: string;
-    darkColor3?: string;
-}
-
-export const PageColorStyle = createGlobalStyle<PageColorStyleProps>`
+export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
     body {
-        --mrmr-background-color: ${(props) => props.backgroundColor};
-        --mrmr-color-1: ${(props) => props.color1};
-        --mrmr-color-2: ${(props) => props.color2};
-        --mrmr-color-3: ${(props) => props.color3};
+        --mrmr-background-color-1: ${(props) => props.colors.backgroundColor1};
+        --mrmr-color-1: ${(props) => props.colors.color1};
+        --mrmr-color-2: ${(props) => props.colors.color2};
+        --mrmr-color-3: ${(props) => props.colors.color3};
+        --mrmr-hover-color-1: ${(props) => props.colors.hoverColor1};
 
         @media (prefers-color-scheme: dark) {
-            --mrmr-background-color: ${(props) =>
-                props.darkBackgroundColor ?? props.backgroundColor};
-            --mrmr-color-1: ${(props) => props.darkColor1 ?? props.color1};
-            --mrmr-color-2: ${(props) => props.darkColor2 ?? props.color2};
-            --mrmr-color-3: ${(props) => props.darkColor3 ?? props.color3};
+            --mrmr-background-color-1: ${(props) =>
+                props.darkColors?.backgroundColor1 ??
+                props.colors.backgroundColor1};
+            --mrmr-color-1: ${(props) =>
+                props.darkColors?.color1 ?? props.colors.color1};
+            --mrmr-color-2: ${(props) =>
+                props.darkColors?.color2 ?? props.colors.color2};
+            --mrmr-color-3: ${(props) =>
+                props.darkColors?.color3 ?? props.colors.color3};
+            --mrmr-hover-color-1: ${(props) =>
+                props.darkColors?.hoverColor1 ?? props.colors.hoverColor1};
         }
     }
 `;
 
 /**
- * Convenience method to construct an instance of {@link @PageColorStyleProps}
- * from an collection of {@link PageColors}.
+ * Convenience method to construct a color palette set from the given palettes.
  *
- * @param colorable A thing that provides two properties, named `colors` and
- * `darkColors`, which are taken as the colors to use. These are usually
- * specified in the frontmatter of MDX files.
- * @param fallbackProps If specified, these fallback set of colors will be
- * returned as the props when `colorable` are not specified, or if colorable
- * doesn't have its `colors` set.
+ * If the default/light palette is specified, then we return a palette set using
+ * that light and the (optional) dark one. Otherwise we use the fallback palette
+ * set.
  *
- * If neither `colorable?.colors` nor `fallbackProps` are specified, then this
- * function returns {@link DefaultPageColorStyleProps}.
+ * The light and dark palettes are specified in array form. The first entry is
+ * taken as the light one.
+ *
+ * If even the fallback is not present, then we use {@link defaultColorPalettes}.
  */
-export const createPageColorStyleProps = (
-    colorable?: { colors?: PageColors; darkColors?: PageColors },
-    fallbackProps?: PageColorStyleProps
+export const paletteSetOrFallback = (
+    palettes: readonly (ColorPalette | undefined)[],
+    fallback?: ColorPaletteSet
 ) => {
-    const { colors, darkColors } = colorable ?? {};
-    if (!colors) return fallbackProps ?? DefaultPageColorStyleProps;
-
-    // Content pages have fixed colors and render the same in both light and
-    // dark, so we only specify the light versions (the dark mode will use the
-    // same too).
-    return {
-        backgroundColor: colors.background,
-        color1: colors.color1,
-        color2: colors.color2,
-        color3: colors.color3,
-        darkBackgroundColor: darkColors?.background,
-        darkColor1: darkColors?.color1,
-        darkColor2: darkColors?.color2,
-        darkColor3: darkColors?.color3,
-    };
+    const [colors, darkColors] = palettes?.filter(isDefined);
+    return colors ? { colors, darkColors } : fallback ?? defaultColorPalettes;
 };
 
 /**
- * These are the default set of colors returned by
- * {@link createPageColorStyleProps} if neither the colors nor the fallbackProps
- * were provided to it.
+ * A default set of color palettes.
+ *
+ * Be calm, and readable. Supports both light/dark.
  */
-export const DefaultPageColorStyleProps: PageColorStyleProps = {
-    backgroundColor: "hsl(0, 0%, 100%)",
-    color1: "hsl(0, 0%, 15%)",
-    color2: "hsl(0, 0%, 15%)",
-    color3: "hsl(0, 0%, 13%)",
-    darkBackgroundColor: "hsl(198, 13%, 8%)",
-    darkColor1: "hsl(0, 0%, 87%)",
-    darkColor2: "hsl(0, 0%, 87%)",
-    darkColor3: "hsl(0, 0%, 87%)",
+export const defaultColorPalettes = {
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 13%)",
+        ])
+    ),
+    darkColors: parseColorPalette([
+        "hsl(198, 13%, 8%)",
+        "hsl(0, 0%, 87%)",
+        "hsl(0, 0%, 87%)",
+        "hsl(0, 0%, 87%)",
+    ]),
 };

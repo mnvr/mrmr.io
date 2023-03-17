@@ -1,14 +1,14 @@
 import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
 import {
-    createPageColorStyleProps,
     PageColorStyle,
+    paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { ParsedLinkButtons } from "components/ParsedLinks";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { parseFlair } from "parsers/flairs";
 import { ParsedLink, parseUserLinks } from "parsers/links";
-import { PageColors, parsePageColors } from "parsers/page-colors";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
@@ -19,13 +19,16 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
     children,
 }) => {
     const user = parseUser(data);
+    const colorPalettes = paletteSetOrFallback([user.colors, user.darkColors]);
 
     return (
         <main>
-            <PageColorStyle {...createPageColorStyleProps(user)} />
+            <PageColorStyle {...colorPalettes} />
             <Column>
                 <Header {...user} />
-                <UserMarkdownContainer>{children}</UserMarkdownContainer>
+                <UserMarkdownContainer {...user}>
+                    {children}
+                </UserMarkdownContainer>
             </Column>
         </main>
     );
@@ -66,8 +69,8 @@ export const query = graphql`
 interface User {
     name: string;
     flair?: string;
-    colors?: PageColors;
-    darkColors?: PageColors;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
     pages: Page[];
     links?: ParsedLink[];
 }
@@ -75,8 +78,8 @@ interface User {
 interface Page {
     title: string;
     slug: string;
-    colors?: PageColors;
-    darkColors?: PageColors;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
 }
 
 const parseUser = (data: Queries.UserIndexQuery) => {
@@ -88,8 +91,8 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     nodes.forEach((node) => {
         const { frontmatter, fields } = node;
         const template = ensure(fields?.template);
-        const colors = parsePageColors(frontmatter?.colors);
-        const darkColors = parsePageColors(frontmatter?.dark_colors);
+        const colors = parseColorPalette(frontmatter?.colors);
+        const darkColors = parseColorPalette(frontmatter?.dark_colors);
 
         if (template == "user") {
             const name = ensure(frontmatter?.name);
@@ -159,6 +162,16 @@ const LinkButtonsContainer = styled.div`
     }
 `;
 
-const UserMarkdownContainer = styled.div`
+const UserMarkdownContainer = styled.div<User>`
     margin-top: 2rem;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid;
+    }
+
+    a:hover {
+        background-color: var(--mrmr-hover-color-1);
+    }
 `;

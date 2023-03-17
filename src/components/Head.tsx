@@ -1,7 +1,7 @@
 import { graphql, useStaticQuery } from "gatsby";
 import * as React from "react";
 import "styles/global.css";
-import { removeUndefineds } from "utils/array";
+import { isDefined } from "utils/array";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 interface HeadProps {
@@ -26,7 +26,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
 
     const site = replaceNullsWithUndefineds(data.site);
     const siteTitle = site?.siteMetadata?.title;
-    const pageTitle = removeUndefineds([siteTitle, title]).join(" | ");
+    const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
 
     return (
         <>

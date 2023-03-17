@@ -1,10 +1,10 @@
 import { DefaultHead } from "components/Head";
 import {
-    createPageColorStyleProps,
     PageColorStyle,
+    paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
-import { parsePageColors } from "parsers/page-colors";
+import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -14,10 +14,11 @@ const Page: React.FC<PageProps<Queries.DefaultPageQuery>> = ({
     children,
 }) => {
     const page = parseData(data);
+    const colorPalettes = paletteSetOrFallback([page.colors, page.darkColors]);
 
     return (
         <main>
-            <PageColorStyle {...createPageColorStyleProps(page)} />
+            <PageColorStyle {...colorPalettes} />
             {children}
         </main>
     );
@@ -46,8 +47,8 @@ export const query = graphql`
 const parseData = (data: Queries.DefaultPageQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
     const title = ensure(mdx?.frontmatter?.title);
-    const colors = parsePageColors(mdx?.frontmatter?.colors);
-    const darkColors = parsePageColors(mdx?.frontmatter?.dark_colors);
+    const colors = parseColorPalette(mdx?.frontmatter?.colors);
+    const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
     return { title, colors, darkColors };
 };

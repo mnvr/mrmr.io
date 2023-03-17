@@ -1,10 +1,10 @@
 import { DefaultHead } from "components/Head";
 import {
-    createPageColorStyleProps,
     PageColorStyle,
+    paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
-import { PageColors, parsePageColors } from "parsers/page-colors";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import { ensure } from "utils/ensure";
@@ -18,32 +18,29 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  *   on, and you don't know, where it'll go. – @mnvr
  */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const baseColors = {
-        backgroundColor: "hsl(0, 0%, 100%)",
-        color1: "hsl(0, 0%, 13%)",
-        color2: "hsl(0, 0%, 13%)",
-        color3: "hsl(0, 0%, 13%)",
-        darkBackgroundColor: "hsl(240, 6%, 20%)",
-        darkColor1: "hsl(240, 12%, 90%)",
-        darkColor2: "hsl(240, 12%, 90%)",
-        darkColor3: "hsl(240, 12%, 90%)",
-    };
-
     const pages = parsePages(data);
 
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
 
     // If the user is hovering on the link to a page, use that page's colors.
-    let csProps = createPageColorStyleProps(hoverPage, baseColors);
+    let colorPalettes = paletteSetOrFallback(
+        [hoverPage?.colors, hoverPage?.darkColors],
+        baseColorPalettes
+    );
 
     return (
         <Main>
-            <PageColorStyle {...csProps} />
+            <PageColorStyle {...colorPalettes} />
             <GlobalStyle />
             <IndexTitle />
             <PageListing {...{ pages, setHoverPage }} />
         </Main>
     );
+};
+
+const baseColorPalettes = {
+    colors: ensure(parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 13%)"])),
+    darkColors: parseColorPalette(["hsl(240, 6%, 20%)", "hsl(240, 12%, 90%)"]),
 };
 
 export default IndexPage;
@@ -75,8 +72,8 @@ export const query = graphql`
 interface Page {
     title: string;
     slug: string;
-    colors?: PageColors;
-    darkColors?: PageColors;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
 }
 
 const parsePages = (data: Queries.IndexPageQuery) => {
@@ -87,8 +84,8 @@ const parsePages = (data: Queries.IndexPageQuery) => {
         const { frontmatter, fields } = node;
         const title = ensure(frontmatter?.title);
         const slug = ensure(fields?.slug);
-        const colors = parsePageColors(frontmatter?.colors);
-        const darkColors = parsePageColors(frontmatter?.dark_colors);
+        const colors = parseColorPalette(frontmatter?.colors);
+        const darkColors = parseColorPalette(frontmatter?.dark_colors);
 
         return { title, slug, colors, darkColors };
     });
@@ -195,7 +192,7 @@ const PageGrid = styled.div`
 `;
 
 const PageItem = styled.div<Page>`
-    background-color: ${(props) => props.colors?.background ?? "inherit"};
+    background-color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
     color: ${(props) => props.colors?.color1 ?? "inherit"};
     width: 13ch;
     height: 11.7ch;

@@ -10,6 +10,8 @@
         "esModuleInterop": true,
         "jsx": "react",
 
+        /* Our customizations, or things that should be less blackboxey  */
+
         /* Enable strict mode, tell tsc (the TypeScript compiler) to go all out
            and do its thing */
         "strict": true,
@@ -18,6 +20,8 @@
         /* Enable case sensitive imports: this ensures that the name used in the
            import has the same case as the name of the file on disk */
         "forceConsistentCasingInFileNames": true,
+        /* Make array indexing return undefineds (as they indeed can) */
+        "noUncheckedIndexedAccess": true,
 
         /* Allow importing JSON files directly */
         "resolveJsonModule": true,

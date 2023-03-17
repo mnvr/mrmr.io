@@ -15,6 +15,6 @@ body {
 /* Use CSS variable to define background colors. This simplifies changing them
    around on page load using styled components without causing FOUC */
 body {
-    background-color: var(--mrmr-background-color);
+    background-color: var(--mrmr-background-color-1);
     color: var(--mrmr-color-1);
 }

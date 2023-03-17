@@ -1,5 +1,5 @@
 import { getDomain, getDomainWithoutSuffix } from "tldts";
-import { removeUndefineds } from "utils/array";
+import { isDefined } from "utils/array";
 
 /** Domains that we have special casing for (e.g. custom icons) */
 export type KnownDomain =
@@ -66,7 +66,7 @@ type InputURLs = readonly (string | undefined)[] | undefined;
 
 /** General link parser for a list of URLs */
 export const parseLinks = (ss: InputURLs) =>
-    ss ? removeUndefineds(ss).map(parseLink) : undefined;
+    ss?.filter(isDefined)?.map(parseLink);
 
 /**
  * Parse a list of URLs in the context of the user's home page
