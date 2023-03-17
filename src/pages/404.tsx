@@ -62,10 +62,6 @@ const Main = styled.main`
         background-color: hsl(0, 0%, 93.3%);
     }
 
-    a:active {
-        background-color: yellow;
-    }
-
     @media (prefers-color-scheme: dark) {
         a {
             color: hsl(0, 0%, 60%);
@@ -75,6 +71,10 @@ const Main = styled.main`
             color: hsl(0, 0%, 6.6%);
             background-color: hsl(0, 0%, 80%);
         }
+    }
+
+    a:active {
+        background-color: yellow;
     }
 `;
 
