@@ -1,7 +1,7 @@
 import { Link } from "gatsby";
 import { ColorPalette } from "parsers/colors";
 import * as React from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 /** The data for each page required by the {@link PageListing} component */
 export interface Page {
@@ -42,6 +42,13 @@ export const PageListing: React.FC<PageListingProps> = ({
         </PageGrid>
     );
 };
+
+/** A CSS transition that makes the background color changes more pleasing */
+export const BodyBackgroundColorTransitionStyle = createGlobalStyle`
+    body {
+        transition: background-color 200ms ease-out;
+    }
+`;
 
 const PageGrid = styled.div`
     display: grid;

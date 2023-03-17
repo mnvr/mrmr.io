@@ -1,45 +1,31 @@
 import { DefaultHead } from "components/Head";
-import {
-    PageColorStyle,
-    paletteSetOrFallback,
-} from "components/PageColorStyle";
-import { PageListing, type Page } from "components/PageListing";
+import { PageColorStyle } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
  * The home page for mrmr.io
  *
- * > What it displays is arbitrary. Currently it lists my artwork, but it can
- *   also show nothing. It's like a polythene blowing in the wind, don't rely
- *   on, and you don't know, where it'll go. – @mnvr
+ * > What it displays is arbitrary. It could list my artwork, but it can also
+ *   show nothing. It's like a torn bag of polythene, blowing in the wind; you
+ *   don't / won't know where it'll go so it is best not to rely on it – @mnvr
  */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
-    const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
-
-    // If the user is hovering on the link to a page, use that page's colors.
-    let colorPalettes = paletteSetOrFallback(
-        [hoverPage?.colors, hoverPage?.darkColors],
-        baseColorPalettes
-    );
-
     return (
         <Main>
             <PageColorStyle {...colorPalettes} />
-            <GlobalStyle />
             <IndexTitle />
-            <PageListing {...{ pages, setHoverPage }} />
         </Main>
     );
 };
 
-const baseColorPalettes = {
+const colorPalettes = {
     colors: ensure(parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 13%)"])),
     darkColors: parseColorPalette(["hsl(240, 6%, 20%)", "hsl(240, 12%, 90%)"]),
 };
@@ -84,12 +70,6 @@ const parsePages = (data: Queries.IndexPageQuery) => {
         return { title, slug, colors, darkColors };
     });
 };
-
-const GlobalStyle = createGlobalStyle`
-    body {
-        transition: background-color 200ms ease-out;
-    }
-`;
 
 const Main = styled.main`
     display: flex;

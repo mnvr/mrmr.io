@@ -4,6 +4,10 @@ import {
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
+import {
+    BodyBackgroundColorTransitionStyle,
+    PageListing,
+} from "components/PageListing";
 import { ParsedLinkButtons } from "components/ParsedLinks";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
@@ -19,17 +23,27 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
     children,
 }) => {
     const user = parseUser(data);
-    const colorPalettes = paletteSetOrFallback([user.colors, user.darkColors]);
+    const { pages } = user;
+
+    const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
+
+    // If the user is hovering on the link to a page, use that page's colors.
+    let colorPalettes = paletteSetOrFallback(
+        [hoverPage?.colors, hoverPage?.darkColors],
+        paletteSetOrFallback([user.colors, user.darkColors])
+    );
 
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
+            <BodyBackgroundColorTransitionStyle />
             <Column>
                 <Header {...user} />
                 <UserMarkdownContainer className="mrmr-styled-a" {...user}>
                     {children}
                 </UserMarkdownContainer>
             </Column>
+            <PageListing {...{ pages, setHoverPage }} />
         </main>
     );
 };
