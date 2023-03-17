@@ -81,8 +81,9 @@ const PageItem = styled.div<Page>`
 
 const PageItemP = styled.p`
     margin: 0.25rem 0;
-    /* Setting the width to 1rem causes each word to be on its own line */
-    width: 1rem;
+    /* Set the width to the width of the smallest word. This causes each word to
+       be on its own line */
+    width: min-content;
 `;
 
 const PageItemCount = styled.div`

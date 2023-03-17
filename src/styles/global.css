@@ -1,8 +1,6 @@
 html {
-    /*
-     * Increase the root font size size a bit from the browser default of 16px
-     * to improve legibility.
-     */
+    /* Increase the root font size size a bit from the browser default of 16px
+       to improve legibility. */
     font-size: 18px;
 }
 
@@ -14,10 +12,8 @@ body {
     font-family: system-ui, sans-serif;
 }
 
-/*
- * Use CSS variables to define background colors. This simplifies changing them
- * around on page load using styled components without causing FOUC.
- */
+/* Use CSS variables to define background colors. This simplifies changing them
+   around on page load using styled components without causing FOUC */
 body {
     background-color: var(--mrmr-background-color-1);
     color: var(--mrmr-color-1);
