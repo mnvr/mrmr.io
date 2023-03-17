@@ -88,25 +88,25 @@ const GithubIcon: React.FC<IconProps> = ({ link }) => {
     // Note the use of "em" to scale it relative to the computed font size of
     // these icons – if we'd used rem it'd have scaled it relative to the root
     // font size.
-    return <FiGithub size="0.96em" title={link.title ?? "GitHub"} />;
+    return <FiGithub size="0.96em" title={link.title} />;
 };
 
 const TwittterIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiTwitter title={link.title ?? "Twitter"} />;
+    return <FiTwitter title={link.title} />;
 };
 
 const InstagramIcon: React.FC<IconProps> = ({ link }) => {
-    return <FaInstagram title={link.title ?? "Instagram"} />;
+    return <FaInstagram title={link.title} />;
 };
 
 const YouTubeIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiYoutube title={link.title ?? "YouTube"} />;
+    return <FiYoutube title={link.title} />;
 };
 
 const RedditIcon: React.FC<IconProps> = ({ link }) => {
-    return <RiRedditLine title={link.title ?? "Reddit"} />;
+    return <RiRedditLine title={link.title} />;
 };
 
 const GenericLinkIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiLink size="0.95em" title={link.title ?? link.url} />;
+    return <FiLink size="0.95em" title={link.title} />;
 };
