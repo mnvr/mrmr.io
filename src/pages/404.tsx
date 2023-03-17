@@ -65,11 +65,11 @@ const Main = styled.main`
 `;
 
 const H1 = styled.h1`
-    margin-bottom: 0;
+    margin-block-end: 0;
 `;
 
 const Quote = styled.p`
-    margin: 0.7rem 0;
+    margin-block: 0.7rem;
     font-family: serif;
     font-size: 1.5rem;
     color: hsl(0, 0%, 54%);
@@ -101,7 +101,7 @@ const Content: React.FC = () => {
                 <Link to="/">
                     You can always start again
                     <br />
-                    <i>like a tear, in the rain</i>
+                    <i>like a tear in the rain</i>
                 </Link>
             </p>
         </div>

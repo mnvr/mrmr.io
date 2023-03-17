@@ -149,7 +149,7 @@ const Flair: React.FC<React.PropsWithChildren> = ({ children }) => {
 const FlairContainer = styled.p`
     font-style: italic;
     margin-top: -1rem;
-    padding-left: 0.05rem;
+    padding-inline-start: 0.05rem;
     opacity: 0.8;
 `;
 

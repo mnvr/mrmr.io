@@ -28,15 +28,15 @@ const Heading: React.FC = () => {
 
 const H1 = styled.h1`
     margin: 1.8rem;
-    margin-bottom: 1.3rem;
+    margin-block-end: 1.3rem;
     font-weight: 800;
     font-style: italic;
 `;
 
 const P = styled.p`
     margin: 1.8rem;
-    margin-top: 1.3rem;
-    margin-bottom: 2rem;
+    margin-block-start: 1.3rem;
+    margin-block-end: 2rem;
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: var(--mrmr-color-2);

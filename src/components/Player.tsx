@@ -116,7 +116,7 @@ const FirstScreen = styled.div`
 
 const CanvasGrid = styled.div`
     flex-grow: 1;
-    margin-bottom: 1.8rem;
+    margin-block-end: 1.8rem;
 
     display: grid;
 `;

@@ -88,14 +88,9 @@ const IndexTitle: React.FC = () => {
 };
 
 const H1 = styled.h1`
-    margin-top: 0;
-    /* increase top padding when the title and items side by side */
-    padding-top: 10svh;
-    @media (min-width: 700px) {
-        padding-top: 40svh;
-    }
-    margin-left: 1.8rem;
-    margin-bottom: 0;
+    margin-block: 0;
+    padding-block-start: 40svh;
+    margin-inline-start: 1.8rem;
     opacity: 0.92;
 `;
 
@@ -114,8 +109,7 @@ const Poem: React.FC = () => {
 };
 
 const PoemP = styled.p`
-    margin-left: 2rem;
+    margin-inline-start: 2rem;
     font-family: serif;
-    margin-bottom: 1.9rem;
     opacity: 0.72;
 `;

@@ -74,7 +74,8 @@ const PageItem = styled.div<Page>`
     color: ${(props) => props.colors?.color1 ?? "inherit"};
     width: 13ch;
     height: 11.7ch;
-    padding: 0.33rem 0.66rem;
+    padding-block: 0.33rem;
+    padding-inline: 0.66rem;
     position: relative;
 `;
 
