@@ -18,3 +18,35 @@ body {
     background-color: var(--mrmr-background-color-1);
     color: var(--mrmr-color-1);
 }
+
+/**
+ * Define a class that can be used to give a reasonable default styling to the
+ * text links contained within it.
+ *
+ * To use this, add this class to some parent div or p that contains the links
+ * that you want to style.
+ *
+ * Styling links
+ * ----
+ *
+ * Anchor tags with an attached href do not inherit color.
+ *
+ * An anchor can be in the different states, which can be targeted using the
+ * following pseudo classes:
+ * - a:link    / an anchor tag with a destination
+ * - a:visited / exists in the browser history
+ * - a:hover
+ * - a:focused / using a keyboard, e.g. option + tab on macOS by default, shows
+ *               a blue box border around the link
+ * - a:active  / when the user actually presses the link (red)
+ */
+.mrmr-styled-a a {
+    color: inherit;
+
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+}
+
+.mrmr-styled-a a:hover {
+    background-color: var(--mrmr-color-1-transparent);
+}

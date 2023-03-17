@@ -13,7 +13,8 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
         --mrmr-color-1: ${(props) => props.colors.color1};
         --mrmr-color-2: ${(props) => props.colors.color2};
         --mrmr-color-3: ${(props) => props.colors.color3};
-        --mrmr-hover-color-1: ${(props) => props.colors.hoverColor1};
+        --mrmr-color-1-transparent: ${(props) =>
+            props.colors.color1Transparent};
 
         @media (prefers-color-scheme: dark) {
             --mrmr-background-color-1: ${(props) =>
@@ -25,8 +26,9 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
                 props.darkColors?.color2 ?? props.colors.color2};
             --mrmr-color-3: ${(props) =>
                 props.darkColors?.color3 ?? props.colors.color3};
-            --mrmr-hover-color-1: ${(props) =>
-                props.darkColors?.hoverColor1 ?? props.colors.hoverColor1};
+            --mrmr-color-1-transparent: ${(props) =>
+                props.darkColors?.color1Transparent ??
+                props.colors.color1Transparent};
         }
     }
 `;

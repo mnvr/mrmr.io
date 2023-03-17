@@ -26,7 +26,7 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
             <PageColorStyle {...colorPalettes} />
             <Column>
                 <Header {...user} />
-                <UserMarkdownContainer {...user}>
+                <UserMarkdownContainer className="mrmr-styled-a" {...user}>
                     {children}
                 </UserMarkdownContainer>
             </Column>
@@ -164,14 +164,4 @@ const LinkButtonsContainer = styled.div`
 
 const UserMarkdownContainer = styled.div<User>`
     margin-top: 2rem;
-
-    a {
-        color: inherit;
-        text-decoration: none;
-        border-bottom: 1px solid;
-    }
-
-    a:hover {
-        background-color: var(--mrmr-hover-color-1);
-    }
 `;

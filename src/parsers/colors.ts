@@ -15,7 +15,7 @@ export interface ColorPalette {
     color1: string;
     color2: string;
     color3: string;
-    hoverColor1: string;
+    color1Transparent: string;
 }
 
 /** A set of color palettes - one default, and an optional dark one */
@@ -54,7 +54,7 @@ export const parseColorPalette = (
     const color2 = tc(all[2], color1);
     const color3 = tc(all[3], color2);
 
-    const hoverColor1 = color1.clone().setAlpha(0.3);
+    const color1Transparent = color1.clone().setAlpha(0.3);
 
     // Return their string representations.
     return {
@@ -62,7 +62,7 @@ export const parseColorPalette = (
         color1: color1.toString(),
         color2: color2.toString(),
         color3: color3.toString(),
-        hoverColor1: hoverColor1.toString(),
+        color1Transparent: color1Transparent.toString(),
     };
 };
 
