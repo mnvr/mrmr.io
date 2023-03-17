@@ -25,7 +25,7 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
             <PageColorStyle {...createPageColorStyleProps(user)} />
             <Column>
                 <Header {...user} />
-                {children}
+                <UserMarkdownContainer>{children}</UserMarkdownContainer>
             </Column>
         </main>
     );
@@ -115,16 +115,25 @@ const Header: React.FC<User> = ({ name, flair, links }) => {
     return (
         <>
             <h1>{name}</h1>
-            {flair && <FlairContainer>{flair}</FlairContainer>}
+            {flair && <Flair>{flair}</Flair>}
             {links && <LinkButtons links={links} />}
         </>
+    );
+};
+
+const Flair: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <FlairContainer>
+            <small>{children}</small>
+        </FlairContainer>
     );
 };
 
 const FlairContainer = styled.p`
     font-style: italic;
     margin-top: -1rem;
-    padding-left: 0.2rem;
+    padding-left: 0.05rem;
+    opacity: 0.8;
 `;
 
 interface LinkButtonsProps {
@@ -140,8 +149,6 @@ const LinkButtons: React.FC<LinkButtonsProps> = ({ links }) => {
 };
 
 const LinkButtonsContainer = styled.div`
-    padding: 0 0rem;
-
     a {
         color: inherit;
         opacity: 0.7;
@@ -150,4 +157,8 @@ const LinkButtonsContainer = styled.div`
     a:hover {
         opacity: 1;
     }
+`;
+
+const UserMarkdownContainer = styled.div`
+    margin-top: 2rem;
 `;

@@ -33,7 +33,8 @@ dark-colors:
 
 # Links
 #
-# This is a list of arbitrary URLs that'll show up on your home page.
+# This is a list of arbitrary URLs that'll show up on your home page. Order
+# will be preserved.
 #
 # For some of them, we'll regex match the domain to customize the icon that
 # is shown. Currently, the following domains will be special cased:
@@ -42,10 +43,13 @@ dark-colors:
 # - Instagram
 # - YouTube
 # - Reddit
+#
+# These will also show up on all your pages, unless overridden. For more
+# details see the documentation for the links frontmatter field in the page MDX.
 links:
     - https://github.com/mnvr/
     - https://example.org
-    - https://youtube.com/@chan
+    - https://youtube.com/@
     - https://reddit.com/u/mnvrth
     - https://twitter.com/mnvrth
     - https://instagram.com/mnvrth
@@ -62,3 +66,5 @@ flairs:
     - Tyger tyger, burning bright
     - You what?
 ---
+
+You can add your own _mark_[down](https://example.org) here.
