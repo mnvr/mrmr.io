@@ -6,6 +6,7 @@ import {
 } from "components/PageColorStyle";
 import { ParsedLinkButtons } from "components/ParsedLinks";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { parseFlair } from "parsers/flairs";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import { PageColors, parsePageColors } from "parsers/page-colors";
 import * as React from "react";
@@ -51,6 +52,7 @@ export const query = graphql`
                     colors
                     dark_colors
                     links
+                    flairs
                 }
                 fields {
                     slug
@@ -63,6 +65,7 @@ export const query = graphql`
 
 interface User {
     name: string;
+    flair?: string;
     colors?: PageColors;
     darkColors?: PageColors;
     pages: Page[];
@@ -91,8 +94,9 @@ const parseUser = (data: Queries.UserIndexQuery) => {
         if (template == "user") {
             const name = ensure(frontmatter?.name);
             const links = parseUserLinks(frontmatter?.links);
+            const flair = parseFlair(frontmatter?.flairs);
 
-            parsedUser = { name, colors, darkColors, links, pages: [] };
+            parsedUser = { name, colors, darkColors, links, flair, pages: [] };
         } else {
             const title = ensure(frontmatter?.title);
             const slug = ensure(fields?.slug);
@@ -107,14 +111,21 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     return { ...user, pages };
 };
 
-const Header: React.FC<User> = ({ name, links }) => {
+const Header: React.FC<User> = ({ name, flair, links }) => {
     return (
         <>
             <h1>{name}</h1>
+            {flair && <FlairContainer>{flair}</FlairContainer>}
             {links && <LinkButtons links={links} />}
         </>
     );
 };
+
+const FlairContainer = styled.p`
+    font-style: italic;
+    margin-top: -1rem;
+    padding-left: 0.2rem;
+`;
 
 interface LinkButtonsProps {
     links: ParsedLink[];
