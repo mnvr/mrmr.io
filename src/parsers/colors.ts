@@ -5,10 +5,9 @@ import { ensure } from "utils/ensure";
 /**
  * A set of colors, or as Picasso would say, a palette.
  *
- * Usually we don't need to specify these all out explicitly - we start with 2
- * colors – background/foreground – and then use various heuristics to generate
- * the rest. However, colors are not science, so these heuristics don't always
- * work, so there are ways to specify more of these out explicitly.
+ * The two important ones are the main background - foreground color pair
+ * `backgroundColor1` and `color1`. Rest of them are more like accents with
+ * rather specific and arbitrary uses.
  */
 export interface ColorPalette {
     backgroundColor1: string;
@@ -21,21 +20,26 @@ export interface ColorPalette {
 /** A set of color palettes - one default, and an optional dark one */
 export interface ColorPaletteSet {
     colors: ColorPalette;
-    /** Optional dark mode overrides */
+    /** 
+     * Optional dark mode overrides
+     *
+     * If these are not present, we'll use the light mode `colors` always.
+     */
     darkColors?: ColorPalette;
 }
 
 /**
  * Parse a array of colors into a {@link ColorPalette}.
  *
- * The first two values are the only required one, and they're used as the
+ * The first two values are the only required ones, and they're used as the
  * primary background (`backgroundColor1`) and foreground (`color1`) colors.
  *
- * Rest everything can be heuristically computed from these two base colors. But
- * you can specify more values in the array to explicitly provide a shade you
- * like.
+ * Rest everything either
+ * - falls back to these two if not explicitly specified,
+ * - or is heuristically computed from these two base colors.
  *
- * Which array position maps to which color is a bit of a mish-mash currently.
+ * Which array position maps to which color is a bit of a (as yet) undocumented
+ * mish-mash.
  */
 export const parseColorPalette = (
     colors: readonly (string | undefined)[] | undefined

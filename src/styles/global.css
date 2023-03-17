@@ -1,6 +1,8 @@
 html {
-    /* Increase the root font size size a bit from the browser default of 16px
-       to improve legibility. */
+    /*
+     * Increase the root font size size a bit from the browser default of 16px
+     * to improve legibility.
+     */
     font-size: 18px;
 }
 
@@ -12,24 +14,17 @@ body {
     font-family: system-ui, sans-serif;
 }
 
-/* Use CSS variable to define background colors. This simplifies changing them
-   around on page load using styled components without causing FOUC */
+/*
+ * Use CSS variables to define background colors. This simplifies changing them
+ * around on page load using styled components without causing FOUC.
+ */
 body {
     background-color: var(--mrmr-background-color-1);
     color: var(--mrmr-color-1);
 }
 
-/**
- * Define a class that can be used to give a reasonable default styling to the
- * text links contained within it.
- *
- * To use this, add this class to some parent div or p that contains the links
- * that you want to style.
- *
+/*
  * Styling links
- * ----
- *
- * Anchor tags with an attached href do not inherit color.
  *
  * An anchor can be in the different states, which can be targeted using the
  * following pseudo classes:
@@ -40,13 +35,14 @@ body {
  *               a blue box border around the link
  * - a:active  / when the user actually presses the link (red)
  */
-.mrmr-styled-a a {
+a {
+    /*
+     * Anchor tags with an attached href do not inherit color.
+     *
+     * While there isn't one color that'll work in all cases, the browser
+     * default doesn't fit our use cases usually since it is not dark mode
+     * aware. So give it a more reasonable default of using the inherited color
+     * (i.e the same color as the other text)
+     */
     color: inherit;
-
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-}
-
-.mrmr-styled-a a:hover {
-    background-color: var(--mrmr-color-1-transparent);
 }

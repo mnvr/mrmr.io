@@ -39,7 +39,7 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
             <BodyBackgroundColorTransitionStyle />
             <Column>
                 <Header {...user} />
-                <UserMarkdownContainer className="mrmr-styled-a" {...user}>
+                <UserMarkdownContainer {...user}>
                     {children}
                 </UserMarkdownContainer>
             </Column>
@@ -167,7 +167,6 @@ const LinkButtons: React.FC<LinkButtonsProps> = ({ links }) => {
 
 const LinkButtonsContainer = styled.div`
     a {
-        color: inherit;
         opacity: 0.7;
     }
 
@@ -178,4 +177,13 @@ const LinkButtonsContainer = styled.div`
 
 const UserMarkdownContainer = styled.div<User>`
     margin-top: 2rem;
+
+    a {
+        text-decoration: none;
+        border-bottom: 1px solid currentColor;
+    }
+
+    a:hover {
+        background-color: var(--mrmr-color-1-transparent);
+    }
 `;

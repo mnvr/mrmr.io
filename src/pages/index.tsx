@@ -12,7 +12,7 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  *
  * > What it displays is arbitrary. It could list my artwork, but it can also
  *   show nothing. It's like a torn bag of polythene, blowing in the wind; you
- *   don't / won't know where it'll go so it is best not to rely on it – @mnvr
+ *   don't / won't know where it'll go so it is best not to rely on it. – @mnvr
  */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
