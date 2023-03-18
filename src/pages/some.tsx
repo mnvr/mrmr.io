@@ -95,7 +95,7 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
         <Column>
             <UL>
                 {pages.map((page) => (
-                    <LI key={page.slug} {...page}>
+                    <LI key={page.slug} {...createLIProps(page)}>
                         <PageLink {...page} />
                     </LI>
                 ))}
@@ -131,46 +131,53 @@ const UL = styled.ul`
 `;
 
 interface LIProps {
-    colors?: ColorPalette;
-    darkColors?: ColorPalette;
+    color: string;
+    hoverColor: string;
+    darkColor: string;
+    darkHoverColor: string;
 }
+
+const createLIProps = ({ colors, darkColors }: Page) => {
+    return {
+        color: colors?.backgroundColor1 ?? "var(--mrmr-color-1-transparent)",
+        hoverColor:
+            colors?.backgroundColor1Transparent ??
+            "var(--mrmr-background-color-1-transparent)",
+        darkColor:
+            darkColors?.backgroundColor1 ??
+            colors?.backgroundColor1 ??
+            "var(--mrmr-color-1-transparent)",
+        darkHoverColor:
+            darkColors?.backgroundColor1Transparent ??
+            colors?.backgroundColor1Transparent ??
+            "var(--mrmr-background-color-1-transparent)",
+    };
+};
 
 const LI = styled.li<LIProps>`
     ::marker {
-        color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
+        color: ${(props) => props.color};
     }
 
     a {
-        border-bottom: 1px solid
-            ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
+        border-bottom: 1px solid ${(props) => props.color};
     }
 
     a:hover {
-        background-color: ${(props) =>
-            props.colors?.backgroundColor1Transparent ?? "inherit"};
+        background-color: ${(props) => props.hoverColor};
     }
 
     @media (prefers-color-scheme: dark) {
         ::marker {
-            color: ${(props) =>
-                props.darkColors?.backgroundColor1 ??
-                props.colors?.backgroundColor1 ??
-                "inherit"};
+            color: ${(props) => props.darkColor};
         }
 
         a {
-            border-bottom: 1px solid
-                ${(props) =>
-                    props.darkColors?.backgroundColor1 ??
-                    props.colors?.backgroundColor1 ??
-                    "inherit"};
+            border-bottom: 1px solid ${(props) => props.darkColor};
         }
 
         a:hover {
-            background-color: ${(props) =>
-                props.darkColors?.backgroundColor1Transparent ??
-                props.colors?.backgroundColor1Transparent ??
-                "inherit"};
+            background-color: ${(props) => props.darkHoverColor};
         }
     }
 `;
