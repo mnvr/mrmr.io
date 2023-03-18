@@ -1,6 +1,6 @@
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
-import { graphql, HeadFC, PageProps } from "gatsby";
+import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled from "styled-components";
@@ -83,13 +83,19 @@ const IndexTitle: React.FC = () => {
         <div>
             <H1>mrmr</H1>
             <Poem />
+            <Nav>
+                <small>
+                    <Link to="/some">some</Link>,{" "}
+                    <Link to="/random">random</Link>
+                </small>
+            </Nav>
         </div>
     );
 };
 
 const H1 = styled.h1`
     margin-block: 0;
-    padding-block-start: 40svh;
+    padding-block-start: 37svh;
     margin-inline-start: 1.8rem;
     opacity: 0.92;
 `;
@@ -112,4 +118,22 @@ const PoemP = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
     opacity: 0.72;
+`;
+
+const Nav = styled.p`
+    padding-block-start: 24svh;
+    margin-inline-start: 1.8rem;
+    opacity: 0.72;
+    font-family: serif;
+    font-style: italic;
+
+    a {
+        text-decoration: none;
+        border-bottom: 1px dashed currentColor;
+    }
+
+    a:hover {
+        border-bottom: 1px solid currentColor;
+        background-color: var(--mrmr-color-1-transparent);
+    }
 `;
