@@ -51,18 +51,14 @@ export const BodyBackgroundColorTransitionStyle = createGlobalStyle`
 `;
 
 const PageGrid = styled.div`
-    display: grid;
-    /* 2 columns on large enough screens */
-    grid-template-columns: auto;
-    @media (min-width: 460px) {
-        grid-template-columns: auto auto;
-    }
-    align-content: end;
+    padding-block: 1.9rem;
+
+    display: flex;
+    flex-wrap: wrap;
     gap: 1.9rem;
 
     font-weight: 500;
     font-variant: small-caps;
-    padding: 1.9rem;
 
     a {
         text-decoration: none;

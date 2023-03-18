@@ -42,8 +42,8 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
                 <UserMarkdownContainer {...user}>
                     {children}
                 </UserMarkdownContainer>
+                <PageListing {...{ pages, setHoverPage }} />
             </Column>
-            <PageListing {...{ pages, setHoverPage }} />
         </main>
     );
 };
@@ -131,12 +131,16 @@ const parseUser = (data: Queries.UserIndexQuery) => {
 const Header: React.FC<User> = ({ name, flair, links }) => {
     return (
         <>
-            <h1>{name}</h1>
+            <H1>{name}</H1>
             {flair && <Flair>{flair}</Flair>}
             {links && <LinkButtons links={links} />}
         </>
     );
 };
+
+const H1 = styled.h1`
+    margin-top: 2rem;
+`;
 
 const Flair: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
