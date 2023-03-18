@@ -111,7 +111,6 @@ const UL = styled.ul`
     a {
         opacity: 0.9;
         text-decoration: none;
-        border-bottom: 1px solid currentColor;
     }
 
     a:hover {
@@ -124,6 +123,10 @@ const UL = styled.ul`
 
     .userinfo a {
         border-bottom: none;
+    }
+
+    .userinfo a:hover {
+        background-color: var(--mrmr-color-1-transparent);
     }
 `;
 
@@ -142,6 +145,11 @@ const LI = styled.li<LIProps>`
             ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
     }
 
+    a:hover {
+        background-color: ${(props) =>
+            props.colors?.backgroundColor1Transparent ?? "inherit"};
+    }
+
     @media (prefers-color-scheme: dark) {
         ::marker {
             color: ${(props) =>
@@ -156,6 +164,13 @@ const LI = styled.li<LIProps>`
                     props.darkColors?.backgroundColor1 ??
                     props.colors?.backgroundColor1 ??
                     "inherit"};
+        }
+
+        a:hover {
+            background-color: ${(props) =>
+                props.darkColors?.backgroundColor1Transparent ??
+                props.colors?.backgroundColor1Transparent ??
+                "inherit"};
         }
     }
 `;
