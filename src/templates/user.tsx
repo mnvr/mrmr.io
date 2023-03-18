@@ -59,7 +59,10 @@ export const query = graphql`
     query UserIndex($username: String!) {
         allMdx(
             filter: { fields: { username: { eq: $username } } }
-            sort: { frontmatter: { date: DESC } }
+            sort: [
+                { frontmatter: { date: DESC } }
+                { frontmatter: { title: ASC } }
+            ]
         ) {
             nodes {
                 frontmatter {

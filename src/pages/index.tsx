@@ -40,7 +40,10 @@ export const query = graphql`
             filter: {
                 fields: { template: { eq: "page" }, username: { eq: "mnvr" } }
             }
-            sort: { frontmatter: { date: DESC } }
+            sort: [
+                { frontmatter: { date: DESC } }
+                { frontmatter: { title: ASC } }
+            ]
         ) {
             nodes {
                 frontmatter {
