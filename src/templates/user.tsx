@@ -10,11 +10,12 @@ import {
 } from "components/PageListing";
 import { ParsedLinkButtons } from "components/ParsedLinks";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { useFlair } from "hooks/flairs";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { parseFlair } from "parsers/flairs";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import * as React from "react";
 import styled from "styled-components";
+import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -82,7 +83,7 @@ export const query = graphql`
 
 interface User {
     name: string;
-    flair?: string;
+    flairs?: string[];
     colors?: ColorPalette;
     darkColors?: ColorPalette;
     pages: Page[];
@@ -111,9 +112,9 @@ const parseUser = (data: Queries.UserIndexQuery) => {
         if (template == "user") {
             const name = ensure(frontmatter?.name);
             const links = parseUserLinks(frontmatter?.links);
-            const flair = parseFlair(frontmatter?.flairs);
+            const flairs = frontmatter?.flairs?.filter(isDefined);
 
-            parsedUser = { name, colors, darkColors, links, flair, pages: [] };
+            parsedUser = { name, colors, darkColors, links, flairs, pages: [] };
         } else {
             const title = ensure(frontmatter?.title);
             const slug = ensure(fields?.slug);
@@ -128,7 +129,9 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     return { ...user, pages };
 };
 
-const Header: React.FC<User> = ({ name, flair, links }) => {
+const Header: React.FC<User> = ({ name, flairs, links }) => {
+    const flair = useFlair(flairs);
+
     return (
         <>
             <H1>{name}</H1>
