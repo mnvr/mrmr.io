@@ -105,6 +105,9 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
 };
 
 const UL = styled.ul`
+    margin-block: 2.5rem;
+    line-height: 2.5rem;
+
     font-family: serif;
     font-style: italic;
 
