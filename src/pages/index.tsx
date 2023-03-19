@@ -1,22 +1,13 @@
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
-import { graphql, HeadFC, Link, PageProps } from "gatsby";
+import { HeadFC, Link } from "gatsby";
 import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
-import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/**
- * The home page for mrmr.io
- *
- * > What it displays is arbitrary. It could list my artwork, but it can also
- *   show nothing. It's like a torn bag of polythene, blowing in the wind; you
- *   don't / won't know where it'll go so it is best not to rely on it. – @mnvr
- */
-const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const pages = parsePages(data);
-
+/** The home page for mrmr.io */
+const IndexPage: React.FC = () => {
     return (
         <Main>
             <PageColorStyle {...colorPalettes} />
@@ -33,46 +24,6 @@ const colorPalettes = {
 export default IndexPage;
 
 export const Head: HeadFC = () => <DefaultHead />;
-
-export const query = graphql`
-    query IndexPage {
-        allMdx(
-            filter: {
-                fields: { template: { eq: "page" }, username: { eq: "mnvr" } }
-            }
-            sort: [
-                { frontmatter: { date: DESC } }
-                { frontmatter: { title: ASC } }
-            ]
-        ) {
-            nodes {
-                frontmatter {
-                    title
-                    colors
-                    dark_colors
-                }
-                fields {
-                    slug
-                }
-            }
-        }
-    }
-`;
-
-const parsePages = (data: Queries.IndexPageQuery) => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
-
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const title = ensure(frontmatter?.title);
-        const slug = ensure(fields?.slug);
-        const colors = parseColorPalette(frontmatter?.colors);
-        const darkColors = parseColorPalette(frontmatter?.dark_colors);
-
-        return { title, slug, colors, darkColors };
-    });
-};
 
 const Main = styled.main`
     display: flex;
