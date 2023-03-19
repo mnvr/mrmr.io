@@ -75,7 +75,7 @@ export const query = graphql`
                 }
                 fields {
                     slug
-                    template
+                    type
                 }
             }
         }
@@ -106,11 +106,11 @@ const parseUser = (data: Queries.UserIndexQuery) => {
     const pages: Page[] = [];
     nodes.forEach((node) => {
         const { frontmatter, fields } = node;
-        const template = ensure(fields?.template);
+        const type = ensure(fields?.type);
         const colors = parseColorPalette(frontmatter?.colors);
         const darkColors = parseColorPalette(frontmatter?.dark_colors);
 
-        if (template == "user") {
+        if (type == "user") {
             const name = ensure(frontmatter?.name);
             const links = parseUserLinks(frontmatter?.links);
             const flair = frontmatter?.flair;

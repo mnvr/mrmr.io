@@ -5,8 +5,9 @@ import path from "path";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import {
-    ensureTemplateName,
+    ensureIsPageType,
     PageTemplateContext,
+    PageType,
     UserTemplateContext,
 } from "./src/types/gatsby";
 import { ensure } from "./src/utils/ensure";
@@ -20,8 +21,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 
     // Create and attach a "slug" field to all MDX nodes.
     //
-    // Use the slug to determine and attach "username" and "template" fields
-    // too.
+    // Use the slug to determine and attach "username" and "type" fields too.
     if (node.internal.type == "Mdx") {
         // Do not add a trailing slash to the generated paths.
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
@@ -29,9 +29,9 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
         const slug = createFilePath({ node, getNode, trailingSlash });
 
         const username = ensureValidUsername(slug);
-        const template = isUserIndex(slug) ? "user" : "page";
+        const type = isUserIndex(slug) ? "user" : "page";
 
-        const newFields = { slug, username, template };
+        const newFields = { slug, username, type };
 
         Object.entries(newFields).forEach(([name, value]) => {
             createNodeField({
@@ -90,6 +90,9 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
                     fields {
                         slug
                         username
+                        type
+                    }
+                    frontmatter {
                         template
                     }
                     internal {
@@ -119,14 +122,19 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
             const id = node.id;
             const slug = ensure(node.fields?.slug);
             const username = ensure(node.fields?.username);
-            const template = ensureTemplateName(ensure(node.fields?.template));
+            const type = ensureIsPageType(ensure(node.fields?.type));
             const contentFilePath = ensure(node.internal?.contentFilePath);
-            const templatePath = path.resolve(`src/templates/${template}.tsx`);
+
+            const template = node.frontmatter?.template;
+            const templatePath = resolveTemplatePath(
+                type,
+                template ?? "default"
+            );
 
             createPage<Context>({
                 path: slug,
                 component: `${templatePath}?__contentFilePath=${contentFilePath}`,
-                context: template == "user" ? { username } : { id },
+                context: type == "user" ? { username } : { id },
             });
         });
     } catch (err) {
@@ -135,4 +143,17 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     }
 
     activity.end();
+};
+
+/**
+ * Determine the path to the template to for the given `pageType` and
+ * `templateName` combination.
+ */
+const resolveTemplatePath = (pageType: PageType, templateName?: string) => {
+    switch (pageType) {
+        case "user":
+            return path.resolve(`src/templates/user.tsx`);
+        case "page":
+            return path.resolve(`src/templates/page/${templateName}.tsx`);
+    }
 };

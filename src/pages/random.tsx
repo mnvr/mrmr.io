@@ -55,7 +55,7 @@ export const query = graphql`
     query RandomPage {
         allMdx(
             filter: {
-                fields: { template: { eq: "page" } }
+                fields: { type: { eq: "page" } }
                 frontmatter: { unlisted: { ne: true } }
             }
             sort: [
