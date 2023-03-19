@@ -29,7 +29,7 @@ const colorPalettes = {
 
 export default SomePage;
 
-export const Head: HeadFC = () => <DefaultHead />;
+export const Head: HeadFC = () => <DefaultHead title="Some" />;
 
 /**
  * Fetch all pages, sorted by recency.
