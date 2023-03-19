@@ -17,6 +17,6 @@ See [users](users/README.md).
 
 Copyright (c) 2023 [Manav Rathi](https://github.com/mnvr)
 
--   Artwork copyright respective authors, and they reserve all their rights.
+-   Content is copyright respective authors, and they reserve all their rights.
 
 -   Source code distributed under the open source AGPL license.
