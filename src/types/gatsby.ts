@@ -23,10 +23,14 @@ export const ensureIsPageType = (s: string) => {
 
 /** Defines the interface between a `user` template and `gatsby-node.ts` */
 export type UserTemplateContext = {
+    /** The username of the user whose home page we're trying to render */
     readonly username: string;
 };
 
 /** Defines the interface between a `page` template and `gatsby-node.ts` */
 export type PageTemplateContext = {
-    readonly id: string;
+    /** The username of the user whose page we're trying to render */
+    readonly username: string;
+    /** The ID of the page we're trying to render */
+    readonly pageID: string;
 };

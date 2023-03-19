@@ -14,13 +14,13 @@ import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import * as React from "react";
 import styled from "styled-components";
+import { type UserTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-const UserTemplate: React.FC<PageProps<Queries.UserTemplateQuery>> = ({
-    data,
-    children,
-}) => {
+const UserTemplate: React.FC<
+    PageProps<Queries.UserTemplateQuery, UserTemplateContext>
+> = ({ data, children }) => {
     const user = parseUser(data);
     const { pages } = user;
 

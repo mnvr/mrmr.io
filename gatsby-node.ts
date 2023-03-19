@@ -7,7 +7,6 @@ import path from "path";
 import {
     ensureIsPageType,
     PageTemplateContext,
-    PageType,
     UserTemplateContext,
 } from "./src/types/gatsby";
 import { ensure } from "./src/utils/ensure";
@@ -72,7 +71,7 @@ const ensureValidUsername = (slug: string) => {
 /** Return `true` if the given slug is for a user's home / index page. */
 const isUserIndex = (slug: string) => slug.split("/").length === 2;
 
-type Context = PageTemplateContext | UserTemplateContext;
+type Context = UserTemplateContext | PageTemplateContext;
 
 export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     graphql,
@@ -130,7 +129,8 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
             createPage<Context>({
                 path: slug,
                 component: `${templatePath}?__contentFilePath=${contentFilePath}`,
-                context: type == "user" ? { username } : { id },
+                context:
+                    type == "user" ? { username } : { username, pageID: id },
             });
         });
     } catch (err) {
@@ -139,17 +139,4 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     }
 
     activity.end();
-};
-
-/**
- * Determine the path to the template to for the given `pageType` and
- * `templateName` combination.
- */
-const resolveTemplatePath = (pageType: PageType, templateName?: string) => {
-    switch (pageType) {
-        case "user":
-            return;
-        case "page":
-            return path.resolve(`src/templates/page.tsx`);
-    }
 };
