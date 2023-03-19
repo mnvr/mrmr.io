@@ -103,7 +103,7 @@ export const parsePageLinks = (
 
     // Construct a link to the page's source on GitHub using the slug.
     const sourceLink = {
-        ...parseLink(`https://github.com/mrmr-io/m/tree/main/${slug}`),
+        ...parseLink(`https://github.com/mrmr-io/m/tree/main${slug}`),
         title: "View source on GitHub",
     };
 
@@ -111,7 +111,11 @@ export const parsePageLinks = (
 
     const result: ParsedLink[] = [];
     [...(pageLinks ?? []), sourceLink, ...(userLinks ?? [])].forEach((link) => {
-        if (link.knownDomain && seenDomains.has(link.knownDomain)) return;
+        const { knownDomain } = link;
+        if (knownDomain) {
+            if (seenDomains.has(knownDomain)) return;
+            seenDomains.add(knownDomain);
+        }
         result.push(link);
     });
 
