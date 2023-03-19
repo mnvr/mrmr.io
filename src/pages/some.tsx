@@ -23,8 +23,18 @@ const SomePage: React.FC<PageProps<Queries.SomePageQuery>> = ({ data }) => {
 };
 
 const colorPalettes = {
-    colors: ensure(parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 13%)"])),
-    darkColors: parseColorPalette(["hsl(240, 6%, 20%)", "hsl(240, 12%, 90%)"]),
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 40%)",
+        ])
+    ),
+    darkColors: parseColorPalette([
+        "hsl(240, 6%, 20%)",
+        "hsl(240, 12%, 90%)",
+        "hsl(240, 12%, 63%)",
+    ]),
 };
 
 export default SomePage;
@@ -117,11 +127,12 @@ const UL = styled.ul`
     }
 
     a:hover {
+        opacity: 1;
         background-color: var(--mrmr-color-1-transparent);
     }
 
     .userinfo {
-        opacity: 0.7;
+        color: var(--mrmr-color-2);
     }
 
     .userinfo a {
