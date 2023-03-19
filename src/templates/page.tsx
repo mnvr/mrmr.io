@@ -4,39 +4,41 @@ import {
     paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import BasicLayout from "layouts/basic";
 import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-const Page: React.FC<PageProps<Queries.DefaultPageQuery>> = ({
+const PageTemplate: React.FC<PageProps<Queries.PageTemplateQuery>> = ({
     data,
     children,
 }) => {
-    const page = parseData(data);
-    const colorPalettes = paletteSetOrFallback([page.colors, page.darkColors]);
+    const { layout, colors, darkColors } = parseData(data);
+    const colorPalettes = paletteSetOrFallback([colors, darkColors]);
 
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
-            {children}
+            <Layout layout={layout}>{children}</Layout>
         </main>
     );
 };
 
-export default Page;
+export default PageTemplate;
 
-export const Head: HeadFC<Queries.DefaultPageQuery> = ({ data }) => {
+export const Head: HeadFC<Queries.PageTemplateQuery> = ({ data }) => {
     const { title } = parseData(data);
 
     return <DefaultHead title={title} />;
 };
 
 export const query = graphql`
-    query DefaultPage($id: String!) {
+    query PageTemplate($id: String!) {
         mdx(id: { eq: $id }) {
             frontmatter {
                 title
+                layout
                 colors
                 dark_colors
             }
@@ -44,11 +46,29 @@ export const query = graphql`
     }
 `;
 
-const parseData = (data: Queries.DefaultPageQuery) => {
+const parseData = (data: Queries.PageTemplateQuery) => {
     const mdx = replaceNullsWithUndefineds(data.mdx);
     const title = ensure(mdx?.frontmatter?.title);
+    const layout = mdx?.frontmatter?.layout;
     const colors = parseColorPalette(mdx?.frontmatter?.colors);
     const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
-    return { title, colors, darkColors };
+    return { title, layout, colors, darkColors };
+};
+
+interface LayoutProps {
+    layout?: string;
+}
+
+/** Wrap the children in a layout if one is specified in the frontmatter */
+const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
+    layout,
+    children,
+}) => {
+    switch (layout) {
+        case "basic":
+            return <BasicLayout>{children}</BasicLayout>;
+        default:
+            return <>{children}</>;
+    }
 };

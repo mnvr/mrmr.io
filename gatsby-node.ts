@@ -93,7 +93,7 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
                         type
                     }
                     frontmatter {
-                        template
+                        layout
                     }
                     internal {
                         contentFilePath
@@ -125,11 +125,7 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
             const type = ensureIsPageType(ensure(node.fields?.type));
             const contentFilePath = ensure(node.internal?.contentFilePath);
 
-            const template = node.frontmatter?.template;
-            const templatePath = resolveTemplatePath(
-                type,
-                template ?? "default"
-            );
+            const templatePath = path.resolve(`src/templates/${type}.tsx`);
 
             createPage<Context>({
                 path: slug,
@@ -152,8 +148,8 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
 const resolveTemplatePath = (pageType: PageType, templateName?: string) => {
     switch (pageType) {
         case "user":
-            return path.resolve(`src/templates/user.tsx`);
+            return;
         case "page":
-            return path.resolve(`src/templates/page/${templateName}.tsx`);
+            return path.resolve(`src/templates/page.tsx`);
     }
 };

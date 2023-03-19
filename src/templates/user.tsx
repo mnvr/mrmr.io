@@ -17,7 +17,7 @@ import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
+const UserTemplate: React.FC<PageProps<Queries.UserTemplateQuery>> = ({
     data,
     children,
 }) => {
@@ -47,16 +47,16 @@ const UserPage: React.FC<PageProps<Queries.UserIndexQuery>> = ({
     );
 };
 
-export default UserPage;
+export default UserTemplate;
 
-export const Head: HeadFC<Queries.UserIndexQuery> = ({ data }) => {
+export const Head: HeadFC<Queries.UserTemplateQuery> = ({ data }) => {
     const { name } = parseUser(data);
 
     return <DefaultHead title={name} />;
 };
 
 export const query = graphql`
-    query UserIndex($username: String!) {
+    query UserTemplate($username: String!) {
         allMdx(
             filter: { fields: { username: { eq: $username } } }
             sort: [
@@ -98,7 +98,7 @@ interface Page {
     darkColors?: ColorPalette;
 }
 
-const parseUser = (data: Queries.UserIndexQuery) => {
+const parseUser = (data: Queries.UserTemplateQuery) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 

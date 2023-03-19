@@ -66,6 +66,24 @@ date: 2023-03-15
 #
 # We set it to `true` here since this is an example page.
 unlisted: true
+#
+
+# Specify a layout to use.
+#
+# By default, the minimal CSS resets are made (primarily, setting the body
+# margin to 0), and the colors are setup. Then the MDX is rendered as is.
+#
+# The intent is that customization should be done inside out, by abstracting
+# away the customizations in `components/` and including them in the MDX.
+#
+# Still, should one need to, there is also the option of a more conventional
+# outside in customization using a layout.
+#
+# See `layouts/` for supported layouts. Currently, only one exists:
+# - basic
+#
+# layout: basic
+#
 ---
 
 import { Column } from "components/Column";
