@@ -17,8 +17,20 @@ const IndexPage: React.FC = () => {
 };
 
 const colorPalettes = {
-    colors: ensure(parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 13%)"])),
-    darkColors: parseColorPalette(["hsl(240, 6%, 20%)", "hsl(240, 12%, 90%)"]),
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 0%)",
+            "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 60%)",
+        ])
+    ),
+    darkColors: parseColorPalette([
+        "hsl(240, 6%, 20%)",
+        "hsl(240, 12%, 90%)",
+        "hsl(240, 12%, 70%)",
+        "hsl(240, 12%, 60%)",
+    ]),
 };
 
 export default IndexPage;
@@ -51,7 +63,7 @@ const H1 = styled.h1`
     margin-block: 0;
     padding-block-start: 37svh;
     margin-inline-start: 1.8rem;
-    opacity: 0.92;
+    color: var(--mrmr-color-3);
 `;
 
 const Poem: React.FC = () => {
@@ -71,22 +83,23 @@ const Poem: React.FC = () => {
 const PoemP = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
-    opacity: 0.72;
+    color: var(--mrmr-color-2);
 `;
 
 const Nav = styled.p`
     padding-block-start: 24svh;
     margin-inline-start: 1.8rem;
-    opacity: 0.72;
     font-family: serif;
     font-style: italic;
 
     a {
         text-decoration: none;
+        opacity: 0.75;
         border-bottom: 1px dashed currentColor;
     }
 
     a:hover {
+        opacity: 1;
         border-bottom: 1px solid currentColor;
         background-color: var(--mrmr-color-1-transparent);
     }
