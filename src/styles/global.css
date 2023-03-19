@@ -42,3 +42,14 @@ a {
      */
     color: inherit;
 }
+
+/* Give the hr elements a more "modern" appearance - a 1px line */
+hr {
+    /* Make it look like a line */
+    height: 1px;
+    border: none;
+
+    /* Make them use the current foreground color, but a bit transparent */
+    background-color: currentColor;
+    opacity: 0.5;
+}

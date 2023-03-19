@@ -15,13 +15,17 @@ export const BasicLayout: React.FC<
     const { links } = page;
     return (
         <Column>
-            {children}
+            <ContentContainer>{children}</ContentContainer>
             {links && <PageFooterLinks links={links} />}
         </Column>
     );
 };
 
 export default BasicLayout;
+
+const ContentContainer = styled.div`
+    margin-block: 2rem;
+`;
 
 interface PageFooterLinksProps {
     links: ParsedLink[];
@@ -30,17 +34,15 @@ interface PageFooterLinksProps {
 const PageFooterLinks: React.FC<PageFooterLinksProps> = ({ links }) => {
     return (
         <LinkButtonsContainer>
+            <hr />
             <ParsedLinkButtons links={links} />
         </LinkButtonsContainer>
     );
 };
 
 const LinkButtonsContainer = styled.div`
-    a {
-        opacity: 0.7;
-    }
-
-    a:hover {
-        opacity: 1;
+    hr {
+        opacity: 0.075;
+        margin-block: 1rem;
     }
 `;

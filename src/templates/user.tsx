@@ -135,7 +135,7 @@ const Header: React.FC<User> = ({ name, flair, links }) => {
         <>
             <H1>{name}</H1>
             {flair && <Flair>{flair}</Flair>}
-            {links && <LinkButtons links={links} />}
+            {links && <ParsedLinkButtons links={links} />}
         </>
     );
 };
@@ -157,28 +157,6 @@ const FlairContainer = styled.p`
     margin-top: -1rem;
     padding-inline-start: 0.05rem;
     opacity: 0.8;
-`;
-
-interface LinkButtonsProps {
-    links: ParsedLink[];
-}
-
-const LinkButtons: React.FC<LinkButtonsProps> = ({ links }) => {
-    return (
-        <LinkButtonsContainer>
-            <ParsedLinkButtons links={links} />
-        </LinkButtonsContainer>
-    );
-};
-
-const LinkButtonsContainer = styled.div`
-    a {
-        opacity: 0.7;
-    }
-
-    a:hover {
-        opacity: 1;
-    }
 `;
 
 const UserMarkdownContainer = styled.div<User>`

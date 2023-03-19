@@ -4,7 +4,6 @@ import * as React from "react";
 import { FaInstagram } from "react-icons/fa";
 import { FiGithub, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
-
 import styled from "styled-components";
 
 /**
@@ -28,6 +27,14 @@ const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
+
+    a {
+        opacity: 0.7;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
 `;
 
 /**
