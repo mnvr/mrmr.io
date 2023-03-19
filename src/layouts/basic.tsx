@@ -44,5 +44,11 @@ const LinkButtonsContainer = styled.div`
     hr {
         opacity: 0.075;
         margin-block: 1rem;
+
+        /* hr elements have margin-inline set to auto, which causes them to be
+           centered. We want this one to be left-aligned, so set the leading
+           margin to 0 (whilst reducing the width) */
+        margin-inline-start: 0;
+        width: 50%;
     }
 `;
