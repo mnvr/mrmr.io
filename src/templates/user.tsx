@@ -135,7 +135,7 @@ const Header: React.FC<User> = ({ name, flair, links }) => {
         <>
             <H1>{name}</H1>
             {flair && <Flair>{flair}</Flair>}
-            {links && <ParsedLinkButtons links={links} />}
+            {links && <UserLinks links={links} />}
         </>
     );
 };
@@ -151,6 +151,28 @@ const Flair: React.FC<React.PropsWithChildren> = ({ children }) => {
         </FlairContainer>
     );
 };
+
+interface UserLinksProps {
+    links: ParsedLink[];
+}
+
+const UserLinks: React.FC<UserLinksProps> = ({ links }) => {
+    return (
+        <LinkButtonsContainer>
+            <ParsedLinkButtons links={links} />
+        </LinkButtonsContainer>
+    );
+};
+
+const LinkButtonsContainer = styled.div`
+    a {
+        opacity: 0.7;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
+`;
 
 const FlairContainer = styled.p`
     font-style: italic;

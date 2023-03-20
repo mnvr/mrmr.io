@@ -45,4 +45,12 @@ const LinkButtonsContainer = styled.div`
         opacity: 0.075;
         margin-block: 1rem;
     }
+
+    a {
+        opacity: 0.7;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
 `;

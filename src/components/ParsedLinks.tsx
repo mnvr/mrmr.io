@@ -9,14 +9,6 @@ import styled from "styled-components";
 interface ParsedLinkButtonsProps {
     /** The links to show */
     links: ParsedLink[];
-    /**
-     * Opacity of the icons in their resting state
-     *
-     * @default 0.7
-     *
-     * The icons start off transparent; on hover they become opaque.
-     */
-    iconOpacity?: number;
 }
 
 /**
@@ -26,10 +18,9 @@ interface ParsedLinkButtonsProps {
  */
 export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     links,
-    iconOpacity,
 }) => {
     return (
-        <ParsedLinkRow {...{ iconOpacity }}>
+        <ParsedLinkRow>
             {links.map((link) => (
                 <ParsedLinkButton key={link.url} link={link} />
             ))}
@@ -45,14 +36,6 @@ const ParsedLinkRow = styled.div<ParsedLinkRowProps>`
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
-
-    a {
-        opacity: ${(props) => props.iconOpacity ?? 0.7};
-    }
-
-    a:hover {
-        opacity: 1;
-    }
 `;
 
 /**

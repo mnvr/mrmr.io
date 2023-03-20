@@ -42,4 +42,12 @@ export const PageFooterLinks: React.FC<PageFooterLinksProps> = ({
 
 const LinkButtonsContainer = styled.div`
     margin-block: 2.25rem;
+
+    a {
+        opacity: 0.7;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
 `;
