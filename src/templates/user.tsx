@@ -141,7 +141,7 @@ const Header: React.FC<User> = ({ name, flair, links }) => {
 };
 
 const H1 = styled.h1`
-    margin-top: 2rem;
+    margin-block-start: 2rem;
 `;
 
 const Flair: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -176,13 +176,14 @@ const LinkButtonsContainer = styled.div`
 
 const FlairContainer = styled.p`
     font-style: italic;
-    margin-top: -1rem;
+    margin-block-start: -1rem;
     padding-inline-start: 0.05rem;
     opacity: 0.8;
 `;
 
 const UserMarkdownContainer = styled.div<User>`
-    margin-top: 2rem;
+    margin-block-start: 2.5rem;
+    margin-block-end: 1.5rem;
 
     a {
         text-decoration: none;
