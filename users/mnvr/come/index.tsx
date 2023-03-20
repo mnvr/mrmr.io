@@ -1,4 +1,5 @@
 import { Column } from "components/Column";
+import { PageFooterLinks } from "components/PageFooterLinks";
 import { Player } from "components/Player";
 import * as React from "react";
 import styled from "styled-components";
@@ -7,9 +8,12 @@ import { vis } from "./vis";
 
 export const Page: React.FC = () => {
     return (
-        <Player vis={vis} song={song}>
-            <Heading />
-        </Player>
+        <>
+            <Player vis={vis} song={song}>
+                <Heading />
+            </Player>
+            <PageFooterLinks iconOpacity={0.9} />
+        </>
     );
 };
 

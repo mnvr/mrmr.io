@@ -6,16 +6,30 @@ import { FiGithub, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
+interface ParsedLinkButtonsProps {
+    /** The links to show */
+    links: ParsedLink[];
+    /**
+     * Opacity of the icons in their resting state
+     *
+     * @default 0.7
+     *
+     * The icons start off transparent; on hover they become opaque.
+     */
+    iconOpacity?: number;
+}
+
 /**
  * A row of icons buttons, each linking to one of the passed in links.
  *
  * Each of these links will open in an new tab. @see {@link ParsedLinkButton}.
  */
-export const ParsedLinkButtons: React.FC<{ links: ParsedLink[] }> = ({
+export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     links,
+    iconOpacity,
 }) => {
     return (
-        <ParsedLinkRow>
+        <ParsedLinkRow {...{iconOpacity}}>
             {links.map((link) => (
                 <ParsedLinkButton key={link.url} link={link} />
             ))}
@@ -23,13 +37,17 @@ export const ParsedLinkButtons: React.FC<{ links: ParsedLink[] }> = ({
     );
 };
 
-const ParsedLinkRow = styled.div`
+interface ParsedLinkRowProps {
+    iconOpacity?: number;
+}
+
+const ParsedLinkRow = styled.div<ParsedLinkRowProps>`
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
 
     a {
-        opacity: 0.7;
+        opacity: ${(props) => props.iconOpacity ?? 0.7};
     }
 
     a:hover {
