@@ -1,4 +1,4 @@
-import type { GatsbySSR } from "gatsby";
+import type { GatsbyBrowser } from "gatsby";
 
 // These need to be a relative paths (similar to how we need to use relative
 // paths in `gatsby-node.ts`.
@@ -21,6 +21,9 @@ import { wrapPageElementImpl } from "./src/gatsby/wrap";
  * The same code also exists in `gatsby-browser.tsx`. To avoid repeating
  * ourselves, it has been extracted out to `src/gatsby/wrap.tsx`.
  */
-export const wrapPageElement: GatsbySSR["wrapPageElement"] = (args, opts) => {
+export const wrapPageElement: GatsbyBrowser["wrapPageElement"] = (
+    args,
+    opts
+) => {
     return wrapPageElementImpl!(args, opts);
 };
