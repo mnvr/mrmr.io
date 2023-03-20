@@ -29,7 +29,7 @@ export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     iconOpacity,
 }) => {
     return (
-        <ParsedLinkRow {...{iconOpacity}}>
+        <ParsedLinkRow {...{ iconOpacity }}>
             {links.map((link) => (
                 <ParsedLinkButton key={link.url} link={link} />
             ))}
