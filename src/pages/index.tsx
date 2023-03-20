@@ -21,8 +21,8 @@ const colorPalettes = {
         parseColorPalette([
             "hsl(0, 0%, 100%)",
             "hsl(0, 0%, 0%)",
-            "hsl(0, 0%, 13%)",
-            "hsl(0, 0%, 60%)",
+            "hsl(0, 0%, 33%)",
+            "hsl(0, 0%, 20%)",
         ])
     ),
     darkColors: parseColorPalette([
