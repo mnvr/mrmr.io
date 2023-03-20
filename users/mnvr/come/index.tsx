@@ -15,7 +15,8 @@ export const Page: React.FC = () => {
             <PageFooterLinks iconOpacity={0.9} />
             <Column>
                 <HomeContainer>
-                    more by @<i className="username">mnvr</i>
+                    Manav Rathi<br/>
+                    <small>Feb 2023<br/><br/>more...</small>
                 </HomeContainer>
             </Column>
         </>
@@ -56,6 +57,9 @@ const HomeContainer = styled.div`
     margin-block-start: 0.6rem;
     margin-block-end: 6rem;
     font-size: 0.9rem;
+
+    color: var(--mrmr-color-1);
+    opacity: 0.5;
 
     .username {
         font-family: serif;
