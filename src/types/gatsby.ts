@@ -27,10 +27,31 @@ export type UserTemplateContext = {
     readonly username: string;
 };
 
-/** Defines the interface between a `page` template and `gatsby-node.ts` */
+/**
+ * Defines the interface between a `page` template and `gatsby-node.ts`.
+ *
+ * @see {@link isPageTemplateContext} for the associated type guard.
+ */
 export type PageTemplateContext = {
     /** The username of the user whose page we're trying to render */
     readonly username: string;
     /** The ID of the page we're trying to render */
     readonly pageID: string;
+};
+
+/**
+ * A type guard for {@link PageTemplateContext}.
+ *
+ * This is a type guard to see if an arbitrary context that we get is actually
+ * one that looks like it is a page context. Using this to determine if a given
+ * context is indeed a {@link PageTemplateContext} might give false positives if
+ * in the future we add more contexts that have these fields as a subset.
+ */
+export const isPageTemplateContext = (
+    c: Record<string, unknown>
+): c is PageTemplateContext => {
+    const username = c["username"];
+    const pageID = c["pageID"];
+    if (typeof username === "string" && typeof pageID === "string") return true;
+    return false;
 };

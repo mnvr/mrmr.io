@@ -8,7 +8,7 @@ import BasicLayout from "layouts/basic";
 import { ColorPalette, parseColorPalette } from "parsers/colors";
 import { ParsedLink, parsePageLinks } from "parsers/links";
 import * as React from "react";
-import { type PageTemplateContext } from "types/gatsby";
+import type { PageTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -18,12 +18,16 @@ const PageTemplate: React.FC<
     const page = parsePage(data);
     const colorPalettes = paletteSetOrFallback([page.colors, page.darkColors]);
 
+    console.log("rendering template");
+    console.log({ page });
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
-            <PageContext.Provider value={page}>
-                <Layout page={page}>{children}</Layout>
-            </PageContext.Provider>
+            <LevelContext.Provider value={44}>
+                <BuildTimePageContext.Provider value={page}>
+                    <Layout page={page}>{children}</Layout>
+                </BuildTimePageContext.Provider>
+            </LevelContext.Provider>
         </main>
     );
 };
@@ -86,11 +90,28 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
 };
 
 /**
- * A context providing access to the page data for use within your components.
+ * A variant of {@link parsePage} that bypasses the type safety.
  *
- * > This is different from Gatsby's `PageContextType` and `PageContext`.
+ * We need access to the page data in `gatsby-ssr.ts`, but the `Queries`
+ * namespaces is not visible there. So we export this method as a workaround,
+ * crossing our fingers and assuming that nobody will pass data of the incorrect
+ * shape when using this.
  */
-export const PageContext = React.createContext<Page | undefined>(undefined);
+export const parsePageIgnoringTypeSafety = (data: Record<string, unknown>) =>
+    parsePage(data as Queries.PageTemplateQuery) as Page;
+
+/**
+ * A context providing readonly access to the build time page data for use
+ * within your components.
+ */
+export const BuildTimePageContext = React.createContext<Page | undefined>(
+    undefined
+);
+export const LevelContext = React.createContext(13);
+export const LevelContext2 = React.createContext({
+    x: 13,
+    page: undefined as Page | undefined,
+});
 
 interface LayoutProps {
     page: Page;
