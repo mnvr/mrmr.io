@@ -3,16 +3,13 @@ import { ParsedLinkButtons } from "components/ParsedLinks";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import styled from "styled-components";
-import { Page } from "templates/page";
+import { PageContext } from "templates/page";
 
-interface BasicLayoutProps {
-    page: Page;
-}
-
-export const BasicLayout: React.FC<
-    React.PropsWithChildren<BasicLayoutProps>
-> = ({ page, children }) => {
-    const { links } = page;
+export const BasicLayout: React.FC<React.PropsWithChildren> = ({
+    children,
+}) => {
+    const page = React.useContext(PageContext);
+    const links = page?.links;
 
     return (
         <Column>

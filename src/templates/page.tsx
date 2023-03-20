@@ -21,7 +21,9 @@ const PageTemplate: React.FC<
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
-            <Layout page={page}>{children}</Layout>
+            <PageContext.Provider value={page}>
+                <Layout page={page}>{children}</Layout>
+            </PageContext.Provider>
         </main>
     );
 };
@@ -83,6 +85,13 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
     return { title, layout, links, colors, darkColors };
 };
 
+/**
+ * A context providing access to the page data for use within your components.
+ *
+ * > This is different from Gatsby's `PageContextType` and `PageContext`.
+ */
+export const PageContext = React.createContext<Page | undefined>(undefined);
+
 interface LayoutProps {
     page: Page;
 }
@@ -94,7 +103,7 @@ const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
 }) => {
     switch (page.layout) {
         case "basic":
-            return <BasicLayout page={page}>{children}</BasicLayout>;
+            return <BasicLayout>{children}</BasicLayout>;
         default:
             return <>{children}</>;
     }
