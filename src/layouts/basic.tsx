@@ -13,6 +13,7 @@ export const BasicLayout: React.FC<
     React.PropsWithChildren<BasicLayoutProps>
 > = ({ page, children }) => {
     const { links } = page;
+
     return (
         <Column>
             <ContentContainer>{children}</ContentContainer>

@@ -40,7 +40,7 @@ export const query = graphql`
             fields: { type: { eq: "user" }, username: { eq: $username } }
         ) {
             frontmatter {
-                links
+                page_links
             }
         }
         mdx(id: { eq: $pageID }) {
@@ -76,9 +76,9 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
     const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
     const pageLinks = mdx?.frontmatter?.links;
-    const userLinks = user?.frontmatter?.links;
+    const userPageLinks = user?.frontmatter?.page_links;
     const slug = ensure(mdx?.fields?.slug);
-    const links = parsePageLinks(pageLinks, userLinks, slug);
+    const links = parsePageLinks(pageLinks, userPageLinks, slug);
 
     return { title, layout, links, colors, darkColors };
 };

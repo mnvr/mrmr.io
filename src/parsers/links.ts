@@ -85,21 +85,21 @@ export const parseUserLinks = parseLinks;
  * page itself, and merges them all to obtain the list of links that should be
  * shown on that specific page.
  *
- * For the description of the changes, see the documentation for the links field
- * in the [`_example` user's page](../../users/_example/page/index.mdx).
+ * @see the documentation for the links field in the [`_example` user's page
+ * example `page`](../../users/_example/page/index.mdx).
  *
  * @param pageURLs URLs specified in the page's frontmatter
- * @param userURLs URLs specified in the user's home page frontmatter
+ * @param userPageURLs URLs specified in the user's home page frontmatter
  * @param slug The slug for the page for which we're trying to determine the
  * links. This'll be used to construct the URL to the source code on GitHub.
  */
 export const parsePageLinks = (
     pageURLs: InputURLs,
-    userURLs: InputURLs,
+    userPageURLs: InputURLs,
     slug: string
 ) => {
     const pageLinks = parseLinks(pageURLs);
-    const userLinks = parseLinks(userURLs);
+    const userLinks = parseLinks(userPageURLs);
 
     // Construct a link to the page's source on GitHub using the slug.
     const sourceLink = {
