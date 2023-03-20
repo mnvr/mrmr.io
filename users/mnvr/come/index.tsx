@@ -13,6 +13,11 @@ export const Page: React.FC = () => {
                 <Heading />
             </Player>
             <PageFooterLinks iconOpacity={0.9} />
+            <Column>
+                <HomeContainer>
+                    more by @<i className="username">mnvr</i>
+                </HomeContainer>
+            </Column>
         </>
     );
 };
@@ -44,4 +49,16 @@ const P = styled.p`
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: var(--mrmr-color-2);
+`;
+
+const HomeContainer = styled.div`
+    margin-inline: 0.3rem;
+    margin-block-start: 0.6rem;
+    margin-block-end: 6rem;
+    font-size: 0.9rem;
+
+    .username {
+        font-family: serif;
+        font-size: 0.97rem;
+    }
 `;
