@@ -18,16 +18,10 @@ const PageTemplate: React.FC<
     const page = parsePage(data);
     const colorPalettes = paletteSetOrFallback([page.colors, page.darkColors]);
 
-    console.log("rendering template");
-    console.log({ page });
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
-            <LevelContext.Provider value={44}>
-                <BuildTimePageContext.Provider value={page}>
-                    <Layout page={page}>{children}</Layout>
-                </BuildTimePageContext.Provider>
-            </LevelContext.Provider>
+            <Layout page={page}>{children}</Layout>
         </main>
     );
 };
@@ -92,10 +86,9 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
 /**
  * A variant of {@link parsePage} that bypasses the type safety.
  *
- * We need access to the page data in `gatsby-ssr.ts`, but the `Queries`
- * namespaces is not visible there. So we export this method as a workaround,
- * crossing our fingers and assuming that nobody will pass data of the incorrect
- * shape when using this.
+ * We need access to the page data in `gatsby-ssr.tsx`, but the `Queries`
+ * namespaces is not visible there. So we export this method as a workaround -
+ * it blindly assumes that the data we pass it has the correct shape.
  */
 export const parsePageIgnoringTypeSafety = (data: Record<string, unknown>) =>
     parsePage(data as Queries.PageTemplateQuery) as Page;
@@ -107,11 +100,6 @@ export const parsePageIgnoringTypeSafety = (data: Record<string, unknown>) =>
 export const BuildTimePageContext = React.createContext<Page | undefined>(
     undefined
 );
-export const LevelContext = React.createContext(13);
-export const LevelContext2 = React.createContext({
-    x: 13,
-    page: undefined as Page | undefined,
-});
 
 interface LayoutProps {
     page: Page;

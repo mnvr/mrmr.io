@@ -3,21 +3,13 @@ import { ParsedLinkButtons } from "components/ParsedLinks";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import styled from "styled-components";
-import {
-    BuildTimePageContext,
-    LevelContext,
-    LevelContext2,
-} from "templates/page";
+import { BuildTimePageContext } from "templates/page";
+import { ensure } from "utils/ensure";
 
 export const BasicLayout: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const page = React.useContext(BuildTimePageContext);
-    const level = React.useContext(LevelContext);
-    const level2 = React.useContext(LevelContext2);
-    const links = page?.links;
-    console.log("rendering layout");
-    console.log({ page, level, level2 });
+    const { links } = ensure(React.useContext(BuildTimePageContext));
 
     return (
         <Column>
