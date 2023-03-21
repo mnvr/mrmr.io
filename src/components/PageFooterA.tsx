@@ -2,7 +2,7 @@ import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
+import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
 import { Column } from "./Column";
 import { ParsedLinkButtons } from "./ParsedLinks";
@@ -16,21 +16,13 @@ import { ParsedLinkButtons } from "./ParsedLinks";
  * list of links and other data that it needs from.
  */
 export const PageFooterA: React.FC = () => {
-    const { links } = ensure(React.useContext(BuildTimePageContext));
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { links } = page;
 
     return (
         <Column>
             {links && <PageLinks links={links} />}
-            <HomeContainer>
-                Manav Rathi
-                <br />
-                <small>
-                    Feb 2023
-                    <br />
-                    <br />
-                    <Link to="/mnvr">more...</Link>
-                </small>
-            </HomeContainer>
+            <PageInfo page={page} />
         </Column>
     );
 };
@@ -61,20 +53,48 @@ const LinkButtonsContainer = styled.div`
     }
 `;
 
-const HomeContainer = styled.div`
+interface PageInfoProps {
+    page: Page;
+}
+
+const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
+    const { formattedDateMY, user } = page;
+    const { slug, name } = user;
+
+    return (
+        <PageInfoContents>
+            <PageInfoP>
+                {name}
+                <br />
+                <small>{formattedDateMY}</small>
+            </PageInfoP>
+            <div>
+                <small>
+                    <Link to={slug}>more...</Link>
+                </small>
+            </div>
+        </PageInfoContents>
+    );
+};
+
+const PageInfoContents = styled.div`
     margin-inline: 0.3rem;
     margin-block-start: 0.6rem;
     margin-block-end: 6rem;
     font-size: 0.9rem;
 
-    opacity: 0.5;
-
     a {
+        opacity: 0.5;
         text-decoration: none;
     }
 
     a:hover {
-        color: var(--mrmr-color-3);
-        border-bottom: 1px solid currentColor;
+        opacity: 1;
     }
+`;
+
+const PageInfoP = styled.div`
+    opacity: 0.5;
+
+    margin-block-end: 1rem;
 `;

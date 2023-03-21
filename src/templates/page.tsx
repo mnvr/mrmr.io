@@ -40,12 +40,17 @@ export const query = graphql`
             fields: { type: { eq: "user" }, username: { eq: $username } }
         ) {
             frontmatter {
+                name
                 page_links
+            }
+            fields {
+                slug
             }
         }
         mdx(id: { eq: $pageID }) {
             frontmatter {
                 title
+                date(formatString: "MMM YYYY")
                 layout
                 links
                 colors
@@ -61,10 +66,27 @@ export const query = graphql`
 /** A type describing the page data is the page template passes to layouts */
 export interface Page {
     title: string;
+    /** The date from the frontmatter, formatted as "Feb 2023" */
+    formattedDateMY?: string;
     layout?: string;
     links?: ParsedLink[];
     colors?: ColorPalette;
     darkColors?: ColorPalette;
+    user: PageUser;
+}
+
+/**
+ * A subset of information about the user that is needed when rendering
+ * their pages.
+ */
+export interface PageUser {
+    /** Slug for the user's home page */
+    slug: string;
+    /**
+     * The name of the user whose post this is (this is _not_ the `username`,
+     * this is their display name).
+     */
+    name?: string;
 }
 
 const parsePage = (data: Queries.PageTemplateQuery) => {
@@ -72,6 +94,7 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
 
     const title = ensure(mdx?.frontmatter?.title);
     const layout = mdx?.frontmatter?.layout;
+    const formattedDateMY = mdx?.frontmatter?.date;
     const colors = parseColorPalette(mdx?.frontmatter?.colors);
     const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
@@ -80,7 +103,18 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
     const slug = ensure(mdx?.fields?.slug);
     const links = parsePageLinks(pageLinks, userPageLinks, slug);
 
-    return { title, layout, links, colors, darkColors };
+    const userDisplayName = user?.frontmatter?.name;
+    const userSlug = ensure(user?.fields?.slug);
+
+    return {
+        title,
+        layout,
+        formattedDateMY,
+        links,
+        colors,
+        darkColors,
+        user: { slug: userSlug, name: userDisplayName },
+    };
 };
 
 /**
