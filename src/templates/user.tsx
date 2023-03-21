@@ -185,6 +185,13 @@ const UserMarkdownContainer = styled.div<User>`
     margin-block-start: 2.5rem;
     margin-block-end: 1.5rem;
 
+    margin-inline: 0;
+    border-left: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    padding: 0.5rem;
+    border-radius: 5px;
+    padding-inline: 2rem;
+
     a {
         text-decoration: none;
         border-bottom: 1px solid currentColor;
