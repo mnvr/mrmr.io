@@ -7,14 +7,14 @@ import { FiGithub, FiGrid, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
-interface ParsedLinkButtonsProps {
+export interface ParsedLinkButtonsProps {
     /** The links to show */
     links: ParsedLink[];
     /** If present, then a link is show to a user page using the given props */
     userPageLink?: UserPageLinkButtonProps;
 }
 
-interface UserPageLinkButtonProps {
+export interface UserPageLinkButtonProps {
     slug: string;
     title: string;
 }
@@ -75,7 +75,7 @@ export const UserPageLinkButton: React.FC<UserPageLinkButtonProps> = ({
     return (
         <Link to={slug}>
             <IconContainer>
-                <FiGrid title={title} />;
+                <FiGrid title={title} />
             </IconContainer>
         </Link>
     );

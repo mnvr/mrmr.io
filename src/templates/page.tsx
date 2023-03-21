@@ -45,6 +45,7 @@ export const query = graphql`
             }
             fields {
                 slug
+                username
             }
         }
         mdx(id: { eq: $pageID }) {
@@ -87,6 +88,8 @@ export interface PageUser {
      * this is their display name).
      */
     name?: string;
+    /** Their username */
+    username: string;
 }
 
 const parsePage = (data: Queries.PageTemplateQuery) => {
@@ -103,8 +106,9 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
     const slug = ensure(mdx?.fields?.slug);
     const links = parsePageLinks(pageLinks, userPageLinks, slug);
 
-    const userDisplayName = user?.frontmatter?.name;
+    const userUsername = ensure(user?.fields?.username);
     const userSlug = ensure(user?.fields?.slug);
+    const userDisplayName = user?.frontmatter?.name;
 
     return {
         title,
@@ -113,7 +117,7 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
         links,
         colors,
         darkColors,
-        user: { slug: userSlug, name: userDisplayName },
+        user: { slug: userSlug, name: userDisplayName, username: userUsername },
     };
 };
 
