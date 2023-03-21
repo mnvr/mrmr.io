@@ -1,14 +1,22 @@
 import { ExternalLink } from "components/ExternalLink";
+import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import { FaInstagram } from "react-icons/fa";
-import { FiGithub, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
+import { FiGithub, FiGrid, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
 interface ParsedLinkButtonsProps {
     /** The links to show */
     links: ParsedLink[];
+    /** If present, then a link is show to a user page using the given props */
+    userPageLink?: UserPageLinkButtonProps;
+}
+
+interface UserPageLinkButtonProps {
+    slug: string;
+    title: string;
 }
 
 /**
@@ -18,12 +26,14 @@ interface ParsedLinkButtonsProps {
  */
 export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     links,
+    userPageLink,
 }) => {
     return (
         <ParsedLinkRow>
             {links.map((link) => (
                 <ParsedLinkButton key={link.url} link={link} />
             ))}
+            {userPageLink && <UserPageLinkButton {...userPageLink} />}
         </ParsedLinkRow>
     );
 };
@@ -50,6 +60,24 @@ export const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
                 <KnownLinkIcon link={link} />
             </IconContainer>
         </ExternalLink>
+    );
+};
+
+/**
+ * A button that shows a link to the given user's home page.
+ *
+ * @see {@link ParsedLinkButtons} for links that are external to the site.
+ */
+export const UserPageLinkButton: React.FC<UserPageLinkButtonProps> = ({
+    slug,
+    title,
+}) => {
+    return (
+        <Link to={slug}>
+            <IconContainer>
+                <FiGrid title={title} />;
+            </IconContainer>
+        </Link>
     );
 };
 
