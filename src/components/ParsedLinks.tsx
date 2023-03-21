@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 export interface ParsedLinkButtonsProps {
     /** The links to show */
-    links: ParsedLink[];
+    links?: ParsedLink[];
     /** If present, then a link is show to a user page using the given props */
     userPageLink?: UserPageLinkButtonProps;
 }
@@ -30,7 +30,7 @@ export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
 }) => {
     return (
         <ParsedLinkRow>
-            {links.map((link) => (
+            {links?.map((link) => (
                 <ParsedLinkButton key={link.url} link={link} />
             ))}
             {userPageLink && <UserPageLinkButton {...userPageLink} />}

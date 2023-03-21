@@ -1,5 +1,8 @@
 import { Column } from "components/Column";
-import { ParsedLinkButtons } from "components/ParsedLinks";
+import {
+    ParsedLinkButtons,
+    type ParsedLinkButtonsProps,
+} from "components/ParsedLinks";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";

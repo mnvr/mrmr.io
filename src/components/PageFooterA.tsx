@@ -1,6 +1,8 @@
 import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
+import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
+import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
@@ -59,41 +61,46 @@ interface PageInfoProps {
 const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
     const { formattedDateMY, user } = page;
     const { slug, name } = user;
+    const firstName = firstNameOrFallback(user);
 
     return (
         <PageInfoContents>
-            <PageInfoP>
+            <DetailsContainer>
                 {name}
                 <br />
                 <small>{formattedDateMY}</small>
-            </PageInfoP>
-            <div>
-                <small>
-                    <Link to={slug}>more...</Link>
-                </small>
-            </div>
+            </DetailsContainer>
+            <HomeLinkContainer>
+                <Link to={slug}>
+                    <RxSlash title={`More by ${firstName}`} />
+                </Link>
+            </HomeLinkContainer>
         </PageInfoContents>
     );
 };
 
 const PageInfoContents = styled.div`
-    margin-inline: 0.3rem;
     margin-block-start: 0.6rem;
     margin-block-end: 6rem;
     font-size: 0.9rem;
+`;
+
+const DetailsContainer = styled.div`
+    margin-inline: 0.3rem;
+    opacity: 0.5;
+
+    margin-block-end: 2rem;
+`;
+
+const HomeLinkContainer = styled.div`
+    margin-inline: 0.07rem;
 
     a {
-        opacity: 0.5;
         text-decoration: none;
+        opacity: 0.5;
     }
 
     a:hover {
         opacity: 1;
     }
-`;
-
-const PageInfoP = styled.div`
-    opacity: 0.5;
-
-    margin-block-end: 1rem;
 `;
