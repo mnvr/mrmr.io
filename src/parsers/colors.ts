@@ -14,6 +14,7 @@ export interface ColorPalette {
     color1: string;
     color2: string;
     color3: string;
+    color4: string;
 
     backgroundColor1Transparent: string;
     color1Transparent: string;
@@ -59,6 +60,7 @@ export const parseColorPalette = (
     const color1 = tc(all[1]);
     const color2 = tc(all[2], color1);
     const color3 = tc(all[3], color2);
+    const color4 = tc(all[4], color3.clone().setAlpha(0.7));
 
     const backgroundColor1Transparent = backgroundColor1.clone().setAlpha(0.3);
     const color1Transparent = color1.clone().setAlpha(0.3);
@@ -69,6 +71,7 @@ export const parseColorPalette = (
         color1: color1.toString(),
         color2: color2.toString(),
         color3: color3.toString(),
+        color4: color4.toString(),
         backgroundColor1Transparent: backgroundColor1Transparent.toString(),
         color1Transparent: color1Transparent.toString(),
     };

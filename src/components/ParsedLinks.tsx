@@ -28,11 +28,7 @@ export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     );
 };
 
-interface ParsedLinkRowProps {
-    iconOpacity?: number;
-}
-
-const ParsedLinkRow = styled.div<ParsedLinkRowProps>`
+const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;

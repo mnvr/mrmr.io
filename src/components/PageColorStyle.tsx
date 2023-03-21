@@ -13,6 +13,7 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
         --mrmr-color-1: ${(props) => props.colors.color1};
         --mrmr-color-2: ${(props) => props.colors.color2};
         --mrmr-color-3: ${(props) => props.colors.color3};
+        --mrmr-color-4: ${(props) => props.colors.color4};
         --mrmr-background-color-1-transparent: ${(props) =>
             props.colors.backgroundColor1Transparent};
         --mrmr-color-1-transparent: ${(props) =>
@@ -28,6 +29,8 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
                 props.darkColors?.color2 ?? props.colors.color2};
             --mrmr-color-3: ${(props) =>
                 props.darkColors?.color3 ?? props.colors.color3};
+            --mrmr-color-4: ${(props) =>
+                props.darkColors?.color4 ?? props.colors.color4};
             --mrmr-background-color-1-transparent: ${(props) =>
                 props.darkColors?.backgroundColor1Transparent ??
                 props.colors.backgroundColor1Transparent};
@@ -70,6 +73,7 @@ export const defaultColorPalettes = {
             "hsl(0, 0%, 15%)",
             "hsl(0, 0%, 15%)",
             "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 50%)",
         ])
     ),
     darkColors: parseColorPalette([

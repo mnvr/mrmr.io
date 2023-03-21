@@ -166,11 +166,11 @@ const UserLinks: React.FC<UserLinksProps> = ({ links }) => {
 
 const LinkButtonsContainer = styled.div`
     a {
-        opacity: 0.7;
+        color: var(--mrmr-color-4);
     }
 
     a:hover {
-        opacity: 1;
+        color: var(--mrmr-color-3);
     }
 `;
 

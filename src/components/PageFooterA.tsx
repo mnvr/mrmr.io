@@ -44,12 +44,11 @@ const LinkButtonsContainer = styled.div`
     margin-block-end: 2.25rem;
 
     a {
-        opacity: 0.8;
+        color: var(--mrmr-color-4);
     }
 
     a:hover {
         color: var(--mrmr-color-3);
-        opacity: 1;
     }
 `;
 
