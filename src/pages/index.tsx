@@ -75,7 +75,7 @@ const Poem: React.FC = () => {
             <br />
             in the <i>wind</i> rustle leaves
             <br />
-            &nbsp;&nbsp;the moon, <i>and</i> the <i>night</i>
+            &nbsp;&nbsp;the moon, and the <i>night</i>
         </PoemP>
     );
 };
