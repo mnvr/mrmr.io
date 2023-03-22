@@ -192,6 +192,23 @@ declare module "@strudel.cycles/core" {
     export const tri: Pattern;
 
     /**
+     * Perlin noise [0, 1]
+     *
+     * Perlin noise is a more "organic" feeling randomness. While the
+     * distribution is still pseudorandom, it has the property that samples
+     * change gradually instead of jumping all over the place. As a result, the
+     * resultant output is much more "natural" looking.
+     *
+     * Consider a 2D noise. If we were to plot uniform randomness, the generated
+     * image will look like TV static. Whilst with Perlin noise, it'll look more
+     * amorphous and blobby, with smooth gradients between peaks etc.
+     *
+     * Nesting perlin noise within perlin noise results in more fractal, even
+     * more natural, output.
+     */
+    export const perlin: Pattern;
+
+    /**
      * A signal whose value is current cycle number (since we started playback)
      */
     export const time: Pattern;
@@ -239,8 +256,10 @@ declare module "@strudel.cycles/core" {
          * Notes can be specified as strings (e.g. "a#6") or MIDI numbers. "a4"
          * is MIDI 69.
          *
-         * Note that c is the "first note" so to say, so it goes
-         * a -> a# -> b -> c<next-octave>
+         * Note that c is the "first note" so to say, and b / e don't have
+         * sharps, so it goes
+         *
+         *     a -> a# -> b -> c<next-octave> -> c# -> d -> d# -> e -> f -> f# -> g -> g# -> ...
          */
         note: PatternTransform;
 
