@@ -63,9 +63,10 @@ export const documentationPlaceholder = () => {};
  * @returns The original pattern (useful for chaining)
  */
 export const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
-    if (!isDevelopment()) return;
+    if (!isDevelopment()) return pattern;
 
     const events = pattern.queryArc(0, n);
     if (preamble) console.log(preamble);
     events.forEach((e) => console.log(e.show()));
+    return pattern;
 };
