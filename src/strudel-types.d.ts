@@ -152,6 +152,20 @@ declare module "@strudel.cycles/core" {
     }
 
     /**
+     * Following are some PV* type aliases that serve as documentation of the
+     * type / range of inputs driving a pattern.
+     */
+
+    /** A value in the range 20-20k Hz */
+    export type PVFrequency = number;
+    /** A "unipolar" value - [0, 1] */
+    export type PVLevel = number;
+    /** A "bipolar" value - [-1, 1] */
+    export type PVLevel2 = number;
+    /** A time duration in Seconds */
+    export type PVSeconds = number;
+
+    /**
      * A continuous pattern of random numbers [0, 1)
      *
      * > Continuous patterns are also referred to as signals.
@@ -207,6 +221,16 @@ declare module "@strudel.cycles/core" {
         note: PatternTransform;
 
         /**
+         * Add the given number to each item in the pattern
+         *
+         * When used with vanilla notes, this has the effect of increasing pitch
+         * by adding semitones
+         */
+        add: PatternTransform;
+        /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
+        sub: PatternTransform;
+
+        /**
          * Set the synth or sample to use
          *
          * Synth can be specified as one of the enum values in
@@ -219,38 +243,59 @@ declare module "@strudel.cycles/core" {
          */
         s: PatternTransform<SynthType | SampleSpecifier>;
 
-        /** Playback level, exponential */
-        gain: PatternTransform;
+        /**
+         * Playback level, exponential.
+         *
+         * While usually this is between [0, 1], this can be an arbitrary
+         * multiplier outside this range too.
+         */
+        gain: PatternTransform<PVLevel>;
 
-        /** Control the _A_ of ADSR envelope */
-        attack: PatternTransform;
-        /** Control the _D_ of ADSR envelope */
-        decay: PatternTransform;
-        /** Control the _S_ of ADSR envelope */
-        sustain: PatternTransform;
-        /** Control the _R_ of ADSR envelope */
-        release: PatternTransform;
+        /**
+         * Attack time in seconds of the amplitude ADSR envelope.
+         */
+        attack: PatternTransform<PVSeconds>;
+        /**
+         * Decay time in seconds of amplitude ADSR envelope.
+         *
+         * Only has an effect is sustain is less than 1.
+         */
+        decay: PatternTransform<PVSeconds>;
+        /**
+         * Sustain level [0, 1] of the amplitude ADSR envelope.
+         */
+        sustain: PatternTransform<PVLevel>;
+        /**
+         * Release time in seconds of the amplitude ADSR envelope.
+         */
+        release: PatternTransform<PVSeconds>;
 
         /**
          * Detune the oscillator
          *
-         * - Input should be between 0 and 1
          * - Only supported by SuperDirt synths.
          */
-        detune: PatternTransform;
-
-        /** Filter cutoff frequency, and an optional ":resonance" */
-        cutoff: PatternTransform;
+        detune: PatternTransform<PVLevel>;
 
         /**
-         * Add the given number to each item in the pattern
-         *
-         * When used with vanilla notes, this has the effect of increasing pitch
-         * by adding semitones
+         * Low-pass filter cutoff frequency, and an optional ":resonance"
          */
-        add: PatternTransform;
-        /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
-        sub: PatternTransform;
+        cutoff: PatternTransform<PVFrequency>;
+        /**
+         * Resonance for the low-pass filter [0, 50]
+         *
+         * @default 1
+         */
+        resonance: PatternTransform<Number>;
+
+        /**
+         * Delay level, and optional ":delaytime:delayfeedback"
+         */
+        delay: PatternTransform<PVLevel>;
+        /** Delay time, in seconds */
+        delaytime: PatternTransform<PVSeconds>;
+        /** Delay feedback level */
+        delayfeedback: PatternTransform<PVLevel>;
     }
 
     export const controls: Controls;
