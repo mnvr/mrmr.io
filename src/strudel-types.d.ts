@@ -233,7 +233,15 @@ declare module "@strudel.cycles/core" {
      * > also be part of Pattern if we make this an interface.
      */
     export abstract class Controls {
-        /** Convert the pattern elements into musical notes */
+        /**
+         * Convert the pattern elements into musical notes.
+         *
+         * Notes can be specified as strings (e.g. "a#6") or MIDI numbers. "a4"
+         * is MIDI 69.
+         *
+         * Note that c is the "first note" so to say, so it goes
+         * a -> a# -> b -> c<next-octave>
+         */
         note: PatternTransform;
 
         /**
