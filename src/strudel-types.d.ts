@@ -262,6 +262,13 @@ declare module "@strudel.cycles/core" {
         hush: PatternTransform;
 
         /**
+         * Slow down the pattern
+         *
+         * Useful for spreading signals over multiple cycles.
+         */
+        slow: PatternTransform<Number>;
+
+        /**
          * Set the synth or sample to use
          *
          * Synth can be specified as one of the enum values in
