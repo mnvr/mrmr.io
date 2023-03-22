@@ -166,19 +166,35 @@ declare module "@strudel.cycles/core" {
     export type PVSeconds = number;
 
     /**
-     * A continuous pattern of random numbers [0, 1)
+     * A new continuous pattern of random numbers [0, 1)
      *
      * > Continuous patterns are also referred to as signals.
      *
      * @see {@link rand2} - a bipolar version of this
      */
-    export const rand: () => Pattern;
+    export const rand: Pattern;
     /**
-     * A continuous pattern of random numbers [-1, 1)
+     * A new continuous pattern of random numbers [-1, 1)
      *
      * @see {@link rand} - a unipolar version of this
      */
-    export const rand2: () => Pattern;
+    export const rand2: Pattern;
+
+    /** A sawtooth signal [0, 1] */
+    export const saw: Pattern;
+    /** A sine signal [0, 1] */
+    export const sine: Pattern;
+    /** A cosine signal [0, 1] */
+    export const cosine: Pattern;
+    /** A square signal [0, 1] */
+    export const square: Pattern;
+    /** A square signal [0, 1] */
+    export const tri: Pattern;
+
+    /**
+     * A signal whose value is current cycle number (since we started playback)
+     */
+    export const time: Pattern;
 
     /**
      * The controls object defines various control parameters.
@@ -229,6 +245,21 @@ declare module "@strudel.cycles/core" {
         add: PatternTransform;
         /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
         sub: PatternTransform;
+
+        /**
+         * Wait for `m` cycles, then loop the pattern `n` times.
+         *
+         * e.g. `p.ribbon(3, 100)` will wait for 3 cycles, and then loop `p` 100
+         * times (cycles).
+         */
+        ribbon: PatternTransform;
+
+        /**
+         * Silence the pattern
+         *
+         * Useful during live coding.
+         */
+        hush: PatternTransform;
 
         /**
          * Set the synth or sample to use
@@ -296,6 +327,16 @@ declare module "@strudel.cycles/core" {
         delaytime: PatternTransform<PVSeconds>;
         /** Delay feedback level */
         delayfeedback: PatternTransform<PVLevel>;
+
+        /**
+         * Convert a unipolar pattern [0, 1] into a bipolar one [-1, 1].
+         */
+        toBipolar: PatternTransform;
+
+        /**
+         * Scale up a unipolar pattern [0, 1] into the given [m, n] range.
+         */
+        range: PatternTransform;
     }
 
     export const controls: Controls;
