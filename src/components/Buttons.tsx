@@ -1,3 +1,5 @@
+import * as React from "react";
+import { BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 
 export const IconButton = styled.button`
@@ -12,3 +14,11 @@ export const IconButton = styled.button`
         color: var(--mrmr-color-3);
     }
 `;
+
+export const PlayButton: React.FC = () => {
+    return (
+        <IconButton>
+            <BsPlayFill size="2rem" title="Play" />
+        </IconButton>
+    );
+};

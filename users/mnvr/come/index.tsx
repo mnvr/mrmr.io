@@ -1,6 +1,6 @@
 import { Column } from "components/Column";
 import { PageFooterA } from "components/PageFooterA";
-import { Player } from "components/Player";
+import { PlayerA } from "components/PlayerA";
 import * as React from "react";
 import styled from "styled-components";
 import { song } from "./song";
@@ -9,9 +9,9 @@ import { vis } from "./vis";
 export const Page: React.FC = () => {
     return (
         <>
-            <Player vis={vis} song={song}>
+            <PlayerA vis={vis} song={song}>
                 <Heading />
-            </Player>
+            </PlayerA>
             <PageFooterA />
         </>
     );

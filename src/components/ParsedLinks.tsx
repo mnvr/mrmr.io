@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import { FaInstagram } from "react-icons/fa";
-import { FiGithub, FiGrid, FiLink, FiList, FiTwitter, FiYoutube } from "react-icons/fi";
+import { FiGithub, FiLink, FiList, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 

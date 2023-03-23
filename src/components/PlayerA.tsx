@@ -1,8 +1,7 @@
-import { IconButton } from "components/Buttons";
+import { PlayButton } from "components/Buttons";
 import { HydraCanvas } from "components/HydraCanvas";
 import { usePlayback } from "hooks/use-playback";
 import * as React from "react";
-import { BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
 
@@ -20,7 +19,7 @@ interface PlayerProps {
  * the title section (specified as `children`) and an HTML canvas rendering the
  * visuals.
  */
-export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
+export const PlayerA: React.FC<React.PropsWithChildren<PlayerProps>> = ({
     vis,
     song,
     children,
@@ -87,11 +86,3 @@ const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
     display: ${(props) => (props.isVisible ? "grid" : "none")};
     place-items: center;
 `;
-
-const PlayButton: React.FC = () => {
-    return (
-        <IconButton>
-            <BsPlayFill size="2rem" title="Play" />
-        </IconButton>
-    );
-};
