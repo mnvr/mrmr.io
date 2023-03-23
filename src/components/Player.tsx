@@ -77,6 +77,7 @@ export const Player: React.FC<React.PropsWithChildren<PlayerProps>> = ({
             p = song();
             setLastPattern(p);
         } catch (e) {
+            console.warn(e);
             // If a live reload happens on autosave whilst we're in the middle
             // of making an edit to the currently playing song, there might be
             // syntax errors. Capture these (and keep playing the last
