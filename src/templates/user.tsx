@@ -182,13 +182,9 @@ const FlairContainer = styled.p`
 `;
 
 const UserMarkdownContainer = styled.div<User>`
-    margin-block-start: 1.5rem;
-    margin-block-end: 1.5rem;
-
-    background-color: hsla(0, 20%, 98%, 0.1);
-    padding: 0.5rem;
-    border-radius: 5px;
-    padding-inline: 2rem;
+    margin-block-start: 2rem;
+    margin-block-end: 1.2rem;
+    margin-inline: 0.1rem;
 
     a {
         text-decoration: none;
