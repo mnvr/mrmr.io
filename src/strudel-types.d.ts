@@ -54,7 +54,8 @@ declare module "@strudel.cycles/core" {
         | string
         | string[]
         | T
-        | T[];
+        | T[]
+        | (T | T[] | Pattern)[];
 
     /**
      * A function with takes one or more pattern-like inputs, transforms it in
@@ -274,10 +275,18 @@ declare module "@strudel.cycles/core" {
         sub: PatternTransform;
 
         /**
-         * Wait for `m` cycles, then loop the pattern `n` times.
+         * Squeeze cycles from the pattern on the right (the argument) into the
+         * events on the left (the pattern on which `squeeze` is called).
          *
-         * e.g. `p.ribbon(3, 100)` will wait for 3 cycles, and then loop `p` 100
-         * times (cycles).
+         * e.g. `x`.squeeze(`a b`) results in "a b".
+         */
+        squeeze: PatternTransform;
+
+        /**
+         * Loop the pattern starting a position `m` for `n` cycles.
+         *
+         * e.g. `p.ribbon(3, 100)` will loop the pattern `p`'s contents starting
+         * at cycle 3 for 100 cycles.
          */
         ribbon: PatternTransform;
 
