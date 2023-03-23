@@ -23,6 +23,7 @@
         "gatsby": "^5.7.0",
         "gatsby-plugin-catch-links": "^5.7.0",
         "gatsby-plugin-image": "^3.7.0",
+        "gatsby-plugin-manifest": "^5.8.0",
         "gatsby-plugin-mdx": "^5.7.0",
         "gatsby-plugin-sharp": "^5.7.0",
         "gatsby-plugin-styled-components": "^6.7.0",

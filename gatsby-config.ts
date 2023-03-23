@@ -23,6 +23,14 @@ const config: GatsbyConfig = {
         "gatsby-plugin-sharp",
         "gatsby-transformer-sharp",
 
+        // Generate favicons etc.
+        {
+            resolve: "gatsby-plugin-manifest",
+            options: {
+                icon: "static/icon.png",
+            },
+        },
+
         // Write our pages in markdown + JSX
         "gatsby-plugin-mdx",
 
