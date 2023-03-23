@@ -1,6 +1,7 @@
 import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
 import {
+    basicColorPalettes,
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
@@ -28,8 +29,9 @@ const UserTemplate: React.FC<
 
     // If the user is hovering on the link to a page, use that page's colors.
     let colorPalettes = paletteSetOrFallback(
-        [hoverPage?.colors, hoverPage?.darkColors],
-        paletteSetOrFallback([user.colors, user.darkColors])
+        hoverPage,
+        user,
+        basicColorPalettes
     );
 
     return (

@@ -4,7 +4,6 @@ import {
     type ColorPaletteSet,
 } from "parsers/colors";
 import { createGlobalStyle } from "styled-components";
-import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
@@ -42,23 +41,31 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
 `;
 
 /**
+ * A type that might have the shape required by {@link ColorPaletteSet}, but
+ * whose `colors` property might not be defined.
+ */
+export interface MaybeColorPaletteSet {
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
+}
+
+/**
  * Convenience method to construct a color palette set from the given palettes.
  *
- * If the default/light palette is specified, then we return a palette set using
- * that light and the (optional) dark one. Otherwise we use the fallback palette
- * set.
+ * Go through the arguments, each of which is an {@link MaybeColorPaletteSet}
+ * until we find a palette set which has the defined its `colors`.
  *
- * The light and dark palettes are specified in array form. The first entry is
- * taken as the light one.
- *
- * If even the fallback is not present, then we use {@link defaultColorPalettes}.
+ * If nothing is found, throw an error.
  */
 export const paletteSetOrFallback = (
-    palettes: readonly (ColorPalette | undefined)[],
-    fallback?: ColorPaletteSet
+    ...paletteSets: readonly (MaybeColorPaletteSet | undefined)[]
 ) => {
-    const [colors, darkColors] = palettes?.filter(isDefined);
-    return colors ? { colors, darkColors } : fallback ?? defaultColorPalettes;
+    for (const set of paletteSets) {
+        if (!set) continue;
+        const { colors, darkColors } = set;
+        if (colors) return { colors, darkColors };
+    }
+    throw new Error("None of the fallbacks defined the color palette");
 };
 
 /**
@@ -66,7 +73,7 @@ export const paletteSetOrFallback = (
  *
  * Be calm, and readable. Supports both light/dark.
  */
-export const defaultColorPalettes = {
+export const basicColorPalettes = {
     colors: ensure(
         parseColorPalette([
             "hsl(0, 0%, 100%)",

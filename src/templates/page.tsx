@@ -1,5 +1,6 @@
 import { DefaultHead } from "components/Head";
 import {
+    basicColorPalettes,
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
@@ -16,7 +17,7 @@ const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
 > = ({ data, children }) => {
     const page = parsePage(data);
-    const colorPalettes = paletteSetOrFallback([page.colors, page.darkColors]);
+    const colorPalettes = paletteSetOrFallback(page, basicColorPalettes);
 
     return (
         <main>
