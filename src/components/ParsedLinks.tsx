@@ -3,7 +3,7 @@ import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import { FaInstagram } from "react-icons/fa";
-import { FiGithub, FiGrid, FiLink, FiTwitter, FiYoutube } from "react-icons/fi";
+import { FiGithub, FiGrid, FiLink, FiList, FiTwitter, FiYoutube } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
@@ -75,7 +75,7 @@ export const UserPageLinkButton: React.FC<UserPageLinkButtonProps> = ({
     return (
         <Link to={slug}>
             <IconContainer>
-                <FiGrid title={title} />
+                <FiList title={title} />
             </IconContainer>
         </Link>
     );

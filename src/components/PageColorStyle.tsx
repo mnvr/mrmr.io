@@ -73,7 +73,7 @@ export const defaultColorPalettes = {
             "hsl(0, 0%, 15%)",
             "hsl(0, 0%, 15%)",
             "hsl(0, 0%, 13%)",
-            "hsl(0, 0%, 50%)",
+            "hsl(0, 0%, 54%)",
         ])
     ),
     darkColors: parseColorPalette([
