@@ -147,6 +147,18 @@ declare module "@strudel.cycles/core" {
      * Event is (practically) a reserved word is JS, so this is instead called
      * Hap. {@link Pattern}s produce events. Renderers like WebAudio query
      * patterns to obtain upcoming events and make sound.
+     *
+     * Events have 2 attached TimeSpans - a "whole" and a "part":
+     *
+     * - The "whole" is the original duration of the event.
+     *
+     * - The "part" is the active duration of the event that falls within the
+     *   TimeSpan we're currently querying (e.g. via `queryArc`). Thus, `part`
+     *   is the intersection of the whole and the arc TimeSpans.
+     *
+     * This separation is needed to get the triggering (sending side-effecting
+     * instructions to an external system, say WebAudio) to work properly
+     * – parts whose wholes are outside the current arc are not triggered.
      */
     export class Hap<T> {
         /**
