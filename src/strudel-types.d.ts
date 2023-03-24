@@ -309,6 +309,26 @@ declare module "@strudel.cycles/core" {
         slow: PatternTransform<Number>;
 
         /**
+         * Equivalent to `slow(n).f().fast(n)`
+         *
+         * Perform an operation inside a cycle.
+         *
+         * @param n Chunk factor
+         * @param f The function / operation to apply.
+         */
+        inside: PatternTransform;
+
+        /**
+         * Equivalent to `fast(n).f().slow(n)`
+         *
+         * Perform an operation outside a cycle.
+         *
+         * @param n Chunk factor
+         * @param f The function / operation to apply.
+         */
+        outside: PatternTransform;
+
+        /**
          * Repeat each event the given number of times
          */
         ply: PatternTransform<Number>;
@@ -523,6 +543,13 @@ declare module "@strudel.cycles/core" {
         name: string,
         f: (...args: Pattern[]) => Patternable
     ) => PatternTransform;
+
+    /**
+     * Repeated definitions of operations, useful when needing the standalone
+     * version. For documentation, see the version inside {@link Controls}.
+     */
+    export const add: PatternTransform;
+    export const cutoff: PatternTransform;
 }
 
 declare module "@strudel.cycles/webaudio" {

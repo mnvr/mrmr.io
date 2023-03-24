@@ -1,4 +1,5 @@
 import {
+    add,
     controls,
     rand,
     saw,
@@ -52,11 +53,10 @@ export const song: TidalSong = () => {
 
     const p5 = stack(c0, c0a);
 
-    const p7 = note(m`a3@3 a3`)
+    const p7 = note(m`a4@3 a4`)
         .s("sine")
         .gain(m`<0.4@3 0.9>`)
-        .cutoff(1000)
-        // .fast(10)
+        // .cutoff(1000)
         // .cutoff(
         //     timeCat(
         //         [1, m`17200`]
@@ -65,15 +65,17 @@ export const song: TidalSong = () => {
         //         // [2, isaw.range(100, 600).slow(2)]
         //     )
         // )
-        // .add(
-        //     timeCat(
-        //         [1, m`1`.note()],
-        //         [1, m`0`.note() /*saw.range(100, 600)],*/],
-        //         [3, m`3`.note() /*sine.range(600, 3000)],*/],
-        //         [1, m`7`.note() /*isaw.range(100, 600)]*/]
-        //     )
-        // )
-        // .slow(10)
+        .outside(
+            6,
+            add(
+                timeCat(
+                    [1, m`1`.note()],
+                    [1, m`0`.note() /*saw.range(100, 600)],*/],
+                    [3, m`3`.note() /*sine.range(600, 3000)],*/],
+                    [1, m`7`.note() /*isaw.range(100, 600)]*/]
+                )
+            )
+        )
         .inspect();
 
     const p8 = note(m`[c5 d5] <c6 g#6 g6 c7>`)
@@ -82,5 +84,5 @@ export const song: TidalSong = () => {
         .slow(121)
         .inspect();
 
-    return stack(p7, p8);
+    return stack(p7, p8.hush());
 };
