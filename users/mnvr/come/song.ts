@@ -58,7 +58,11 @@ export const song: TidalSong = () => {
         .gain(m`<0.4@3 0.9>`)
         .cutoff(cat(m`100`.slow(10), sine.range(900, 900)).slow(11));
 
-    const p8 = debugPrint(cat(m`100`.slow(4), m`11`).slow(5), 6);
+    // const p8 = debugPrint(cat(m`100`.slow(4), m`11`).slow(5), 6);
+    const p8 = debugPrint(
+        cat(m`100`.slow(4), sine.range(900, 900).slow(1).segment(1)).slow(5),
+        6
+    );
 
     return p7;
 };

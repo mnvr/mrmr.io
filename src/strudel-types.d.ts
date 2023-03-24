@@ -307,6 +307,14 @@ declare module "@strudel.cycles/core" {
         slow: PatternTransform<Number>;
 
         /**
+         * Sample a continuous pattern n times per cycle, turning it into a
+         * discrete one.
+         *
+         * @param n The number of samples to take per cycle
+         */
+        segment: PatternTransform<Number>;
+
+        /**
          * Set the synth or sample to use
          *
          * Synth can be specified as one of the enum values in
