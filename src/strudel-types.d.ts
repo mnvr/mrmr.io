@@ -296,6 +296,8 @@ declare module "@strudel.cycles/core" {
          * Speed up the pattern by repeating it `n` times.
          *
          * Inverse of {@link slow}.
+         *
+         * e.g. `"a b".fast(7.5).slow(7.5)` is equivalent to `"a b"`.
          */
         fast: PatternTransform<Number>;
 

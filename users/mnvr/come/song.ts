@@ -57,8 +57,8 @@ export const song: TidalSong = () => {
     //     )
     // )
 
-    const p8 = m`a b`.fast(3).inspect(2);
-    console.log(p8);
+    const p8 = m`a b`.fast(7.5).slow(7.5).inspect();
+
     // const p9 = debugPrint(note(m`1 2 3 4`).every(4, x=>x.rev()).slow(4), 17);
     // const p8 = debugPrint(
     //     cat(m`100`.slow(4), sine.range(900, 900).slow(1).segment(1)).slow(5),

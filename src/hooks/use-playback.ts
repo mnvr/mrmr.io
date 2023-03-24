@@ -1,6 +1,7 @@
 import { Pattern, Scheduler } from "@strudel.cycles/core";
 import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import * as React from "react";
+import { initStrudel } from "strudel/init";
 import { connectWebAudio } from "strudel/webaudio";
 import { TidalSong } from "types";
 import { ensure } from "utils/ensure";
@@ -58,6 +59,7 @@ export const usePlayback = (song: TidalSong): UsePlaybackReturn => {
     };
 
     React.useEffect(() => {
+        initStrudel();
         initAudioOnFirstClick();
     }, []);
 
