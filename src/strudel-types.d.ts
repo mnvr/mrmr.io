@@ -126,6 +126,15 @@ declare module "@strudel.cycles/core" {
     export const seq: PatternTransform;
 
     /**
+     * Concatenate patterns whilst specifying the number of cycles they should
+     * take (of the whole).
+     *
+     * e.g. `timeCat([1, "a"], [3, "b"])` is `abbb`, and is equivalent to `"a@1
+     * b@3"` in mini notation.
+     */
+    export const timeCat: PatternTransform;
+
+    /**
      * Play two patterns in parallel
      *
      * They'll both take the same length.
