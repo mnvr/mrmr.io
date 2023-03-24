@@ -192,6 +192,8 @@ declare module "@strudel.cycles/core" {
 
     /** A sawtooth signal [0, 1] */
     export const saw: Pattern;
+    /** Inverse {@link saw} that starts at 1 and goes to 0 */
+    export const isaw: Pattern;
     /** A sine signal [0, 1] */
     export const sine: Pattern;
     /** A cosine signal [0, 1] */
