@@ -58,16 +58,16 @@ export const song: TidalSong = () => {
         .gain(m`<0.4@3 0.9>`)
         .cutoff(
             debugPrint(
-                timeCat(
-                    [1, m`100`],
-                    [3, sine.range(900, 10000).segment(1)]
-                ).slow(4),
-                5
+                timeCat([1, m`100`], [3, sine.range(900, 10000).segment(1)])
+                    .rev()
+                    .palindrome()
+                    .slow(4),
+                11
             )
         );
 
-    // const p8 = debugPrint(timeCat([1, m`a`], [3, m`b`]).slow(4), 5);
-    // const p9 = debugPrint(m`a@1 b@3`.slow(4), 5);
+    const p8 = debugPrint(m`a b`.palindrome().drawLine(), 2);
+    // const p9 = debugPrint(note(m`1 2 3 4`).every(4, x=>x.rev()).slow(4), 17);
     // const p8 = debugPrint(
     //     cat(m`100`.slow(4), sine.range(900, 900).slow(1).segment(1)).slow(5),
     //     6

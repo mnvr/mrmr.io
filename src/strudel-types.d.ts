@@ -284,24 +284,6 @@ declare module "@strudel.cycles/core" {
         sub: PatternTransform;
 
         /**
-         * Squeeze cycles from the pattern on the right (the argument) into the
-         * events on the left (the pattern on which `squeeze` is called).
-         *
-         * e.g.
-         * - `x`.squeeze(`a b`) results in "a b".
-         * - `x@3 x`.squeeze(`a b`) results in "a@3 b@3 a b"
-         */
-        squeeze: PatternTransform;
-
-        /**
-         * Loop the pattern starting a position `m` for `n` cycles.
-         *
-         * e.g. `p.ribbon(3, 100)` will loop the pattern `p`'s contents starting
-         * at cycle 3 for 100 cycles.
-         */
-        ribbon: PatternTransform;
-
-        /**
          * Silence the pattern
          *
          * Useful during live coding.
@@ -314,6 +296,40 @@ declare module "@strudel.cycles/core" {
          * Useful for spreading signals over multiple cycles.
          */
         slow: PatternTransform<Number>;
+
+        /**
+         * Squeeze cycles from the pattern on the right (the argument) into the
+         * events on the left (the pattern on which `squeeze` is called).
+         *
+         * e.g.
+         * - `x`.squeeze(`a b`) results in "a b".
+         * - `x@3 x`.squeeze(`a b`) results in "a@3 b@3 a b"
+         */
+        squeeze: PatternTransform;
+
+        /**
+         * Reverse a pattern
+         */
+        rev: PatternTransform<void>;
+
+        /**
+         * Play a pattern backwards, then forwards, and repeat this
+         * ping-ponging.
+         *
+         * Note that `"a b".palindrome()` produces `"ba|ab|ba|ab", i.e. the
+         * reverse is played first, then the forward and then so on. This might
+         * be a bit unexpected, and can be fixed by putting a {@link rev} before
+         * calling palindrome.
+         */
+        palindrome: PatternTransform<void>;
+
+        /**
+         * Loop the pattern starting a position `m` for `n` cycles.
+         *
+         * e.g. `p.ribbon(3, 100)` will loop the pattern `p`'s contents starting
+         * at cycle 3 for 100 cycles.
+         */
+        ribbon: PatternTransform;
 
         /**
          * Sample a continuous pattern n times per cycle, turning it into a
