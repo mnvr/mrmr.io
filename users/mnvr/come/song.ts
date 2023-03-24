@@ -1,4 +1,12 @@
-import { controls, rand, saw, sine, stack, tri } from "@strudel.cycles/core";
+import {
+    cat,
+    controls,
+    rand,
+    saw,
+    sine,
+    stack,
+    tri,
+} from "@strudel.cycles/core";
 import { debugPrint } from "strudel/init";
 import { m } from "strudel/mini";
 import type { TidalSong } from "types";
@@ -16,9 +24,10 @@ export const song: TidalSong = () => {
     const c0 = note(m`<[c2*3 d2*3]!2 [c2*3 [d2 | d2*3]] ~>/2`)
         .add(note(12))
         .s("triangle")
-        .cutoff(m`1900`);
+        .cutoff(m`1900`)
+        .room(m`0.9:10`);
 
-    const c0a = note(m`c5 c5 <~ d7>`)
+    const c0a = note(m`c5 c5 <~ d3>`)
         .cutoff([tri.range(100, 1800).slow(10)])
         .gain(m`<0@30 1@5>`.squeeze([0, sine.range(0, 0.5).add(0.5).slow(5)]));
 
@@ -38,9 +47,17 @@ export const song: TidalSong = () => {
     rand.range(0, 30);
 
     // debugPrint(m`0@2 1@2`.squeeze([0, 1]), 10);
-    debugPrint(m`x`.squeeze(m`a b`).drawLine(), 1);
+    // debugPrint(m`<0@3 1>`.squeeze(m`a b`).drawLine(), 4);
+
+    const p6 = m`<0@3 1>`.squeeze(m`a5 b5`).gain(0.8);
 
     const p5 = stack(c0, c0a);
 
-    return p5;
+    // const p7 = debugPrint(note(m`a@3 a`).gain(m`<0.4@3 0.9>`), 4);
+    const p7 = debugPrint(
+        note(m`a@3 a`).gain(m`<0@3 1>`.squeeze(cat(m`0.4`, m`0.9`))),
+        4
+    );
+
+    return p7;
 };

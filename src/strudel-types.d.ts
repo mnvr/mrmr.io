@@ -265,10 +265,10 @@ declare module "@strudel.cycles/core" {
         note: PatternTransform;
 
         /**
-         * Add the given number to each item in the pattern
+         * Add the given number to each item in the pattern.
          *
          * When used with vanilla notes, this has the effect of increasing pitch
-         * by adding semitones
+         * by adding semitones.
          */
         add: PatternTransform;
         /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
@@ -278,7 +278,9 @@ declare module "@strudel.cycles/core" {
          * Squeeze cycles from the pattern on the right (the argument) into the
          * events on the left (the pattern on which `squeeze` is called).
          *
-         * e.g. `x`.squeeze(`a b`) results in "a b".
+         * e.g.
+         * - `x`.squeeze(`a b`) results in "a b".
+         * - `x@3 x`.squeeze(`a b`) results in "a@3 b@3 a b"
          */
         squeeze: PatternTransform;
 
@@ -363,6 +365,14 @@ declare module "@strudel.cycles/core" {
         resonance: PatternTransform<Number>;
 
         /**
+         * Formant filter frequency.
+         *
+         * Can be one of the vowels - "a", "e", "i", "o", "u", or patterns
+         * thereof.
+         */
+        vowel: PatternTransform;
+
+        /**
          * Delay level, and optional ":delaytime:delayfeedback"
          */
         delay: PatternTransform<PVLevel>;
@@ -370,6 +380,13 @@ declare module "@strudel.cycles/core" {
         delaytime: PatternTransform<PVSeconds>;
         /** Delay feedback level */
         delayfeedback: PatternTransform<PVLevel>;
+
+        /**
+         * Reverb level, and optional ":roomsize".
+         *
+         * roomsize is between 0 and 10.
+         */
+        room: PatternTransform<PVLevel>;
 
         /**
          * Convert a unipolar pattern [0, 1] into a bipolar one [-1, 1].
