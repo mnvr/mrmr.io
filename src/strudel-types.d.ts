@@ -454,7 +454,7 @@ declare module "@strudel.cycles/core" {
          *
          * Note: Don't pass 0 or negative values to this method.
          */
-        rangeex: PatternTransform;
+        rangex: PatternTransform;
 
         /*****         Pattern functions registered by us            *****/
         /*                                                               */

@@ -1,4 +1,12 @@
-import { controls, rand, saw, sine, stack, tri } from "@strudel.cycles/core";
+import {
+    controls,
+    rand,
+    saw,
+    sine,
+    stack,
+    timeCat,
+    tri,
+} from "@strudel.cycles/core";
 import { m } from "strudel/mini";
 import type { TidalSong } from "types";
 
@@ -45,25 +53,34 @@ export const song: TidalSong = () => {
     const p5 = stack(c0, c0a);
 
     const p7 = note(m`a3@3 a3`)
-        .s("sawtooth")
-        .gain(m`<0.4@3 0.7>`)
-        .ply(m`<6>`);
-    // .cutoff(
-    //     timeCat(
-    //         [1, m`10000`],
-    //         [1, saw.range(100, 600)],
-    //         [3, sine.range(600, 3000)],
-    //         [1, isaw.range(100, 600)]
-    //     )
-    // )
+        .s("sine")
+        .gain(m`<0.4@3 0.9>`)
+        .cutoff(1000)
+        // .fast(10)
+        // .cutoff(
+        //     timeCat(
+        //         [1, m`17200`]
+        //         // [2, saw.range(100, 600).slow(2)],
+        //         // [7, sine.range(600, 900)],
+        //         // [2, isaw.range(100, 600).slow(2)]
+        //     )
+        // )
+        // .add(
+        //     timeCat(
+        //         [1, m`1`.note()],
+        //         [1, m`0`.note() /*saw.range(100, 600)],*/],
+        //         [3, m`3`.note() /*sine.range(600, 3000)],*/],
+        //         [1, m`7`.note() /*isaw.range(100, 600)]*/]
+        //     )
+        // )
+        // .slow(10)
+        .inspect();
 
-    const p8 = m`a b`.fast(7.5).slow(7.5).inspect();
+    const p8 = note(m`[c5 d5] <c6 g#6 g6 c7>`)
+        .fast(121)
+        .gain(timeCat([1, 0], [20, saw.range(0.05, 0.3)], [100, 0.3]))
+        .slow(121)
+        .inspect();
 
-    // const p9 = debugPrint(note(m`1 2 3 4`).every(4, x=>x.rev()).slow(4), 17);
-    // const p8 = debugPrint(
-    //     cat(m`100`.slow(4), sine.range(900, 900).slow(1).segment(1)).slow(5),
-    //     6
-    // );
-
-    return p7;
+    return stack(p7, p8);
 };
