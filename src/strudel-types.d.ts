@@ -293,11 +293,23 @@ declare module "@strudel.cycles/core" {
         hush: PatternTransform;
 
         /**
+         * Speed up the pattern by repeating it `n` times.
+         *
+         * Inverse of {@link slow}.
+         */
+        fast: PatternTransform<Number>;
+
+        /**
          * Slow down the pattern
          *
          * Useful for spreading signals over multiple cycles.
          */
         slow: PatternTransform<Number>;
+
+        /**
+         * Repeat each event the given number of times
+         */
+        ply: PatternTransform<Number>;
 
         /**
          * Squeeze cycles from the pattern on the right (the argument) into the
@@ -430,8 +442,29 @@ declare module "@strudel.cycles/core" {
 
         /**
          * Scale up a unipolar pattern [0, 1] into the given [m, n] range.
+         *
+         * @param m Lower bound
+         * @param n Upper bound
          */
         range: PatternTransform;
+        /**
+         * Exponential {@link range}.
+         *
+         * Note: Don't pass 0 or negative values to this method.
+         */
+        rangeex: PatternTransform;
+
+        /*****         Pattern functions registered by us            *****/
+        /*                                                               */
+        /*    These are not part of the standard Strudel distribution    */
+        /*                                                               */
+
+        /**
+         * Print a debug representation of the pattern onto the console
+         *
+         * @param n is the number of cycles to print.
+         */
+        inspect: PatternTransform<Number>;
     }
 
     export const controls: Controls;
@@ -474,6 +507,20 @@ declare module "@strudel.cycles/core" {
         stop: () => void;
         pause: () => void;
     }
+
+    /**
+     * Register a new pattern function.
+     *
+     * This method then becomes available on the Pattern class (the last
+     * argument will be the pattern instance on which this method is called).
+     *
+     * A function suitable for use as a global {@link PatternTransform} is also
+     * returned.
+     */
+    export const register = (
+        name: string,
+        f: (...args: Pattern[]) => Patternable
+    ) => PatternTransform;
 }
 
 declare module "@strudel.cycles/webaudio" {

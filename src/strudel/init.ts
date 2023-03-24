@@ -1,5 +1,6 @@
-import { Pattern } from "@strudel.cycles/core";
+import { Pattern, register } from "@strudel.cycles/core";
 import { isDevelopment } from "utils/debug";
+import { ensure } from "utils/ensure";
 import { m } from "./mini";
 
 /**
@@ -54,6 +55,13 @@ import { m } from "./mini";
  */
 export const documentationPlaceholder = () => {};
 
+/** Inspect the first `n` bars of the pattern `pat` */
+const inspect = register("inspect", function (n, pat) {
+    let _n = ensure(typeof n == "number" ? n : undefined);
+    pat.drawLine();
+    return debugPrint(pat, _n);
+});
+
 /**
  * Print out the first 10 bars of the pattern to the console.
  *
@@ -62,7 +70,7 @@ export const documentationPlaceholder = () => {};
  * @param n Number of bars to print (default 10)
  * @returns The original pattern (useful for chaining)
  */
-export const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
+const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
     if (!isDevelopment()) return pattern;
 
     const events = pattern.queryArc(0, n);
