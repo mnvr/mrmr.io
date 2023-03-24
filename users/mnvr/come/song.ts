@@ -54,10 +54,11 @@ export const song: TidalSong = () => {
     const p5 = stack(c0, c0a);
 
     // const p7 = debugPrint(note(m`a@3 a`).gain(m`<0.4@3 0.9>`), 4);
-    const p7 = debugPrint(
-        note(m`a@3 a`).gain(m`<0@3 1>`.squeeze(cat(m`0.4`, m`0.9`))),
-        4
-    );
+    const p7 = note(m`a@3 a`)
+        .gain(m`<0.4@3 0.9>`)
+        .cutoff(cat(m`100`.slow(10), sine.range(900, 900)).slow(11));
+
+    const p8 = debugPrint(cat(m`100`.slow(4), m`11`).slow(5), 6);
 
     return p7;
 };
