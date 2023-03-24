@@ -70,6 +70,9 @@ declare module "@strudel.cycles/core" {
         ...pats: Patternable<T>[]
     ) => Pattern;
 
+    /** An arbitrary precision rational number */
+    export const Fraction = any;
+
     /**
      * A cycle, or a point in the midst of one.
      *
@@ -81,7 +84,7 @@ declare module "@strudel.cycles/core" {
      * And not all phenomena are periodic, or deterministic. Like the digits of
      * an irrational number, or the {@link rand} pattern.
      */
-    export type Cycle = number;
+    export type Cycle = number | Fraction;
 
     /** A duration in time */
     export class TimeSpan {
@@ -159,6 +162,8 @@ declare module "@strudel.cycles/core" {
      * This separation is needed to get the triggering (sending side-effecting
      * instructions to an external system, say WebAudio) to work properly
      * – parts whose wholes are outside the current arc are not triggered.
+     *
+     * The `whole` timestamp is not present for {@link signal}s.
      */
     export class Hap<T> {
         /**
@@ -188,17 +193,29 @@ declare module "@strudel.cycles/core" {
     export type PVSeconds = number;
 
     /**
-     * A new continuous pattern of random numbers [0, 1)
+     * Continuous patterns are referred to as signals.
      *
-     * > Continuous patterns are also referred to as signals.
+     * These do not have any associated `whole`s; they're sampled at the
+     * midpoint of their `part`s.
      *
-     * @see {@link rand2} - a bipolar version of this
+     * This method is a used to construct signals – it creates a new pattern
+     * under the hood that queries `f` at the midpoints.
+     *
+     * @see {@link segment} to convert a continuous signal into a discrete
+     * sequence of values by sampling it a given number of times.
+     */
+    export const signal = (f: any) => Pattern;
+
+    /**
+     * A random number signal [0, 1)
+     *
+     * @see {@link rand2} - A Bipolar version of this
      */
     export const rand: Pattern;
     /**
-     * A new continuous pattern of random numbers [-1, 1)
+     * A random number signal [-1, 1)
      *
-     * @see {@link rand} - a unipolar version of this
+     * @see {@link rand} - A unipolar version of this
      */
     export const rand2: Pattern;
 
@@ -233,8 +250,20 @@ declare module "@strudel.cycles/core" {
     export const perlin: Pattern;
 
     /**
-     * A signal whose value is current cycle number (since we started playback)
+     * A signal whose value is current cycle number (since we started playback).
+     *
+     * More specifically, it is a {@link Fraction} value indicating the midpoint
+     * of each cycle, as this signal gets evaluated.
+     *
+     * e.g. `time.inspect()` would show
+     *
+     *     [ 0/1 → 1/1 | {"s":1,"n":1,"d":2} ]
+     *     [ 1/1 → 2/1 | {"s":1,"n":3,"d":2} ]
+     *
+     * Here `{"s":1,"n":1,"d":2}` is what we get when we try to print out the
+     * {@link Fraction} "1/2".
      */
+
     export const time: Pattern;
 
     /**
