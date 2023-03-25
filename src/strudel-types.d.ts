@@ -595,6 +595,7 @@ declare module "@strudel.cycles/core" {
      * version. For documentation, see the version inside {@link Controls}.
      */
     export const add: PatternTransform;
+    export const mask: PatternTransform;
 }
 
 declare module "@strudel.cycles/webaudio" {
