@@ -153,17 +153,19 @@ declare module "@strudel.cycles/core" {
      *
      * Events have 2 attached TimeSpans - a "whole" and a "part":
      *
-     * - The "whole" is the original duration of the event.
+     * - The "whole" is the timespan of the event.
      *
-     * - The "part" is the active duration of the event that falls within the
-     *   TimeSpan we're currently querying (e.g. via `queryArc`). Thus, `part`
-     *   is the intersection of the whole and the arc TimeSpans.
+     * - The "part" is the timespan that is active. The part will be always
+     *   contained within the whole.
      *
-     * This separation is needed to get the triggering (sending side-effecting
-     * instructions to an external system, say WebAudio) to work properly
-     * – parts whose wholes are outside the current arc are not triggered.
+     * If the part is smaller than the whole, then it is a fragment. e.g. this
+     * can happen if we query for part of a cycle.
      *
-     * The `whole` timestamp is not present for {@link signal}s.
+     * This separation is needed to get the triggering to work – if the onset is
+     * missing (i.e. if the part starts later than the whole), then that event
+     * won't trigger a sound.
+     *
+     * Events that come from continuous {@link signal}s don't have `whole`s.
      */
     export class Hap<T> {
         /**
@@ -233,7 +235,7 @@ declare module "@strudel.cycles/core" {
     export const tri: Pattern;
 
     /**
-     * Perlin noise [0, 1]
+     * Perlin (smooth) noise [0, 1]
      *
      * Perlin noise is a more "organic" feeling randomness. While the
      * distribution is still pseudorandom, it has the property that samples
