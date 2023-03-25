@@ -5,6 +5,20 @@ import type { TidalSong } from "types";
 export const song: TidalSong = () => {
     const { note } = controls;
 
+    const d1 = note(m`<a4 ~@20>`)
+        .cutoff(sine.range(500, 2500).slow(40))
+        .release(6)
+        .delay(0.5)
+        .delayfeedback(0.9)
+        .delaytime(2)
+        .room(2);
+
+    return stack(d1);
+};
+
+export const song1: TidalSong = () => {
+    const { note } = controls;
+
     const d1 = note(
         m`[c d f a]!7 [g!6 f g] [c d f a]!7 [g g g@2 g@2 f g]`
     ).slow(16);
@@ -27,7 +41,9 @@ export const song: TidalSong = () => {
         .s("triangle")
         .cutoff(saw.range(700, 1200).slow(40))
         .resonance(rand.range(13, 26))
-        .delay(0.5).delayfeedback(0.9).delaytime(1)
+        .delay(0.5)
+        .delayfeedback(0.9)
+        .delaytime(1)
         .gain(0.62);
 
     const d5 = note(m`c2 d2@2 ~`)

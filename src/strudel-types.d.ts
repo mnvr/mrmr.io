@@ -491,7 +491,13 @@ declare module "@strudel.cycles/core" {
          * Delay level, and optional ":delaytime:delayfeedback"
          */
         delay: PatternTransform<PVLevel>;
-        /** Delay time, in seconds */
+        /**
+         * Delay time, in seconds
+         *
+         * Currently Strudel supports only a maxDelayTime of 1 second. This is
+         * not an inherent WebAudio limitation, rather just things are not
+         * currently wired up to support times more than 1.
+         */
         delaytime: PatternTransform<PVSeconds>;
         /** Delay feedback level */
         delayfeedback: PatternTransform<PVLevel>;
