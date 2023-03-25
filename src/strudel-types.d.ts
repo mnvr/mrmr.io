@@ -416,6 +416,32 @@ declare module "@strudel.cycles/core" {
         ribbon: PatternTransform;
 
         /**
+         * Superimpose a copy of the pattern after applying `f`
+         *
+         * @param f The {@link PatternTransform} function to apply on the
+         * pattern to create the new superimposed one.
+         */
+        superimpose: PatternTransform;
+        /**
+         * Like superimpose, but offset the copy first
+         *
+         * This might work be not the way you expect if the offset is more than
+         * 1 cycle.
+         *
+         * @param n The number of cycles to offset
+         * @param f The {@link PatternTransform}
+         */
+        off: PatternTransform;
+        /**
+         * Superimpose and offset multiple copies of the pattern.
+         *
+         * @param times The number of times to echo
+         * @param d The time (in cycles) between each echo
+         * @param fb The level multiplier of each echo
+         */
+        echo: PatternTransform;
+
+        /**
          * Sample a continuous pattern n times per cycle, turning it into a
          * discrete one.
          *
@@ -441,8 +467,18 @@ declare module "@strudel.cycles/core" {
          *
          * While usually this is between [0, 1], this can be an arbitrary
          * multiplier outside this range too.
+         *
+         * Note that gains cannot be chained – the last one wins. So if you wish
+         * to tweak the gain after setting the base level, use {@link velocity}
+         * which acts the (linear) multiplier for the gain.
          */
         gain: PatternTransform<PVLevel>;
+        /**
+         * Playback level, linear [0 1].
+         *
+         * It is multiplied with the gain.
+         */
+        velocity: PatternTransform<PVLevel>;
 
         /**
          * Attack time in seconds of the amplitude ADSR envelope.
