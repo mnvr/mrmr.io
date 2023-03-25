@@ -385,6 +385,11 @@ declare module "@strudel.cycles/core" {
         squeeze: PatternTransform;
 
         /**
+         * Mute the (left) pattern when the control (right) pattern is 0 or "~"
+         */
+        mask: PatternTransform;
+
+        /**
          * Reverse a pattern
          */
         rev: PatternTransform<void>;
@@ -590,7 +595,6 @@ declare module "@strudel.cycles/core" {
      * version. For documentation, see the version inside {@link Controls}.
      */
     export const add: PatternTransform;
-    export const cutoff: PatternTransform;
 }
 
 declare module "@strudel.cycles/webaudio" {

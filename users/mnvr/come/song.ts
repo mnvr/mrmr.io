@@ -55,34 +55,60 @@ export const song: TidalSong = () => {
 
     const p7 = note(m`a4@3 a4`)
         .s("sine")
+        .gain(m`<0.9 0.4@3>`);
+
+    const p7b = note(m`a4`)
+        // .s("sine")
         .gain(m`<0.4@3 0.9>`)
+        .gain(0.5)
         // .cutoff(1000)
-        // .cutoff(
-        //     timeCat(
-        //         [1, m`17200`]
-        //         // [2, saw.range(100, 600).slow(2)],
-        //         // [7, sine.range(600, 900)],
-        //         // [2, isaw.range(100, 600).slow(2)]
+        // .outside(
+        //     12,
+        //     cutoff(
+        //         timeCat(
+        //             [1, m`100`],
+        //             [2, saw.range(100, 600).slow(2)],
+        //             [7, sine.range(600, 900)],
+        //             [2, isaw.range(100, 600).slow(2)]
+        //         )
         //     )
         // )
         .outside(
-            6,
+            30,
             add(
                 timeCat(
-                    [1, m`1`.note()],
-                    [1, m`0`.note() /*saw.range(100, 600)],*/],
-                    [3, m`3`.note() /*sine.range(600, 3000)],*/],
-                    [1, m`7`.note() /*isaw.range(100, 600)]*/]
+                    [12, note(0)],
+                    [1, note(1)],
+                    [1, note(0)],
+                    [3, note(3)],
+                    [1, note(7)],
+                    [12, note(0)]
                 )
             )
         )
+        // .outside(
+        //     30,
+        //     gain(
+        //         timeCat(
+        //             [12, 0.0],
+        //             [1, 0.7],
+        //             [1, 0.7],
+        //             [3, 0.7],
+        //             [1, 0.7],
+        //             [12, 0.0]
+        //         )
+        //     )
+        // )
+        // .outside(12, mask(m`0!4 1!6 1 1`))
         .inspect();
+
+    // const p7c = time.segment(1).inspect();
+    // console.log(Fraction("3/4"));
 
     const p8 = note(m`[c5 d5] <c6 g#6 g6 c7>`)
         .fast(121)
         .gain(timeCat([1, 0], [20, saw.range(0.05, 0.3)], [100, 0.3]))
-        .slow(121)
-        .inspect();
+        .slow(121);
 
-    return stack(p7, p8.hush());
+    return stack(p7, p7b, p8.hush());
 };
