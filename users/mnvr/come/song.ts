@@ -1,4 +1,4 @@
-import { controls, mask, sine, stack } from "@strudel.cycles/core";
+import { controls, mask, rand, saw, sine, stack } from "@strudel.cycles/core";
 import { m } from "strudel/mini";
 import type { TidalSong } from "types";
 
@@ -21,5 +21,20 @@ export const song: TidalSong = () => {
         .gain(0.5)
         .outside(20, mask(m`1 1!4`));
 
-    return stack(d1.hush(), d2.hush(), d3);
+    const d4 = note(m`[c d f a]!7 [g!2 f!2 d@3 c]`)
+        .add(note(12))
+        .slow(8)
+        .s("triangle")
+        .cutoff(saw.range(700, 1200).slow(40))
+        .resonance(rand.range(13, 26))
+        .delay(0.5).delayfeedback(0.9).delaytime(1)
+        .gain(0.62);
+
+    const d5 = note(m`c2 d2@2 ~`)
+        .s("sawtooth")
+        .cutoff(saw.range(700, 1200).slow(40))
+        .resonance(rand.range(13, 26))
+        .gain(0.62);
+
+    return stack(d1, d2, d3.hush(), d4, d5);
 };
