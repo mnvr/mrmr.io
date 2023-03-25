@@ -41,6 +41,8 @@ export const song: TidalSong = () => {
         .resonance(rand.range(13, 26))
         .gain(0.62);
 
+    const d4b = d4.gain(0.15).cutoff(saw.range(700, 12000).slow(m`<40@40 5@5>`));
+
     const ramp4 = (p: Pattern) =>
         p.gain(
             timeCat(
@@ -52,11 +54,24 @@ export const song: TidalSong = () => {
             ).slow(1 + 30 + 90 + 20 + 5)
         );
 
+    const ramp4b = (p: Pattern) =>
+        p.gain(
+            timeCat(
+                [1 + 30 + 90 + 20 + 5, 0],
+                [1, 0],
+                [30, saw.range(0, 0.62)],
+                [90, sine.range(0.62, 0.66)],
+                [20, isaw.range(0, 0.62)],
+                [5, 0]
+            ).slow((1 + 30 + 90 + 20 + 5) * 2)
+        );
+
     return stack(
         d1,
         d2,
-        d2.outside(100, mask(m`0!8 1!16 0!76`)),
+        d2.gain(0.5).outside(96, mask(m`0!8 1!16 0!24 1!24 1!24`)),
         // d3.outside(200, mask(m`0!30 1!170`)),
-        ramp4(d4)
+        ramp4(d4),
+        ramp4b(d4b)
     );
 };
