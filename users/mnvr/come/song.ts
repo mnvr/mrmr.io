@@ -34,17 +34,17 @@ export const song: TidalSong = () => {
         .cutoff(sine.range(500, 3000).slow(20))
         .resonance(rand.range(13, 16))
         .echo(5, 0.5, 0.1)
-        .gain(cat(0, saw.range(0, 1), 1, isaw.range(0, 1)).slow(300))
+        .gain(cat(0, saw.range(0, 1), 1, isaw.range(0, 1)).slow(70))
         .velocity(0.9);
 
     const d4 = note(m`c2 d2@2 ~`)
         .s("sawtooth")
         .cutoff(saw.range(700, 1200).slow(40))
         .resonance(rand.range(13, 26))
-        .gain(0.62);
+        .velocity(0.7);
 
     const d4b = d4
-        .gain(0.15)
+        .velocity(0.3)
         .cutoff(saw.range(700, 12000).slow(m`<40@40 5@5>`));
 
     const ramp4 = (p: Pattern) =>
@@ -72,8 +72,8 @@ export const song: TidalSong = () => {
 
     return stack(
         d1,
-        d2,
-        d2.gain(0.5).outside(96, mask(m`0!8 1!16 0!24 1!24 1!24`)),
+        d2.echo(1, 0.3, 0.1),
+        d2.velocity(0.3).outside(96, mask(m`0!8 1!16 0!24 1!24 0!24`)),
         d3,
         ramp4(d4),
         ramp4b(d4b)

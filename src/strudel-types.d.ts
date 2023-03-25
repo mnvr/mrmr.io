@@ -477,6 +477,12 @@ declare module "@strudel.cycles/core" {
          * Playback level, linear [0 1].
          *
          * It is multiplied with the gain.
+         *
+         * Note that unlike gains, velocity can be be chained, each will
+         * multiply the previous value (apparently the behaviour is different
+         * because velocity is a pattern modifier, while gain is a control
+         * parameter: so for gain, the last value wins, whilst for velocity
+         * there is explicit `(existingVelocity || 1) * newVelocity` handling.
          */
         velocity: PatternTransform<PVLevel>;
 
