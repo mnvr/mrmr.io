@@ -626,6 +626,12 @@ declare module "@strudel.cycles/webaudio" {
     export const getAudioContext: () => {
         currentTime: any;
     };
+
+    /**
+     * Call this on startup to register support for the  in-built
+     * {@link SynthType}s oscillators.
+     */
+    export const registerSynthSounds: () => void;
 }
 
 declare module "@strudel.cycles/mini" {

@@ -1,4 +1,5 @@
 import { Pattern } from "@strudel.cycles/core";
+import { registerSynthSounds } from "@strudel.cycles/webaudio";
 import { ensure } from "utils/ensure";
 import { inspect } from "./inspect";
 import { m } from "./mini";
@@ -56,4 +57,5 @@ import { m } from "./mini";
 export const initStrudel = () => {
     // Refer to the inspect function so that it gets registered.
     ensure(inspect != undefined);
+    registerSynthSounds();
 };

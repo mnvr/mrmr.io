@@ -17,7 +17,7 @@ export const song: TidalSong = () => {
     const p1 = note(m`c <a ~ ~ [f e]>`).gain(0.5);
     const p2 = note(m`c <a ~ ~ [f e]>`)
         .add(12)
-        .s("tri")
+        .s("triangle")
         .gain(0.3);
     const p3 = stack(p1, p2);
 
