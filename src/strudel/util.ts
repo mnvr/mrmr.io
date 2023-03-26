@@ -8,9 +8,13 @@ import {
 /**
  * A fade-in envelope
  *
- * @param n The number of cycles to take for the fade in.
+ * @param n The number of cycles to take for the fade in. Specify 0 to omit the
+ * fade in, just offset the onset using `wait`.
+ * @param wait The number of cycles to wait before starting the fade in.
+ * Optional, default 0.
  */
-export const fadeIn = (n: number) => signal((t) => Math.min(t / n, 1));
+export const fadeIn = (n: number, wait: number = 0) =>
+    signal((t) => Math.min(Math.max(0, t - wait) / n, 1));
 
 /**
  * Apply a gain envelope to the pattern
