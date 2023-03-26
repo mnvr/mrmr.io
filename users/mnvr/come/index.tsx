@@ -12,6 +12,7 @@ export const Page: React.FC = () => {
             <PlayerA vis={vis} song={song}>
                 <Heading />
             </PlayerA>
+            <Text />
             <PageFooterA />
         </>
     );
@@ -25,7 +26,7 @@ const Heading: React.FC = () => {
                 <br />
                 with me
             </H1>
-            <P>the best is yet to be</P>
+            <Caption>the stars are yet to be</Caption>
         </Column>
     );
 };
@@ -37,11 +38,37 @@ const H1 = styled.h1`
     font-style: italic;
 `;
 
-const P = styled.p`
+const Caption = styled.p`
     margin: 1.8rem;
     margin-block-start: 1.3rem;
     margin-block-end: 2rem;
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: var(--mrmr-color-2);
+`;
+
+const Text: React.FC = () => {
+    return (
+        <Column>
+            <P>
+                You've been dreaming of you
+                <br />
+                I've been dreaming of me
+                <br />
+                We've been dreaming of time
+                <br />
+                Endlessly
+            </P>
+        </Column>
+    );
+};
+
+const P = styled.p`
+    margin: 1.8rem;
+    line-height: 1.7rem;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0.025ch;
+    color: var(--mrmr-color-1);
 `;
