@@ -31,8 +31,8 @@ export const song: TidalSong = () => {
 
     return stack(
         p1.velocity(0.5),
-        p2.velocity(0.8).velocity(fadeIn(2)),
-        p3.velocity(0.9).gain(fadeIn(5, 5)),
-        p4.gain(fadeIn(0, 64))
+        p2.velocity(fadeIn(2)),
+        p3.velocity(0.8).gain(fadeIn(5, 5)),
+        p4.gain(fadeIn(0, 16 * 8))
     );
 };
