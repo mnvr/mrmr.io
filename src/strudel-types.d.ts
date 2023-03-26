@@ -195,6 +195,11 @@ declare module "@strudel.cycles/core" {
     export type PVSeconds = number;
 
     /**
+     * The best
+     */
+    export const silence: Pattern;
+
+    /**
      * Continuous patterns are referred to as signals.
      *
      * These do not have any associated `whole`s; they're sampled at the

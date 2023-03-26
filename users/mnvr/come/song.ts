@@ -5,6 +5,7 @@ import {
     Pattern,
     rand,
     saw,
+    silence,
     sine,
     stack,
     timeCat,
@@ -12,7 +13,7 @@ import {
 import { m } from "strudel/mini";
 import type { TidalSong } from "types";
 
-export const song: TidalSong = () => {
+export const song1: TidalSong = () => {
     const { note } = controls;
 
     const d1 = note(
@@ -86,4 +87,16 @@ export const song: TidalSong = () => {
         ramp4(d4),
         ramp4b(d4b)
     ).velocity(0.4);
+};
+
+export const song: TidalSong = () => {
+    const { note } = controls;
+
+    const p1 = note(m`<[c3 a2] ~ ~>`).sub(note(12));
+
+    const p2 = note(m`[c3 d3] <g5 c5 d5 e5>`).s("sine");
+
+    const p3 = timeCat([1, silence], [2, p2], [1, silence]);
+
+    return stack(p1, p3);
 };
