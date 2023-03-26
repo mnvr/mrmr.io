@@ -14,7 +14,9 @@ import {
  * Optional, default 0.
  */
 export const fadeIn = (n: number, wait: number = 0) =>
-    signal((t) => Math.min(Math.max(0, t - wait) / n, 1));
+    signal((t) =>
+        Math.min(n === 0 ? Math.max(0, t - wait) : Math.max(0, t - wait) / n, 1)
+    );
 
 /**
  * Apply a gain envelope to the pattern

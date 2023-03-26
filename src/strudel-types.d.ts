@@ -548,6 +548,13 @@ declare module "@strudel.cycles/core" {
         release: PatternTransform<PVSeconds>;
 
         /**
+         * Waveshaping distortion level [0, 1]
+         *
+         * Be careful with large values, might get loud.
+         */
+        shape: PatternTransform<PVLevel>;
+
+        /**
          * Detune the oscillator
          *
          * - Only supported by SuperDirt synths.

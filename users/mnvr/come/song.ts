@@ -1,4 +1,4 @@
-import { controls, rand, saw, stack } from "@strudel.cycles/core";
+import { controls, rand, saw, sine, stack } from "@strudel.cycles/core";
 import { m } from "strudel/mini";
 import { fadeIn } from "strudel/util";
 import type { TidalSong } from "types";
@@ -20,21 +20,19 @@ export const song: TidalSong = () => {
         .resonance(rand.range(13, 26))
         .velocity(0.65);
 
-    const p4 = note(m`[c5 d5] [<g#5 g5 f5 f6> ~] ~ ~`)
-        .velocity(m`1 0.9 0 0`)
+    const p4 = note(m`<[e6 f#6]!3 [f#6 b6]> [<e7 <c7 c#7> b6 f#6> ~] ~ ~`)
+        .velocity(m`[0.8 1] 0.9 0 0`)
         .decay(0.1)
-        .sustain(m`0.5 0.7 0 0`)
+        .sustain(0.5)
         .release(m`0 2.3 0 0`)
-        .hcutoff(5000)
-        .add(note(12 + 4))
-        .s("triangle")
-        .velocity(0.5)
+        .hcutoff(sine.range(2000, 3000).slow(16))
+        .velocity(0.4)
         .slow(16);
 
     return stack(
         p1.velocity(0.5),
         p2.velocity(0.8).velocity(fadeIn(2)),
-        p3.gain(fadeIn(5, 5)),
-        p4.gain(fadeIn(0, 10))
+        p3.velocity(0.9).gain(fadeIn(5, 5)),
+        p4.gain(fadeIn(0, 64))
     );
 };
