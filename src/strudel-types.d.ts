@@ -232,13 +232,16 @@ declare module "@strudel.cycles/core" {
      * These do not have any associated `whole`s; they're sampled at the
      * midpoint of their `part`s.
      *
-     * This method is a used to construct signals – it creates a new pattern
-     * under the hood that queries `f` at the midpoints.
+     * This method is a used to construct signals by returning its value at the
+     * midpoint of each cycle.
+     *
+     * @param f The function that is called at the midpoint of each cycle. It is
+     * passed the midpoint `t`.
      *
      * @see {@link segment} to convert a continuous signal into a discrete
      * sequence of values by sampling it a given number of times.
      */
-    export const signal = (f: any) => Pattern;
+    export const signal = (f: (t: number) => Patternable) => Patternable;
 
     /**
      * A random number signal [0, 1)
