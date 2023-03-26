@@ -529,6 +529,24 @@ declare module "@strudel.cycles/core" {
         resonance: PatternTransform<Number>;
 
         /**
+         * High-pass filter cutoff frequency, and an optional ":hresonance"
+         */
+        hcutoff: PatternTransform<PVFrequency>;
+        /**
+         * Resonance for the high-pass filter [0, 50]
+         */
+        hresonance: PatternTransform<Number>;
+
+        /**
+         * Band-pass filter center frequency, and an optional ":bandq"
+         */
+        bandf: PatternTransform<PVFrequency>;
+        /**
+         * Resonance for the band-pass filter
+         */
+        bandq: PatternTransform<Number>;
+
+        /**
          * Formant filter frequency.
          *
          * Can be one of the vowels - "a", "e", "i", "o", "u", or patterns
