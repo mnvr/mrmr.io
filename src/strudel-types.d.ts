@@ -16,18 +16,6 @@ declare module "@strudel.cycles/core" {
      */
     export class Pattern extends Controls {
         /**
-         * Render a visual representation of the pattern on the console.
-         *
-         * Intended for debugging; will break in ways more than one.
-         *
-         * Legend:
-         * - "|" cycle
-         * - "-" hold
-         * - "." silence
-         */
-        drawLine: () => void;
-
-        /**
          * Ask the pattern what all events will happen between start and end.
          *
          * This is the fundamental operation in terms of the implementation, but
@@ -43,6 +31,25 @@ declare module "@strudel.cycles/core" {
          * musical) sound.
          */
         queryArc: (start: Cycle, end: Cycle) => Hap[];
+
+        /**
+         * Render a visual representation of the pattern on the console.
+         *
+         * Intended for debugging; will break in ways more than one.
+         *
+         * Legend:
+         * - "|" cycle
+         * - "-" hold
+         * - "." silence
+         */
+        drawLine: () => void;
+
+        /**
+         * Return a new pattern but with its events sorted by their onsets.
+         *
+         * Only useful when debugging really, can't imagine other uses.
+         */
+        sortHapsByPart(): Pattern;
     }
 
     /**
