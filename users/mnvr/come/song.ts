@@ -1,9 +1,10 @@
 import {
+    Pattern,
     controls,
     isaw,
-    Pattern,
     rand,
     saw,
+    signal,
     sine,
     stack,
 } from "@strudel.cycles/core";
@@ -57,5 +58,19 @@ export const song: TidalSong = () => {
             [15, 0.01],
         ]);
 
+    const p5 = note(69).gain(fadeIn(50));
+    return p5;
+
     return stack(p1.velocity(0.5), p2.velocity(0.8), ramp3(p3), ramp4(p4));
 };
+
+/**
+ * A fade-in envelope
+ *
+ * @param n The number of cycles to take for the fade in.
+ */
+export const fadeIn = (n: number) =>
+    signal((t: number) => {
+        console.log(Math.min(t / n, 1));
+        return Math.min(t / n, 1) as any;
+    });

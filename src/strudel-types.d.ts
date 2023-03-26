@@ -70,8 +70,35 @@ declare module "@strudel.cycles/core" {
         ...pats: Patternable<T>[]
     ) => Pattern;
 
-    /** An arbitrary precision rational number */
-    export const Fraction = any;
+    /**
+     * An arbitrary precision rational number
+     */
+    interface IFraction {
+        /** Sign */
+        s: number;
+        /** Numerator */
+        n: number;
+        /** Denominator */
+        n: number;
+
+        /*
+         * The standard "Fraction" type that Strudel uses has been enhanced by
+         * Strudel to add some functions that are convenient when dealing with
+         * TimeSpans.
+         */
+
+        /** The start of the current cycle */
+        sam: IFraction;
+
+        /**
+         * x < y === x.lt(y)
+         *
+         * @return true if we're less than the argument
+         */
+        lt: (IFraction) => boolean;
+    }
+
+    export const Fraction: (n: number | string) => IFraction;
 
     /**
      * A cycle, or a point in the midst of one.
@@ -84,7 +111,7 @@ declare module "@strudel.cycles/core" {
      * And not all phenomena are periodic, or deterministic. Like the digits of
      * an irrational number, or the {@link rand} pattern.
      */
-    export type Cycle = number | Fraction;
+    export type Cycle = number | IFraction;
 
     /** A duration in time */
     export class TimeSpan {
@@ -259,7 +286,7 @@ declare module "@strudel.cycles/core" {
     /**
      * A signal whose value is current cycle number (since we started playback).
      *
-     * More specifically, it is a {@link Fraction} value indicating the midpoint
+     * More specifically, it is a {@link IFraction} value indicating the midpoint
      * of each cycle, as this signal gets evaluated.
      *
      * e.g. `time.inspect()` would show
@@ -268,9 +295,8 @@ declare module "@strudel.cycles/core" {
      *     [ 1/1 → 2/1 | {"s":1,"n":3,"d":2} ]
      *
      * Here `{"s":1,"n":1,"d":2}` is what we get when we try to print out the
-     * {@link Fraction} "1/2".
+     * {@link IFraction} "1/2".
      */
-
     export const time: Pattern;
 
     /**
@@ -324,14 +350,15 @@ declare module "@strudel.cycles/core" {
         note: PatternTransform;
 
         /**
-         * Add the given number to each item in the pattern.
+         * Binary arithmentic operations for pattern streams.
          *
-         * When used with vanilla notes, this has the effect of increasing pitch
-         * by adding semitones.
+         * If the arguments are notes (e.g `note("a5").add(note(4)))`, this has
+         * the effect of increasing pitch by adding semitones.
          */
         add: PatternTransform;
-        /** Modify pitch by subtracting semitones (usually, @see {@link add}) */
         sub: PatternTransform;
+        mul: PatternTransform;
+        div: PatternTransform;
 
         /**
          * Silence the pattern
