@@ -12,9 +12,9 @@ import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
- * List "some" pages. Currently it shows all the pages, sorted by recency.
+ * List all the pages, sorted by recency.
  */
-const SomePage: React.FC<PageProps<Queries.SomePageQuery>> = ({ data }) => {
+const RecentPage: React.FC<PageProps<Queries.RecentPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
     return (
@@ -40,9 +40,15 @@ const colorPalettes = {
     ]),
 };
 
-export default SomePage;
+export default RecentPage;
 
-export const Head: HeadFC = () => <DefaultHead title="Some" />;
+export const Head: HeadFC = () => {
+    const title = "Recent";
+    const description = "Recently added pages on mrmr.io";
+    const canonicalSlug = "/recent";
+
+    return <DefaultHead {...{ title, description, canonicalSlug }} />;
+};
 
 /**
  * Fetch all pages, sorted by recency.
@@ -53,7 +59,7 @@ export const Head: HeadFC = () => <DefaultHead title="Some" />;
  *   limit here too.
  */
 export const query = graphql`
-    query SomePage {
+    query RecentPage {
         allMdx(
             filter: {
                 fields: { type: { eq: "page" } }
@@ -87,7 +93,7 @@ interface Page {
     darkColors?: ColorPalette;
 }
 
-const parsePages = (data: Queries.SomePageQuery) => {
+const parsePages = (data: Queries.RecentPageQuery) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 

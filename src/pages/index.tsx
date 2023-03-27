@@ -56,7 +56,7 @@ const IndexTitle: React.FC = () => {
             <Poem />
             <Nav>
                 <small>
-                    <Link to="/some">some</Link>,{" "}
+                    <Link to="/recent">recent</Link>,{" "}
                     <Link to="/random">random</Link>
                 </small>
             </Nav>
