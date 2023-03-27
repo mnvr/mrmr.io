@@ -1,9 +1,12 @@
+import { IconButton } from "components/Buttons";
 import { Column } from "components/Column";
+import { ExternalLink } from "components/ExternalLink";
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
 import { ColorPalette, parseColorPalette } from "parsers/colors";
 import * as React from "react";
+import { FaTwitter } from "react-icons/fa";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -110,6 +113,7 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
                     </LI>
                 ))}
             </UL>
+            <Notes />
         </Column>
     );
 };
@@ -211,3 +215,25 @@ const PageLink: React.FC<Page> = ({ title, slug, username }) => {
         </>
     );
 };
+
+const Notes: React.FC = () => {
+    return (
+        <NotesP>
+            <IconButton>
+                <ExternalLink href="https://twitter.com/mrmrdio">
+                    <FaTwitter size="1rem" title="Twitter" />
+                </ExternalLink>
+            </IconButton>
+        </NotesP>
+    );
+};
+
+const NotesP = styled.div`
+    color: var(--mrmr-color-2);
+
+    a:hover {
+        color: var(--mrmr-color-1);
+    }
+
+    text-align: end;
+`;
