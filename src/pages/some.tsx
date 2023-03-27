@@ -18,10 +18,10 @@ const SomePage: React.FC<PageProps<Queries.SomePageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
     return (
-        <main>
+        <Main>
             <PageColorStyle {...colorPalettes} />
             <PageListing {...{ pages }} />
-        </main>
+        </Main>
     );
 };
 
@@ -117,6 +117,10 @@ const PageListing: React.FC<{ pages: Page[] }> = ({ pages }) => {
         </Column>
     );
 };
+
+const Main = styled.main`
+    font-size: 1.05rem;
+`;
 
 const UL = styled.ul`
     margin-block: 2.5rem;
@@ -221,7 +225,7 @@ const Notes: React.FC = () => {
         <NotesP>
             <IconButton>
                 <ExternalLink href="https://twitter.com/mrmrdio">
-                    <FaTwitter size="1rem" title="Twitter" />
+                    <FaTwitter size="1.4rem" title="Twitter" />
                 </ExternalLink>
             </IconButton>
         </NotesP>
@@ -229,10 +233,10 @@ const Notes: React.FC = () => {
 };
 
 const NotesP = styled.div`
-    color: var(--mrmr-color-2);
+    color: var(--mrmr-color-4);
 
     a:hover {
-        color: var(--mrmr-color-1);
+        color: var(--mrmr-color-3);
     }
 
     text-align: end;
