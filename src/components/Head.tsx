@@ -73,16 +73,22 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
 
     let canonicalURL: string | undefined;
-    if (canonicalSlug !== undefined) {
-        if (canonicalSlug.endsWith("/")) {
+    if (canonicalSlug === "") {
+        // Home page passes the empty string as the slug
+        canonicalURL = ensure(site?.siteMetadata?.siteUrl);
+    } else if (canonicalSlug) {
+        if (!canonicalSlug.startsWith("/"))
+            throw new Error(
+                `Specify a leading slash when providing the canonicalSlug (was "${canonicalSlug}")`
+            );
+
+        if (canonicalSlug.endsWith("/"))
             throw new Error(
                 `Do not specify a trailing slash when providing the canonicalSlug (was "${canonicalSlug}")`
             );
-        }
 
         const baseURL = ensure(site?.siteMetadata?.siteUrl);
-        canonicalURL =
-            canonicalSlug === "" ? baseURL : `${baseURL}${canonicalSlug}`;
+        canonicalURL = `${baseURL}${canonicalSlug}`;
     }
 
     return (
