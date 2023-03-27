@@ -22,18 +22,20 @@ export interface UserPageLinkButtonProps {
 /**
  * A row of icons buttons, each linking to one of the passed in links.
  *
- * Each of these links will open in an new tab. @see {@link ParsedLinkButton}.
+ * Variant A.
+ *
+ * Each of these links will open in an new tab. @see {@link ParsedLinkButtonA}.
  */
-export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
+export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsProps> = ({
     links,
     userPageLink,
 }) => {
     return (
         <ParsedLinkRow>
             {links?.map((link) => (
-                <ParsedLinkButton key={link.url} link={link} />
+                <ParsedLinkButtonA key={link.url} link={link} />
             ))}
-            {userPageLink && <UserPageLinkButton {...userPageLink} />}
+            {userPageLink && <UserPageLinkButtonA {...userPageLink} />}
         </ParsedLinkRow>
     );
 };
@@ -50,9 +52,9 @@ const ParsedLinkRow = styled.div`
  *
  * The link will open in a new tab.
  *
- * @see {@link ParsedLinkButtons}
+ * @see {@link ParsedLinkButtonsA}
  */
-export const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
+export const ParsedLinkButtonA: React.FC<IconProps> = ({ link }) => {
     const { url } = link;
     return (
         <ExternalLink href={url}>
@@ -66,9 +68,9 @@ export const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
 /**
  * A button that shows a link to the given user's home page.
  *
- * @see {@link ParsedLinkButtons} for links that are external to the site.
+ * @see {@link ParsedLinkButtonsA} for links that are external to the site.
  */
-export const UserPageLinkButton: React.FC<UserPageLinkButtonProps> = ({
+export const UserPageLinkButtonA: React.FC<UserPageLinkButtonProps> = ({
     slug,
     title,
 }) => {

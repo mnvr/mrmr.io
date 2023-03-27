@@ -1,8 +1,8 @@
 import { Column } from "components/Column";
 import {
-    ParsedLinkButtons,
+    ParsedLinkButtonsA,
     type ParsedLinkButtonsProps,
-} from "components/ParsedLinks";
+} from "components/ParsedLinkButtonsA";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -35,7 +35,7 @@ const PageFooterLinks: React.FC<ParsedLinkButtonsProps> = (props) => {
     return (
         <LinkButtonsContainer>
             <hr />
-            <ParsedLinkButtons {...props} />
+            <ParsedLinkButtonsA {...props} />
         </LinkButtonsContainer>
     );
 };

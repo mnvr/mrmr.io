@@ -7,7 +7,7 @@ import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
 import { Column } from "./Column";
-import { ParsedLinkButtons } from "./ParsedLinks";
+import { ParsedLinkButtonsA } from "./ParsedLinkButtonsA";
 
 /**
  * A footer for a page template - Variant A.
@@ -36,7 +36,7 @@ interface PageLinksProps {
 const PageLinks: React.FC<PageLinksProps> = ({ links }) => {
     return (
         <LinkButtonsContainer>
-            <ParsedLinkButtons links={links} />
+            <ParsedLinkButtonsA links={links} />
         </LinkButtonsContainer>
     );
 };

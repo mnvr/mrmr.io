@@ -9,7 +9,7 @@ import {
     BodyBackgroundColorTransitionStyle,
     PageListing,
 } from "components/PageListing";
-import { ParsedLinkButtons } from "components/ParsedLinks";
+import { ParsedLinkButtonsA } from "components/ParsedLinkButtonsA";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { ParsedLink, parseUserLinks } from "parsers/links";
@@ -161,7 +161,7 @@ interface UserLinksProps {
 const UserLinks: React.FC<UserLinksProps> = ({ links }) => {
     return (
         <LinkButtonsContainer>
-            <ParsedLinkButtons links={links} />
+            <ParsedLinkButtonsA links={links} />
         </LinkButtonsContainer>
     );
 };
