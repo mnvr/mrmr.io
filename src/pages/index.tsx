@@ -35,7 +35,11 @@ const colorPalettes = {
 
 export default IndexPage;
 
-export const Head: HeadFC = () => <DefaultHead />;
+export const Head: HeadFC = () => {
+    const description = "music •◦◎◉⦿ words | colors / code";
+
+    return <DefaultHead {...{ description }} />;
+};
 
 const Main = styled.main`
     display: flex;
