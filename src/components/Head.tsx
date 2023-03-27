@@ -82,7 +82,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
 
         const baseURL = ensure(site?.siteMetadata?.siteUrl);
         canonicalURL =
-            canonicalSlug === "" ? baseURL : `${baseURL}/${canonicalSlug}`;
+            canonicalSlug === "" ? baseURL : `${baseURL}${canonicalSlug}`;
     }
 
     return (
