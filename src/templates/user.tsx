@@ -13,6 +13,7 @@ import { ParsedLinkButtonsB } from "components/ParsedLinkButtonsB";
 import { graphql, HeadFC, PageProps } from "gatsby";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { ParsedLink, parseUserLinks } from "parsers/links";
+import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
 import styled from "styled-components";
 import type { UserTemplateContext } from "types/gatsby";
@@ -21,8 +22,9 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const UserTemplate: React.FC<
     PageProps<Queries.UserTemplateQuery, UserTemplateContext>
-> = ({ data, children }) => {
-    const user = parseUser(data);
+> = ({ data, pageContext, children }) => {
+    const { username } = pageContext;
+    const user = parseUser(data, username);
     const { pages } = user;
 
     const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
@@ -51,10 +53,20 @@ const UserTemplate: React.FC<
 
 export default UserTemplate;
 
-export const Head: HeadFC<Queries.UserTemplateQuery> = ({ data }) => {
-    const { name } = parseUser(data);
+export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
+    data,
+    pageContext,
+}) => {
+    const { username } = pageContext;
+    const user = parseUser(data, username);
 
-    return <DefaultHead title={name} />;
+    const firstName = firstNameOrFallback(user);
+
+    const title = user.name;
+    const description = `Music, words and art by ${firstName}`;
+    const canonicalSlug = user.slug;
+
+    return <DefaultHead {...{ title, description, canonicalSlug }} />;
 };
 
 export const query = graphql`
@@ -85,6 +97,8 @@ export const query = graphql`
 `;
 
 interface User {
+    username: string;
+    slug: string;
     name: string;
     flair?: string;
     colors?: ColorPalette;
@@ -100,7 +114,7 @@ interface Page {
     darkColors?: ColorPalette;
 }
 
-const parseUser = (data: Queries.UserTemplateQuery) => {
+const parseUser = (data: Queries.UserTemplateQuery, username: string) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 
@@ -111,16 +125,25 @@ const parseUser = (data: Queries.UserTemplateQuery) => {
         const type = ensure(fields?.type);
         const colors = parseColorPalette(frontmatter?.colors);
         const darkColors = parseColorPalette(frontmatter?.dark_colors);
+        const slug = ensure(fields?.slug);
 
         if (type == "user") {
             const name = ensure(frontmatter?.name);
             const links = parseUserLinks(frontmatter?.links);
             const flair = frontmatter?.flair;
 
-            parsedUser = { name, colors, darkColors, links, flair, pages: [] };
+            parsedUser = {
+                username,
+                slug,
+                name,
+                colors,
+                darkColors,
+                links,
+                flair,
+                pages: [],
+            };
         } else {
             const title = ensure(frontmatter?.title);
-            const slug = ensure(fields?.slug);
 
             const page = { title, slug, colors, darkColors };
 
