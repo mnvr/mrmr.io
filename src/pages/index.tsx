@@ -37,9 +37,9 @@ export default IndexPage;
 
 export const Head: HeadFC = () => {
     const description = "music •◦◎◉⦿ words | colors / code";
-    const canonicalSlug = "";
+    const canonicalPath = "";
 
-    return <DefaultHead {...{ description, canonicalSlug }} />;
+    return <DefaultHead {...{ description, canonicalPath }} />;
 };
 
 const Main = styled.main`

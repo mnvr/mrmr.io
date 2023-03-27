@@ -64,9 +64,9 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
 
     const title = user.name;
     const description = `Music, words and art by ${firstName}`;
-    const canonicalSlug = user.slug;
+    const canonicalPath = user.slug;
 
-    return <DefaultHead {...{ title, description, canonicalSlug }} />;
+    return <DefaultHead {...{ title, description, canonicalPath }} />;
 };
 
 export const query = graphql`

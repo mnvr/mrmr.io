@@ -47,13 +47,13 @@ interface HeadProps {
      * don't apply), but it doesn't hurt either apparently. MAGNI, maybe we're
      * gonna need it.
      */
-    canonicalSlug?: string;
+    canonicalPath?: string;
 }
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     title,
     description,
-    canonicalSlug,
+    canonicalPath,
     children,
 }) => {
     const data = useStaticQuery<Queries.HeadQuery>(graphql`
@@ -73,22 +73,22 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
 
     let canonicalURL: string | undefined;
-    if (canonicalSlug === "") {
-        // Home page passes the empty string as the slug
+    if (canonicalPath === "") {
+        // Home page passes the empty string as the path
         canonicalURL = ensure(site?.siteMetadata?.siteUrl);
-    } else if (canonicalSlug) {
-        if (!canonicalSlug.startsWith("/"))
+    } else if (canonicalPath) {
+        if (!canonicalPath.startsWith("/"))
             throw new Error(
-                `Specify a leading slash when providing the canonicalSlug (was "${canonicalSlug}")`
+                `Specify a leading slash when providing the canonicalPath (was "${canonicalPath}")`
             );
 
-        if (canonicalSlug.endsWith("/"))
+        if (canonicalPath.endsWith("/"))
             throw new Error(
-                `Do not specify a trailing slash when providing the canonicalSlug (was "${canonicalSlug}")`
+                `Do not specify a trailing slash when providing the canonicalPath (was "${canonicalPath}")`
             );
 
         const baseURL = ensure(site?.siteMetadata?.siteUrl);
-        canonicalURL = `${baseURL}${canonicalSlug}`;
+        canonicalURL = `${baseURL}${canonicalPath}`;
     }
 
     return (

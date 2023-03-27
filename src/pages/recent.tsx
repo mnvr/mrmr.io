@@ -45,9 +45,9 @@ export default RecentPage;
 export const Head: HeadFC = () => {
     const title = "Recent";
     const description = "Recently added pages on mrmr.io";
-    const canonicalSlug = "/recent";
+    const canonicalPath = "/recent";
 
-    return <DefaultHead {...{ title, description, canonicalSlug }} />;
+    return <DefaultHead {...{ title, description, canonicalPath }} />;
 };
 
 /**
