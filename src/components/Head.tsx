@@ -2,6 +2,7 @@ import { graphql, useStaticQuery } from "gatsby";
 import * as React from "react";
 import "styles/global.css";
 import { isDefined } from "utils/array";
+import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 interface HeadProps {
@@ -22,7 +23,17 @@ interface HeadProps {
     description?: string;
 
     /**
-     * Canonical URL of the page (optional)
+     * Canonical slug of the page (optional)
+     *
+     * If specified, this slug is suffixed to the `siteUrl` specified in
+     * `gatsby-config.ts` to construct the canonical URL.
+     *
+     * - The slug should begin with a slash but should not end with a slash
+     *   (this matches the `trailingSlash` option in `gatsby-config.ts`).
+     *
+     * - The slug for the home page should be the empty string.
+     *
+     * ### About Canonical URLs
      *
      * If there are multiple copies of the same page – say the site is available
      * via multiple domains, or if the same page is available in the site
@@ -36,23 +47,13 @@ interface HeadProps {
      * don't apply), but it doesn't hurt either apparently. MAGNI, maybe we're
      * gonna need it.
      */
-    canonicalURL?: string;
-
-    /**
-     * Canonical slug of the page (optional)
-     *
-     * This is a variant of {@link canonicalURL} that uses the `siteUrl`
-     * specified in `gatsby-config.ts` as the prefix.
-     *
-     * The slug should begin with a slash (unless it is the slug for the home
-     * page), but should not end with a slash.
-     */
     canonicalSlug?: string;
 }
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     title,
     description,
+    canonicalSlug,
     children,
 }) => {
     const data = useStaticQuery<Queries.HeadQuery>(graphql`
@@ -67,13 +68,28 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     `);
 
     const site = replaceNullsWithUndefineds(data.site);
+
     const siteTitle = site?.siteMetadata?.title;
     const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
+
+    let canonicalURL: string | undefined;
+    if (canonicalSlug !== undefined) {
+        if (canonicalSlug.endsWith("/")) {
+            throw new Error(
+                `Do not specify a trailing slash when providing the canonicalSlug (was "${canonicalSlug}")`
+            );
+        }
+
+        const baseURL = ensure(site?.siteMetadata?.siteUrl);
+        canonicalURL =
+            canonicalSlug === "" ? baseURL : `${baseURL}/${canonicalSlug}`;
+    }
 
     return (
         <>
             <title>{pageTitle}</title>
             {description && <meta name="description" content={description} />}
+            {canonicalURL && <link rel="canonical" href={canonicalURL} />}
             {children}
         </>
     );
