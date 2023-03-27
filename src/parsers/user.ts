@@ -10,5 +10,5 @@ interface Userish {
 /** Deduce a first name for the given user-like object */
 export const firstNameOrFallback = ({ name, username }: Userish) => {
     if (!name) return username;
-    return name.split(/\s/)[0];
+    return name.split(/\s/)[0] ?? name;
 };

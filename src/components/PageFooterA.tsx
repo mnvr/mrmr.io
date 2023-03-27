@@ -1,6 +1,5 @@
 import { Link } from "gatsby";
 import { ParsedLink } from "parsers/links";
-import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
 import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
@@ -60,8 +59,7 @@ interface PageInfoProps {
 
 const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
     const { formattedDateMY, user } = page;
-    const { slug, name } = user;
-    const firstName = firstNameOrFallback(user);
+    const { slug, name, firstName } = user;
 
     return (
         <PageInfoContents>

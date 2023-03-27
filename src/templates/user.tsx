@@ -60,10 +60,8 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
     const { username } = pageContext;
     const user = parseUser(data, username);
 
-    const firstName = firstNameOrFallback(user);
-
     const title = user.name;
-    const description = `Music, words and art by ${firstName}`;
+    const description = `Music, words and art by ${user.firstName}`;
     const canonicalPath = user.slug;
 
     return <DefaultHead {...{ title, description, canonicalPath }} />;
@@ -100,6 +98,7 @@ interface User {
     username: string;
     slug: string;
     name: string;
+    firstName: string;
     flair?: string;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
@@ -132,10 +131,13 @@ const parseUser = (data: Queries.UserTemplateQuery, username: string) => {
             const links = parseUserLinks(frontmatter?.links);
             const flair = frontmatter?.flair;
 
+            const firstName = firstNameOrFallback({ username, name });
+
             parsedUser = {
                 username,
                 slug,
                 name,
+                firstName,
                 colors,
                 darkColors,
                 links,

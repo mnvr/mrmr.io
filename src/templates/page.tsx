@@ -8,6 +8,8 @@ import { graphql, HeadFC, PageProps } from "gatsby";
 import BasicLayout from "layouts/basic";
 import { ColorPalette, parseColorPalette } from "parsers/colors";
 import { ParsedLink, parsePageLinks } from "parsers/links";
+import { descriptionOrFallback } from "parsers/page";
+import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
 import type { PageTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
@@ -52,6 +54,7 @@ export const query = graphql`
         mdx(id: { eq: $pageID }) {
             frontmatter {
                 title
+                description
                 date(formatString: "MMM YYYY")
                 layout
                 links
@@ -67,14 +70,20 @@ export const query = graphql`
 
 /** A type describing the page data is the page template passes to layouts */
 export interface Page {
+    /** The user whose page this is */
+    user: PageUser;
+
+    /** Title of the page */
     title: string;
+    /** A description (explicitly specified, or auto-generated) for the page */
+    description: string;
+
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
     layout?: string;
     links?: ParsedLink[];
     colors?: ColorPalette;
     darkColors?: ColorPalette;
-    user: PageUser;
 }
 
 /**
@@ -82,6 +91,8 @@ export interface Page {
  * their pages.
  */
 export interface PageUser {
+    /** The username of the person whose page this is */
+    username: string;
     /** Slug for the user's home page */
     slug: string;
     /**
@@ -89,11 +100,11 @@ export interface PageUser {
      * this is their display name).
      */
     name?: string;
-    /** Their username */
-    username: string;
+    /** The user's firstname */
+    firstName: string;
 }
 
-const parsePage = (data: Queries.PageTemplateQuery) => {
+const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const { user, mdx } = replaceNullsWithUndefineds(data);
 
     const title = ensure(mdx?.frontmatter?.title);
@@ -110,15 +121,33 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
     const userUsername = ensure(user?.fields?.username);
     const userSlug = ensure(user?.fields?.slug);
     const userDisplayName = user?.frontmatter?.name;
+    const userFirstName = firstNameOrFallback({
+        username: userUsername,
+        name: userDisplayName,
+    });
+
+    const description = descriptionOrFallback({
+        username: userUsername,
+        description: mdx?.frontmatter?.description,
+    });
+
+    const pageUser = {
+        username: userUsername,
+        slug: userSlug,
+        name: userDisplayName,
+        firstName: userFirstName,
+    };
 
     return {
+        user: pageUser,
+
         title,
+        description,
         layout,
         formattedDateMY,
         links,
         colors,
         darkColors,
-        user: { slug: userSlug, name: userDisplayName, username: userUsername },
     };
 };
 
@@ -130,7 +159,7 @@ const parsePage = (data: Queries.PageTemplateQuery) => {
  * it blindly assumes that the data we pass it has the correct shape.
  */
 export const parsePageIgnoringTypeSafety = (data: Record<string, unknown>) =>
-    parsePage(data as Queries.PageTemplateQuery) as Page;
+    parsePage(data as Queries.PageTemplateQuery);
 
 /**
  * A context providing readonly access to the build time page data for use
