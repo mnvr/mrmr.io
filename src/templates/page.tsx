@@ -31,10 +31,14 @@ const PageTemplate: React.FC<
 
 export default PageTemplate;
 
-export const Head: HeadFC<Queries.PageTemplateQuery> = ({ data }) => {
-    const { title } = parsePage(data);
+export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
+    data,
+    pageContext,
+}) => {
+    const { title, description, slug } = parsePage(data);
+    const canonicalPath = slug;
 
-    return <DefaultHead title={title} />;
+    return <DefaultHead {...{ title, description, canonicalPath }} />;
 };
 
 export const query = graphql`
@@ -72,12 +76,12 @@ export const query = graphql`
 export interface Page {
     /** The user whose page this is */
     user: PageUser;
-
+    /** The page's slug */
+    slug: string;
     /** Title of the page */
     title: string;
     /** A description (explicitly specified, or auto-generated) for the page */
     description: string;
-
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
     layout?: string;
@@ -140,7 +144,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
 
     return {
         user: pageUser,
-
+        slug,
         title,
         description,
         layout,
