@@ -33,7 +33,6 @@ export default PageTemplate;
 
 export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     data,
-    pageContext,
 }) => {
     const { title, description, slug } = parsePage(data);
     const canonicalPath = slug;

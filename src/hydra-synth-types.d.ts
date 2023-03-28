@@ -1,3 +1,8 @@
+/**
+ * TypeScript d.ts type declarations for Hydra (Visual) Synth
+ * https://github.com/hydra-synth/hydra
+ */
+
 declare module "hydra-synth" {
     export default HydraRenderer;
 
