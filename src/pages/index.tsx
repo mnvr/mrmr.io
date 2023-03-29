@@ -29,7 +29,7 @@ const colorPalettes = {
         "hsl(240, 6%, 20%)",
         "hsl(240, 12%, 90%)",
         "hsl(240, 12%, 70%)",
-        "hsl(240, 12%, 60%)",
+        "hsl(240, 12%, 95%)",
     ]),
 };
 
@@ -68,6 +68,8 @@ const H1 = styled.h1`
     margin-block: 0;
     padding-block-start: 37svh;
     margin-inline-start: 1.8rem;
+    font-family: serif;
+    font-style: italic;
     color: var(--mrmr-color-3);
 `;
 
