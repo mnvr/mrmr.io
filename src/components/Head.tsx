@@ -81,6 +81,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     `);
 
     const site = replaceNullsWithUndefineds(data.site);
+    const baseURL = ensure(site?.siteMetadata?.siteUrl);
 
     const siteTitle = site?.siteMetadata?.title;
     const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
@@ -100,9 +101,13 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
                 `Do not specify a trailing slash when providing the canonicalPath (was "${canonicalPath}")`
             );
 
-        const baseURL = ensure(site?.siteMetadata?.siteUrl);
         canonicalURL = `${baseURL}${canonicalPath}`;
     }
+
+    // The path to the og:image needs to be an absolute URL, not a relative path.
+    let previewImageURL = previewImagePath
+        ? `${baseURL}${previewImagePath}`
+        : undefined;
 
     // A lot of this is duplicated - e.g. there's already a meta/description,
     // and I'm not sure why the og folks created their duplicate standard. I
@@ -128,8 +133,8 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
                 <meta name="og:description" content={description} />
             )}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
-            {previewImagePath && (
-                <meta name="og:image" content={previewImagePath} />
+            {previewImageURL && (
+                <meta name="og:image" content={previewImageURL} />
             )}
             {children}
         </>
