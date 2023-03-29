@@ -126,11 +126,20 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
 
             const templatePath = path.resolve(`src/templates/${type}.tsx`);
 
+            const context =
+                type == "user"
+                    ? { username }
+                    : {
+                          username,
+                          pageID: id,
+                          previewImageRelativePath:
+                              previewImageRelativePath(slug),
+                      };
+
             createPage<Context>({
                 path: slug,
                 component: `${templatePath}?__contentFilePath=${contentFilePath}`,
-                context:
-                    type == "user" ? { username } : { username, pageID: id },
+                context: context,
             });
         });
     } catch (err) {
@@ -140,3 +149,7 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
 
     activity.end();
 };
+
+const previewImageRelativePath = (slug: string) =>
+    // Remove the leading slash from the slug to obtain the relative path
+    `${slug}/preview.png`.substring(1);

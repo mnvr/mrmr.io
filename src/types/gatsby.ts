@@ -37,6 +37,14 @@ export type PageTemplateContext = {
     readonly username: string;
     /** The ID of the page we're trying to render */
     readonly pageID: string;
+    /**
+     * The relative path where we should look for the preview image.
+     *
+     * An image might not exist at this path, but that's fine we'll fallback to
+     * the default. This is just the path where it'd have existed had it
+     * existed.
+     */
+    readonly previewImageRelativePath: string;
 };
 
 /**

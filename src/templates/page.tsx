@@ -4,11 +4,11 @@ import {
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
-import { graphql, HeadFC, PageProps } from "gatsby";
+import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
-import { ColorPalette, parseColorPalette } from "parsers/colors";
-import { ParsedLink, parsePageLinks } from "parsers/links";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import { parsePageLinks, type ParsedLink } from "parsers/links";
 import { descriptionOrFallback } from "parsers/page";
 import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
@@ -38,8 +38,9 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     const { title, description, slug } = parsePage(data);
     const canonicalPath = slug;
 
-    const file = replaceNullsWithUndefineds(data.defaultPreviewFile);
-    const previewImagePath = getSrc(ensure(file));
+    const defaultFile = replaceNullsWithUndefineds(data.defaultPreviewFile);
+    const file = data.file ? replaceNullsWithUndefineds(data.file) : undefined;
+    const previewImagePath = getSrc(ensure(file ?? defaultFile));
 
     return (
         <DefaultHead
@@ -49,10 +50,22 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
 };
 
 export const query = graphql`
-    query PageTemplate($username: String!, $pageID: String!) {
+    query PageTemplate(
+        $username: String!
+        $pageID: String!
+        $previewImageRelativePath: String!
+    ) {
         defaultPreviewFile: file(
             relativePath: { eq: "default/preview.png" }
             sourceInstanceName: { eq: "assets" }
+        ) {
+            childImageSharp {
+                gatsbyImageData
+            }
+        }
+        file(
+            relativePath: { eq: $previewImageRelativePath }
+            sourceInstanceName: { eq: "users" }
         ) {
             childImageSharp {
                 gatsbyImageData

@@ -49,7 +49,7 @@ export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
     const canonicalPath = "/recent";
 
     const file = replaceNullsWithUndefineds(data.defaultPreviewFile);
-    const previewImagePath = getSrc(ensure(file))
+    const previewImagePath = getSrc(ensure(file));
 
     return (
         <DefaultHead
