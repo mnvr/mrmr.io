@@ -18,7 +18,7 @@ export default NotFoundPage;
 
 export const Head: HeadFC = () => {
     return (
-        <DefaultHead title="Page not found">
+        <DefaultHead titleSuffix="Page not found">
             <PageColorStyle {...colorPalettes} />
         </DefaultHead>
     );

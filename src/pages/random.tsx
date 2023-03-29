@@ -41,7 +41,7 @@ const colorPalettes = {
 
 export default RandomPage;
 
-export const Head: HeadFC = () => <DefaultHead title="Random 🎲" />;
+export const Head: HeadFC = () => <DefaultHead titleSuffix="Random 🎲" />;
 
 /**
  * Fetch all pages, sorted by recency.

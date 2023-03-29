@@ -7,14 +7,22 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 interface HeadProps {
     /**
-     * Page specific title (optional)
+     * Title of the page
      *
-     * It is appended to the site title (separated by "|") to generate the title
-     * of the page shown to the user.
+     * @see {@link titleSuffix} if you wish to use the default site title as the
+     * prefix.
      *
-     * It is used verbatim as the social media preview title.
+     * If neither of them are specified, then the default site title is used.
      */
     title?: string;
+
+    /**
+     * A suffix that is appended to the site title (separated by "|") to
+     * generate the title of the page.
+     *
+     * @see {@link title} if you wish to provide a full string instead.
+     */
+    titleSuffix?: string;
 
     /**
      * Page description (optional)
@@ -64,6 +72,7 @@ interface HeadProps {
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     title,
+    titleSuffix,
     description,
     canonicalPath,
     previewImagePath,
@@ -84,7 +93,8 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     const baseURL = ensure(site?.siteMetadata?.siteUrl);
 
     const siteTitle = site?.siteMetadata?.title;
-    const pageTitle = [siteTitle, title].filter(isDefined).join(" | ");
+    const pageTitle =
+        title ?? [siteTitle, titleSuffix].filter(isDefined).join(" | ");
 
     let canonicalURL: string | undefined;
     if (canonicalPath === "") {
@@ -129,6 +139,12 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
 
     return (
         <>
+            {/* Keep the preview image URL first - apparently some sites give
+                up looking for it if they can't find it in the first few bytes
+                of the page */}
+            {previewImageURL && (
+                <meta name="og:image" content={previewImageURL} />
+            )}
             <title>{pageTitle}</title>
             <meta name="og:title" content={title ?? pageTitle} />
             <meta name="og:type" content="website" />
@@ -137,9 +153,6 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
                 <meta name="og:description" content={description} />
             )}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
-            {previewImageURL && (
-                <meta name="og:image" content={previewImageURL} />
-            )}
             {children}
         </>
     );

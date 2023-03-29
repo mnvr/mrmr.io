@@ -61,7 +61,7 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
     const { username } = pageContext;
     const user = parseUser(data, username);
 
-    const title = user.name;
+    const title = `@${username}`;
     const description = `Music, words and art by ${user.firstName}`;
     const canonicalPath = user.slug;
 

@@ -44,7 +44,7 @@ const colorPalettes = {
 export default RecentPage;
 
 export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
-    const title = "Recent";
+    const titleSuffix = "Recent";
     const description = "Recently added pages on mrmr.io";
     const canonicalPath = "/recent";
 
@@ -53,7 +53,7 @@ export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
 
     return (
         <DefaultHead
-            {...{ title, description, canonicalPath, previewImagePath }}
+            {...{ titleSuffix, description, canonicalPath, previewImagePath }}
         />
     );
 };
