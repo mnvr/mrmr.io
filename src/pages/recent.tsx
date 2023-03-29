@@ -4,6 +4,7 @@ import { ExternalLink } from "components/ExternalLink";
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
 import { graphql, HeadFC, Link, PageProps } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 import { ColorPalette, parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import { FaTwitter } from "react-icons/fa";
@@ -42,12 +43,19 @@ const colorPalettes = {
 
 export default RecentPage;
 
-export const Head: HeadFC = () => {
+export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
     const title = "Recent";
     const description = "Recently added pages on mrmr.io";
     const canonicalPath = "/recent";
 
-    return <DefaultHead {...{ title, description, canonicalPath }} />;
+    const file = replaceNullsWithUndefineds(data.file);
+    const previewImagePath = file ? getSrc(file) : undefined;
+
+    return (
+        <DefaultHead
+            {...{ title, description, canonicalPath, previewImagePath }}
+        />
+    );
 };
 
 /**
@@ -60,6 +68,14 @@ export const Head: HeadFC = () => {
  */
 export const query = graphql`
     query RecentPage {
+        file(
+            relativePath: { eq: "recent/preview.png" }
+            sourceInstanceName: { eq: "assets" }
+        ) {
+            childImageSharp {
+                gatsbyImageData
+            }
+        }
         allMdx(
             filter: {
                 fields: { type: { eq: "page" } }

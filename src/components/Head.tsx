@@ -104,7 +104,11 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
         canonicalURL = `${baseURL}${canonicalPath}`;
     }
 
-    // The path to the og:image needs to be an absolute URL, not a relative path.
+    // The path to the og:image needs to be an absolute URL, not a relative
+    // path. This means that the path will be incorrect when running on
+    // localhost, but I haven't found a use case for preview images on localhost
+    // yet, so that might be fine.
+
     let previewImageURL = previewImagePath
         ? `${baseURL}${previewImagePath}`
         : undefined;

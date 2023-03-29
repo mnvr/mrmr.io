@@ -41,8 +41,8 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const description = "music •◦◎◉⦿ words | colors / code";
     const canonicalPath = "";
 
-    const file = ensure(replaceNullsWithUndefineds(data.file));
-    const previewImagePath = getSrc(file);
+    const file = replaceNullsWithUndefineds(data.file);
+    const previewImagePath = file ? getSrc(file) : undefined;
 
     return (
         <DefaultHead {...{ description, canonicalPath, previewImagePath }} />

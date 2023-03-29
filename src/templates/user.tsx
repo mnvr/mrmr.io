@@ -11,6 +11,7 @@ import {
 } from "components/PageListing";
 import { ParsedLinkButtonsB } from "components/ParsedLinkButtonsB";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { ParsedLink, parseUserLinks } from "parsers/links";
 import { firstNameOrFallback } from "parsers/user";
@@ -64,11 +65,30 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
     const description = `Music, words and art by ${user.firstName}`;
     const canonicalPath = user.slug;
 
-    return <DefaultHead {...{ title, description, canonicalPath }} />;
+    const file = replaceNullsWithUndefineds(data.file);
+    const previewImagePath = file ? getSrc(file) : undefined;
+
+    return (
+        <DefaultHead
+            {...{ title, description, canonicalPath, previewImagePath }}
+        />
+    );
 };
 
+// Currently we use the same images as the recents page ("recent/preview.png" ).
+// However, it will be easy to make this dynamic in the future: perhaps a simple
+// option would be to use sharp to color a template preview image in the user's
+// colors.
 export const query = graphql`
     query UserTemplate($username: String!) {
+        file(
+            relativePath: { eq: "recent/preview.png" }
+            sourceInstanceName: { eq: "assets" }
+        ) {
+            childImageSharp {
+                gatsbyImageData
+            }
+        }
         allMdx(
             filter: { fields: { username: { eq: $username } } }
             sort: [
