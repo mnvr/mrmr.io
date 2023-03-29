@@ -146,7 +146,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
                 <meta name="og:image" content={previewImageURL} />
             )}
             <title>{pageTitle}</title>
-            <meta name="og:title" content={title ?? pageTitle} />
+            <meta name="og:title" content={pageTitle} />
             <meta name="og:type" content="website" />
             {description && <meta name="description" content={description} />}
             {description && (
