@@ -9,7 +9,10 @@ interface HeadProps {
     /**
      * Page specific title (optional)
      *
-     * It is appended to the site title (separated by "|").
+     * It is appended to the site title (separated by "|") to generate the title
+     * of the page shown to the user.
+     *
+     * It is used verbatim as the social media preview title.
      */
     title?: string;
 
@@ -101,10 +104,29 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
         canonicalURL = `${baseURL}${canonicalPath}`;
     }
 
+    // A lot of this is duplicated - e.g. there's already a meta/description,
+    // and I'm not sure why the og folks created their duplicate standard. I
+    // tried omitting a few of these, but then I couldn't get Twitter to render
+    // a preview (and I didn't want to add yet another layer of duplication by
+    // adding the various twitter:* tags).
+    //
+    // From the Twitter docs:
+    //
+    // > If an og:type, og:title and og:description exist in the markup but
+    //   twitter:card is absent, then a summary card may be rendered.
+    //
+    // So the platter of tags below is an attempt to make them (and other
+    // messaging apps etc) happy.
+
     return (
         <>
             <title>{pageTitle}</title>
+            <meta name="og:title" content={title ?? pageTitle} />
+            <meta name="og:type" content="website" />
             {description && <meta name="description" content={description} />}
+            {description && (
+                <meta name="og:description" content={description} />
+            )}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
             {previewImagePath && (
                 <meta name="og:image" content={previewImagePath} />
