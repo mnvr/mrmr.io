@@ -42,7 +42,7 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const canonicalPath = "";
 
     const file = replaceNullsWithUndefineds(data.file);
-    const previewImagePath = file ? getSrc(file) : undefined;
+    const previewImagePath = getSrc(ensure(file));
 
     return (
         <DefaultHead {...{ description, canonicalPath, previewImagePath }} />

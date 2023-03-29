@@ -48,8 +48,8 @@ export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
     const description = "Recently added pages on mrmr.io";
     const canonicalPath = "/recent";
 
-    const file = replaceNullsWithUndefineds(data.file);
-    const previewImagePath = file ? getSrc(file) : undefined;
+    const file = replaceNullsWithUndefineds(data.defaultPreviewFile);
+    const previewImagePath = getSrc(ensure(file))
 
     return (
         <DefaultHead
@@ -68,8 +68,8 @@ export const Head: HeadFC<Queries.RecentPageQuery> = ({ data }) => {
  */
 export const query = graphql`
     query RecentPage {
-        file(
-            relativePath: { eq: "recent/preview.png" }
+        defaultPreviewFile: file(
+            relativePath: { eq: "default/preview.png" }
             sourceInstanceName: { eq: "assets" }
         ) {
             childImageSharp {

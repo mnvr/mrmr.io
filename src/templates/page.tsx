@@ -5,6 +5,7 @@ import {
     paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { graphql, HeadFC, PageProps } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import { ColorPalette, parseColorPalette } from "parsers/colors";
 import { ParsedLink, parsePageLinks } from "parsers/links";
@@ -37,11 +38,26 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     const { title, description, slug } = parsePage(data);
     const canonicalPath = slug;
 
-    return <DefaultHead {...{ title, description, canonicalPath }} />;
+    const file = replaceNullsWithUndefineds(data.defaultPreviewFile);
+    const previewImagePath = getSrc(ensure(file));
+
+    return (
+        <DefaultHead
+            {...{ title, description, canonicalPath, previewImagePath }}
+        />
+    );
 };
 
 export const query = graphql`
     query PageTemplate($username: String!, $pageID: String!) {
+        defaultPreviewFile: file(
+            relativePath: { eq: "default/preview.png" }
+            sourceInstanceName: { eq: "assets" }
+        ) {
+            childImageSharp {
+                gatsbyImageData
+            }
+        }
         user: mdx(
             fields: { type: { eq: "user" }, username: { eq: $username } }
         ) {

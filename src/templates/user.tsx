@@ -65,8 +65,8 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
     const description = `Music, words and art by ${user.firstName}`;
     const canonicalPath = user.slug;
 
-    const file = replaceNullsWithUndefineds(data.file);
-    const previewImagePath = file ? getSrc(file) : undefined;
+    const file = replaceNullsWithUndefineds(data.defaultPreviewFile);
+    const previewImagePath = getSrc(ensure(file));
 
     return (
         <DefaultHead
@@ -81,8 +81,8 @@ export const Head: HeadFC<Queries.UserTemplateQuery, UserTemplateContext> = ({
 // colors.
 export const query = graphql`
     query UserTemplate($username: String!) {
-        file(
-            relativePath: { eq: "recent/preview.png" }
+        defaultPreviewFile: file(
+            relativePath: { eq: "default/preview.png" }
             sourceInstanceName: { eq: "assets" }
         ) {
             childImageSharp {
