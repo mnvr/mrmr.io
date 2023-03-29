@@ -34,6 +34,10 @@ const config: GatsbyConfig = {
         // Write our pages in markdown + JSX
         "gatsby-plugin-mdx",
 
+        // The `gatsby-source-filesystem` plugin creates `File` nodes from
+        // files. Subsequently, various "transformer" plugins can `File` nodes
+        // into other, more specific, types of nodes (e.g. `JSON`).
+
         // Process files in /users/, creating a page for each (see
         // `gatsby-node.ts`).
         {
@@ -41,6 +45,21 @@ const config: GatsbyConfig = {
             options: {
                 name: "users",
                 path: "./users/",
+            },
+        },
+
+        // Pick up images etc from src/assets so that the gatsby image plugins
+        // can transform these into `ImageSharp` sharp nodes.
+        //
+        // User content stores assets in their own per-page directories; these
+        // are already picked up by the "users" case above. The `src/assets`
+        // folder contains assets that are needed by various top-level pages
+        // that are not specific to a user.
+        {
+            resolve: "gatsby-source-filesystem",
+            options: {
+                name: "assets",
+                path: "./src/assets/",
             },
         },
     ],

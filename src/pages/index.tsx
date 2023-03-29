@@ -1,10 +1,12 @@
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
-import { HeadFC, Link } from "gatsby";
+import { Link, graphql, type HeadFC } from "gatsby";
+import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
+import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** The home page for mrmr.io */
 const IndexPage: React.FC = () => {
@@ -35,12 +37,35 @@ const colorPalettes = {
 
 export default IndexPage;
 
-export const Head: HeadFC = () => {
+export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const description = "music •◦◎◉⦿ words | colors / code";
     const canonicalPath = "";
 
-    return <DefaultHead {...{ description, canonicalPath }} />;
+    const file = ensure(replaceNullsWithUndefineds(data.file));
+    const previewImagePath = getSrc(file);
+
+    return (
+        <DefaultHead {...{ description, canonicalPath, previewImagePath }} />
+    );
 };
+
+/**
+ * Fetch the data needed by the home page
+ *
+ * In particular, fetch the preview (meta/og:image) image
+ */
+export const query = graphql`
+    query IndexPage {
+        file(
+            relativePath: { eq: "index/preview.png" }
+            sourceInstanceName: { eq: "assets" }
+        ) {
+            childImageSharp {
+                gatsbyImageData
+            }
+        }
+    }
+`;
 
 const Main = styled.main`
     display: flex;

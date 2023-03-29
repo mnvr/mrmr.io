@@ -48,12 +48,22 @@ interface HeadProps {
      * gonna need it.
      */
     canonicalPath?: string;
+
+    /**
+     * The relative public path ("src") for the preview image for this page.
+     *
+     * If specified, this is set as the "og:image" meta property, and will be
+     * used by various social media and messaging apps to render a preview of
+     * the page.
+     */
+    previewImagePath?: string;
 }
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     title,
     description,
     canonicalPath,
+    previewImagePath,
     children,
 }) => {
     const data = useStaticQuery<Queries.HeadQuery>(graphql`
@@ -96,6 +106,9 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
             <title>{pageTitle}</title>
             {description && <meta name="description" content={description} />}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
+            {previewImagePath && (
+                <meta name="og:image" content={previewImagePath} />
+            )}
             {children}
         </>
     );
