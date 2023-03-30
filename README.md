@@ -1,11 +1,5 @@
 # [**mrmr.io**](https://mrmr.io)
 
--   Web: [**mrmr.io**](https://mrmr.io)
--   Twitter: [@mrmrdio](https://twitter.com/mrmrdio)
--   Source code: here
-
-Star this repository if you like what you see.
-
 ## Running locally
 
 Install dependencies using `yarn install`. Thereafter, you can start a local
