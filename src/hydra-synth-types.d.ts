@@ -181,6 +181,11 @@ declare module "hydra-synth" {
      *
      */
     export interface HydraSynth {
+        /*
+         * Book keeping
+         * ------------
+         */
+
         time: number;
         bpm: number;
         /** unused, instead @see {@link HydraRenderer.width} */
@@ -222,5 +227,69 @@ declare module "hydra-synth" {
          * @param `dt` Milliseconds since last update.
          */
         tick(dt: number): void;
+
+        /*
+         * Source functions
+         * ----------------
+         *
+         * A source function (abbreviated as "src") starts of the fragment
+         * shader pipeline by introducing one of the {@link GLSLSource}
+         * functions.
+         *
+         * Each function takes different types of parameters (in JS land), but
+         * all produce the same output (in GLSL land) - the color for each pixel
+         * in the canvas. In JS land, the output is the {@link HydraSynth}
+         * instance itself, to allow chaining - i.e. given `h.someSrc()`, we get
+         * back the original {@link HydraSynth} as the result of the expression,
+         * which allows us to tack on further transformations at the end, say
+         * `h.someSrc().someOtherTransform()`.
+         *
+         * In GLSL land, the input is the (normalized) coordinate of each pixel
+         * that we're asking the color of from the shader. But we don't need to
+         * worry about passing that input – all that is taken care of by Hydra
+         * for us.
+         *
+         * Hydra comes with some built-in src functions, listed below. It is
+         * also possible for us to define our own src functions by specifying
+         * their GLSL source as a string.
+         */
+
+        /**
+         * Render waves of color.
+         *
+         * While not the most basic – that'd probably be {@link solid} – the
+         * {@link osc} function is the most iconic of the Hydra sources.
+         *
+         * @param speed
+         * @param offset
+         *
+         * TODO Actually document
+         */
     }
+
+    /**
+     * ## Source GLSL shader
+     *
+     * A "src" (source) function in Hydra compiles down to a GLSL fragment
+     * shader that takes as input the 2D coordinate of a pixel (`vec2`) and
+     * outputs the color (`vec4`) for that pixel. It runs for each pixel on the
+     * render surface on the GPU.
+     *
+     * The pixel input is provided in normalized coordinates, where the x
+     * position is divided by the x resolution, and the y position is divided by
+     * the y resolution of the render surface. The GLSL code to compute the
+     * input `st` is infact just
+     *
+     *     vec2 st = gl_FragCoord.xy / resolution.xy;
+     *
+     * The output of the source function is a `vec4` RGBA color of that
+     * corresponding pixel.
+     *
+     * > This type is defined here for illustrative purposes but it isn't
+     *   directly used by the Hydra code. The Hydra code _generates_ a GLSL
+     *   shader function of this shape, but that is GLSL code, not JS.
+     */
+    type GLSLSource = (
+        st: [number, number]
+    ) => [r: number, g: number, b: number, a: number];
 }
