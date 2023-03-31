@@ -103,7 +103,7 @@ export const parsePageLinks = (
 
     // Construct a link to the page's source on GitHub using the slug.
     const sourceLink = {
-        ...parseLink(`https://github.com/mrmr-io/m/tree/main${slug}`),
+        ...parseLink(`https://github.com/mrmr-io/m/tree/main/users${slug}`),
         title: "View source on GitHub",
     };
 
