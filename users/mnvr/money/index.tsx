@@ -20,6 +20,9 @@ export const Content: React.FC = () => {
 const ContentContainer = styled.div`
     margin-block: 3rem;
     margin-inline: 0.5rem;
+    @media (min-width: 360px) {
+        margin-inline: 1rem;
+    }
 
     line-height: 1.5rem;
 `;
