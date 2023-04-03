@@ -84,9 +84,9 @@ export const basicColorPalettes = {
         ])
     ),
     darkColors: parseColorPalette([
-        "hsl(210, 11%, 14%)",
-        "hsl(0, 0%, 80%)",
-        "hsl(0, 0%, 80%)",
+        "hsl(0, 0%, 4%)",
+        "hsl(0, 0%, 90%)",
+        "hsl(0, 0%, 50%)",
         "hsl(0, 0%, 80%)",
     ]),
 };

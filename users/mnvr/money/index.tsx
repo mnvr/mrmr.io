@@ -82,14 +82,14 @@ const Nav: React.FC<NavProps> = ({ page }) => {
         <NavContainer>
             <p>
                 <small>
-                    Share |{" "}
+                    Share /{" "}
                     <ExternalLink
                         href={links.sourceLink.url}
                         title={links.sourceLink.title}
                     >
                         Remix
                     </ExternalLink>{" "}
-                    |{" "}
+                    /{" "}
                     <Link
                         to={links.userPageLink.slug}
                         title={links.userPageLink.title}
@@ -103,13 +103,19 @@ const Nav: React.FC<NavProps> = ({ page }) => {
 };
 
 const NavContainer = styled.div`
-    margin-block-start: 3.25rem;
+    margin-block-start: 4rem;
+
+    letter-spacing: 0.045ch;
+
+    color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
+        opacity: 0.8;
     }
 
     a:hover {
         border-bottom: 1px solid currentColor;
+        opacity: 1;
     }
 `;

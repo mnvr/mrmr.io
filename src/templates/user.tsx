@@ -225,7 +225,7 @@ const FlairContainer = styled.p`
     font-style: italic;
     margin-block-start: -1rem;
     padding-inline-start: 0.05rem;
-    opacity: 0.8;
+    color: var(--mrmr-color-2);
 `;
 
 const UserMarkdownContainer = styled.div<User>`
