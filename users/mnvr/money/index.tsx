@@ -32,7 +32,7 @@ const Poem: React.FC = () => {
                 <br />
                 whose smiles made me smile
                 <br />
-                The trees whose leaves gave me shade
+                Trees whose leaves gave me shade
                 <br />
                 And breath
                 <br />
