@@ -20,11 +20,13 @@ export const Content: React.FC = () => {
 const ContentContainer = styled.div`
     margin-block: 3rem;
     margin-inline: 0.5rem;
+
+    line-height: 1.5rem;
 `;
 
 const Poem: React.FC = () => {
     return (
-        <PoemContainer>
+        <>
             <p>
                 I never paid the children
                 <br />
@@ -37,13 +39,9 @@ const Poem: React.FC = () => {
                 And the mountains that took it away
             </p>
             <p>Yet I need money</p>
-        </PoemContainer>
+        </>
     );
 };
-
-const PoemContainer = styled.div`
-    line-height: 1.35rem;
-`;
 
 const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
@@ -65,8 +63,8 @@ const Title: React.FC = () => {
 };
 
 const TitleContainer = styled.div`
-    margin-block-start: 4.4rem;
-    line-height: 1.3rem;
+    margin-block-start: 4rem;
+    line-height: 1.5rem;
 `;
 
 const Caption = styled.small`
@@ -78,8 +76,7 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ page }) => {
-    const { user, links } = page;
-    const { slug, firstName } = user;
+    const { links } = page;
 
     return (
         <NavContainer>
