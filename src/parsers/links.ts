@@ -100,12 +100,7 @@ export const parsePageLinks = (
 ) => {
     const pageLinks = parseLinks(pageURLs);
     const userLinks = parseLinks(userPageURLs);
-
-    // Construct a link to the page's source on GitHub using the slug.
-    const sourceLink = {
-        ...parseLink(`https://github.com/mrmr-io/m/tree/main/users${slug}`),
-        title: "View source on GitHub",
-    };
+    const sourceLink = createSourceLink(slug);
 
     const seenDomains = new Set<KnownDomain>();
 
@@ -120,4 +115,16 @@ export const parsePageLinks = (
     });
 
     return result;
+};
+
+/**
+ * Construct a link to the GitHub source of a page using its slug.
+ *
+ * @param slug The slug of the page a link to whose source we want.
+ */
+export const createSourceLink = (slug: string) => {
+    return {
+        ...parseLink(`https://github.com/mrmr-io/m/tree/main/users${slug}`),
+        title: "View source on GitHub",
+    };
 };

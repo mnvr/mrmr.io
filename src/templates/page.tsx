@@ -8,7 +8,11 @@ import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { parsePageLinks, type ParsedLink } from "parsers/links";
+import {
+    createSourceLink,
+    parsePageLinks,
+    type ParsedLink,
+} from "parsers/links";
 import { descriptionOrFallback } from "parsers/page";
 import { firstNameOrFallback } from "parsers/user";
 import * as React from "react";
@@ -113,7 +117,10 @@ export interface Page {
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
     layout?: string;
+    /** Resolved page links, including the sourceLink */
     links?: ParsedLink[];
+    /** A link to the source of the page on GitHub */
+    sourceLink: ParsedLink;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
 }
@@ -149,6 +156,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const userPageLinks = user?.frontmatter?.page_links;
     const slug = ensure(mdx?.fields?.slug);
     const links = parsePageLinks(pageLinks, userPageLinks, slug);
+    const sourceLink = createSourceLink(slug);
 
     const userUsername = ensure(user?.fields?.username);
     const userSlug = ensure(user?.fields?.slug);
@@ -178,6 +186,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         layout,
         formattedDateMY,
         links,
+        sourceLink,
         colors,
         darkColors,
     };

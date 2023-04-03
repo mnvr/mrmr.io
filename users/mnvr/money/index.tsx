@@ -1,4 +1,5 @@
 import { Column } from "components/Column";
+import { ExternalLink } from "components/ExternalLink";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -77,14 +78,21 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ page }) => {
-    const { user } = page;
-    const { slug } = user;
+    const { user, sourceLink } = page;
+    const { slug, firstName } = user;
 
     return (
         <NavContainer>
             <p>
                 <small>
-                    Share | Remix | <Link to={slug}>More</Link>
+                    Share |{" "}
+                    <ExternalLink
+                        href={sourceLink.url}
+                        title={sourceLink.title}
+                    >
+                        Remix
+                    </ExternalLink>{" "}
+                    | <Link to={slug}>More</Link>
                 </small>
             </p>
         </NavContainer>
