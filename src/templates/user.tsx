@@ -151,7 +151,7 @@ const parseUser = (data: Queries.UserTemplateQuery, username: string) => {
             const links = parseUserLinks(frontmatter?.links);
             const flair = frontmatter?.flair;
 
-            const firstName = firstNameOrFallback({ username, name });
+            const firstName = firstNameOrFallback({ username, name, slug });
 
             parsedUser = {
                 username,

@@ -18,11 +18,11 @@ import { ParsedLinkButtonsA } from "./ParsedLinkButtonsA";
  */
 export const PageFooterA: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { links } = page;
+    const pageLinks = page.links.pageLinks;
 
     return (
         <Column>
-            {links && <PageLinks links={links} />}
+            {pageLinks && <PageLinks links={pageLinks} />}
             <PageInfo page={page} />
         </Column>
     );

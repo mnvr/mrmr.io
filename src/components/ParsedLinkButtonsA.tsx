@@ -1,6 +1,6 @@
 import { ExternalLink } from "components/ExternalLink";
 import { Link } from "gatsby";
-import { ParsedLink } from "parsers/links";
+import { ParsedLink, ParsedSlug } from "parsers/links";
 import * as React from "react";
 import { FaInstagram } from "react-icons/fa";
 import { FiGithub, FiLink, FiList, FiTwitter, FiYoutube } from "react-icons/fi";
@@ -10,13 +10,8 @@ import styled from "styled-components";
 export interface ParsedLinkButtonsProps {
     /** The links to show */
     links?: ParsedLink[];
-    /** If present, then a link is show to a user page using the given props */
-    userPageLink?: UserPageLinkButtonProps;
-}
-
-export interface UserPageLinkButtonProps {
-    slug: string;
-    title: string;
+    /** If present, then a link is shown to a user's home page at the end */
+    userPageLink?: ParsedSlug;
 }
 
 /**
@@ -70,10 +65,7 @@ export const ParsedLinkButtonA: React.FC<IconProps> = ({ link }) => {
  *
  * @see {@link ParsedLinkButtonsA} for links that are external to the site.
  */
-export const UserPageLinkButtonA: React.FC<UserPageLinkButtonProps> = ({
-    slug,
-    title,
-}) => {
+export const UserPageLinkButtonA: React.FC<ParsedSlug> = ({ slug, title }) => {
     return (
         <Link to={slug}>
             <IconContainer>
@@ -88,7 +80,7 @@ const IconContainer = styled.div`
     min-width: 44px;
     min-height: 44px;
 
-    /** 
+    /**
      * Center the SVG within the tap area if the SVG is smaller than the mininum
      * dimensions (this'll usually be the case).
      */

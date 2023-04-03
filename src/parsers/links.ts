@@ -1,3 +1,4 @@
+import { Userish } from "parsers/user";
 import { getDomain, getDomainWithoutSuffix } from "tldts";
 import { isDefined } from "utils/array";
 
@@ -46,6 +47,14 @@ export interface ParsedLink {
      * Title. It can be used for example to serve as the tooltip when hovering
      * on an icon linking to the url.
      */
+    title?: string;
+}
+
+/** A sibling of parsed links for relative links within the site */
+export interface ParsedSlug {
+    /** The slug (absolute path, but within our site) of the destination */
+    slug: string;
+    /** Optional title, serves as a tooltip */
     title?: string;
 }
 
@@ -126,5 +135,17 @@ export const createSourceLink = (slug: string) => {
     return {
         ...parseLink(`https://github.com/mrmr-io/m/tree/main/users${slug}`),
         title: "View source on GitHub",
+    };
+};
+
+/**
+ * Construct a link to the home page of a user.
+ *
+ * @param slug The slug of the page a link to whose source we want.
+ */
+export const createUserPageLink = (user: Userish) => {
+    return {
+        slug: user.slug,
+        title: `More by @${user.username}`,
     };
 };

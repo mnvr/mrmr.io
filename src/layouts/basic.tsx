@@ -11,16 +11,15 @@ import { ensure } from "utils/ensure";
 export const BasicLayout: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const { links, user } = ensure(React.useContext(BuildTimePageContext));
-    const userPageLink = {
-        slug: user.slug,
-        title: `More by @${user.username}`,
-    };
+    const { links } = ensure(React.useContext(BuildTimePageContext));
 
     return (
         <Column>
             <ContentContainer>{children}</ContentContainer>
-            <PageFooterLinks {...{ links, userPageLink }} />
+            <PageFooterLinks
+                links={links.pageLinks}
+                userPageLink={links.userPageLink}
+            />
         </Column>
     );
 };

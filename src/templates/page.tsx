@@ -10,8 +10,10 @@ import BasicLayout from "layouts/basic";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import {
     createSourceLink,
+    createUserPageLink,
     parsePageLinks,
     type ParsedLink,
+    type ParsedSlug,
 } from "parsers/links";
 import { descriptionOrFallback } from "parsers/page";
 import { firstNameOrFallback } from "parsers/user";
@@ -117,12 +119,25 @@ export interface Page {
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
     layout?: string;
-    /** Resolved page links, including the sourceLink */
-    links?: ParsedLink[];
-    /** A link to the source of the page on GitHub */
-    sourceLink: ParsedLink;
+    /** Resolved links */
+    links: Links;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
+}
+
+/** A container for various links related to the page */
+export interface Links {
+    /**
+     * Page links (see description of the `links` frontmatter property).
+     *
+     * This'll include the sourceLink if there is no other link to GitHub in the
+     * resolved page links.
+     */
+    pageLinks?: ParsedLink[];
+    /** A link to the source of the page on GitHub */
+    sourceLink: ParsedLink;
+    /** A (relative) link to the user's home page */
+    userPageLink: ParsedSlug;
 }
 
 /**
@@ -152,19 +167,25 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const colors = parseColorPalette(mdx?.frontmatter?.colors);
     const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
-    const pageLinks = mdx?.frontmatter?.links;
-    const userPageLinks = user?.frontmatter?.page_links;
     const slug = ensure(mdx?.fields?.slug);
-    const links = parsePageLinks(pageLinks, userPageLinks, slug);
+    const pageLinks = parsePageLinks(
+        mdx?.frontmatter?.links,
+        user?.frontmatter?.page_links,
+        slug
+    );
     const sourceLink = createSourceLink(slug);
 
     const userUsername = ensure(user?.fields?.username);
     const userSlug = ensure(user?.fields?.slug);
     const userDisplayName = user?.frontmatter?.name;
-    const userFirstName = firstNameOrFallback({
+    const userish = {
         username: userUsername,
         name: userDisplayName,
-    });
+        slug: userSlug,
+    };
+
+    const userFirstName = firstNameOrFallback(userish);
+    const userPageLink = createUserPageLink(userish);
 
     const description = descriptionOrFallback({
         username: userUsername,
@@ -178,6 +199,12 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         firstName: userFirstName,
     };
 
+    const links = {
+        pageLinks,
+        sourceLink,
+        userPageLink,
+    };
+
     return {
         user: pageUser,
         slug,
@@ -186,7 +213,6 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         layout,
         formattedDateMY,
         links,
-        sourceLink,
         colors,
         darkColors,
     };

@@ -78,7 +78,7 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ page }) => {
-    const { user, sourceLink } = page;
+    const { user, links } = page;
     const { slug, firstName } = user;
 
     return (
@@ -87,12 +87,18 @@ const Nav: React.FC<NavProps> = ({ page }) => {
                 <small>
                     Share |{" "}
                     <ExternalLink
-                        href={sourceLink.url}
-                        title={sourceLink.title}
+                        href={links.sourceLink.url}
+                        title={links.sourceLink.title}
                     >
                         Remix
                     </ExternalLink>{" "}
-                    | <Link to={slug}>More</Link>
+                    |{" "}
+                    <Link
+                        to={links.userPageLink.slug}
+                        title={links.userPageLink.title}
+                    >
+                        More
+                    </Link>
                 </small>
             </p>
         </NavContainer>
