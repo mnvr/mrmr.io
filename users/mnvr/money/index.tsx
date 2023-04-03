@@ -85,7 +85,7 @@ const Nav: React.FC<NavProps> = ({ page }) => {
         <NavContainer>
             <p>
                 <small>
-                    Share /{" "}
+                    {/* Share /{" "} */}
                     <ExternalLink
                         href={links.sourceLink.url}
                         title={links.sourceLink.title}
