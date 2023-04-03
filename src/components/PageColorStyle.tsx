@@ -78,7 +78,7 @@ export const basicColorPalettes = {
         parseColorPalette([
             "hsl(0, 0%, 100%)",
             "hsl(0, 0%, 15%)",
-            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 40%)",
             "hsl(0, 0%, 13%)",
             "hsl(0, 0%, 60%)",
         ])

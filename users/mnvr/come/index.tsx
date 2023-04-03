@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { song } from "./song";
 import { vis } from "./vis";
 
-export const Page: React.FC = () => {
+export const Content: React.FC = () => {
     return (
         <>
             <PlayerA vis={vis} song={song}>

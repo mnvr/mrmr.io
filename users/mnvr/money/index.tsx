@@ -1,14 +1,16 @@
 import { Column } from "components/Column";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
+import { BuildTimePageContext, type Page } from "templates/page";
+import { ensure } from "utils/ensure";
 
-export const Page: React.FC = () => {
+export const Content: React.FC = () => {
     return (
         <ContentContainer>
             <Column>
                 <Poem />
                 <Title />
-                <Footer />
             </Column>
         </ContentContainer>
     );
@@ -43,13 +45,20 @@ const PoemContainer = styled.div`
 `;
 
 const Title: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { title, user, formattedDateMY } = page;
+    const { name } = user;
+
     return (
         <TitleContainer>
             <p>
-                <b>Money</b>
+                <b>{title}</b>
                 <br />
-                <small>Manav Rathi, Mar 2023</small>
+                <Caption>
+                    {name}, {formattedDateMY}
+                </Caption>
             </p>
+            <Nav page={page} />
         </TitleContainer>
     );
 };
@@ -59,16 +68,37 @@ const TitleContainer = styled.div`
     line-height: 1.3rem;
 `;
 
-const Footer: React.FC = () => {
+const Caption = styled.small`
+    color: var(--mrmr-color-2);
+`;
+
+interface NavProps {
+    page: Page;
+}
+
+const Nav: React.FC<NavProps> = ({ page }) => {
+    const { user } = page;
+    const { slug } = user;
+
     return (
-        <FooterContainer>
+        <NavContainer>
             <p>
-                <small>Share | Remix | More</small>
+                <small>
+                    Share | Remix | <Link to={slug}>More</Link>
+                </small>
             </p>
-        </FooterContainer>
+        </NavContainer>
     );
 };
 
-const FooterContainer = styled.div`
+const NavContainer = styled.div`
     margin-block-start: 3.25rem;
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        border-bottom: 1px solid currentColor;
+    }
 `;
