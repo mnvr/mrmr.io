@@ -22,7 +22,12 @@ export const useShare = (
         try {
             await navigator.share(shareData);
         } catch (e) {
-            console.error("Failed to share link", e);
+            // AbortError is thrown if the user cancels the share; in all other
+            // cases, log an error to the console. Though what that tree falls
+            // in that forest, who'll be there to see.
+            if (!String(e).includes("AbortError")) {
+                console.error("Failed to share link", e);
+            }
         }
         event.preventDefault();
     };
