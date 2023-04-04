@@ -6,6 +6,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
+import { fullURLForSlug } from "utils/url";
 
 export const Content: React.FC = () => {
     return (
@@ -80,10 +81,10 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ page }) => {
-    const { title, description, links } = page;
+    const { title, description, slug, links } = page;
 
     const [canShare, handleShareClick] = useShare({
-        url: "https://mrmr.io",
+        url: fullURLForSlug(slug),
         title,
         text: description,
     });

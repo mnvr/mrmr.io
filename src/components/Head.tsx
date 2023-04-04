@@ -4,6 +4,7 @@ import "styles/global.css";
 import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
+import { fullURLForSlug } from "utils/url";
 
 interface HeadProps {
     /**
@@ -90,7 +91,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     `);
 
     const site = replaceNullsWithUndefineds(data.site);
-    const baseURL = ensure(site?.siteMetadata?.siteUrl);
+    const siteURL = ensure(site?.siteMetadata?.siteUrl);
 
     const siteTitle = site?.siteMetadata?.title;
     const pageTitle =
@@ -99,19 +100,9 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     let canonicalURL: string | undefined;
     if (canonicalPath === "") {
         // Home page passes the empty string as the path
-        canonicalURL = ensure(site?.siteMetadata?.siteUrl);
+        canonicalURL = siteURL;
     } else if (canonicalPath) {
-        if (!canonicalPath.startsWith("/"))
-            throw new Error(
-                `Specify a leading slash when providing the canonicalPath (was "${canonicalPath}")`
-            );
-
-        if (canonicalPath.endsWith("/"))
-            throw new Error(
-                `Do not specify a trailing slash when providing the canonicalPath (was "${canonicalPath}")`
-            );
-
-        canonicalURL = `${baseURL}${canonicalPath}`;
+        canonicalURL = fullURLForSlug(canonicalPath);
     }
 
     // The path to the og:image needs to be an absolute URL, not a relative
@@ -120,7 +111,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     // yet, so that might be fine.
 
     let previewImageURL = previewImagePath
-        ? `${baseURL}${previewImagePath}`
+        ? fullURLForSlug(previewImagePath)
         : undefined;
 
     // A lot of this is duplicated - e.g. there's already a meta/description,
