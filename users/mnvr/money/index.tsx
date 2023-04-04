@@ -1,6 +1,7 @@
 import { Column } from "components/Column";
 import { ExternalLink } from "components/ExternalLink";
 import { Link } from "gatsby";
+import { useShare } from "hooks/use-share";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
@@ -79,13 +80,26 @@ interface NavProps {
 }
 
 const Nav: React.FC<NavProps> = ({ page }) => {
-    const { links } = page;
+    const { title, description, links } = page;
+
+    const [canShare, handleShareClick] = useShare({
+        url: "https://mrmr.io",
+        title,
+        text: description,
+    });
 
     return (
         <NavContainer>
             <p>
                 <small>
-                    {/* Share /{" "} */}
+                    {canShare && (
+                        <>
+                            <a href="#" onClick={handleShareClick}>
+                                Share
+                            </a>
+                            <span> / </span>
+                        </>
+                    )}
                     <ExternalLink
                         href={links.sourceLink.url}
                         title={links.sourceLink.title}
