@@ -132,8 +132,7 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
                     : {
                           username,
                           pageID: id,
-                          previewImageRelativePath:
-                              previewImageRelativePath(slug),
+                          relativeDirectory: relativeDirectory(slug),
                       };
 
             createPage<Context>({
@@ -150,6 +149,5 @@ export const createPages: GatsbyNode<any, Context>["createPages"] = async ({
     activity.end();
 };
 
-const previewImageRelativePath = (slug: string) =>
-    // Remove the leading slash from the slug to obtain the relative path
-    `${slug}/preview.png`.substring(1);
+// Remove the leading slash from the slug to obtain the relative path
+const relativeDirectory = (slug: string) => slug.substring(1);

@@ -5,7 +5,7 @@ import {
     paletteSetOrFallback,
 } from "components/PageColorStyle";
 import { graphql, type HeadFC, type PageProps } from "gatsby";
-import { getSrc } from "gatsby-plugin-image";
+import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import {
@@ -41,12 +41,11 @@ export default PageTemplate;
 export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     data,
 }) => {
-    const { title, description, slug } = parsePage(data);
+    const { title, description, slug, images } = parsePage(data);
     const canonicalPath = slug;
 
     const defaultFile = replaceNullsWithUndefineds(data.defaultPreviewFile);
-    const file = data.file ? replaceNullsWithUndefineds(data.file) : undefined;
-    const previewImagePath = getSrc(ensure(file ?? defaultFile));
+    const previewImagePath = getSrc(ensure(images["preview"] ?? defaultFile));
 
     return (
         <DefaultHead
@@ -59,22 +58,28 @@ export const query = graphql`
     query PageTemplate(
         $username: String!
         $pageID: String!
-        $previewImageRelativePath: String!
+        $relativeDirectory: String!
     ) {
         defaultPreviewFile: file(
-            relativePath: { eq: "default/preview.png" }
             sourceInstanceName: { eq: "assets" }
+            relativePath: { eq: "default/preview.png" }
         ) {
             childImageSharp {
                 gatsbyImageData
             }
         }
-        file(
-            relativePath: { eq: $previewImageRelativePath }
-            sourceInstanceName: { eq: "users" }
+        images: allFile(
+            filter: {
+                sourceInstanceName: { eq: "users" },
+                relativeDirectory: { eq: $relativeDirectory }
+                ext: { regex: "/\\.(jpg|png)/" }
+            }
         ) {
-            childImageSharp {
-                gatsbyImageData
+            nodes {
+                name
+                childImageSharp {
+                    gatsbyImageData
+                }
             }
         }
         user: mdx(
@@ -106,7 +111,7 @@ export const query = graphql`
     }
 `;
 
-/** A type describing the page data is the page template passes to layouts */
+/** A type describing the page data that the page template passes to layouts */
 export interface Page {
     /** The user whose page this is */
     user: PageUser;
@@ -123,6 +128,18 @@ export interface Page {
     links: Links;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
+    /**
+     * ImageSharp nodes for images stored in the same directory as the page
+     *
+     * These are indexed by the name of the image. The image name is the
+     * filename without the extension (e.g. the image name will be "preview" for
+     * "preview.png").
+     *
+     * The values in this dictionary can then be passed to various Gatsby Image
+     * helper functions like `getImage` or `getSrc`.
+     * https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-plugin-image/#helper-functions
+     */
+    images: Record<string, ImageDataLike>;
 }
 
 /** A container for various links related to the page */
@@ -159,7 +176,7 @@ export interface PageUser {
 }
 
 const parsePage = (data: Queries.PageTemplateQuery): Page => {
-    const { user, mdx } = replaceNullsWithUndefineds(data);
+    const { user, mdx, images } = replaceNullsWithUndefineds(data);
 
     const title = ensure(mdx?.frontmatter?.title);
     const layout = mdx?.frontmatter?.layout;
@@ -205,6 +222,21 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         userPageLink,
     };
 
+    // Gatsby's `StaticImage` component currently doesn't support paths that are
+    // outside the `src` directory. Our user pages live in the top-level `users`
+    // directory, which is outside `src`; thus we cannot use `StaticImage` for
+    // the images on the user pages.
+    //
+    // As an alternative, we read the Gatsby ImageSharp node data (the
+    // `ImageDataLike` values in this dictionary) for all the images that are in
+    // the same directory as our page. We can then index this dictionary by name
+    // to easily obtain a value that can then be passed to the dynamic
+    // `GatsbyImage` component.
+    const pageImages: Record<string, ImageDataLike> = {};
+    images.nodes.forEach((node) => {
+        pageImages[node.name] = node;
+    });
+
     return {
         user: pageUser,
         slug,
@@ -215,6 +247,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         links,
         colors,
         darkColors,
+        images: pageImages,
     };
 };
 
