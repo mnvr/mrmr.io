@@ -76,4 +76,12 @@ const rockImages = [
         name: "painting",
         alt: "A rock face that looks like a painting with thick, yet intricate, brush strokes",
     },
+    {
+        name: "silver",
+        alt: "A silver, shiny, rock face",
+    },
+    {
+        name: "granite",
+        alt: "A comforting, carbon like rock face",
+    },
 ];
