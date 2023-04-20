@@ -29,8 +29,8 @@ const TitleContainer = styled.div`
     width: 100%;
     text-align: center;
     /* Tuned for the first rock image, "gold.jpg" */
-    background-color: rgba(255, 255, 255, 0.15);
-    color: rgb(50, 29, 20);
+    background-color: rgba(0, 0, 0, 0.1);
+    color: hsl(50, 88%, 88%);
 `;
 
 interface PageImageProps {
@@ -48,11 +48,28 @@ const PageImage: React.FC<PageImageProps> = ({ page, name, alt }) => {
 const RockImages: React.FC<{ page: Page }> = ({ page }) => {
     return (
         <>
-            <PageImage
-                page={page}
-                name="gold"
-                alt="Rust and gold colored rock face"
-            />
+            {rockImages.map(({ name, alt }) => {
+                return (
+                    <RockImageContainer key={name}>
+                        <PageImage page={page} name={name} alt={alt} />
+                    </RockImageContainer>
+                );
+            })}
         </>
     );
 };
+
+const RockImageContainer = styled.div`
+    border-bottom: 1px solid transparent;
+`;
+
+const rockImages = [
+    {
+        name: "gold",
+        alt: "Rust and gold colored rock face",
+    },
+    {
+        name: "cave-art",
+        alt: "Rock face with colors reminiscent of prehistoric cave art",
+    },
+];
