@@ -72,4 +72,8 @@ const rockImages = [
         name: "cave-art",
         alt: "Rock face with colors reminiscent of prehistoric cave art",
     },
+    {
+        name: "painting",
+        alt: "A rock face that looks like a painting with thick, yet intricate, brush strokes",
+    },
 ];
