@@ -11,6 +11,7 @@ export const Content: React.FC = () => {
         <>
             <Title />
             <RockImages page={page} />
+            <Footer />
         </>
     );
 };
@@ -97,3 +98,29 @@ const rockImages = [
         alt: "A rock that is disintegrating into its constituent shards",
     },
 ];
+
+const Footer: React.FC = () => {
+    return (
+        <FooterContainer>
+            <small>
+                <p>
+                    Rocks found on and around the shores of the river in Sissu
+                    Valley, in India.
+                </p>
+                <LatLngP>
+                    32° 27' 25.308" N<br />
+                    77° 7' 46.12" E
+                </LatLngP>
+            </small>
+        </FooterContainer>
+    );
+};
+
+const FooterContainer = styled.div`
+    margin-block: 2rem;
+    margin-inline: 1rem;
+`;
+
+const LatLngP = styled.p`
+    color: var(--mrmr-color-1-transparent);
+`;
