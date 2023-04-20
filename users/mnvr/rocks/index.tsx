@@ -12,6 +12,7 @@ export const Content: React.FC = () => {
             <Title />
             <RockImages page={page} />
             <Footer />
+            <PageFooterA />
         </>
     );
 };
@@ -108,8 +109,10 @@ const Footer: React.FC = () => {
                     Valley, in India.
                 </p>
                 <LatLngP>
-                    32° 27' 25.308" N<br />
-                    77° 7' 46.12" E
+                    <small>
+                        32° 27' 25.308" N<br />
+                        77° 7' 46.12" E
+                    </small>
                 </LatLngP>
             </small>
         </FooterContainer>
@@ -117,10 +120,55 @@ const Footer: React.FC = () => {
 };
 
 const FooterContainer = styled.div`
-    margin-block: 2rem;
+    margin-block-start: 2rem;
+    margin-block-end: 2rem;
     margin-inline: 1rem;
 `;
 
 const LatLngP = styled.p`
     color: var(--mrmr-color-1-transparent);
+`;
+
+const FooterContainer2 = styled.div`
+    margin-inline: 1rem;
+`;
+
+const PageFooterA: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+
+    return (
+        <FooterContainer2>
+            <PageInfo page={page} />
+        </FooterContainer2>
+    );
+};
+
+interface PageInfoProps {
+    page: Page;
+}
+
+const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
+    const { formattedDateMY, user } = page;
+    const { name } = user;
+
+    return (
+        <PageInfoContents>
+            <DetailsContainer>
+                <small>
+                    {name}
+                    <br />
+                    <small>{formattedDateMY}</small>
+                </small>
+            </DetailsContainer>
+        </PageInfoContents>
+    );
+};
+
+const PageInfoContents = styled.div`
+    margin-block-end: 6rem;
+`;
+
+const DetailsContainer = styled.div`
+    margin-block-end: 2rem;
+    color: var(--mrmr-color-4);
 `;
