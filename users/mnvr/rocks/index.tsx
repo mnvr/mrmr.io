@@ -81,11 +81,19 @@ const rockImages = [
         alt: "Rust and gold colored rock face",
     },
     {
-        name: "cave-art",
-        alt: "Rock face with colors reminiscent of prehistoric cave art",
+        name: "red",
+        alt: "A red colored rock face, drifting into cream",
+    },
+    {
+        name: "people",
+        alt: "Rock face with shades of brown, appearing like silhouettes of people",
     },
     {
         name: "silver",
         alt: "A silver, shiny, rock face",
+    },
+    {
+        name: "disintegrating",
+        alt: "A rock that is disintegrating into its constituent shards",
     },
 ];
