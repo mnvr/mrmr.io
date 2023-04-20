@@ -18,7 +18,7 @@ export const Content: React.FC = () => {
 const Title: React.FC = () => {
     return (
         <TitleContainer>
-            <h1>Rocks</h1>
+            <TitleH2>Rocks</TitleH2>
         </TitleContainer>
     );
 };
@@ -27,10 +27,14 @@ const TitleContainer = styled.div`
     position: absolute;
     z-index: 1;
     width: 100%;
-    text-align: center;
-    /* Tuned for the first rock image, "gold.jpg" */
-    background-color: rgba(0, 0, 0, 0.1);
-    color: hsl(50, 88%, 88%);
+    font-variant: small-caps;
+    /* Tuned for the first rock image, "painting.jpg" */
+    background-color: rgba(82, 80, 85, 0.4);
+`;
+
+const TitleH2 = styled.h2`
+    margin: 0.5rem;
+    padding-inline: 0.5rem;
 `;
 
 interface PageImageProps {
@@ -65,6 +69,14 @@ const RockImageContainer = styled.div`
 
 const rockImages = [
     {
+        name: "painting",
+        alt: "A rock face that looks like a painting with thick, yet intricate, brush strokes",
+    },
+    {
+        name: "granite",
+        alt: "A comforting, carbon like rock face",
+    },
+    {
         name: "gold",
         alt: "Rust and gold colored rock face",
     },
@@ -73,15 +85,7 @@ const rockImages = [
         alt: "Rock face with colors reminiscent of prehistoric cave art",
     },
     {
-        name: "painting",
-        alt: "A rock face that looks like a painting with thick, yet intricate, brush strokes",
-    },
-    {
         name: "silver",
         alt: "A silver, shiny, rock face",
-    },
-    {
-        name: "granite",
-        alt: "A comforting, carbon like rock face",
     },
 ];
