@@ -124,7 +124,7 @@ const InfoContainer = styled.div`
 `;
 
 const LatLngP = styled.p`
-    color: var(--mrmr-color-1-transparent);
+    color: var(--mrmr-color-4);
 `;
 
 const Footer: React.FC<{ page: Page }> = ({ page }) => {
@@ -140,7 +140,7 @@ const Footer: React.FC<{ page: Page }> = ({ page }) => {
 
 const FooterContainer = styled.div`
     margin-inline: 1rem;
-    color: var(--mrmr-color-4);
+    color: var(--mrmr-color-2);
 `;
 
 const PageInfo: React.FC<{ page: Page }> = ({ page }) => {
