@@ -98,7 +98,8 @@ export const query = graphql`
             frontmatter {
                 title
                 description
-                date(formatString: "MMM YYYY")
+                formattedDateMY: date(formatString: "MMM YYYY")
+                formattedDateDMY: date(formatString: "DD MMMM YYYY")
                 layout
                 links
                 colors
@@ -123,6 +124,8 @@ export interface Page {
     description: string;
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
+    /** The date from the frontmatter, formatted as "Feb 17, 2023" */
+    formattedDateDMY?: string;
     layout?: string;
     /** Resolved links */
     links: Links;
@@ -180,7 +183,8 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
 
     const title = ensure(mdx?.frontmatter?.title);
     const layout = mdx?.frontmatter?.layout;
-    const formattedDateMY = mdx?.frontmatter?.date;
+    const formattedDateMY = mdx?.frontmatter?.formattedDateMY;
+    const formattedDateDMY = mdx?.frontmatter?.formattedDateDMY;
     const colors = parseColorPalette(mdx?.frontmatter?.colors);
     const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
 
@@ -244,6 +248,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         description,
         layout,
         formattedDateMY,
+        formattedDateDMY,
         links,
         colors,
         darkColors,

@@ -1,3 +1,4 @@
+import { NavA } from "components/NavA";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
@@ -103,18 +104,16 @@ const rockImages = [
 const Footer: React.FC = () => {
     return (
         <FooterContainer>
-            <small>
-                <p>
-                    Rocks found on and around the shores of the river in Sissu
-                    Valley, in India.
-                </p>
-                <LatLngP>
-                    <small>
-                        32° 27' 25.308" N<br />
-                        77° 7' 46.12" E
-                    </small>
-                </LatLngP>
-            </small>
+            <p>
+                Rocks found on and around the shores of the river in Sissu
+                Valley, in India.
+            </p>
+            <LatLngP>
+                <small>
+                    32° 27' 25.308" N<br />
+                    77° 7' 46.12" E
+                </small>
+            </LatLngP>
         </FooterContainer>
     );
 };
@@ -139,6 +138,9 @@ const PageFooterA: React.FC = () => {
     return (
         <FooterContainer2>
             <PageInfo page={page} />
+            <NavContainer>
+                <NavA page={page} separator="•" />
+            </NavContainer>
         </FooterContainer2>
     );
 };
@@ -148,27 +150,38 @@ interface PageInfoProps {
 }
 
 const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
-    const { formattedDateMY, user } = page;
+    const { formattedDateDMY, user } = page;
     const { name } = user;
 
     return (
         <PageInfoContents>
             <DetailsContainer>
-                <small>
-                    {name}
-                    <br />
-                    <small>{formattedDateMY}</small>
-                </small>
+                {name}, {formattedDateDMY}
             </DetailsContainer>
         </PageInfoContents>
     );
 };
 
 const PageInfoContents = styled.div`
-    margin-block-end: 6rem;
+    margin-block-end: 0rem;
 `;
 
 const DetailsContainer = styled.div`
-    margin-block-end: 2rem;
+    margin-block-end: 0rem;
     color: var(--mrmr-color-4);
+`;
+
+const NavContainer = styled.div`
+    margin-block: 0.3rem;
+    margin-block-end: 3rem;
+
+    a {
+        text-decoration: none;
+        color: var(--mrmr-color-4);
+    }
+
+    a:hover {
+        border-bottom: 1px solid currentColor;
+        color: var(--mrmr-color-1);
+    }
 `;

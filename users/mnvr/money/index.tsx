@@ -1,12 +1,9 @@
 import { Column } from "components/Column";
-import { ExternalLink } from "components/ExternalLink";
-import { Link } from "gatsby";
-import { useShare } from "hooks/use-share";
+import { NavA } from "components/NavA";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, type Page } from "templates/page";
+import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
-import { fullURLForSlug } from "utils/url";
 
 export const Content: React.FC = () => {
     return (
@@ -62,7 +59,9 @@ const Title: React.FC = () => {
                     {name}, {formattedDateMY}
                 </Caption>
             </p>
-            <Nav page={page} />
+            <NavContainer>
+                <NavA page={page} />
+            </NavContainer>
         </TitleContainer>
     );
 };
@@ -75,50 +74,6 @@ const TitleContainer = styled.div`
 const Caption = styled.small`
     color: var(--mrmr-color-2);
 `;
-
-interface NavProps {
-    page: Page;
-}
-
-const Nav: React.FC<NavProps> = ({ page }) => {
-    const { title, description, slug, links } = page;
-
-    const [canShare, handleShareClick] = useShare({
-        url: fullURLForSlug(slug),
-        title,
-        text: description,
-    });
-
-    return (
-        <NavContainer>
-            <p>
-                <small>
-                    {canShare && (
-                        <>
-                            <a href="#" onClick={handleShareClick}>
-                                Share
-                            </a>
-                            <span> / </span>
-                        </>
-                    )}
-                    <ExternalLink
-                        href={links.sourceLink.url}
-                        title={links.sourceLink.title}
-                    >
-                        Remix
-                    </ExternalLink>{" "}
-                    /{" "}
-                    <Link
-                        to={links.userPageLink.slug}
-                        title={links.userPageLink.title}
-                    >
-                        More
-                    </Link>
-                </small>
-            </p>
-        </NavContainer>
-    );
-};
 
 const NavContainer = styled.div`
     margin-block-start: 4rem;
