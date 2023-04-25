@@ -1,5 +1,4 @@
 import { Column } from "components/Column";
-import { NavA } from "components/NavA";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -10,14 +9,15 @@ export const Content: React.FC = () => {
         <ContentContainer>
             <Column>
                 <Poem />
-                {/* <Title /> */}
+                <Title />
+                <Poem2 />
             </Column>
         </ContentContainer>
     );
 };
 
 const ContentContainer = styled.div`
-    margin-block: 3rem;
+    margin-block: 4rem;
     margin-inline: 0.5rem;
     @media (min-width: 360px) {
         margin-inline: 1rem;
@@ -47,9 +47,29 @@ const Poem: React.FC = () => {
     );
 };
 
+
+const Poem2: React.FC = () => {
+    const spreadOut = { lineHeight: "2rem" };
+
+    return (
+        <PoemContainer>
+            <p style={spreadOut}>
+                Fly
+                <br />
+                Fly
+                <br />
+                Fly
+                <br />
+                <span >Butterfly</span>
+            </p>
+        </PoemContainer>
+    );
+};
+
 const PoemContainer = styled.div`
     font-family: serif;
     font-size: 1.5rem;
+    line-height: 2rem;
 `;
 
 const Title: React.FC = () => {
@@ -59,23 +79,30 @@ const Title: React.FC = () => {
 
     return (
         <TitleContainer>
-            <p>
-                <b>{title}</b>
-                <br />
-                <Caption>
+            <small style={{ marginBlockEnd: "0px" }}>
+                <b>{title}</b><br/>
+                {/* <Caption>
                     {name}, <small>{formattedDateDMY}</small>
-                </Caption>
-            </p>
-            <NavContainer>
+                </Caption> */}
+            <span style={{ fontVariant: "normal" }}>
+                <small> A song, by Manav, 24 April 2023</small>
+            </span>
+            </small>
+            {/* <NavContainer>
                 <NavA page={page} />
-            </NavContainer>
+            </NavContainer> */}
         </TitleContainer>
     );
 };
 
 const TitleContainer = styled.div`
-    margin-block-start: 4rem;
-    line-height: 1.5rem;
+    margin-block-start: 8rem;
+    margin-block-end: 8rem;
+    /* line-height: 2.85rem; */
+    font-variant: small-caps;
+    color: var(--mrmr-color-2);
+    opacity: 0.53;
+
 `;
 
 const Caption = styled.small`
