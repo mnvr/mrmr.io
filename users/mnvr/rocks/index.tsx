@@ -12,8 +12,8 @@ export const Content: React.FC = () => {
         <>
             <Title />
             <RockImages page={page} />
-            <Footer />
-            <PageFooterA />
+            <Info />
+            <Footer page={page} />
         </>
     );
 };
@@ -101,9 +101,9 @@ const rockImages = [
     },
 ];
 
-const Footer: React.FC = () => {
+const Info: React.FC = () => {
     return (
-        <FooterContainer>
+        <InfoContainer>
             <p>
                 Rocks found on and around the shores of the river in Sissu
                 Valley, in India.
@@ -114,13 +114,12 @@ const Footer: React.FC = () => {
                     77° 7' 46.12" E
                 </small>
             </LatLngP>
-        </FooterContainer>
+        </InfoContainer>
     );
 };
 
-const FooterContainer = styled.div`
-    margin-block-start: 2rem;
-    margin-block-end: 2rem;
+const InfoContainer = styled.div`
+    margin-block: 2rem;
     margin-inline: 1rem;
 `;
 
@@ -128,56 +127,39 @@ const LatLngP = styled.p`
     color: var(--mrmr-color-1-transparent);
 `;
 
-const FooterContainer2 = styled.div`
-    margin-inline: 1rem;
-`;
-
-const PageFooterA: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
+const Footer: React.FC<{ page: Page }> = ({ page }) => {
     return (
-        <FooterContainer2>
+        <FooterContainer>
             <PageInfo page={page} />
             <NavContainer>
                 <NavA page={page} separator="•" />
             </NavContainer>
-        </FooterContainer2>
+        </FooterContainer>
     );
 };
 
-interface PageInfoProps {
-    page: Page;
-}
+const FooterContainer = styled.div`
+    margin-inline: 1rem;
+    color: var(--mrmr-color-4);
+`;
 
-const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
+const PageInfo: React.FC<{ page: Page }> = ({ page }) => {
     const { formattedDateDMY, user } = page;
     const { name } = user;
 
     return (
-        <PageInfoContents>
-            <DetailsContainer>
-                {name}, {formattedDateDMY}
-            </DetailsContainer>
-        </PageInfoContents>
+        <div>
+            {name}, {formattedDateDMY}
+        </div>
     );
 };
 
-const PageInfoContents = styled.div`
-    margin-block-end: 0rem;
-`;
-
-const DetailsContainer = styled.div`
-    margin-block-end: 0rem;
-    color: var(--mrmr-color-4);
-`;
-
 const NavContainer = styled.div`
-    margin-block: 0.3rem;
+    margin-block-start: 0.3rem;
     margin-block-end: 3rem;
 
     a {
         text-decoration: none;
-        color: var(--mrmr-color-4);
     }
 
     a:hover {

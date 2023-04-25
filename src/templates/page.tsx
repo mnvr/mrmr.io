@@ -124,7 +124,7 @@ export interface Page {
     description: string;
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
-    /** The date from the frontmatter, formatted as "Feb 17, 2023" */
+    /** The date from the frontmatter, formatted as "17 February 2023" */
     formattedDateDMY?: string;
     layout?: string;
     /** Resolved links */
