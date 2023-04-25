@@ -1,16 +1,20 @@
 import { Column } from "components/Column";
+import { NavA } from "components/NavA";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
+import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
 
 export const Content: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+
     return (
         <ContentContainer>
             <Column>
-                <Poem />
-                <Title />
-                <Poem2 />
+                <Song />
+                <Title page={page} />
+                <Song2 />
+                <Title2 page={page} />
             </Column>
         </ContentContainer>
     );
@@ -24,12 +28,10 @@ const ContentContainer = styled.div`
     }
 `;
 
-const Poem: React.FC = () => {
-    const spreadOut = { lineHeight: "2rem" };
-
+const Song: React.FC = () => {
     return (
-        <PoemContainer>
-            <p style={spreadOut}>
+        <SongContainer>
+            <p>
                 Dead butterfly
                 <br />
                 Why don't you <i>flutter</i> your wings?
@@ -41,88 +43,83 @@ const Poem: React.FC = () => {
                 <br />
                 Dead
                 <br />
-                <span style={spreadOut}>Butterfly</span>
+                Butterfly
             </p>
-        </PoemContainer>
+        </SongContainer>
     );
 };
 
-
-const Poem2: React.FC = () => {
-    const spreadOut = { lineHeight: "2rem" };
-
+const Song2: React.FC = () => {
     return (
-        <PoemContainer>
-            <p style={spreadOut}>
+        <SongContainer>
+            <p>
                 Fly
                 <br />
                 Fly
                 <br />
                 Fly
                 <br />
-                <span >Butterfly</span>
+                Butterfly
             </p>
-        </PoemContainer>
+        </SongContainer>
     );
 };
 
-const PoemContainer = styled.div`
+const SongContainer = styled.div`
     font-family: serif;
     font-size: 1.5rem;
     line-height: 2rem;
 `;
 
-const Title: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
+const Title: React.FC<{ page: Page }> = ({ page }) => {
     const { title, user, formattedDateDMY } = page;
-    const { name } = user;
+    const { firstName } = user;
 
     return (
         <TitleContainer>
-            <small style={{ marginBlockEnd: "0px" }}>
-                <b>{title}</b><br/>
-                {/* <Caption>
-                    {name}, <small>{formattedDateDMY}</small>
-                </Caption> */}
-            <span style={{ fontVariant: "normal" }}>
-                <small> A song, by Manav, 24 April 2023</small>
-            </span>
-            </small>
-            {/* <NavContainer>
-                <NavA page={page} />
-            </NavContainer> */}
+            <>
+                <TitleBold>{title}</TitleBold>
+                <br />
+                <small>
+                    A song, by {firstName}, {formattedDateDMY}
+                </small>
+            </>
         </TitleContainer>
     );
 };
 
 const TitleContainer = styled.div`
-    margin-block-start: 8rem;
-    margin-block-end: 8rem;
-    /* line-height: 2.85rem; */
-    font-variant: small-caps;
+    margin-block: 8rem;
     color: var(--mrmr-color-2);
     opacity: 0.53;
-
 `;
 
-const Caption = styled.small`
-    color: var(--mrmr-color-2);
+const TitleBold = styled.span`
+    font-weight: 700;
+    font-variant: small-caps;
 `;
+
+const Title2: React.FC<{ page: Page }> = ({ page }) => {
+    return (
+        <TitleContainer>
+            <TitleBold>
+                <NavContainer>
+                    <NavA page={page} separator="•" />
+                </NavContainer>
+            </TitleBold>
+        </TitleContainer>
+    );
+};
 
 const NavContainer = styled.div`
-    margin-block-start: 4rem;
-
     letter-spacing: 0.045ch;
-
-    color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
-        opacity: 0.8;
     }
 
     a:hover {
-        border-bottom: 1px solid currentColor;
-        opacity: 1;
+        border-top: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
     }
 `;
