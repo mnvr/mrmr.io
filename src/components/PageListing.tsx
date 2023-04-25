@@ -62,13 +62,21 @@ const PageGrid = styled.div`
 
     a {
         text-decoration: none;
+        /* Keep a transparent border of the same thickness as the border that
+           would be used in the hover state. This avoids a layout shift on
+           hover. */
+        border: 1px solid transparent;
+    }
+
+    a:hover {
+        border: 1px solid black;
     }
 `;
 
 const PageItem = styled.div<Page>`
     background-color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
     color: ${(props) => props.colors?.color1 ?? "inherit"};
-    width: 13ch;
+    width: 12.7ch;
     height: 11.7ch;
     padding-block: 0.33rem;
     padding-inline: 0.66rem;
