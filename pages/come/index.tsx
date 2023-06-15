@@ -1,7 +1,8 @@
 import { Column } from "components/Column";
-import { PageFooterA } from "components/PageFooterA";
 import { PlayerA } from "components/PlayerA";
+import { Link } from "gatsby";
 import * as React from "react";
+import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
 import { song } from "./song";
 import { vis } from "./vis";
@@ -13,7 +14,7 @@ export const Content: React.FC = () => {
                 <Heading />
             </PlayerA>
             <Text />
-            <PageFooterA />
+            <Footer />
         </>
     );
 };
@@ -71,4 +72,47 @@ const P = styled.p`
     font-weight: 300;
     letter-spacing: 0.025ch;
     color: var(--mrmr-color-1);
+`;
+
+const Footer: React.FC = () => {
+    return (
+        <Column>
+            <FooterContents>
+                <DetailsContainer>
+                    Manav Rathi
+                    <br />
+                    <small>Feb 2023</small>
+                </DetailsContainer>
+                <HomeLinkContainer>
+                    <Link to="/">
+                        <RxSlash title="More" />
+                    </Link>
+                </HomeLinkContainer>
+            </FooterContents>
+        </Column>
+    );
+};
+
+const FooterContents = styled.div`
+    margin-block-end: 6rem;
+    font-size: 0.9rem;
+`;
+
+const DetailsContainer = styled.div`
+    margin: 1.8rem;
+    opacity: 0.5;
+`;
+
+const HomeLinkContainer = styled.div`
+    /* Slightly less margin than the 1.8 above, to visually align the slash */
+    margin-inline: 1.7rem;
+
+    a {
+        text-decoration: none;
+        opacity: 0.5;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
 `;
