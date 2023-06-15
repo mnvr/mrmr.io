@@ -4,7 +4,7 @@ import tinycolor from "tinycolor2";
  * Convert a CSS color string into an `[r, g, b]` array that Hydra expects.
  *
  * The input color string should be able to accept all forms of CSS-like colors
- * that you can throw it at. For the full list of ways in which the color string
+ * that we can throw it at. For the full list of ways in which the color string
  * can be specified, see the documentation of the
  * [library](https://github.com/bgrins/TinyColor) that we use for parsing these
  * strings.

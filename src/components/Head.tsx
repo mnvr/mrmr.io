@@ -10,8 +10,8 @@ interface HeadProps {
     /**
      * Title of the page
      *
-     * @see {@link titleSuffix} if you wish to use the default site title as the
-     * prefix.
+     * Alternatively, @see {@link titleSuffix} which uses the default site
+     * title as the prefix.
      *
      * If neither of them are specified, then the default site title is used.
      */
@@ -21,7 +21,7 @@ interface HeadProps {
      * A suffix that is appended to the site title (separated by "|") to
      * generate the title of the page.
      *
-     * @see {@link title} if you wish to provide a full string instead.
+     * @see {@link title} for providing a full string instead.
      */
     titleSuffix?: string;
 
