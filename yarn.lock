@@ -2027,27 +2027,27 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@strudel.cycles/core@0.7.2", "@strudel.cycles/core@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.7.2.tgz#96485ef6d453138096156ebca646cb8a94f81c9a"
-  integrity sha512-ZSPz6JPdu3tS7A8sA02CBYqdBDle8j20ditKwjWX4TOUuKqU1JWewZBdpm6xECiK3sH4SBRQPYCuO/CxyVJnSg==
+"@strudel.cycles/core@0.8.1", "@strudel.cycles/core@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.8.1.tgz#768565c3c1d7bf915201a4f950ad6f00c0044a37"
+  integrity sha512-CZ9DMiY/8vvK0XeQCrB542MnKoiMKpykaoSrzdb8yCyp9SA7TTAsUz+RIvj8MgPz8/tmdOZ0y12FJMI0HGVsgw==
   dependencies:
     fraction.js "^4.2.0"
 
-"@strudel.cycles/mini@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.7.2.tgz#521d7b81eb9f05294ed5860b96afd988679abf43"
-  integrity sha512-rjDH9sltqJQVSUthSlhvtES9UWKxlRU3ab5BEzRdFh4IdYacyRccJrj7zvRNHFIaV+uYlq9KZY3ObevgyqJRPA==
+"@strudel.cycles/mini@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.8.1.tgz#2517fb26419d17aa0d72f07227c1044cc41c02e7"
+  integrity sha512-4W7TgS/+EbMDlyRkJy6sgdA3uwP+EeFOcYLCczjjLZwYVaj9IuCM1uxQQBaSNx3t1WPBdtH55KAnm/yR4eQrVA==
   dependencies:
-    "@strudel.cycles/core" "0.7.2"
+    "@strudel.cycles/core" "0.8.1"
 
-"@strudel.cycles/webaudio@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.7.1.tgz#a74bbb26e4197ff3508347ac96f5d1fdd130abe9"
-  integrity sha512-WHdr+3apvXumW3NkxQ2Pu+iuGT6Oh2WKI8yQ5Gtzxzp7sgWN2cf6gTlW3NhGhloegcwZmElPMRxgtsy/JBvZiQ==
+"@strudel.cycles/webaudio@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.8.1.tgz#c0eaaae760500037c2ceb9cbac3b6d7fd669163f"
+  integrity sha512-UzEP3Z7gHGPxGaB/xtngMpjyoalLr2hb1s/+x2uLtz9oDGdmMs5/GhrKENid5WFnChZR5C7KzaNonLDi34C8gA==
   dependencies:
-    "@strudel.cycles/core" "0.7.2"
-    nanostores "^0.7.4"
+    "@strudel.cycles/core" "0.8.1"
+    nanostores "^0.8.1"
 
 "@swc/helpers@^0.4.12":
   version "0.4.14"
@@ -2291,15 +2291,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@>=10.0.0":
+"@types/node@*", "@types/node@>=10.0.0", "@types/node@^20.3.1":
   version "20.3.1"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.3.1.tgz#e8a83f1aa8b649377bb1fb5d7bac5cb90e784dfe"
   integrity sha512-EhcH/wvidPy1WeML3TtYFGR83UzjxeWRen9V402T8aUGYsCHOmfoisV3ZSg03gAFIbLq8TnWOJ0f4cALtnSEUg==
-
-"@types/node@^18.15.8":
-  version "18.16.18"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.16.18.tgz#85da09bafb66d4bc14f7c899185336d0c1736390"
-  integrity sha512-/aNaQZD0+iSBAGnvvN2Cx92HqE5sZCPZtx2TsK+4nvV23fFe09jVDvpArXr2j9DnYlzuU9WuoykDDc6wqvpNcw==
 
 "@types/node@^8.5.7":
   version "8.10.66"
@@ -3522,6 +3517,11 @@ ci-info@2.0.0, ci-info@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
+
+ci-info@^3.7.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.8.0.tgz#81408265a5380c929f0bc665d62256628ce9ef91"
+  integrity sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==
 
 cli-boxes@^2.2.1:
   version "2.2.1"
@@ -5418,7 +5418,7 @@ gatsby-parcel-config@^1.11.0:
     "@parcel/transformer-js" "2.8.3"
     "@parcel/transformer-json" "2.8.3"
 
-gatsby-plugin-catch-links@^5.10.0:
+gatsby-plugin-catch-links@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-catch-links/-/gatsby-plugin-catch-links-5.11.0.tgz#45481e42ec7a821199ceda3d598f1a6301205643"
   integrity sha512-XReS3vEyOmoZEwKSv5edlSvO5qztLDqv+37VekmMdR7HtLV5dPqAVhy2XjHZRQZcFtYg1tFaCxeWcQSxy9YYVw==
@@ -5426,7 +5426,7 @@ gatsby-plugin-catch-links@^5.10.0:
     "@babel/runtime" "^7.20.13"
     escape-string-regexp "^1.0.5"
 
-gatsby-plugin-image@^3.10.0:
+gatsby-plugin-image@^3.11.0:
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-image/-/gatsby-plugin-image-3.11.0.tgz#4d322ecf80bfa304a1400e6b06a9d7199154dcca"
   integrity sha512-hQ3MjE9v5Y84f/45wXB7D5NthO/3lgwnHzy1mFAz0Md3e1CxgV1lvKjVwY5MvI40l7Tlk4Bkx39p6Qt/0GAcEg==
@@ -5446,7 +5446,7 @@ gatsby-plugin-image@^3.10.0:
     objectFitPolyfill "^2.3.5"
     prop-types "^15.8.1"
 
-gatsby-plugin-manifest@^5.10.0:
+gatsby-plugin-manifest@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-manifest/-/gatsby-plugin-manifest-5.11.0.tgz#5c47e2752725d8b5f40c4e2b43928eb1e6a33ba1"
   integrity sha512-f1ViusTLF3K4fNvn1vIKZwUeP1Bl9ercrhQBe7rBnu9Cl7EWYskH0MSXJfxev29kD7Ag+FTvC2MPObDvi3LFhw==
@@ -5457,7 +5457,7 @@ gatsby-plugin-manifest@^5.10.0:
     semver "^7.5.1"
     sharp "^0.32.1"
 
-gatsby-plugin-mdx@^5.10.0:
+gatsby-plugin-mdx@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-mdx/-/gatsby-plugin-mdx-5.11.0.tgz#4cff5c28ab8facd1f6a89f2a79e754f6c81670b3"
   integrity sha512-7kRTVRId7VvxdSRRx1oZ9FAnd6ZcSs1yvtlpitgOsh1Tv1t9jtNTRtI6onDXCLZd1lT/6q03YfBEF0x0Z75b+g==
@@ -5505,7 +5505,7 @@ gatsby-plugin-root-import@^2.0.9:
   resolved "https://registry.yarnpkg.com/gatsby-plugin-root-import/-/gatsby-plugin-root-import-2.0.9.tgz#a511c0927164e3fd66052426fcfd5895d8c0045c"
   integrity sha512-Cj6zBQW/XirHyLGyXtyhvhMwLUZDjFHSJwCI7mF9yAuX1PFoOVqUVWKp9jvtoKm8nKvly3IU/OPRXzlmYjeEkA==
 
-gatsby-plugin-sharp@^5.10.0:
+gatsby-plugin-sharp@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-sharp/-/gatsby-plugin-sharp-5.11.0.tgz#4a030293278bf7f3869e55536aed011f6008e45b"
   integrity sha512-/7so6DUiDbTKEwQ/lTzJRIw8wPYLoFkmVOZ8ACXhVQ/2Gq/pDc8ToLgDF1MyPQ40BZcfN2nmsPgHYdq5lFsCTg==
@@ -5523,7 +5523,7 @@ gatsby-plugin-sharp@^5.10.0:
     semver "^7.5.1"
     sharp "^0.32.1"
 
-gatsby-plugin-styled-components@^6.10.0:
+gatsby-plugin-styled-components@^6.11.0:
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-styled-components/-/gatsby-plugin-styled-components-6.11.0.tgz#42c58821e534ebf82974c9f9fef74196dd345aa3"
   integrity sha512-VfzTXZ/MZvTfaSwY9dwcWsxgqmw9OCcKXQj2keRIs9x8g0QecYBSVIWZBe7atr76LyCR0FiWjmLSSp6Ll/UD3Q==
@@ -5578,7 +5578,7 @@ gatsby-sharp@^1.11.0:
   dependencies:
     sharp "^0.32.1"
 
-gatsby-source-filesystem@^5.10.0:
+gatsby-source-filesystem@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-source-filesystem/-/gatsby-source-filesystem-5.11.0.tgz#59c48cf86a8578627997747f7ec377dfa99fb1a4"
   integrity sha512-42CXNzKgGvkZtqmFIIMbEJW5ZpQ5b4TQT7Rk21XsEMkoZT9QchqMG1S2VPK/LPe7LicvGv6zBziGrtn6ttch7w==
@@ -5611,7 +5611,7 @@ gatsby-telemetry@^4.11.0:
     lodash "^4.17.21"
     node-fetch "^2.6.11"
 
-gatsby-transformer-sharp@^5.10.0:
+gatsby-transformer-sharp@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby-transformer-sharp/-/gatsby-transformer-sharp-5.11.0.tgz#9660502f314588425d7689f7d2007a01813fd917"
   integrity sha512-kIYrCtceqmgwgPRQGVbVY8JxMfJulFSqAeLigRYhrxpVYag90vskmh+HsiKHaY9j/rEARyCofnaAG/jwhSrcRg==
@@ -5635,7 +5635,7 @@ gatsby-worker@^2.11.0:
     fs-extra "^11.1.1"
     signal-exit "^3.0.7"
 
-gatsby@^5.10.0:
+gatsby@^5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/gatsby/-/gatsby-5.11.0.tgz#ddf6ff3d360578d69d133bb976d652fb3fb59c59"
   integrity sha512-hGvMDQPzxBNr974sUSz02UbkmAX22tPdf/0gKU3MFfPPqJGcHZk/AdrerGr4klRH7RgotwSxQxsIvCv+kY44fg==
@@ -7870,10 +7870,10 @@ nanoid@^3.3.6:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
   integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
-nanostores@^0.7.4:
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.7.4.tgz#2e9b8e08d5f82748309ddc79f3e201700f49f766"
-  integrity sha512-MBeUVt7NBcXqh7AGT+KSr3O0X/995CZsvcP2QEMP+PXFwb07qv3Vjyq+EX0yS8f12Vv3Tn2g/BvK/OZoMhJlOQ==
+nanostores@^0.8.1:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.8.1.tgz#963577028ac10eeb50bec376535f4762ab5af9be"
+  integrity sha512-1ZCfQtII2XeFDrtqXL2cdQ/diGrLxzRB3YMyQjn8m7GSGQrJfGST2iuqMpWnS/ZlifhtjgR/SX0Jy6Uij6lRLA==
 
 napi-build-utils@^1.0.1:
   version "1.0.2"
@@ -8358,17 +8358,17 @@ password-prompt@^1.0.4:
     ansi-escapes "^3.1.0"
     cross-spawn "^6.0.5"
 
-patch-package@^6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-6.5.1.tgz#3e5d00c16997e6160291fee06a521c42ac99b621"
-  integrity sha512-I/4Zsalfhc6bphmJTlrLoOcAF87jcxko4q0qsv4bGcurbr8IskEOtdnt9iCmsQVGL1B+iUhSQqweyTLJfCF9rA==
+patch-package@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-7.0.0.tgz#5c646b6b4b4bf37e5184a6950777b21dea6bb66e"
+  integrity sha512-eYunHbnnB2ghjTNc5iL1Uo7TsGMuXk0vibX3RFcE/CdVdXzmdbMsG/4K4IgoSuIkLTI5oHrMQk4+NkFqSed0BQ==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     chalk "^4.1.2"
-    cross-spawn "^6.0.5"
+    ci-info "^3.7.0"
+    cross-spawn "^7.0.3"
     find-yarn-workspace-root "^2.0.0"
     fs-extra "^9.0.0"
-    is-ci "^2.0.0"
     klaw-sync "^6.0.0"
     minimist "^1.2.6"
     open "^7.4.2"
@@ -8376,7 +8376,7 @@ patch-package@^6.5.1:
     semver "^5.6.0"
     slash "^2.0.0"
     tmp "^0.0.33"
-    yaml "^1.10.2"
+    yaml "^2.2.2"
 
 path-case@^3.0.4:
   version "3.0.4"
@@ -10182,17 +10182,17 @@ title-case@^3.0.3:
   dependencies:
     tslib "^2.0.3"
 
-tldts-core@^5.7.112:
-  version "5.7.112"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-5.7.112.tgz#168459aa79495f5d46407a685a7a9f0cdc9a272b"
-  integrity sha512-mutrEUgG2sp0e/MIAnv9TbSLR0IPbvmAImpzqul5O/HJ2XM1/I1sajchQ/fbj0fPdA31IiuWde8EUhfwyldY1Q==
+tldts-core@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-6.0.5.tgz#6babfadfe695f93e7c842de19c7c11930906f41c"
+  integrity sha512-DBpylEmOYzU+x8oiJU6pULwr1WPIoW1YYXxf8K88N+mEtIB9QOSCsMj0KdARoJFS/rMDWRguB4dRKL0zqq6LWQ==
 
-tldts@^5.7.112:
-  version "5.7.112"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-5.7.112.tgz#f3d7a5ade3ee09a48a1ecb4f05f04335b0787c84"
-  integrity sha512-6VSJ/C0uBtc2PQlLsp4IT8MIk2UUh6qVeXB1HZtK+0HiXlAPzNcfF3p2WM9RqCO/2X1PIa4danlBLPoC2/Tc7A==
+tldts@^6.0.5:
+  version "6.0.5"
+  resolved "https://registry.yarnpkg.com/tldts/-/tldts-6.0.5.tgz#553c18c3f18cb860329b2b859546ab47647d0cd4"
+  integrity sha512-2JQhXcZbp8eh2Ka81yvu5WzBa7NPKhGhXHy+dz0grD7w3DjgK0CsryEwNjVs6i170VF4sZAkwP8pGb1q53wiiQ==
   dependencies:
-    tldts-core "^5.7.112"
+    tldts-core "^6.0.5"
 
 tmp@^0.0.33:
   version "0.0.33"
@@ -10930,7 +10930,7 @@ yaml@^1.10.0, yaml@^1.10.2, yaml@^1.7.2:
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
-yaml@^2.0.0:
+yaml@^2.0.0, yaml@^2.2.2:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
   integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
