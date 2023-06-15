@@ -30,7 +30,7 @@
     },
     "include": [
         "./src/**/*",
-        "./users/**/*",
+        "./pages/**/*",
         "./gatsby-node.ts",
         "./gatsby-config.ts",
         "./plugins/**/*"

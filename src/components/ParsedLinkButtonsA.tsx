@@ -10,8 +10,8 @@ import styled from "styled-components";
 export interface ParsedLinkButtonsProps {
     /** The links to show */
     links?: ParsedLink[];
-    /** If present, then a link is shown to a user's home page at the end */
-    userPageLink?: ParsedSlug;
+    /** If present, then a link is shown to the home page at the end */
+    moreLink?: ParsedSlug;
 }
 
 /**
@@ -23,14 +23,14 @@ export interface ParsedLinkButtonsProps {
  */
 export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsProps> = ({
     links,
-    userPageLink,
+    moreLink,
 }) => {
     return (
         <ParsedLinkRow>
             {links?.map((link) => (
                 <ParsedLinkButtonA key={link.url} link={link} />
             ))}
-            {userPageLink && <UserPageLinkButtonA {...userPageLink} />}
+            {moreLink && <MoreLinkButtonA {...moreLink} />}
         </ParsedLinkRow>
     );
 };
@@ -61,11 +61,11 @@ export const ParsedLinkButtonA: React.FC<IconProps> = ({ link }) => {
 };
 
 /**
- * A button that shows a link to the given user's home page.
+ * A button that shows a link to the home page.
  *
  * @see {@link ParsedLinkButtonsA} for links that are external to the site.
  */
-export const UserPageLinkButtonA: React.FC<ParsedSlug> = ({ slug, title }) => {
+export const MoreLinkButtonA: React.FC<ParsedSlug> = ({ slug, title }) => {
     return (
         <Link to={slug}>
             <IconContainer>

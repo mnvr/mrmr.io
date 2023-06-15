@@ -1,24 +1,46 @@
 import { DefaultHead } from "components/Head";
-import { PageColorStyle } from "components/PageColorStyle";
-import { Link, graphql, type HeadFC } from "gatsby";
+import {
+    PageColorStyle,
+    paletteSetOrFallback,
+} from "components/PageColorStyle";
+import {
+    BodyBackgroundColorTransitionStyle,
+    PageListing,
+} from "components/PageListing";
+import { ParsedLinkButtonsB } from "components/ParsedLinkButtonsB";
+import { PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
-import { parseColorPalette } from "parsers/colors";
-import * as React from "react";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import { parseLinks } from "parsers/links";
+import React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** The home page for mrmr.io */
-const IndexPage: React.FC = () => {
+const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
+    const pages = parsePages(data);
+
+    const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
+
+    // If the user is hovering on the link to a page, use that page's colors.
+    // Otherwise use the index pages' own color palette.
+    let colorPalettes = paletteSetOrFallback(hoverPage, indexColorPalettes);
+
     return (
-        <Main>
+        <main>
             <PageColorStyle {...colorPalettes} />
-            <IndexTitle />
-        </Main>
+            <BodyBackgroundColorTransitionStyle />
+            <Title />
+            <PageListing {...{ pages, setHoverPage }} />
+            <ExternalLinks />
+        </main>
     );
 };
 
-const colorPalettes = {
+export default IndexPage;
+
+const indexColorPalettes = {
     colors: ensure(
         parseColorPalette([
             "hsl(0, 0%, 100%)",
@@ -35,8 +57,6 @@ const colorPalettes = {
     ]),
 };
 
-export default IndexPage;
-
 export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const description = "music •◦◎◉⦿ words | colors / code";
     const canonicalPath = "";
@@ -50,9 +70,15 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
 };
 
 /**
- * Fetch the data needed by the home page
+ * Fetch the data needed by the home page.
  *
- * In particular, fetch the preview (meta/og:image) image
+ * - In particular, fetch the preview (meta/og:image) image
+ *
+ * Fetch all pages, sorted by recency.
+ *
+ * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
+ * - Right now this returns all pages; if this list grows too big then we add a
+ *   limit here too.
  */
 export const query = graphql`
     query IndexPage {
@@ -64,34 +90,48 @@ export const query = graphql`
                 gatsbyImageData
             }
         }
+        allMdx(
+            filter: { frontmatter: { unlisted: { ne: true } } }
+            sort: [
+                { frontmatter: { date: DESC } }
+                { frontmatter: { title: ASC } }
+            ]
+        ) {
+            nodes {
+                frontmatter {
+                    title
+                    colors
+                    dark_colors
+                }
+                fields {
+                    slug
+                }
+            }
+        }
     }
 `;
 
-const Main = styled.main`
+const TitleContainer = styled.div`
     display: flex;
     align-content: space-around;
     flex-wrap: wrap;
     gap: 2rem;
+    min-height: 75svh;
 `;
 
-const IndexTitle: React.FC = () => {
+const Title: React.FC = () => {
     return (
-        <div>
-            <H1>mrmr</H1>
-            <Poem />
-            <Nav>
-                <small>
-                    <Link to="/recent">recent</Link>,{" "}
-                    <Link to="/random">random</Link>
-                </small>
-            </Nav>
-        </div>
+        <TitleContainer>
+            <div>
+                <H1>mrmr</H1>
+                <Poem />
+            </div>
+        </TitleContainer>
     );
 };
 
 const H1 = styled.h1`
     margin-block: 0;
-    padding-block-start: 37svh;
     margin-inline-start: 1.8rem;
     font-family: serif;
     font-style: italic;
@@ -118,21 +158,52 @@ const PoemP = styled.p`
     color: var(--mrmr-color-2);
 `;
 
-const Nav = styled.p`
-    padding-block-start: 24svh;
-    margin-inline-start: 1.8rem;
-    font-family: serif;
-    font-style: italic;
+interface Page {
+    title: string;
+    slug: string;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
+}
+
+const parsePages = (data: Queries.IndexPageQuery) => {
+    const allMdx = replaceNullsWithUndefineds(data.allMdx);
+    const nodes = allMdx.nodes;
+
+    return nodes.map((node) => {
+        const { frontmatter, fields } = node;
+        const colors = parseColorPalette(frontmatter?.colors);
+        const darkColors = parseColorPalette(frontmatter?.dark_colors);
+        const slug = ensure(fields?.slug);
+
+        const title = ensure(frontmatter?.title);
+
+        return { title, slug, colors, darkColors };
+    });
+};
+
+const ExternalLinks: React.FC = () => {
+    const links = parseLinks([
+        "https://github.com/mnvr",
+        "https://twitter.com/mnvrth",
+        "https://instagram.com/manavrt",
+        "https://youtube.com/@mnvrth",
+    ]);
+    return (
+        <LinkButtonsContainer>
+            <ParsedLinkButtonsB links={links} />
+        </LinkButtonsContainer>
+    );
+};
+
+const LinkButtonsContainer = styled.div`
+    margin-block: 4rem;
+    margin-inline-start: 1rem;
 
     a {
-        text-decoration: none;
-        opacity: 0.75;
-        border-bottom: 1px dashed currentColor;
+        color: var(--mrmr-color-4);
     }
 
     a:hover {
-        opacity: 1;
-        border-bottom: 1px solid currentColor;
-        background-color: var(--mrmr-color-1-transparent);
+        color: var(--mrmr-color-3);
     }
 `;

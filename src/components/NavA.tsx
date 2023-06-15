@@ -3,7 +3,6 @@ import { useShare } from "hooks/use-share";
 import React from "react";
 import { type Page } from "templates/page";
 import { fullURLForSlug } from "utils/url";
-import { ExternalLink } from "./ExternalLink";
 
 interface NavProps {
     /** The page for which to construct the links */
@@ -16,9 +15,9 @@ interface NavProps {
     separator?: string;
 }
 
-/** Display a set of Share / Source / More links for the given page */
+/** Display a set of Share / More links for the given page */
 export const NavA: React.FC<NavProps> = ({ page, separator }) => {
-    const { title, description, slug, links } = page;
+    const { title, description, slug } = page;
     const sep = ` ${separator ?? "/"} `;
 
     const [canShare, handleShareClick] = useShare({
@@ -37,16 +36,7 @@ export const NavA: React.FC<NavProps> = ({ page, separator }) => {
                     <span>{sep}</span>
                 </>
             )}
-            <ExternalLink
-                href={links.sourceLink.url}
-                title={links.sourceLink.title}
-            >
-                Edit
-            </ExternalLink>
-            <span>{sep}</span>
-            <Link to={links.userPageLink.slug} title={links.userPageLink.title}>
-                More
-            </Link>
+            <Link to="/">More</Link>
         </small>
     );
 };

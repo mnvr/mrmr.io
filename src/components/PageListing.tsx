@@ -51,11 +51,13 @@ export const BodyBackgroundColorTransitionStyle = createGlobalStyle`
 `;
 
 const PageGrid = styled.div`
-    padding-block: 1.9rem;
+    padding-inline: 2px;
 
     display: flex;
     flex-wrap: wrap;
-    gap: 1.9rem;
+    /* Instead of this gap (that mirrors the padding-inline above), we rely on
+       the transparent / hover border below */
+    /* gap: 2px; */
 
     font-weight: 500;
     font-variant: small-caps;
@@ -76,8 +78,8 @@ const PageGrid = styled.div`
 const PageItem = styled.div<Page>`
     background-color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
     color: ${(props) => props.colors?.color1 ?? "inherit"};
-    width: 12.7ch;
-    height: 11.7ch;
+    width: 13.7ch;
+    height: 9.7ch;
     padding-block: 0.33rem;
     padding-inline: 0.66rem;
     position: relative;

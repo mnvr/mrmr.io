@@ -72,17 +72,14 @@ const SongContainer = styled.div`
 `;
 
 const Title: React.FC<{ page: Page }> = ({ page }) => {
-    const { title, user, formattedDateDMY } = page;
-    const { firstName } = user;
+    const { title, formattedDateDMY } = page;
 
     return (
         <TitleContainer>
             <>
                 <TitleBold>{title}</TitleBold>
                 <br />
-                <small>
-                    A song, by {firstName}, {formattedDateDMY}
-                </small>
+                <small>A song, by Manav, {formattedDateDMY}</small>
             </>
         </TitleContainer>
     );
@@ -119,7 +116,7 @@ const NavContainer = styled.div`
     }
 
     a:hover {
-        border-top: 2px solid currentColor;
+        border-top: 1px solid currentColor;
         border-bottom: 2px solid currentColor;
     }
 `;

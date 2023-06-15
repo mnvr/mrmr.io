@@ -46,18 +46,12 @@ export const Head: HeadFC = () => <DefaultHead titleSuffix="Random 🎲" />;
 /**
  * Fetch all pages, sorted by recency.
  *
- * - Exclude the pages which are marked `unlisted` (e.g. pages of the "_example"
- *   user).
- * - Right now this returns all pages; if this list grows too big then we add a
- *   limit here too.
+ * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
  */
 export const query = graphql`
     query RandomPage {
         allMdx(
-            filter: {
-                fields: { type: { eq: "page" } }
-                frontmatter: { unlisted: { ne: true } }
-            }
+            filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

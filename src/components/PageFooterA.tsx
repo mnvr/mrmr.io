@@ -1,12 +1,10 @@
 import { Link } from "gatsby";
-import { ParsedLink } from "parsers/links";
 import * as React from "react";
 import { RxSlash } from "react-icons/rx";
 import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
 import { ensure } from "utils/ensure";
 import { Column } from "./Column";
-import { ParsedLinkButtonsA } from "./ParsedLinkButtonsA";
 
 /**
  * A footer for a page template - Variant A.
@@ -14,63 +12,35 @@ import { ParsedLinkButtonsA } from "./ParsedLinkButtonsA";
  * This component is meant to be used within the footer of a page that is being
  * rendered using `template/page.tsx`. In particular, it assumes that a
  * {@link BuildTimePageContext} has been provided - that's where it gets the
- * list of links and other data that it needs from.
+ * data that it needs from.
  */
 export const PageFooterA: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const pageLinks = page.links.pageLinks;
 
     return (
         <Column>
-            {pageLinks && <PageLinks links={pageLinks} />}
             <PageInfo page={page} />
         </Column>
     );
 };
-
-interface PageLinksProps {
-    links: ParsedLink[];
-}
-
-const PageLinks: React.FC<PageLinksProps> = ({ links }) => {
-    return (
-        <LinkButtonsContainer>
-            <ParsedLinkButtonsA links={links} />
-        </LinkButtonsContainer>
-    );
-};
-
-const LinkButtonsContainer = styled.div`
-    margin-block-start: 3rem;
-    margin-block-end: 2.25rem;
-
-    a {
-        color: var(--mrmr-color-4);
-    }
-
-    a:hover {
-        color: var(--mrmr-color-3);
-    }
-`;
 
 interface PageInfoProps {
     page: Page;
 }
 
 const PageInfo: React.FC<PageInfoProps> = ({ page }) => {
-    const { formattedDateMY, user } = page;
-    const { slug, name, firstName } = user;
+    const { formattedDateMY } = page;
 
     return (
         <PageInfoContents>
             <DetailsContainer>
-                {name}
+                Manav Rathi
                 <br />
                 <small>{formattedDateMY}</small>
             </DetailsContainer>
             <HomeLinkContainer>
-                <Link to={slug}>
-                    <RxSlash title={`More by ${firstName}`} />
+                <Link to="/">
+                    <RxSlash title="More" />
                 </Link>
             </HomeLinkContainer>
         </PageInfoContents>

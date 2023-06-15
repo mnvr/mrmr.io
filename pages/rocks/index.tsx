@@ -144,14 +144,9 @@ const FooterContainer = styled.div`
 `;
 
 const PageInfo: React.FC<{ page: Page }> = ({ page }) => {
-    const { formattedDateDMY, user } = page;
-    const { name } = user;
+    const { formattedDateDMY } = page;
 
-    return (
-        <div>
-            {name}, {formattedDateDMY}
-        </div>
-    );
+    return <div>Manav Rathi, {formattedDateDMY}</div>;
 };
 
 const NavContainer = styled.div`

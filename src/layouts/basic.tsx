@@ -5,21 +5,19 @@ import {
 } from "components/ParsedLinkButtonsA";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
-import { ensure } from "utils/ensure";
 
 export const BasicLayout: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const { links } = ensure(React.useContext(BuildTimePageContext));
+    const moreLink = {
+        slug: "/",
+        title: "More",
+    };
 
     return (
         <Column>
             <ContentContainer>{children}</ContentContainer>
-            <PageFooterLinks
-                links={links.pageLinks}
-                userPageLink={links.userPageLink}
-            />
+            <PageFooterLinks moreLink={moreLink} />
         </Column>
     );
 };

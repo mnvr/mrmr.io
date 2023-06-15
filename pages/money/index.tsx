@@ -47,17 +47,14 @@ const Poem: React.FC = () => {
 
 const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { title, user, formattedDateMY } = page;
-    const { name } = user;
+    const { title, formattedDateMY } = page;
 
     return (
         <TitleContainer>
             <p>
                 <b>{title}</b>
                 <br />
-                <Caption>
-                    {name}, {formattedDateMY}
-                </Caption>
+                <Caption>Manav Rathi, {formattedDateMY}</Caption>
             </p>
             <NavContainer>
                 <NavA page={page} />

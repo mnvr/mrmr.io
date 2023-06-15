@@ -47,7 +47,7 @@ const IconContainer = styled.div`
     min-width: 44px;
     min-height: 44px;
 
-    /** 
+    /**
      * Center the SVG within the tap area if the SVG is smaller than the mininum
      * dimensions (this'll usually be the case).
      */
