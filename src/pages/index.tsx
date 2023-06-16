@@ -197,7 +197,7 @@ const ExternalLinks: React.FC = () => {
 
 const LinkButtonsContainer = styled.div`
     margin-block: 4rem;
-    margin-inline-start: 1rem;
+    margin-inline-start: 1.7rem;
 
     a {
         color: var(--mrmr-color-4);
