@@ -1,23 +1,16 @@
 import { Column } from "components/Column";
-import {
-    ParsedLinkButtonsA,
-    type ParsedLinkButtonsProps,
-} from "components/ParsedLinkButtonsA";
+import { Link } from "gatsby";
 import * as React from "react";
+import { FiList } from "react-icons/fi";
 import styled from "styled-components";
 
 export const BasicLayout: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const moreLink = {
-        slug: "/",
-        title: "More",
-    };
-
     return (
         <Column>
             <ContentContainer>{children}</ContentContainer>
-            <PageFooterLinks moreLink={moreLink} />
+            <PageFooterLinks />
         </Column>
     );
 };
@@ -28,11 +21,13 @@ const ContentContainer = styled.div`
     margin-block: 2rem;
 `;
 
-const PageFooterLinks: React.FC<ParsedLinkButtonsProps> = (props) => {
+const PageFooterLinks: React.FC = () => {
     return (
         <LinkButtonsContainer>
             <hr />
-            <ParsedLinkButtonsA {...props} />
+            <ParsedLinkRow>
+                <MoreLinkButton />
+            </ParsedLinkRow>
         </LinkButtonsContainer>
     );
 };
@@ -52,4 +47,33 @@ const LinkButtonsContainer = styled.div`
     a:hover {
         color: var(--mrmr-color-3);
     }
+`;
+
+const ParsedLinkRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+`;
+
+/** A button that shows a link to the home page. */
+export const MoreLinkButton: React.FC = () => {
+    return (
+        <Link to="/">
+            <IconContainer>
+                <FiList title="More" />
+            </IconContainer>
+        </Link>
+    );
+};
+
+const IconContainer = styled.div`
+    /** Ensure sufficient tap area for mobile devices */
+    min-width: 44px;
+    min-height: 44px;
+
+    /* Show the hand icon on hover */
+    cursor: pointer;
+
+    /* Set the size of the icon */
+    font-size: 1.66rem;
 `;

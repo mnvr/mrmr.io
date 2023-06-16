@@ -1,17 +1,14 @@
 import { ExternalLink } from "components/ExternalLink";
-import { Link } from "gatsby";
-import { ParsedLink, ParsedSlug } from "parsers/links";
+import { ParsedLink } from "parsers/links";
 import * as React from "react";
-import { FaInstagram } from "react-icons/fa";
-import { FiGithub, FiLink, FiList, FiTwitter, FiYoutube } from "react-icons/fi";
+import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FiGithub, FiLink } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
-export interface ParsedLinkButtonsProps {
+export interface ParsedLinkButtonsPropsA {
     /** The links to show */
     links?: ParsedLink[];
-    /** If present, then a link is shown to the home page at the end */
-    moreLink?: ParsedSlug;
 }
 
 /**
@@ -21,16 +18,14 @@ export interface ParsedLinkButtonsProps {
  *
  * Each of these links will open in an new tab. @see {@link ParsedLinkButtonA}.
  */
-export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsProps> = ({
+export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsPropsA> = ({
     links,
-    moreLink,
 }) => {
     return (
         <ParsedLinkRow>
             {links?.map((link) => (
                 <ParsedLinkButtonA key={link.url} link={link} />
             ))}
-            {moreLink && <MoreLinkButtonA {...moreLink} />}
         </ParsedLinkRow>
     );
 };
@@ -38,7 +33,7 @@ export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsProps> = ({
 const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 0.8rem;
+    gap: 0.75rem;
 `;
 
 /**
@@ -60,21 +55,6 @@ export const ParsedLinkButtonA: React.FC<IconProps> = ({ link }) => {
     );
 };
 
-/**
- * A button that shows a link to the home page.
- *
- * @see {@link ParsedLinkButtonsA} for links that are external to the site.
- */
-export const MoreLinkButtonA: React.FC<ParsedSlug> = ({ slug, title }) => {
-    return (
-        <Link to={slug}>
-            <IconContainer>
-                <FiList title={title} />
-            </IconContainer>
-        </Link>
-    );
-};
-
 const IconContainer = styled.div`
     /** Ensure sufficient tap area for mobile devices */
     min-width: 44px;
@@ -92,7 +72,7 @@ const IconContainer = styled.div`
     cursor: pointer;
 
     /* Set the size of the icon */
-    font-size: 2rem;
+    font-size: 1.9rem;
 `;
 
 type IconProps = { link: ParsedLink };
@@ -109,16 +89,11 @@ const KnownLinkIcon: React.FC<IconProps> = ({ link }) => {
 };
 
 const GithubIcon: React.FC<IconProps> = ({ link }) => {
-    // Reduce the size a bit to make it fit better with the rest of the gang.
-    //
-    // Note the use of "em" to scale it relative to the computed font size of
-    // these icons – if we'd used rem it'd have scaled it relative to the root
-    // font size.
-    return <FiGithub size="0.96em" title={link.title} />;
+    return <FiGithub title={link.title} />;
 };
 
 const TwittterIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiTwitter title={link.title} />;
+    return <FaTwitter title={link.title} />;
 };
 
 const InstagramIcon: React.FC<IconProps> = ({ link }) => {
@@ -126,7 +101,7 @@ const InstagramIcon: React.FC<IconProps> = ({ link }) => {
 };
 
 const YouTubeIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiYoutube title={link.title} />;
+    return <FaYoutube title={link.title} />;
 };
 
 const RedditIcon: React.FC<IconProps> = ({ link }) => {
