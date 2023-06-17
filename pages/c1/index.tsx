@@ -1,4 +1,4 @@
-import Sketch from "gatsby/Sketch";
+import Sketch from "p5/Sketch";
 import type p5Types from "p5";
 import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
