@@ -5,6 +5,8 @@ import * as React from "react";
 import styled from "styled-components";
 import { isDevelopment } from "utils/debug";
 
+declare const P5Capture: any;
+
 export const Content: React.FC = () => {
     return (
         <Grid>
@@ -40,6 +42,11 @@ const SketchBox: React.FC = () => {
         "https://cdn.jsdelivr.net/npm/p5.capture@1.4.1/dist/p5.capture.umd.min.js";
     // Easily enable/disable the overlay by toggling this variable.
     const showOverlay = false;
+    // p5.capture needs to be told about the p5 instance, so hold onto the
+    // reference that we get back from p5-react in the setup method.
+    const [p5Instance, setP5Instance] = React.useState<p5Types | undefined>(
+        undefined
+    );
 
     const setup = (p5: p5Types, canvasParentRef: Element) => {
         // Use the `parent` method to ask p5 render to the provided canvas ref
@@ -47,6 +54,7 @@ const SketchBox: React.FC = () => {
         p5.createCanvas(400, 400).parent(canvasParentRef);
         p5.background("lightblue");
         setLoaded(true);
+        setP5Instance(p5);
     };
 
     const draw = (p5: p5Types) => {
@@ -58,7 +66,12 @@ const SketchBox: React.FC = () => {
         <>
             <Sketch {...{ setup, draw }} />;
             {showOverlay && isDevelopment() && loaded && (
-                <Script src={recordingScript} />
+                <Script
+                    src={recordingScript}
+                    onLoad={() =>
+                        (P5Capture as any).getInstance().initialize(p5Instance)
+                    }
+                />
             )}
         </>
     );
