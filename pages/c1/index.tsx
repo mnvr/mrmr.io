@@ -3,6 +3,7 @@ import type p5Types from "p5";
 import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
 import styled from "styled-components";
+import { isDevelopment } from "utils/debug";
 
 export const Content: React.FC = () => {
     return (
@@ -27,6 +28,8 @@ const SketchContainer = styled.div`
     background-color: antiquewhite;
 `;
 
+const enableTestRecording = false;
+
 const SketchBox: React.FC = () => {
     const [recorder, _] = React.useState(new VideoRecorder());
 
@@ -36,13 +39,15 @@ const SketchBox: React.FC = () => {
         p5.createCanvas(400, 400).parent(canvasParentRef);
         p5.background("lightblue");
 
-        setTimeout(() => {
-            recorder.start();
-        }, 5000);
+        if (isDevelopment() && enableTestRecording) {
+            setTimeout(() => {
+                recorder.start();
+            }, 5000);
 
-        setTimeout(() => {
-            recorder.stopAndRedirect();
-        }, 10000);
+            setTimeout(() => {
+                recorder.stopAndSave();
+            }, 10000);
+        }
     };
 
     const draw = (p5: p5Types) => {

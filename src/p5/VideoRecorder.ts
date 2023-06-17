@@ -1,3 +1,4 @@
+import FileSaver from "file-saver";
 import { ensure } from "utils/ensure";
 
 /**
@@ -40,20 +41,20 @@ export class VideoRecorder {
         // BlobEvent, contains the recorded media in its data property
         recorder.ondataavailable = (event) => {
             const blob = event.data;
-            // Obtain the URL to the blob in the browser's memory
-            const blobURL = URL.createObjectURL(blob);
-            // And redirect to it, so that we can save it.
-            globalThis.window.location.replace(blobURL);
+            // Chrome saves it as webm, Safari as MP4. So we need to look at the
+            // MIME type to determine the extension. Use a hacky way to obtain
+            // the extension that works at least for these two types.
+            const ext = recorder.mimeType.split("/")[1];
+            FileSaver.saveAs(blob, `canvas.${ext}`);
         };
 
         recorder.start();
     }
 
     /**
-     * Stop the previously started recording, and redirect to the generated
-     * file (so that we can save it).
+     * Stop the previously started recording, and save it to a file.
      */
-    stopAndRedirect() {
+    stopAndSave() {
         const recorder = ensure(this._recorder);
         this._recorder = undefined;
 
