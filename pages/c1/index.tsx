@@ -1,9 +1,10 @@
-import Sketch from "p5/Sketch";
 import type p5Types from "p5";
+import Sketch from "p5/Sketch";
 import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
 import styled from "styled-components";
 import { isDevelopment } from "utils/debug";
+import { draw, setup } from "./sketch";
 
 export const Content: React.FC = () => {
     return (
@@ -33,7 +34,7 @@ const enableTestRecording = false;
 const SketchBox: React.FC = () => {
     const [recorder, _] = React.useState(new VideoRecorder());
 
-    const setup = (p5: p5Types, canvasParentRef: Element) => {
+    const wrappedSetup = (p5: p5Types, canvasParentRef: Element) => {
         // Use the `parent` method to ask p5 render to the provided canvas ref
         // instead of creating and rendering to a canvas of its own.
         p5.createCanvas(400, 400).parent(canvasParentRef);
@@ -48,12 +49,9 @@ const SketchBox: React.FC = () => {
                 recorder.stopAndSave();
             }, 10000);
         }
+
+        setup(p5);
     };
 
-    const draw = (p5: p5Types) => {
-        p5.ellipse(100, 100, 70, 70);
-        p5.ellipse(110, 100, 70, 70);
-    };
-
-    return <Sketch {...{ setup, draw }} />;
+    return <Sketch setup={wrappedSetup} draw={draw} />;
 };
