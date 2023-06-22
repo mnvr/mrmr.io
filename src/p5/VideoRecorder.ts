@@ -44,7 +44,7 @@ export class VideoRecorder {
             // Chrome saves it as webm, Safari as MP4. So we need to look at the
             // MIME type to determine the extension. Use a hacky way to obtain
             // the extension that works at least for these two types.
-            const ext = recorder.mimeType.split("/")[1];
+            const ext = recorder.mimeType.split("/")[1]?.split(";")[0];
             FileSaver.saveAs(blob, `canvas.${ext}`);
         };
 
