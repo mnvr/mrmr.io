@@ -5,7 +5,8 @@ let gd = 0;
 export const setup = (p5: p5Types) => {};
 
 export const draw = (p5: p5Types) => {
-    p5.background("red");
+    p5.background("lightblue");
+    // p5.stroke("white");
     // p5.noStroke();
     // p5.strokeWeight(1);
     {

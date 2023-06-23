@@ -26,10 +26,14 @@ const enableTestRecording = false;
 const SketchBox: React.FC = () => {
     const [recorder, _] = React.useState(new VideoRecorder());
 
+    const height = 500;
+    const aspectRatio = 9 / 16;
+    const width = height * aspectRatio;
+
     const wrappedSetup = (p5: p5Types, canvasParentRef: Element) => {
         // Use the `parent` method to ask p5 render to the provided canvas ref
         // instead of creating and rendering to a canvas of its own.
-        p5.createCanvas(410, 700).parent(canvasParentRef);
+        p5.createCanvas(width, height).parent(canvasParentRef);
 
         if (isDevelopment() && enableTestRecording) {
             setTimeout(() => {
