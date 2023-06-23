@@ -38,7 +38,6 @@ const SketchBox: React.FC = () => {
         // Use the `parent` method to ask p5 render to the provided canvas ref
         // instead of creating and rendering to a canvas of its own.
         p5.createCanvas(400, 400).parent(canvasParentRef);
-        p5.background("lightblue");
 
         if (isDevelopment() && enableTestRecording) {
             setTimeout(() => {
