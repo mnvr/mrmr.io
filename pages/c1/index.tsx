@@ -1,10 +1,13 @@
 import { PlayButton } from "components/Buttons";
+import { Link } from "gatsby";
 import type p5Types from "p5";
 import Sketch from "p5/Sketch";
 import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
 import styled from "styled-components";
+import { BuildTimePageContext } from "templates/page";
 import { isDevelopment } from "utils/debug";
+import { ensure } from "utils/ensure";
 import { draw, setup } from "./sketch";
 
 export const Content: React.FC = () => {
@@ -14,16 +17,22 @@ export const Content: React.FC = () => {
     };
 
     return (
-        <Grid>
-            <SketchContainer onClick={toggleIsPlaying} isPlaying={isPlaying}>
-                <SketchBox />
-            </SketchContainer>
-            {!isPlaying && (
-                <PlayButtonContainer onClick={toggleIsPlaying}>
-                    <PlayButton />
-                </PlayButtonContainer>
-            )}
-        </Grid>
+        <div>
+            <Grid>
+                <SketchContainer
+                    onClick={toggleIsPlaying}
+                    isPlaying={isPlaying}
+                >
+                    <SketchBox />
+                </SketchContainer>
+                {!isPlaying && (
+                    <PlayButtonContainer onClick={toggleIsPlaying}>
+                        <PlayButton />
+                    </PlayButtonContainer>
+                )}
+            </Grid>
+            <Footer />
+        </div>
     );
 };
 
@@ -106,3 +115,41 @@ const SketchBox: React.FC = () => {
 
     return <Sketch setup={wrappedSetup} draw={draw} />;
 };
+
+const Footer: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { title } = page;
+
+    return (
+        <FooterContainer>
+            <FooterContents>
+                <div>{title}</div>
+                <div>
+                    <small>
+                        by <Link to="/">Manav</Link>
+                    </small>
+                </div>
+            </FooterContents>
+        </FooterContainer>
+    );
+};
+
+const FooterContainer = styled.footer`
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+`;
+
+const FooterContents = styled.div`
+    text-align: center;
+
+    a {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid currentColor;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
+`;
