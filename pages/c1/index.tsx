@@ -51,8 +51,11 @@ const SketchContainer = styled.div<SketchContainerProps>`
         width: 100%;
         height: 100%;
 
-        background-color: rgba(1, 1, 1, 0.01);
-        backdrop-filter: blur(3px);
+        /* Frosted glass effect */
+        backdrop-filter: blur(8px) saturate(100%) contrast(60%) brightness(130%);
+        /* Safari wants its own prefix */
+        -webkit-backdrop-filter: blur(8px) saturate(100%) contrast(60%)
+            brightness(130%);
 
         display: ${(props) => (props.isPlaying ? "none" : "block")};
     }
