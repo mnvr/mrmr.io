@@ -1,3 +1,4 @@
+import { PlayButton } from "components/Buttons";
 import type p5Types from "p5";
 import Sketch from "p5/Sketch";
 import { VideoRecorder } from "p5/VideoRecorder";
@@ -7,21 +8,67 @@ import { isDevelopment } from "utils/debug";
 import { draw, setup } from "./sketch";
 
 export const Content: React.FC = () => {
+    const [isPlaying, setIsPlaying] = React.useState(false);
+    const toggleIsPlaying = () => {
+        setIsPlaying(!isPlaying);
+    };
+
     return (
         <Grid>
-            <SketchBox />
+            <SketchContainer onClick={toggleIsPlaying} isPlaying={isPlaying}>
+                <SketchBox />
+            </SketchContainer>
+            {!isPlaying && (
+                <PlayButtonContainer onClick={toggleIsPlaying}>
+                    <PlayButton />
+                </PlayButtonContainer>
+            )}
         </Grid>
     );
 };
 
 const Grid = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    place-items: center;
     min-height: 100svh;
 `;
 
 const enableTestRecording = false;
+
+interface SketchContainerProps {
+    isPlaying: boolean;
+}
+
+const SketchContainer = styled.div<SketchContainerProps>`
+    position: relative;
+
+    /* Show an overlay on top of the sketch when the user is not playing */
+    &&::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background-color: rgba(1, 1, 1, 0.01);
+        backdrop-filter: blur(3px);
+
+        display: ${(props) => (props.isPlaying ? "none" : "block")};
+    }
+
+    /* Slot both the sketch and the (conditionally displayed) play button in the
+       same grid position so that the play button appears on top (with the
+       overlay behind it) when playback is stopped. */
+    grid-area: 1/-1;
+`;
+
+const PlayButtonContainer = styled.div`
+    grid-area: 1/-1;
+
+    display: grid;
+    z-index: 1;
+`;
 
 const SketchBox: React.FC = () => {
     const [recorder, _] = React.useState(new VideoRecorder());
