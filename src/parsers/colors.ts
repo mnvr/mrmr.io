@@ -1,5 +1,4 @@
 import Color from "colorjs.io";
-
 import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 
@@ -109,4 +108,4 @@ const setAlpha = (c: Color, alpha: number) => {
     const c2 = c.clone();
     c2.alpha = alpha;
     return c2;
-}
+};
