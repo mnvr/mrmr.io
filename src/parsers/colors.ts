@@ -8,6 +8,26 @@ import { ensure } from "utils/ensure";
  * The two important ones are the main background - foreground color pair
  * `backgroundColor1` and `color1`. Rest of them are more like accents with
  * rather specific and arbitrary uses.
+ *
+ * LCH Colors
+ * ----------
+ *
+ * Some notes for specifying specifying LCH colors (taken from
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/lch). LCH colors
+ * can represent the full range of colors that the human eye can see, though
+ * they'll indeed be truncated when displaying on a monitor depending upon what
+ * the monitor / display can support.
+ *
+ * - L (Lightness) is a number between 0 and 100, or a percentage between 0% and
+ *   100% that specifies the CIE lightness where the number 0 corresponds to 0%
+ *   (black) and the number 100 corresponds to 100% (white).
+ *
+ * - C (Chroma) is a number or a percentage where 0% is 0 and 100% is 150. It is
+ *   a measure of the chroma (roughly representing the amount of color"). Its
+ *   minimum useful value is 0, while its maximum is theoretically unbounded
+ *   (but in practice does not exceed 230).
+ *
+ * - H (Hue) is a number or an angle representing the hue angle.
  */
 export interface ColorPalette {
     backgroundColor1: string;
