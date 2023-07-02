@@ -1,4 +1,5 @@
-import tinycolor from "tinycolor2";
+import Color from "colorjs.io";
+
 import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 
@@ -56,14 +57,14 @@ export const parseColorPalette = (
         );
     }
 
-    const backgroundColor1 = tc(all[0]);
-    const color1 = tc(all[1]);
-    const color2 = tc(all[2], color1);
-    const color3 = tc(all[3], color2);
-    const color4 = tc(all[4], color3.clone().setAlpha(0.7));
+    const backgroundColor1 = ensure(c(all[0]));
+    const color1 = ensure(c(all[1]));
+    const color2 = c(all[2]) ?? color1;
+    const color3 = c(all[3]) ?? color2;
+    const color4 = c(all[4]) ?? setAlpha(color3, 0.7);
 
-    const backgroundColor1Transparent = backgroundColor1.clone().setAlpha(0.3);
-    const color1Transparent = color1.clone().setAlpha(0.3);
+    const backgroundColor1Transparent = setAlpha(backgroundColor1, 0.3);
+    const color1Transparent = setAlpha(color1, 0.3);
 
     // Return their string representations.
     return {
@@ -78,16 +79,34 @@ export const parseColorPalette = (
 };
 
 /**
- * Convenience method to construct a tinycolor instance.
+ * Convenience method to construct a Color ("colorjs.io") instance.
  *
- * @param cs Color string, a string specifying a color
- * @param fallback A color to use if `cs` is `undefined`.
+ * @param cs Color string, a string specifying a color.
  *
- * It'll also warn by printing on the console if something seems amiss.
+ * If the color string is invalid, it'll warn by printing on the console and
+ * rethrow the exception.
+ *
+ * If cs is not provided, then this function returns `undefined`.
  */
-const tc = (cs?: string, fallback?: tinycolor.Instance) => {
-    if (!cs) return ensure(fallback);
-    let color = tinycolor(cs);
-    if (!color.isValid()) console.warn("Invalid color string", cs);
-    return color;
+const c = (cs?: string) => {
+    if (!cs) return undefined;
+    try {
+        return new Color(cs);
+    } catch (e) {
+        console.warn(`Failed to parse color string "${cs}"`, e);
+        throw e;
+    }
 };
+
+/**
+ * Convenience method to return a new Color instance with its alpha component
+ * set to the provided value.
+ *
+ * @param c A Color ("colorjs.io") instance
+ * @param alpha The alpha value to use
+ */
+const setAlpha = (c: Color, alpha: number) => {
+    const c2 = c.clone();
+    c2.alpha = alpha;
+    return c2;
+}
