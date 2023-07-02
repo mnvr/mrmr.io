@@ -47,6 +47,7 @@
         "@types/node": "^20.3.2",
         "@types/react": "^18.2.14",
         "@types/react-dom": "^18.2.6",
+        "@types/styled-components": "^5.1.26",
         "gatsby-plugin-root-import": "^2.0.9",
         "patch-package": "^7.0.0",
         "postinstall-postinstall": "^2.1.0",
