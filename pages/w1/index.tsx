@@ -123,7 +123,7 @@ const Footer: React.FC = () => {
     return (
         <FooterContainer>
             <FooterContents>
-                <div>{title}</div>
+                <div><big><b>{title}</b></big></div>
                 <div>
                     <small>
                         <span className="link-prelude">by </span>
