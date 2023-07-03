@@ -126,7 +126,8 @@ const Footer: React.FC = () => {
                 <div>{title}</div>
                 <div>
                     <small>
-                        by <Link to="/">Manav</Link>
+                        <span className="link-prelude">by </span>
+                        <Link to="/">Manav</Link>
                     </small>
                 </div>
             </FooterContents>
@@ -142,6 +143,10 @@ const FooterContainer = styled.footer`
 
 const FooterContents = styled.div`
     text-align: center;
+
+    .link-prelude {
+        opacity: 0.7;
+    }
 
     a {
         text-decoration: none;
