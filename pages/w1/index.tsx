@@ -12,8 +12,72 @@ import { draw, setup } from "./sketch";
 
 export const Content: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
+
+    // Creating the audio context here is permitted – the audio context will
+    // start off in the suspended state, but we'll resume it later on user
+    // interaction (when the user taps the play button).
+    //
+    // However, creating the audio context here (instead of on first user
+    // interaction) causes Chrome to print a spurious warning on the console.
+    // *Shrug*
+    const audioContextRef = React.useRef(new AudioContext());
+
+    // The audio buffer into which our audio file is loaded into.
+    const [audioBuffer, setAudioBuffer] = React.useState<
+        AudioBuffer | undefined
+    >();
+
+    // An AudioNode that is / was playing `audioBuffer`.
+    //
+    // This source audio node will be created on first playback. Subsequent user
+    // toggles will pause / resume the same node.
+    const [audioSourceNode, setAudioSourceNode] = React.useState<
+        AudioBufferSourceNode | undefined
+    >();
+
+    // Load the audio file immediately on page load
+    React.useEffect(() => {
+        // React runs hooks twice during development, so only do the load if it
+        // hasn't already happened.
+        if (!audioBuffer) {
+            const audioContext = audioContextRef.current;
+            createAudioBuffer(audioContext, "/w1.m4a").then((ab) => {
+                setAudioBuffer(ab);
+                console.log("Audio buffer loaded");
+            });
+        }
+    }, []);
+
     const toggleIsPlaying = () => {
+        const audioContext = audioContextRef.current;
+        // Appease the browser's autoplay policy by resuming the audio context
+        // on user interaction.
+        // https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Best_practices
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
+
         setIsPlaying(!isPlaying);
+
+        if (!isPlaying) {
+            // Start playing the audio, if we've managed to load it so far.
+            if (audioBuffer) {
+                // Create an audio source node if we don't already have one.
+                const node =
+                    audioSourceNode ??
+                    createLoopedAudioNode(audioContext, audioBuffer);
+                if (!audioSourceNode) setAudioSourceNode(node);
+
+                // Start or resume playback
+                node.start();
+            } else {
+                // TODO
+                throw "implement loading state";
+            }
+        } else {
+            // Stop playback (if we have a node, that is)
+            audioSourceNode?.stop();
+        }
     };
 
     return (
@@ -123,7 +187,11 @@ const Footer: React.FC = () => {
     return (
         <FooterContainer>
             <FooterContents>
-                <div><big><b>{title}</b></big></div>
+                <div>
+                    <big>
+                        <b>{title}</b>
+                    </big>
+                </div>
                 <div>
                     <small>
                         <span className="link-prelude">by </span>
@@ -158,3 +226,45 @@ const FooterContents = styled.div`
         opacity: 1;
     }
 `;
+
+/**
+ * Fetch and decode an audio file into a AudioBuffer
+ *
+ * @param audioContext The AudioContext` to use for decoding
+ * @param URL The (absolute or relative) URL to the audio file. To reduce
+ * cross-browser codec compatibility concerns, use MP3 files.
+ *
+ * [Source - MDN](
+ * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#dial_up_—_loading_a_sound_sample)
+ */
+const createAudioBuffer = async (audioContext: AudioContext, url: string) => {
+    const response = await fetch(url);
+    const arrayBuffer = await response.arrayBuffer();
+    const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    return audioBuffer;
+};
+
+/**
+ * Create a source node to play an audio buffer in a loop.
+ *
+ * @param audioContext The AudioContext in which to play.
+ * @param audioBuffer The AudioBuffer to play. See `createAudioBuffer` for
+ * instance on how to load a file into a buffer.
+ *
+ * @returns The source AudioNode that will play the buffer. The node will be set
+ * to loop. This source can then be subsequently started / stopped.
+ *
+ * [Source - MDN](
+ * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#dial_up_—_loading_a_sound_sample)
+ */
+const createLoopedAudioNode = (
+    audioContext: AudioContext,
+    audioBuffer: AudioBuffer
+) => {
+    const bufferSource = new AudioBufferSourceNode(audioContext, {
+        buffer: audioBuffer,
+    });
+    bufferSource.connect(audioContext.destination);
+    bufferSource.loop = true;
+    return bufferSource;
+};
