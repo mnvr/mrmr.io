@@ -9,6 +9,11 @@ import { ensure } from "utils/ensure";
  * `backgroundColor1` and `color1`. Rest of them are more like accents with
  * rather specific and arbitrary uses.
  *
+ * Color pickers
+ * -------------
+ *
+ * - https://oklch.com/
+ *
  * LCH Colors
  * ----------
  *
@@ -28,6 +33,65 @@ import { ensure } from "utils/ensure";
  *   (but in practice does not exceed 230).
  *
  * - H (Hue) is a number or an angle representing the hue angle.
+ *
+ * The LCH axes describe the same color space as the LAB axes and has the same L
+ * axis, but uses polar coordinates C (Chroma) and H (Hue) instead of the a/b
+ * axes in LAB.
+ *
+ * OKLCH Colors
+ * ------------
+ *
+ * OKLCH is a tweak on LCH which fixes a bug around a sudden shift in the blue
+ * hue region. In addition, the Chroma axes is specified in a nicer,
+ * semi-normalized fashion. For more details about why OKLCH vs LCH, see
+ * https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl
+ *
+ * - L ((perceived) Lightness) between 0 - 1 (or 0% - 100%)
+ *
+ * - C (Chroma, roughly a measure of "amount of color"). Either a number or
+ *   percentage, where 0 corresponds to 0% and 0.4 corresponds to 100%. Whilst
+ *   theoretically unbounded, in practice it depends on a screen's color gamut
+ *   (P3 colors will have bigger values than sRGB) and each hue has a different
+ *   maximum chroma. For both P3 and sRGB the value will always be below 0.37.
+ *
+ * - H (Hue angle). red / 20, yellow / 90, green / 140, blue / 220, purple / 360
+ *
+ * - Alpha (0-1 or 0-100%) can be specified as oklch(L C H / a). e.g. a
+ *   transparent yellow would be "oklch(80% 0.12 100 / 50%)"
+ *
+ * Gamut correction
+ * ----------------
+ *
+ * (This section taken from
+ * https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl)
+ *
+ * LCH / OKLCH colors are device independent, and are not created just for
+ * current monitors / displays. If the color being specified is "out of gamut"
+ * (the colors supported by the display), browsers will render the closest
+ * possible color. This process – finding the closest color in another gamut -
+ * is called "gamut mapping" or "gamut correction".
+ *
+ * There are 2 ways to gamut map:
+ *
+ * - Convert the color to RGB (or P3) and clip values above 100% or below 0%.
+ *   e.g. rgb(150% -20% 30%) -> rgb(100% 0 30%). This is fast (and what browsers
+ *   use in practice currently), but it can result in a change in the color's
+ *   hue.
+ *
+ * - Convert the color to OKLCH and reduce the chroma and lightness.
+ *
+ * To manually map, we can use a media query
+ *
+ *     .color {
+ *         background: oklch(...);
+ *     }
+ *
+ *     @media (color-gamut: p3) {
+ *         .color {
+ *             background: oklch(...);
+ *         }
+ *     }
+ *
  */
 export interface ColorPalette {
     backgroundColor1: string;
