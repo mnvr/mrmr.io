@@ -20,10 +20,12 @@ export const draw = (p5: p5Types) => {
     }
     {
         const gap = 22 + gd + Math.sin(p5.frameCount / 70) / 2;
-        // p5.translate(p5Types.Vector.fromAngle(p5.frameCount / 1, 4));
-        // p5.translate(p5Types.Vector.fromAngle(p5.PI / 0, 19));
-        // p5.translate(p5.createVector(70.71067811865476, 70.71067811865474, 0));
         for (let i = 0; i < p5.width / gap; i += 1) {
+            p5.stroke(
+                Math.random() > 0.3
+                    ? Math.floor(Math.sin(p5.frameCount / 70) * 5 + 250)
+                    : 255
+            );
             p5.line(2 + i * gap, 0, 2 + i * gap, p5.height);
         }
     }
