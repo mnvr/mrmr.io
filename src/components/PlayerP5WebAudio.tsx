@@ -1,13 +1,10 @@
 import { PlayButton } from "components/Buttons";
+import { LoadingIndicator } from "components/LoadingIndicator";
+import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
-import p5Types from "p5";
-import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
-import Sketch from "p5/Sketch";
 import styled from "styled-components";
 import type { P5Draw } from "types";
-import { isDevelopment } from "utils/debug";
-import { LoadingIndicator } from "./LoadingIndicator";
 
 interface PlayerP5WebAudioProps {
     /**
@@ -37,14 +34,14 @@ interface PlayerP5WebAudioProps {
  */
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
-> = ({ draw, songURL, children }) => {
+> = ({ draw, songURL }) => {
     const [isPlaying, isLoading, toggleShouldPlay] =
         useWebAudioFilePlayback(songURL);
 
     return (
         <Grid>
             <SketchContainer onClick={toggleShouldPlay} isPlaying={isPlaying}>
-                <SketchBox draw={draw} />
+                <ReelSizedP5SketchBox draw={draw} />
             </SketchContainer>
             {!isPlaying && (
                 <PlayButtonContainer onClick={toggleShouldPlay}>
@@ -60,8 +57,6 @@ const Grid = styled.div`
     place-items: center;
     min-height: 100svh;
 `;
-
-const enableTestRecording = false;
 
 interface SketchContainerProps {
     isPlaying: boolean;
@@ -100,39 +95,3 @@ const PlayButtonContainer = styled.div`
     display: grid;
     z-index: 1;
 `;
-
-interface SketchBoxProps {
-    draw: P5Draw;
-}
-
-const SketchBox: React.FC<SketchBoxProps> = ({ draw }) => {
-    const [recorder, _] = React.useState(new VideoRecorder());
-
-    // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
-    // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
-    // that as the height. However, if the window is smaller than that, we limit
-    // to the window's height.
-    const defaultHeight = 640;
-    const aspectRatio = 9 / 16;
-
-    const setup = (p5: p5Types, canvasParentRef: Element) => {
-        const height = Math.min(defaultHeight, p5.windowHeight);
-        const width = height * aspectRatio;
-
-        // Use the `parent` method to ask p5 render to the provided canvas ref
-        // instead of creating and rendering to a canvas of its own.
-        p5.createCanvas(width, height).parent(canvasParentRef);
-
-        if (isDevelopment() && enableTestRecording) {
-            setTimeout(() => {
-                recorder.start();
-            }, 5000);
-
-            setTimeout(() => {
-                recorder.stopAndSave();
-            }, 10000);
-        }
-    };
-
-    return <Sketch setup={setup} draw={draw} />;
-};
