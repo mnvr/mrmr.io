@@ -88,7 +88,17 @@ export const useWebAudioFilePlayback = (
 
     // Load the audio file immediately on page load
     React.useEffect(() => {
-        if (!audioContext) return;
+        // When navigating back to the page from the browser's history, a new
+        // audio context will get created. But this time around, the browser
+        // will not apply the autoplay restrictions since the user had already
+        // initiated playback on that page. So as soon as we'll connect and
+        // start the AudioNodes to the destination, audio will start playing.
+        //
+        // This might be jarring, and unexpected. Thus, force the audio context
+        // to be in a suspended state so that the behaviour of the page is the
+        // same – both on initial load, or on navigating back via the browser's
+        // history.
+        audioContext.suspend();
 
         loadAudioBuffer(audioContext, url)
             .then((ab) => {
@@ -100,7 +110,9 @@ export const useWebAudioFilePlayback = (
             });
 
         return () => {
-            audioContext.close();
+            // Suspend the existing context when navigating away from the page
+            // to stop sounds.
+            audioContext.suspend();
         };
     }, []);
 
@@ -118,9 +130,7 @@ export const useWebAudioFilePlayback = (
         // 2. Thereafter, resuming / suspending the audio context itself is an
         //    easy way to implement play / pause without keeping around extra
         //    state. See the "Pausing WebAudio nodes" comment above.
-        console.log(
-            `toggle shouldPlayNew ${shouldPlayNew} audioContext.state ${audioContext.state}`
-        );
+
         if (shouldPlayNew) {
             audioContext.resume();
         } else {

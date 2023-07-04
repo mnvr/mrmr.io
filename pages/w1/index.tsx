@@ -10,9 +10,9 @@ export const Content: React.FC = () => {
     const { mp3s } = page;
 
     return (
-        <>
+        <div>
             <PlayerP5WebAudio draw={draw} songURL={ensure(mp3s["w1"])} />
             <FooterA />
-        </>
+        </div>
     );
 };
