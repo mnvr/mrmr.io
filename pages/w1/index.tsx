@@ -31,10 +31,12 @@ export const Content: React.FC = () => {
         AudioBuffer | undefined
     >();
 
-    // An AudioNode that is / was playing `audioBuffer`.
+    // An AudioNode that is currently playing `audioBuffer`.
     //
-    // This source audio node will be created on first load. Subsequent user
-    // toggles will pause / resume the same node.
+    // WebAudio nodes cannot be started / stopped more than once. So instead we
+    // create a source audio node right at the time of playback, and disconnect
+    // (and destroy) it when the user pauses. Subsequent playback will create a
+    // new node.
     const [audioSourceNode, setAudioSourceNode] = React.useState<
         AudioBufferSourceNode | undefined
     >();
@@ -52,9 +54,6 @@ export const Content: React.FC = () => {
             .then((ab) => {
                 setAudioBuffer(ab);
                 console.log("Audio buffer loaded");
-
-                // Create an audio source node from the buffer.
-                setAudioSourceNode(createLoopedAudioNode(audioContext, ab));
             })
             .catch((e) => {
                 console.warn(e);
@@ -73,17 +72,29 @@ export const Content: React.FC = () => {
         setShouldPlay(!shouldPlay);
     };
 
-    // Start or stop audio depending on the user's actions and the audio
-    // buffer's loaded status.
+    // Start or stop audio depending on (a) user's actions and (b) whether or
+    // not the audio buffer's has been loaded.
     React.useEffect(() => {
-        if (shouldPlay) {
-            // Start playing the audio, if we've managed to load it so far.
-            audioSourceNode?.start();
-        } else {
-            // Stop playback (if we have a node, that is)
-            audioSourceNode?.stop();
+        if (!audioBuffer) {
+            // Ignore user actions until the buffer has loaded. The effect will
+            // be evaluated again when audioBuffer has loaded, at which time
+            // we'll put the user's demands into action.
+            return;
         }
-    }, [shouldPlay, audioSourceNode]);
+
+        const audioContext = audioContextRef.current;
+        if (shouldPlay) {
+            console.assert(!audioSourceNode);
+            // Create an audio source node from the buffer.
+            const node = createLoopedAudioNode(audioContext, audioBuffer);
+            setAudioSourceNode(node);
+            // And start playing it
+            node.start();
+        } else {
+            ensure(audioSourceNode).stop();
+            setAudioSourceNode(undefined);
+        }
+    }, [shouldPlay, audioBuffer]);
 
     const isPlaying = shouldPlay && !!audioBuffer;
     const isLoading = shouldPlay && !audioBuffer;
