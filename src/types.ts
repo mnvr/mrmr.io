@@ -1,5 +1,6 @@
 import { Pattern } from "@strudel.cycles/core";
 import HydraRenderer, { type HydraSynth } from "hydra-synth";
+import type p5Types from "p5";
 
 /**
  * A function that renders a Hydra visualization
@@ -19,3 +20,8 @@ export interface HydraVisProps {
  * JavaScript port, Strudel).
  */
 export type TidalSong = () => Pattern;
+
+/**
+ * A function that renders a P5 visualization
+ */
+export type P5Draw = (p5: p5Types) => void;

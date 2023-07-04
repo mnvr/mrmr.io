@@ -1,5 +1,5 @@
 import { Column } from "components/Column";
-import { PlayerA } from "components/PlayerA";
+import { PlayerHydraStrudel } from "components/PlayerHydraStrudel";
 import { Link } from "gatsby";
 import * as React from "react";
 import { RxSlash } from "react-icons/rx";
@@ -10,9 +10,9 @@ import { vis } from "./vis";
 export const Content: React.FC = () => {
     return (
         <>
-            <PlayerA vis={vis} song={song}>
+            <PlayerHydraStrudel vis={vis} song={song}>
                 <Heading />
-            </PlayerA>
+            </PlayerHydraStrudel>
             <Text />
             <Footer />
         </>

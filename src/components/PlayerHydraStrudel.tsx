@@ -5,10 +5,10 @@ import * as React from "react";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
 
-interface PlayerProps {
-    /** The visualization to render */
+interface PlayerHydraStrudelProps {
+    /** The Hydra visualization to render */
     vis: HydraVis;
-    /** The song to play */
+    /** The Strudel (Tidal) song to play */
     song: TidalSong;
 }
 
@@ -19,11 +19,9 @@ interface PlayerProps {
  * the title section (specified as `children`) and an HTML canvas rendering the
  * visuals.
  */
-export const PlayerA: React.FC<React.PropsWithChildren<PlayerProps>> = ({
-    vis,
-    song,
-    children,
-}) => {
+export const PlayerHydraStrudel: React.FC<
+    React.PropsWithChildren<PlayerHydraStrudelProps>
+> = ({ vis, song, children }) => {
     const [isPlaying, toggleIsPlaying, wasPlayingOnce] =
         useStrudelPlayback(song);
 

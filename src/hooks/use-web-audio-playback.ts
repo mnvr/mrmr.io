@@ -119,6 +119,9 @@ export const useWebAudioFilePlayback = (
         //    easy way to implement play / pause without keeping around extra
         //    state. See the "Pausing WebAudio nodes" comment above.
         const audioContext = audioContextRef.current;
+        console.log(
+            `toggle shouldPlayNew ${shouldPlayNew} audioContext.state ${audioContext.state}`
+        );
         if (shouldPlayNew) {
             audioContext.resume();
         } else {

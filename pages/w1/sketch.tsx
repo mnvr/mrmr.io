@@ -1,7 +1,5 @@
 import p5Types from "p5";
 
-export const setup = (p5: p5Types) => {};
-
 export const draw = (p5: p5Types) => {
     // Using clear instead background here because clear clears out the canvas
     // to a transparent background. This way, we do not need to specify the
