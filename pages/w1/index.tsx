@@ -261,6 +261,29 @@ const FooterContents = styled.div`
  *
  * [Source - MDN](
  * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#dial_up_—_loading_a_sound_sample)
+ *
+ * Audio Codec
+ * -----------
+ *
+ * tl;dr; use MP3
+ * https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Audio_codecs
+ *
+ * Audio files can be converted to MP3 with the following FFMPEG incantation
+ *
+ *     ffmpeg -i in.m4a -c:a libmp3lame -q:a 2 out.mp3
+ *
+ * where:
+ *
+ * - "-c:a libmp3lame" is short for "-codec[:stream specifier] codec". This
+ *   option selects an encoder (when used before an output file) or a decoder
+ *   (wher used before an input file) for one or more streams.
+ *
+ * - "-q:a 2" is short for "-qscale[:stream specifier] q". This option tells
+ *   FFMPEG to use a fixed quality scale (VBR). The meaning of q/qscale is
+ *   codec-dependent. For LAME, lower numbers mean higher quality. 4 is the
+ *   default. 0-3 should be transparent. We use 2, as recommended on the FFMPEG
+ *   wiki (https://trac.ffmpeg.org/wiki/Encode/MP3), which gives an average
+ *   190kbit/s VBR stream.
  */
 const createAudioBuffer = async (audioContext: AudioContext, url: string) => {
     const response = await fetch(url);
