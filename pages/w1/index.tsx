@@ -12,7 +12,10 @@ import { ensure } from "utils/ensure";
 import { draw, setup } from "./sketch";
 
 export const Content: React.FC = () => {
-    const [isPlaying, setIsPlaying] = React.useState(false);
+    // Track the user's intent (whether or not they've pressed the play button).
+    // Whether or not we're actually playing right now (`isPlaying` below)
+    // depends on if the audio buffer has been loaded.
+    const [shouldPlay, setShouldPlay] = React.useState(false);
 
     // Creating the audio context here is permitted – the audio context will
     // start off in the suspended state, but we'll resume it later on user
@@ -42,19 +45,18 @@ export const Content: React.FC = () => {
         // hasn't already happened.
         if (!audioBuffer) {
             const audioContext = audioContextRef.current;
-            createAudioBuffer(audioContext, "/w1.m4a").then((ab) => {
-                setAudioBuffer(ab);
-                console.log("Audio buffer loaded");
-            });
+            createAudioBuffer(audioContext, "/w1-.m4a")
+                .then((ab) => {
+                    setAudioBuffer(ab);
+                    console.log("Audio buffer loaded");
+                })
+                .catch((e) => {
+                    console.warn(e);
+                });
         }
     }, []);
 
-    const toggleIsPlaying = () => {
-        if (isPlaying && !audioBuffer) {
-            // Still loading, ignore the tap
-            return;
-        }
-
+    const toggleShouldPlay = () => {
         const audioContext = audioContextRef.current;
         // Appease the browser's autoplay policy by resuming the audio context
         // on user interaction.
@@ -63,9 +65,10 @@ export const Content: React.FC = () => {
             audioContext.resume();
         }
 
-        setIsPlaying(!isPlaying);
+        const shouldPlayNow = !shouldPlay;
+        setShouldPlay(shouldPlayNow);
 
-        if (!isPlaying) {
+        if (shouldPlayNow) {
             // Start playing the audio, if we've managed to load it so far.
             if (audioBuffer) {
                 // Create an audio source node if we don't already have one.
@@ -77,7 +80,8 @@ export const Content: React.FC = () => {
                 // Start or resume playback
                 node.start();
             } else {
-                // Still loading
+                // Still loading, ignore the tap, playback will
+                // start once audioBuffer is loaded and set.
             }
         } else {
             // Stop playback (if we have a node, that is)
@@ -85,19 +89,20 @@ export const Content: React.FC = () => {
         }
     };
 
-    const isLoading = isPlaying && !audioBuffer;
+    const isPlaying = shouldPlay && !!audioBuffer;
+    const isLoading = shouldPlay && !audioBuffer;
 
     return (
         <div>
             <Grid>
                 <SketchContainer
-                    onClick={toggleIsPlaying}
+                    onClick={toggleShouldPlay}
                     isPlaying={isPlaying}
                 >
                     <SketchBox />
                 </SketchContainer>
                 {!isPlaying && (
-                    <PlayButtonContainer onClick={toggleIsPlaying}>
+                    <PlayButtonContainer onClick={toggleShouldPlay}>
                         {isLoading ? <LoadingIndicator /> : <PlayButton />}
                     </PlayButtonContainer>
                 )}
