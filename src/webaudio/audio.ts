@@ -30,6 +30,14 @@
  *   default. 0-3 should be transparent. We use 2, as recommended on the FFMPEG
  *   wiki (https://trac.ffmpeg.org/wiki/Encode/MP3), which gives an average
  *   190kbit/s VBR stream.
+ *
+ * Note that exporting directly to MP3 from GarageBand causes GarageBand to
+ * insert a bit of silence at the end, causing the file to stop perfectly
+ * looping. The workaround is to export to an uncompressed wav.
+ *
+ * This way though, the ID3 tags are lost. We will need to ask FFMPEG to add
+ * them again when converting the WAV to MP3 by using the `-metadata artist=""
+ * and `-metadata album=""`.
  */
 export const loadAudioBuffer = async (
     audioContext: AudioContext,
