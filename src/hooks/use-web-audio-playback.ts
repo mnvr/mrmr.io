@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ensure } from "utils/ensure";
 import { loadAudioBuffer, loopAudioBuffer } from "webaudio/audio";
 
 type UseWebAudioPlaybackReturn = [
@@ -49,8 +50,17 @@ export const useWebAudioFilePlayback = (
     //
     // However, creating the audio context here (instead of on first user
     // interaction) causes Chrome to print a spurious warning on the console.
-    // *Shrug*
-    const [audioContext, _] = React.useState(new AudioContext());
+    //
+    // But we do need the audio context to decode the audio buffer, so we cannot
+    // delay creating it until the first user interaction.
+    //
+    // So why not create it here? Because of SSR – when Gatsby pre-builds the
+    // static HTML, the window object is not available. So this property needs
+    // to start off as `undefined`, but we create it immediately on page load,
+    // in the useEffect below.
+    const [audioContext, setAudioContext] = React.useState<
+        AudioContext | undefined
+    >();
 
     // The audio buffer into which our audio file is loaded into.
     //
@@ -88,6 +98,12 @@ export const useWebAudioFilePlayback = (
 
     // Load the audio file immediately on page load
     React.useEffect(() => {
+        // Create an audio context when the useEffect first runs. We cannot do
+        // it when creating the useState because the window object is not
+        // present during SSR.
+        const ac = audioContext ?? new AudioContext();
+        if (!audioContext) setAudioContext(ac);
+
         // When navigating back to the page from the browser's history, a new
         // audio context will get created. But this time around, the browser
         // will not apply the autoplay restrictions since the user had already
@@ -98,12 +114,12 @@ export const useWebAudioFilePlayback = (
         // to be in a suspended state so that the behaviour of the page is the
         // same – both on initial load, or on navigating back via the browser's
         // history.
-        audioContext.suspend();
+        ac.suspend();
 
-        loadAudioBuffer(audioContext, url)
+        loadAudioBuffer(ac, url)
             .then((ab) => {
                 setAudioBuffer(ab);
-                loopAudioBuffer(audioContext, ab);
+                loopAudioBuffer(ac, ab);
             })
             .catch((e) => {
                 console.warn(e);
@@ -112,12 +128,13 @@ export const useWebAudioFilePlayback = (
         return () => {
             // Suspend the existing context when navigating away from the page
             // to stop sounds.
-            audioContext.suspend();
+            ac.suspend();
         };
     }, []);
 
     const toggleShouldPlay = () => {
         const shouldPlayNew = !shouldPlay;
+        const ac = ensure(audioContext);
 
         // Play / pause is implemented by resuming or suspending the audio
         // context itself. This achieves two ends:
@@ -132,9 +149,9 @@ export const useWebAudioFilePlayback = (
         //    state. See the "Pausing WebAudio nodes" comment above.
 
         if (shouldPlayNew) {
-            audioContext.resume();
+            ac.resume();
         } else {
-            audioContext.suspend();
+            ac.suspend();
         }
 
         setShouldPlay(shouldPlayNew);

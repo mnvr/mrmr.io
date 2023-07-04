@@ -3,7 +3,7 @@ import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
 import p5Types from "p5";
 import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
-import Sketch from "react-p5";
+import Sketch from "p5/Sketch";
 import styled from "styled-components";
 import type { P5Draw } from "types";
 import { isDevelopment } from "utils/debug";
