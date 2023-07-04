@@ -1,4 +1,5 @@
 import { PlayButton } from "components/Buttons";
+import { LoadingIndicator } from "components/LoadingIndicator";
 import { Link } from "gatsby";
 import type p5Types from "p5";
 import Sketch from "p5/Sketch";
@@ -9,7 +10,6 @@ import { BuildTimePageContext } from "templates/page";
 import { isDevelopment } from "utils/debug";
 import { ensure } from "utils/ensure";
 import { draw, setup } from "./sketch";
-import { LoadingIndicator } from "components/LoadingIndicator";
 
 export const Content: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -50,6 +50,11 @@ export const Content: React.FC = () => {
     }, []);
 
     const toggleIsPlaying = () => {
+        if (isPlaying && !audioBuffer) {
+            // Still loading, ignore the tap
+            return;
+        }
+
         const audioContext = audioContextRef.current;
         // Appease the browser's autoplay policy by resuming the audio context
         // on user interaction.
@@ -72,14 +77,15 @@ export const Content: React.FC = () => {
                 // Start or resume playback
                 node.start();
             } else {
-                // TODO
-                throw "implement loading state";
+                // Still loading
             }
         } else {
             // Stop playback (if we have a node, that is)
             audioSourceNode?.stop();
         }
     };
+
+    const isLoading = isPlaying && !audioBuffer;
 
     return (
         <div>
@@ -92,8 +98,7 @@ export const Content: React.FC = () => {
                 </SketchContainer>
                 {!isPlaying && (
                     <PlayButtonContainer onClick={toggleIsPlaying}>
-                        {/* <PlayButton /> */}
-                        <LoadingIndicator />
+                        {isLoading ? <LoadingIndicator /> : <PlayButton />}
                     </PlayButtonContainer>
                 )}
             </Grid>
