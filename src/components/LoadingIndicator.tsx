@@ -7,11 +7,11 @@ export const LoadingIndicator = styled.div`
 
     /* Give it a thick rounded border, except at the bottom */
     border-radius: 50%;
-    border: 5px white solid;
-    border-bottom: 5px transparent solid;
+    border: 3px white dotted;
+    border-bottom: 3px transparent dotted;
 
     /* Rotate it, at 1 revolutions per second */
-    animation: rotate 1s linear infinite;
+    animation: rotate 1s ease-out infinite;
 
     @keyframes rotate {
         from {
