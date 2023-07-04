@@ -50,7 +50,7 @@ export const useWebAudioFilePlayback = (
     // However, creating the audio context here (instead of on first user
     // interaction) causes Chrome to print a spurious warning on the console.
     // *Shrug*
-    const audioContextRef = React.useRef(new AudioContext());
+    const [audioContext, _] = React.useState(new AudioContext());
 
     // The audio buffer into which our audio file is loaded into.
     //
@@ -88,20 +88,20 @@ export const useWebAudioFilePlayback = (
 
     // Load the audio file immediately on page load
     React.useEffect(() => {
-        // React runs hooks twice during development, so only do the load if it
-        // hasn't already happened.
-        if (audioBuffer) {
-            return;
-        }
+        if (!audioContext) return;
 
-        loadAudioBuffer(audioContextRef.current, url)
+        loadAudioBuffer(audioContext, url)
             .then((ab) => {
                 setAudioBuffer(ab);
-                loopAudioBuffer(audioContextRef.current, ab);
+                loopAudioBuffer(audioContext, ab);
             })
             .catch((e) => {
                 console.warn(e);
             });
+
+        return () => {
+            audioContext.close();
+        };
     }, []);
 
     const toggleShouldPlay = () => {
@@ -118,7 +118,6 @@ export const useWebAudioFilePlayback = (
         // 2. Thereafter, resuming / suspending the audio context itself is an
         //    easy way to implement play / pause without keeping around extra
         //    state. See the "Pausing WebAudio nodes" comment above.
-        const audioContext = audioContextRef.current;
         console.log(
             `toggle shouldPlayNew ${shouldPlayNew} audioContext.state ${audioContext.state}`
         );
