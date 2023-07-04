@@ -33,7 +33,7 @@ export const Content: React.FC = () => {
 
     // An AudioNode that is / was playing `audioBuffer`.
     //
-    // This source audio node will be created on first playback. Subsequent user
+    // This source audio node will be created on first load. Subsequent user
     // toggles will pause / resume the same node.
     const [audioSourceNode, setAudioSourceNode] = React.useState<
         AudioBufferSourceNode | undefined
@@ -43,17 +43,22 @@ export const Content: React.FC = () => {
     React.useEffect(() => {
         // React runs hooks twice during development, so only do the load if it
         // hasn't already happened.
-        if (!audioBuffer) {
-            const audioContext = audioContextRef.current;
-            createAudioBuffer(audioContext, "/w1-.m4a")
-                .then((ab) => {
-                    setAudioBuffer(ab);
-                    console.log("Audio buffer loaded");
-                })
-                .catch((e) => {
-                    console.warn(e);
-                });
+        if (audioBuffer) {
+            return;
         }
+
+        const audioContext = audioContextRef.current;
+        createAudioBuffer(audioContext, "/w1.m4a")
+            .then((ab) => {
+                setAudioBuffer(ab);
+                console.log("Audio buffer loaded");
+
+                // Create an audio source node from the buffer.
+                setAudioSourceNode(createLoopedAudioNode(audioContext, ab));
+            })
+            .catch((e) => {
+                console.warn(e);
+            });
     }, []);
 
     const toggleShouldPlay = () => {
@@ -65,29 +70,20 @@ export const Content: React.FC = () => {
             audioContext.resume();
         }
 
-        const shouldPlayNow = !shouldPlay;
-        setShouldPlay(shouldPlayNow);
+        setShouldPlay(!shouldPlay);
+    };
 
-        if (shouldPlayNow) {
+    // Start or stop audio depending on the user's actions and the audio
+    // buffer's loaded status.
+    React.useEffect(() => {
+        if (shouldPlay) {
             // Start playing the audio, if we've managed to load it so far.
-            if (audioBuffer) {
-                // Create an audio source node if we don't already have one.
-                const node =
-                    audioSourceNode ??
-                    createLoopedAudioNode(audioContext, audioBuffer);
-                if (!audioSourceNode) setAudioSourceNode(node);
-
-                // Start or resume playback
-                node.start();
-            } else {
-                // Still loading, ignore the tap, playback will
-                // start once audioBuffer is loaded and set.
-            }
+            audioSourceNode?.start();
         } else {
             // Stop playback (if we have a node, that is)
             audioSourceNode?.stop();
         }
-    };
+    }, [shouldPlay, audioSourceNode]);
 
     const isPlaying = shouldPlay && !!audioBuffer;
     const isLoading = shouldPlay && !audioBuffer;
@@ -250,6 +246,7 @@ const FooterContents = styled.div`
  * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#dial_up_—_loading_a_sound_sample)
  */
 const createAudioBuffer = async (audioContext: AudioContext, url: string) => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
