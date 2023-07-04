@@ -9,6 +9,7 @@ import { BuildTimePageContext } from "templates/page";
 import { isDevelopment } from "utils/debug";
 import { ensure } from "utils/ensure";
 import { draw, setup } from "./sketch";
+import { LoadingIndicator } from "components/LoadingIndicator";
 
 export const Content: React.FC = () => {
     const [isPlaying, setIsPlaying] = React.useState(false);
@@ -91,7 +92,8 @@ export const Content: React.FC = () => {
                 </SketchContainer>
                 {!isPlaying && (
                     <PlayButtonContainer onClick={toggleIsPlaying}>
-                        <PlayButton />
+                        {/* <PlayButton /> */}
+                        <LoadingIndicator />
                     </PlayButtonContainer>
                 )}
             </Grid>
