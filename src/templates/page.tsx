@@ -72,6 +72,18 @@ export const query = graphql`
                 }
             }
         }
+        mp3s: allFile(
+            filter: {
+                sourceInstanceName: { eq: "pages" },
+                relativeDirectory: { eq: $relativeDirectory }
+                ext: { eq: ".mp3" }
+            }
+        ) {
+            nodes {
+                name
+                publicURL
+            }
+        }
         mdx(id: { eq: $pageID }) {
             frontmatter {
                 title
@@ -116,10 +128,17 @@ export interface Page {
      * https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-plugin-image/#helper-functions
      */
     images: Record<string, ImageDataLike>;
+    /**
+     * Public URLs for MP3 files stored in the same directory as the page
+     *
+     * These are indexed by the name of the file; precisely, the filename
+     * without the extension. e.g. the file name will be "w1" for "w1.mp3".
+     */
+    mp3s: Record<string, string>;
 }
 
 const parsePage = (data: Queries.PageTemplateQuery): Page => {
-    const { mdx, images } = replaceNullsWithUndefineds(data);
+    const { mdx, images, mp3s } = replaceNullsWithUndefineds(data);
 
     const title = ensure(mdx?.frontmatter?.title);
     const layout = mdx?.frontmatter?.layout;
@@ -147,6 +166,14 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         pageImages[node.name] = node;
     });
 
+    // Get at the publicURLs for all the MP3 files that are stored in the same
+    // directory as the page that we're rendering. Put them in a map, indexed by
+    // the name of the file (without the extension).
+    const pageMP3s: Record<string, string> = {};
+    mp3s.nodes.forEach((node) => {
+        pageMP3s[node.name] = ensure(node.publicURL);
+    });
+
     return {
         slug,
         title,
@@ -157,6 +184,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         colors,
         darkColors,
         images: pageImages,
+        mp3s: pageMP3s,
     };
 };
 
