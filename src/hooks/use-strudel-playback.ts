@@ -6,7 +6,7 @@ import { connectWebAudio } from "strudel/webaudio";
 import { TidalSong } from "types";
 import { ensure } from "utils/ensure";
 
-type UsePlaybackReturn = [
+type UseStrudelPlaybackReturn = [
     /** If playback is currently active */
     isPlaying: boolean,
     /** Toggle playback */
@@ -24,10 +24,12 @@ type UsePlaybackReturn = [
  *
  * @param song The {@link TidalSong} to play.
  *
- * @returns A {@link UsePlaybackReturn} `[isPlaying, toggleIsPlaying,
+ * @returns A {@link UseStrudelPlaybackReturn} `[isPlaying, toggleIsPlaying,
  * wasPlayingOnce]`
  */
-export const usePlayback = (song: TidalSong): UsePlaybackReturn => {
+export const useStrudelPlayback = (
+    song: TidalSong
+): UseStrudelPlaybackReturn => {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const schedulerRef = React.useRef<Scheduler | null>(null);
 

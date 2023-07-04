@@ -1,6 +1,6 @@
 import { PlayButton } from "components/Buttons";
 import { HydraCanvas } from "components/HydraCanvas";
-import { usePlayback } from "hooks/use-playback";
+import { useStrudelPlayback } from "hooks/use-strudel-playback";
 import * as React from "react";
 import styled from "styled-components";
 import type { HydraVis, TidalSong } from "types";
@@ -24,7 +24,8 @@ export const PlayerA: React.FC<React.PropsWithChildren<PlayerProps>> = ({
     song,
     children,
 }) => {
-    const [isPlaying, toggleIsPlaying, wasPlayingOnce] = usePlayback(song);
+    const [isPlaying, toggleIsPlaying, wasPlayingOnce] =
+        useStrudelPlayback(song);
 
     return (
         <Container>
