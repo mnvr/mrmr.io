@@ -263,7 +263,6 @@ const FooterContents = styled.div`
  * https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques#dial_up_—_loading_a_sound_sample)
  */
 const createAudioBuffer = async (audioContext: AudioContext, url: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
     const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
