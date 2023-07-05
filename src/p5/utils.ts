@@ -1,5 +1,5 @@
 import p5Types from "p5";
-import { color, setAlpha } from "utils/colorsjs";
+import { color, p5c, setAlpha } from "utils/colorsjs";
 
 interface GridOpts {
     gap?: number;
@@ -19,12 +19,7 @@ export const pointGrid = (p5: p5Types, o = {} as GridOpts) => {
 
     // If a color is provided, use a transparent version of it. Otherwise use
     // the default "blue" (that goes well with the gray of the lines).
-    //
-    // Output in hex, otherwise p5js gets confused with the new CSS 4 RGB format
-    // that is the default for colorjs toString.
-    const sc = o.stroke
-        ? setAlpha(color(o.stroke), 0.5).toString({ format: "hex" })
-        : "blue";
+    const sc = o.stroke ? p5c(setAlpha(color(o.stroke), 0.5)) : "blue";
 
     // The stroke controls the color and size of the point
     p5.stroke(sc);
@@ -43,9 +38,7 @@ export const lineGrid = (p5: p5Types, o = {} as GridOpts) => {
     // Use a transparent stroke that goes well with the (opaquer) stroke used in
     // the point grid. Otherwise use the default gray that also goes well with
     // the default blue of the point grid.
-    const sc = o.stroke
-        ? setAlpha(color(o.stroke), 0.1).toString({ format: "hex" })
-        : "lightgray";
+    const sc = o.stroke ? p5c(setAlpha(color(o.stroke), 0.1)) : "lightgray";
 
     // The stroke controls the color and thickness of the line
     p5.stroke(sc);
