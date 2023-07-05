@@ -10,25 +10,39 @@ export const draw = (p5: p5Types) => {
 
     grid(p5, { stroke: "#ed033f" });
 
-    p5.rectMode(p5.CENTER);
+    gridDots(p5);
+    gridCircles(p5);
+};
 
-    p5.rotate(p5.PI / 4);
-
-    p5.fill("#ed033f");
-    p5.strokeWeight(0);
-    // p5.stroke(33);
-    p5.circle(100, 100, 133);
-
-    p5.fill("#f3ae58");
-    p5.rect(100, 100, 70, 70);
-
-    p5.fill("#ed033f");
-    p5.strokeWeight(0);
-    // p5.stroke(33);
-    p5.circle(100, 100, 30);
-
-    p5.noFill();
+const gridDots = (p5: p5Types) => {
+    // The stroke controls the color and size of the point
     p5.stroke("#ed033f");
-    p5.strokeWeight(1);
-    p5.arc(0, 0, 100, 100, 0, 4);
+    p5.strokeWeight(8);
+
+    const gap = 40;
+    for (let y = gap; y < p5.height; y += gap) {
+        for (let x = gap; x < p5.width; x += gap) {
+            p5.point(x, y);
+        }
+    }
+};
+
+const gridCircles = (p5: p5Types) => {
+    // The stroke controls the color and thickness of the border
+    p5.stroke("#ed033f");
+    p5.strokeWeight(4);
+
+    // The circle itself is filled with the fill color
+    p5.noFill();
+
+    const gap = 40;
+    const offset = 20;
+    for (let y = gap + offset; y < p5.height - offset; y += gap) {
+        for (let x = gap + offset; x < p5.width - offset; x += gap) {
+            const yi = y / gap;
+            const xi = x / gap;
+
+            p5.circle(x, y, 12);
+        }
+    }
 };
