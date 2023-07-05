@@ -1,5 +1,5 @@
-import Color from "colorjs.io";
 import { isDefined } from "utils/array";
+import { color, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 /**
@@ -140,6 +140,9 @@ export const parseColorPalette = (
         );
     }
 
+    // A temporary alias
+    const c = (cs?: string) => (cs ? color(cs) : undefined);
+
     const backgroundColor1 = ensure(c(all[0]));
     const color1 = ensure(c(all[1]));
     const color2 = c(all[2]) ?? color1;
@@ -159,37 +162,4 @@ export const parseColorPalette = (
         backgroundColor1Transparent: backgroundColor1Transparent.toString(),
         color1Transparent: color1Transparent.toString(),
     };
-};
-
-/**
- * Convenience method to construct a Color ("colorjs.io") instance.
- *
- * @param cs Color string, a string specifying a color.
- *
- * If the color string is invalid, it'll warn by printing on the console and
- * rethrow the exception.
- *
- * If cs is not provided, then this function returns `undefined`.
- */
-const c = (cs?: string) => {
-    if (!cs) return undefined;
-    try {
-        return new Color(cs);
-    } catch (e) {
-        console.warn(`Failed to parse color string "${cs}"`, e);
-        throw e;
-    }
-};
-
-/**
- * Convenience method to return a new Color instance with its alpha component
- * set to the provided value.
- *
- * @param c A Color ("colorjs.io") instance
- * @param alpha The alpha value to use
- */
-const setAlpha = (c: Color, alpha: number) => {
-    const c2 = c.clone();
-    c2.alpha = alpha;
-    return c2;
 };

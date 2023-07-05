@@ -8,7 +8,7 @@ export const draw = (p5: p5Types) => {
     // specified e.g. using OKLCH.
     p5.clear();
 
-    grid(p5);
+    grid(p5, { stroke: "#ed033f" });
 
     p5.rectMode(p5.CENTER);
 

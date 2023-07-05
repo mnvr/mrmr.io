@@ -1,18 +1,33 @@
 import p5Types from "p5";
+import { color, setAlpha } from "utils/colorsjs";
+
+interface GridOpts {
+    gap?: number;
+    stroke?: string;
+}
 
 /** Draw a grid onto the canvas */
-export const grid = (p5: p5Types) => {
-    const gap = 20;
-
+export const grid = (p5: p5Types, o = {} as GridOpts) => {
     p5.push();
-    lineGrid(p5, gap);
-    pointGrid(p5, gap);
+    lineGrid(p5, o);
+    pointGrid(p5, o);
     p5.pop();
 };
 
-export const pointGrid = (p5: p5Types, gap: number) => {
+export const pointGrid = (p5: p5Types, o = {} as GridOpts) => {
+    const gap = o.gap ?? 20;
+
+    // If a color is provided, use a transparent version of it. Otherwise use
+    // the default "blue" (that goes well with the gray of the lines).
+    //
+    // Output in hex, otherwise p5js gets confused with the new CSS 4 RGB format
+    // that is the default for colorjs toString.
+    const sc = o.stroke
+        ? setAlpha(color(o.stroke), 0.5).toString({ format: "hex" })
+        : "blue";
+
     // The stroke controls the color and size of the point
-    p5.stroke("blue");
+    p5.stroke(sc);
     p5.strokeWeight(2);
 
     for (let y = gap; y < p5.height; y += gap) {
@@ -22,9 +37,18 @@ export const pointGrid = (p5: p5Types, gap: number) => {
     }
 };
 
-export const lineGrid = (p5: p5Types, gap: number) => {
+export const lineGrid = (p5: p5Types, o = {} as GridOpts) => {
+    const gap = o.gap ?? 20;
+
+    // Use a transparent stroke that goes well with the (opaquer) stroke used in
+    // the point grid. Otherwise use the default gray that also goes well with
+    // the default blue of the point grid.
+    const sc = o.stroke
+        ? setAlpha(color(o.stroke), 0.1).toString({ format: "hex" })
+        : "lightgray";
+
     // The stroke controls the color and thickness of the line
-    p5.stroke("lightgray");
+    p5.stroke(sc);
     p5.strokeWeight(1);
 
     for (let y = gap; y < p5.height; y += gap) {
