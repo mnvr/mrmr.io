@@ -89,7 +89,38 @@ const curvedStar = (
     p5.point(0, 0);
     p5.point(0, -h / 2);
     p5.point(w / 2, 0);
-    p5.bezier(0, -h / 2, 0, 0, 0, 0, w / 2, 0);
+    // p5.bezier(0, -h / 2, 0, 0, 0, 0, w / 2, 0);
+
+    const gz = 20;
+
+    const segment = (
+        p1: p5Types.Vector,
+        p2: p5Types.Vector,
+        c1: p5Types.Vector
+    ) => {
+        p5.point(p1.x, p1.y);
+        p5.point(p2.x, p2.y);
+
+        p5.strokeWeight(1);
+        p5.triangle(p1.x, p1.y, c1.x, c1.y, p2.x, p2.y);
+        p5.strokeWeight(5);
+        p5.bezier(p1.x, p1.y, c1.x, c1.y, c1.x, c1.y, p2.x, p2.y);
+    };
+
+    const p1 = p5.createVector(2 * gz, -2 * gz);
+    const p2 = p5.createVector(2 * gz, +2 * gz);
+    const p3 = p5.createVector(-2 * gz, +2 * gz);
+    const p4 = p5.createVector(-2 * gz, -2 * gz);
+
+    const c1 = p5.createVector(w / 2, 0);
+    const c2 = p5.createVector(0, +h / 2);
+    const c3 = p5.createVector(-w / 2, 0);
+    const c4 = p5.createVector(0, -h / 2);
+
+    segment(p1, p2, c1);
+    segment(p2, p3, c2);
+    segment(p3, p4, c3);
+    segment(p4, p1, c4);
 
     p5.pop();
 };
