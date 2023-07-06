@@ -84,6 +84,12 @@ const curvedStar = (
     p5.rectMode(p5.CENTER);
     p5.noFill();
     p5.rect(0, 0, w, h);
+
+    p5.strokeWeight(6);
     p5.point(0, 0);
+    p5.point(0, -h / 2);
+    p5.point(w / 2, 0);
+    p5.bezier(0, -h / 2, 0, 0, 0, 0, w / 2, 0);
+
     p5.pop();
 };
