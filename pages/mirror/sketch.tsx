@@ -1,5 +1,6 @@
 import type p5Types from "p5";
 import { grid } from "p5/utils";
+import { color, p5c, setAlpha } from "utils/colorsjs";
 
 export const draw = (p5: p5Types) => {
     // This sketch is inspired by the cover of a notebook I have.
@@ -83,6 +84,7 @@ const curvedStar = (
     // p5.rotate(p5.PI / 4);
     p5.rectMode(p5.CENTER);
     p5.noFill();
+    p5.stroke(p5c(setAlpha(color("white"), 0.2)));
     p5.rect(0, 0, w, h);
 
     p5.strokeWeight(6);
@@ -94,23 +96,24 @@ const curvedStar = (
     const gz = 20;
 
     const segment = (
-        p1: p5Types.Vector,
-        p2: p5Types.Vector,
-        c1: p5Types.Vector
+        a: p5Types.Vector,
+        b: p5Types.Vector,
+        c: p5Types.Vector
     ) => {
-        p5.point(p1.x, p1.y);
-        p5.point(p2.x, p2.y);
+        p5.stroke(p5c(setAlpha(color("white"), 0.2)));
+        p5.point(a.x, a.y);
+        p5.point(b.x, b.y);
 
         p5.strokeWeight(1);
-        p5.triangle(p1.x, p1.y, c1.x, c1.y, p2.x, p2.y);
+        p5.triangle(a.x, a.y, c.x, c.y, b.x, b.y);
         p5.strokeWeight(5);
-        p5.bezier(p1.x, p1.y, c1.x, c1.y, c1.x, c1.y, p2.x, p2.y);
+        p5.bezier(a.x, a.y, c.x, c.y, c.x, c.y, b.x, b.y);
     };
 
-    const p1 = p5.createVector(2 * gz, -2 * gz);
-    const p2 = p5.createVector(2 * gz, +2 * gz);
-    const p3 = p5.createVector(-2 * gz, +2 * gz);
-    const p4 = p5.createVector(-2 * gz, -2 * gz);
+    const p1 = p5.createVector(2 * gz + 5, -2 * gz - 5);
+    const p2 = p5.createVector(2 * gz + 5, +2 * gz + 5);
+    const p3 = p5.createVector(-2 * gz - 5, +2 * gz + 5);
+    const p4 = p5.createVector(-2 * gz - 5, -2 * gz - 5);
 
     const c1 = p5.createVector(w / 2, 0);
     const c2 = p5.createVector(0, +h / 2);
@@ -121,6 +124,39 @@ const curvedStar = (
     segment(p2, p3, c2);
     segment(p3, p4, c3);
     segment(p4, p1, c4);
+
+    const segment2 = (
+        a: p5Types.Vector,
+        b: p5Types.Vector,
+        c: p5Types.Vector,
+        d: p5Types.Vector
+    ) => {
+        p5.stroke(p5c(setAlpha(color("white"), 0.6)));
+
+        // p5.point(p1.x, p1.y);
+        // p5.point(p2.x, p2.y);
+        p5.point(c.x, c.y);
+        p5.point(d.x, d.y);
+
+        p5.strokeWeight(1);
+        p5.line(a.x, a.y, b.x, b.y);
+        p5.stroke(p5c(setAlpha(color("white"), 0.99)));
+        p5.strokeWeight(8);
+        p5.bezier(a.x, a.y, c.x, c.y, d.x, d.y, b.x, b.y);
+    };
+
+
+    const drawHalf = () => {
+        segment2(c4, p1, p5.createVector(33, -116), p5.createVector(18, -68));
+        segment2(c1, p1, p5.createVector(116, -33), p5.createVector(68, -18));
+
+        segment2(c1, p2, p5.createVector(116, 33), p5.createVector(68, 18));
+        segment2(c2, p2, p5.createVector(33, +116), p5.createVector(18, +68));
+    }
+
+    drawHalf();
+    p5.rotate(p5.PI);
+    drawHalf();
 
     p5.pop();
 };
