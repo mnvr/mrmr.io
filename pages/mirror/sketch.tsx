@@ -7,9 +7,27 @@ export const draw = (p5: p5Types) => {
 
     grid(p5, { stroke: "white" });
 
-    gridDots(p5);
-    gridCircles(p5);
+    p5.stroke(237);
+    p5.strokeWeight(1);
+
+    // gridDots(p5);
+    // gridCircles(p5);
+
+    // Round the dimension to the nearest of the grid size. Let the extra pixels
+    // remain at the "end" of the sketch (to the right, and at the bottom).
+    const gz = 20;
+    const rw = floorToMultiple(p5.width, gz);
+    const rh = floorToMultiple(p5.height, gz);
+    // Add gz after rounding to make it look visually centered
+    const rcx = floorToMultiple(rw / 2, gz) + gz;
+    const rcy = floorToMultiple(rh / 2, gz) + gz;
+    // Keep a margin at the edges
+    const d = floorToMultiple(Math.min(rw, rh) - 3 * gz, gz);
+    curvedStar(p5, rcx, rcy, d, d);
 };
+
+/** Floor the given number `x` to the nearest multiple of `n` */
+const floorToMultiple = (x: number, n: number) => Math.floor(x / n) * n;
 
 const gridDots = (p5: p5Types) => {
     p5.stroke(237);
@@ -40,12 +58,19 @@ const gridCircles = (p5: p5Types) => {
         for (let x = gap + offset; x < p5.width - offset; x += gap) {
             // Alternate between the circle and the star
             if (c++ % 2) p5.circle(x, y, 12);
-            else curvedStar(p5, x, y);
+            else curvedStar(p5, x, y, 12, 12);
         }
     }
 };
 
-const curvedStar = (p5: p5Types, x: number, y: number) => {
+/** Draw a curved star centered at (x, y) with a bounding box sized w x h */
+const curvedStar = (
+    p5: p5Types,
+    x: number,
+    y: number,
+    w: number,
+    h: number
+) => {
     p5.push();
     // Translate to the center so that the rotation happens around it
     //
@@ -55,7 +80,10 @@ const curvedStar = (p5: p5Types, x: number, y: number) => {
     //   center point, you will need to move the canvas by using the
     //   `translate` method.
     p5.translate(x, y);
-    p5.rotate(p5.PI / 4);
-    p5.rect(0, 0, 20, 20);
+    // p5.rotate(p5.PI / 4);
+    p5.rectMode(p5.CENTER);
+    p5.noFill();
+    p5.rect(0, 0, w, h);
+    p5.point(0, 0);
     p5.pop();
 };
