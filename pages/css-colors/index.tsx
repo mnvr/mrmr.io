@@ -1,11 +1,8 @@
 import * as React from "react";
 import styled from "styled-components";
-import keywords from "./keywords";
+import colorNames from "./colors";
 
 export const Content: React.FC = () => {
-    const colorNames = Object.keys(keywords);
-    console.log(colorNames);
-
     return (
         <Grid>
             {colorNames.map((cn) => {
