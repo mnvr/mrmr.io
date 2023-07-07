@@ -8,37 +8,54 @@ import { color, p5c, setAlpha } from "utils/colorsjs";
 export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.clear();
 
-    const t = env.audioTime() % ts.duration;
-
-    let stroke = color(237);
     const gap = 50;
 
     p5.push();
+
+    // time, in seconds
+    const t = env.audioTime() % ts.duration;
+    // time, normalized to the loop length
+    const tf = t / ts.duration;
+    // We have a beat every 60 / bpm seconds. Divide by this value to obtain the
+    // time in units of beats.
+    const tb = t / (60 / ts.bpm);
+    // A bar is 4 beats – this is not always true, but is true in this case. We
+    // have a bar every 4 * (60 / bpm) seconds. Divide by this value to obtain
+    // the time in units of bars.
+    const tB = tb / 4;
+    // How far are we away from a bar
+    // This is a number [0, 1]
+    const tBf = tB % 1;
+    // Smoothen this number by using a cosine
+    // - Scale this number to [0, π/2] so that the cosine is between [1, 0]
+    const tBfc = Math.cos(tBf * Math.PI);
+    // Offset this value by half a bar to obtain a similarity index [1, 0] for
+    // the offbeat.
+    const tBfc2 = Math.cos(((tB + 0.5) % 1) * Math.PI);
+
+    console.log({ t, tf, tb, tB, tBf, tBfc, tBfc2 });
+
+    // // At the end of the song, drain out the color and set a black background.
+    // if (tf > 0.8 && tf < 0.95)
+    //     p5.background(
+    //         p5c(setAlpha(color(0), Math.abs(Math.sin(Math.PI * (0.5 + tf)))))
+    //     );
+
+    let stroke = color(237);
 
     // --------
     // Pulse the colors to the beat
     //
 
-    // Every fourth beat
-    const u = 4 * (60 / ts.bpm);
-    // How near are we to it
-    const z = t % u;
-    // Emphasize
-    const x = Math.cos(z);
-    // Slightly offset variation
-    const x1 = Math.abs(Math.sin(x + Math.PI));
-
-    // Make different things pulse a bit differently
-    const strokeDots = color(235 + x * 20);
-    const strokeStar = color(235 + x1 * 20);
-    // Using the randomness here gives a flickering effect
-    const strokeCircle = Math.random() > 0.5 ? strokeDots : strokeStar;
+    const strokeDots = color(Math.max(235 + tBfc2 * 20, 235 + tBfc * 20));
+    const strokeStar = color(237 + tBfc * 11);
+    const strokeCircle = color(237);
 
     // --------
 
-    // p5.translate(0, 0);
-    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
-    // p5.translate((p5.frameCount / 600) % 100, 0);
+    p5.translate(0, 0);
+    p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
+    p5.translate((p5.frameCount / 600) % 100, 0);
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -63,7 +80,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 const ts = {
     bass1: 1, // Basoon note-1 decay start
     bass2: 3, // Basoon note-2 onset
-    duration: 39.31, // Song duration
+    duration: 39.273, // Song duration
     bpm: 110, // In units of BPM (beats per minute)
 };
 
