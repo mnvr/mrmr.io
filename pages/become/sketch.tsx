@@ -1,22 +1,24 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
 import { showFrameCount } from "p5/utils";
-import { color, p5c, setAlpha } from "utils/colorsjs";
+import { color, lighten, p5c, setAlpha } from "utils/colorsjs";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types) => {
     p5.clear();
 
-    const f = p5.frameCount;
+    // Frame rate keeps changing!
+    console.log(p5.frameRate());
+    const f = p5.frameCount % frame(p5, tois.duration);
 
     const stroke = color(237);
     const gap = 50;
 
     p5.push();
 
-    p5.translate(0, 0);
-    p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
-    p5.translate((p5.frameCount / 600) % 100, 0);
+    // p5.translate(0, 0);
+    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
+    // p5.translate((p5.frameCount / 600) % 100, 0);
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -27,8 +29,11 @@ export const draw = (p5: p5Types) => {
     let strokeStar = stroke;
     const fb1 = frame(p5, tois.bass1);
     const fb2 = frame(p5, tois.bass2);
+    console.log({ fb1, fb2, fc: p5.frameRate(), d: frame(p5, tois.duration) });
     if (f > fb1 && f < fb2) {
-        strokeStar = setAlpha(stroke, 0.7 + ((fb2 - f) / (fb2 - fb1)) * 0.3);
+        const l = 1 - (f - fb1) / (fb2 - fb1);
+        console.log("lighten", l);
+        strokeStar = lighten(stroke, l * 0.5);
     }
 
     gridCirclesAndStars(p5, { gap, stroke, strokeStar });

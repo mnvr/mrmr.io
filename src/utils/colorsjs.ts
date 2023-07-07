@@ -38,6 +38,20 @@ export const setAlpha = (c: Color, alpha: number) => {
 };
 
 /**
+ * Reduce the lightness of the given color by the provided value.
+ *
+ * @param c A Color ("colorjs.io") instance
+ * @param amount The amount (between 0-1) by which to reduce the lightness.
+ */
+export const lighten = (c: Color, amount: number) => {
+    const c2 = c.clone();
+    // The lighten / darken methods in colorjs are currently undocumented
+    // https://github.com/LeaVerou/color.js/issues/269
+    c2.lighten(amount);
+    return c2;
+};
+
+/**
  * Output the color as a string that P5 can understand.
  *
  * colorjs knows how to output colors as RGB(A) too. However, the default format
