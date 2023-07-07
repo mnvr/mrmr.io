@@ -23,5 +23,30 @@ export type TidalSong = () => Pattern;
 
 /**
  * A function that renders a P5 visualization
+ *
+ * A sketch can export either the vanilla 1-argument form or the extended 2-
+ * argument form that also takes in an environment.
  */
-export type P5Draw = (p5: p5Types) => void;
+export type P5Draw =
+    | ((p5: p5Types) => void)
+    | ((p5: p5Types, env: P5DrawEnv) => void);
+
+/**
+ * Environment in which the P5 visualization is being rendered
+ *
+ * These are bits and pieces of state that we attach and provide to the draw
+ * method of P5 sketches.
+ */
+export interface P5DrawEnv {
+    /**
+     * If this is an audio enabled sketch, then this getter will return the
+     * (highly accurate) timestamp since audio started.
+     *
+     * Specifically, this'll be the `currentTime` of the `AudioContext` in which
+     * audio is being played.
+     *
+     * This function should not be called in a sketch that does not have an
+     * associated audio playback. Doing so will throw an exception.
+     */
+    audioTime: () => number;
+}

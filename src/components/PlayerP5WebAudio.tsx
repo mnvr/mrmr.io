@@ -38,14 +38,12 @@ export const PlayerP5WebAudio: React.FC<
 > = ({ draw, songURL }) => {
     const p5Ref = React.useRef<p5Types | undefined>();
 
-    const [isPlaying, isLoading, toggleShouldPlay] = useWebAudioFilePlayback(
-        songURL,
-        (isPlaying) => {
+    const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
+        useWebAudioFilePlayback(songURL, (isPlaying) => {
             const p5 = p5Ref.current;
             if (isPlaying) p5?.loop();
             else p5?.noLoop();
-        }
-    );
+        });
 
     return (
         <Grid>
@@ -54,6 +52,7 @@ export const PlayerP5WebAudio: React.FC<
                     draw={draw}
                     p5Ref={p5Ref}
                     shouldDisableLooping={true}
+                    audioContext={audioContext}
                 />
             </SketchContainer>
             {!isPlaying && (

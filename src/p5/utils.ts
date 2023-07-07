@@ -52,12 +52,12 @@ export const lineGrid = (p5: p5Types, o = {} as GridOpts) => {
     }
 };
 
-interface FrameCountOpts {
+interface DebugHUDOpts {
     stroke?: Colorish;
 }
 
-/** Show the frameCount and milliseconds at the top left */
-export const showFrameCount = (p5: p5Types, o = {} as FrameCountOpts) => {
+/** Show a debug value at the top left */
+export const debugHUD = (p5: p5Types, s: string, o = {} as DebugHUDOpts) => {
     const c = p5c(color(o.stroke ?? "black"));
     p5.push();
     p5.fill(c);
@@ -65,10 +65,6 @@ export const showFrameCount = (p5: p5Types, o = {} as FrameCountOpts) => {
     p5.stroke(c);
     p5.textFont("monospace");
     p5.textSize(16);
-    p5.text(p5.frameCount, 5, 20);
-    p5.text((p5.millis() / 1000).toFixed(3), 5, 34);
+    p5.text(s, 5, 20);
     p5.pop();
-
-    if (p5.mouseIsPressed) console.log("mouse press at frame", p5.frameCount);
-    if (p5.keyIsPressed) console.log("key press at frame", p5.frameCount);
 };

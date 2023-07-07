@@ -32,12 +32,22 @@ interface ReelSizedP5SketchBoxProps {
      * moves in a deterministic sync with the audio being played.
      */
     shouldDisableLooping?: boolean;
+
+    /**
+     * The audio context in which audio is being (or will be) played.
+     *
+     * This will be undefined both (a) if the sketch does not have any
+     * associated audio, or (b) if the sketch does indeed have audio, but
+     * playback has not started at least once.
+     */
+    audioContext?: AudioContext;
 }
 
 export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
     draw,
     p5Ref,
     shouldDisableLooping,
+    audioContext,
 }) => {
     const [recorder, _] = React.useState(new VideoRecorder());
 
@@ -75,5 +85,15 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
         }
     };
 
-    return <Sketch setup={setup} draw={draw} />;
+    const env = {
+        audioTime: () => {
+            return audioContext?.currentTime ?? 0;
+        },
+    };
+
+    const wrappedDraw = (p5: p5Types) => {
+        draw(p5, env);
+    };
+
+    return <Sketch setup={setup} draw={wrappedDraw} />;
 };

@@ -1,15 +1,14 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
-import { showFrameCount } from "p5/utils";
+import { debugHUD } from "p5/utils";
+import type { P5DrawEnv } from "types";
 import { color, lighten, p5c, setAlpha } from "utils/colorsjs";
 
 // This sketch is inspired by the cover of a notebook I have.
-export const draw = (p5: p5Types) => {
+export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.clear();
 
-    // Frame rate keeps changing!
-    console.log(p5.frameRate());
-    const f = p5.frameCount % frame(p5, tois.duration);
+    const t = env.audioTime() % ts.duration;
 
     const stroke = color(237);
     const gap = 50;
@@ -27,11 +26,9 @@ export const draw = (p5: p5Types) => {
     gridDots(p5, { gap, stroke });
 
     let strokeStar = stroke;
-    const fb1 = frame(p5, tois.bass1);
-    const fb2 = frame(p5, tois.bass2);
-    console.log({ fb1, fb2, fc: p5.frameRate(), d: frame(p5, tois.duration) });
-    if (f > fb1 && f < fb2) {
-        const l = 1 - (f - fb1) / (fb2 - fb1);
+    const [tb1, tb2] = [ts.bass1, ts.bass2];
+    if (t > tb1 && t < tb2) {
+        const l = 1 - (t - tb1) / (tb2 - tb1);
         console.log("lighten", l);
         strokeStar = lighten(stroke, l * 0.5);
     }
@@ -40,30 +37,15 @@ export const draw = (p5: p5Types) => {
 
     p5.pop();
 
-    showFrameCount(p5, { stroke: "blue" });
+    debugHUD(p5, `${t.toFixed(2)}`, { stroke: "blue" });
 };
 
 // These times of interests are in seconds, extracted from "become.mp3".
-const tois = {
+const ts = {
     bass1: 1, // Basoon note-1 decay start
     bass2: 3, // Basoon note-2 onset
     duration: 39.31, // Song duration
 };
-
-/**
- * Transform timings of interest into units of frameCount
- *
- * This conversion will not be exact because of inaccurancies of transcription
- * and floating point math.
- * Further, and especially, in the case of the song duration itself, this will
- * manifest itself as the animation timing drifting away the longer the song
-   loops.
- *
- * Note that we cannot use the p5 `millis()` function to synchronize with the
- * music because, unlike `frameCount`, the `millis` keep ticking away even when
- * noLoop has been called.
- */
-const frame = (p5: p5Types, t: number) => Math.floor(t * p5.frameRate());
 
 interface DotsDrawOpts {
     gap: number;

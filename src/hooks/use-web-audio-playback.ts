@@ -2,22 +2,28 @@ import * as React from "react";
 import { ensure } from "utils/ensure";
 import { loadAudioBuffer, loopAudioBuffer } from "webaudio/audio";
 
-type UseWebAudioPlaybackReturn = [
+type UseWebAudioPlaybackReturn = {
     /** If playback is currently active */
-    isPlaying: boolean,
+    isPlaying: boolean;
     /**
      * If the user has initiated playback, but we're waiting for the file load
      * to complete.
      */
-    isLoading: boolean,
+    isLoading: boolean;
+    /**
+     * The audio context in which audio is / will be played.
+     *
+     * This value will be `undefined` before audio has been initially started.
+     */
+    audioContext?: AudioContext;
     /**
      * Toggle playback
      *
      * Whether or not playback actually starts depends on whether the load has
      * completed.
      */
-    toggleShouldPlay: () => void
-];
+    toggleShouldPlay: () => void;
+};
 
 /**
  * Type of the playback callback
@@ -181,5 +187,5 @@ export const useWebAudioFilePlayback = (
 
     const isPlaying = shouldPlay && !isLoading;
 
-    return [isPlaying, isLoading, toggleShouldPlay];
+    return { isPlaying, isLoading, audioContext, toggleShouldPlay };
 };
