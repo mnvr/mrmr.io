@@ -1,9 +1,9 @@
 import p5Types from "p5";
-import { color, p5c, setAlpha } from "utils/colorsjs";
+import { color, p5c, setAlpha, type Colorish } from "utils/colorsjs";
 
 interface GridOpts {
     gap?: number;
-    stroke?: string;
+    stroke?: Colorish;
 }
 
 /** Draw a grid onto the canvas */

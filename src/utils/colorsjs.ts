@@ -1,14 +1,21 @@
 import Color from "colorjs.io";
 
+export type Colorish = string | number | Color;
+
 /**
  * Convenience method to construct a Color ("colorjs.io") instance.
  *
- * @param cs Color string, a string specifying a color.
+ * @param cs Color string (a string specifying a color), or a number indicating
+ * the grayscale lightness (see {@link grayscale}). Alternatively, a color value
+ * can also be passed here, which'll be returned as it is; this allows using the
+ * same method without checking for the datatype of the color we have.
  *
  * If the color string is invalid, it'll warn by printing on the console and
  * rethrow the exception.
  */
-export const color = (cs: string) => {
+export const color = (cs: Colorish) => {
+    if (typeof cs === "number") return grayscale(cs);
+    if (typeof cs !== "string") return cs;
     try {
         return new Color(cs);
     } catch (e) {
@@ -39,3 +46,15 @@ export const setAlpha = (c: Color, alpha: number) => {
  * (it works fine even with the fourth alpha component).
  */
 export const p5c = (c: Color) => c.toString({ format: "hex" });
+
+/**
+ * Create a grayscale color from a value 0-255
+ *
+ * This is similar to how P5 allows specifying colors using a single number
+ * 0-255 that denotes the grayscale component of the RGB color. This function
+ * allows us to create colorjs.io {@link Color} objects in the same manner.
+ */
+export const grayscale = (l: number) => {
+    const n = l / 255;
+    return new Color("srgb", [n, n, n]);
+};
