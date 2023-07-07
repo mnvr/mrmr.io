@@ -9,6 +9,10 @@ export const draw = (p5: p5Types) => {
     const stroke = color(237);
     const gap = 50;
 
+    // p5.translate(0, 0);
+    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
+    // p5.translate((p5.frameCount / 600) % 100, 0);
+
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
     p5.translate(4, 4);
