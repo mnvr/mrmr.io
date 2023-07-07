@@ -1,17 +1,22 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
+import { showFrameCount } from "p5/utils";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types) => {
     p5.clear();
 
+    const fois = toFois(p5, tois);
+
     const stroke = color(237);
     const gap = 50;
 
-    // p5.translate(0, 0);
-    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
-    // p5.translate((p5.frameCount / 600) % 100, 0);
+    p5.push();
+
+    p5.translate(0, 0);
+    p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
+    p5.translate((p5.frameCount / 600) % 100, 0);
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -19,7 +24,34 @@ export const draw = (p5: p5Types) => {
 
     gridDots(p5, { gap, stroke });
     gridCircles(p5, { gap, stroke });
+
+    p5.pop();
+
+    showFrameCount(p5, { stroke: "blue" });
 };
+
+// These times of interests are in seconds, extracted from "become.mp3".
+const tois = [
+    1, // Basoon note-1 decay start
+    3, // Basoon note-2 onset
+    39.31, // Song duration
+];
+
+/**
+ * Transform timings of interest into units of frameCount
+ *
+ * This conversion will not be exact because of inaccurancies of transcription
+ * and floating point math.
+ * Further, and especially, in the case of the song duration itself, this will
+ * manifest itself as the animation timing drifting away the longer the song
+   loops.
+ *
+ * Note that we cannot use the p5 `millis()` function to synchronize with the
+ * music because, unlike `frameCount`, the `millis` keep ticking away even when
+ * noLoop has been called.
+ */
+const toFois = (p5: p5Types, tois: number[]) =>
+    tois.map((t) => Math.floor(t * p5.frameRate()));
 
 interface DrawOpts {
     gap: number;
