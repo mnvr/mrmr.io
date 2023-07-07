@@ -23,7 +23,7 @@ export const draw = (p5: p5Types) => {
     const rcx = floorToMultiple(rw / 2, gz) + gz;
     const rcy = floorToMultiple(rh / 2, gz) + gz;
     // Keep a margin at the edges
-    const d = floorToMultiple(Math.min(rw, rh) - 3 * gz, gz);
+    const d = 100;//floorToMultiple(Math.min(rw, rh) - 3 * gz, gz) - 2 * gz;
     curvedStar(p5, rcx, rcy, d, d);
 };
 
@@ -72,8 +72,15 @@ const curvedStar = (
     w: number,
     h: number
 ) => {
+    // The coordinates below were laid out for a 240 x 240 sized shape.
+    // We scale them appropriately depending on the actual width and height
+    // passed to us. Note that we cannot use the scale transform provided by p5
+    // because that'll also scale up the stroke.
     // 240, 240
     //     console.log(w, h);
+
+    const [ow, oh] = [240, 240];
+    const [sw, sh] = [w / ow, h / oh];
 
     p5.push();
     p5.translate(x, y);
@@ -105,11 +112,21 @@ const curvedStar = (
 
     const quarter = () => {
         const beg = p5.createVector(0, -h / 2);
-        const mid = p5.createVector(45, -42);
+        const mid = p5.createVector(45 * sw, -42 * sh);
         const end = p5.createVector(w / 2, 0);
 
-        segment(beg, mid, p5.createVector(33, -116), p5.createVector(18, -68));
-        segment(end, mid, p5.createVector(116, -33), p5.createVector(68, -18));
+        segment(
+            beg,
+            mid,
+            p5.createVector(33 * sw, -116 * sh),
+            p5.createVector(18 * sw, -68 * sh)
+        );
+        segment(
+            end,
+            mid,
+            p5.createVector(116 * sw, -33 * sh),
+            p5.createVector(68 * sw, -18 * sh)
+        );
     };
 
     for (let i = 0; i < 4; i++) {
