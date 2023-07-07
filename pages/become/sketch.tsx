@@ -3,6 +3,7 @@ import type p5Types from "p5";
 import { debugHUD } from "p5/utils";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
+import { ensure } from "utils/ensure";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types, env: P5DrawEnv) => {
@@ -57,16 +58,15 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     // --------
 
-    p5.translate(0, 0);
-    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
-    // p5.translate((p5.frameCount / 600) % 100, 0);
-
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
     p5.translate(4, 4);
 
+    // Rotate the stars at a speed indexed by the bass note.
+    const rotateStar = ensure(bassNotesByBar[iB]);
+
     gridDots(p5, { gap, stroke: strokeDots });
-    gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar });
+    gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
 
     // const [tb1, tb2] = [ts.bass1, ts.bass2];
     // if (t > tb1 && t < tb2) {
@@ -131,13 +131,14 @@ interface CirclesAndStarsDrawOpts {
     gap: number;
     strokeCircle: Color;
     strokeStar: Color;
+    rotateStar: number;
 }
 
 const gridCirclesAndStars = (
     p5: p5Types,
     o = {} as CirclesAndStarsDrawOpts
 ) => {
-    const { gap, strokeCircle, strokeStar } = o;
+    const { gap, strokeCircle, strokeStar, rotateStar } = o;
 
     p5.strokeWeight(4);
 
@@ -158,7 +159,12 @@ const gridCirclesAndStars = (
                 p5.stroke(p5c(strokeCircle));
                 p5.circle(x, y, d);
             } else {
-                curvedStar(p5, x, y, gap, gap, strokeStar);
+                // Use the note as a relative rotational velocity.
+                //
+                // The denominator should be 12, but use 11 for a better looking
+                // sketch.
+                let rotateBy = (Math.PI * rotateStar) / 11;
+                curvedStar(p5, x, y, gap, gap, strokeStar, rotateBy);
             }
         }
     }
@@ -168,6 +174,7 @@ const gridCirclesAndStars = (
  * Draw a curved star centered at (x, y) with a bounding box sized w x h
  *
  * @param stroke Stroke color.
+ * @param rotateBy Rotate the star in place by the given radians.
  * @param showOutlines If true, then the outlines / scaffolding and control
  *        points used to draw the shape are shown. This is useful for debugging.
  */
@@ -178,6 +185,7 @@ const curvedStar = (
     w: number,
     h: number,
     stroke: Color,
+    rotateBy: number,
     showOutlines = false
 ) => {
     // The coordinates below were laid out for a 240 x 240 sized shape. We scale
@@ -188,6 +196,7 @@ const curvedStar = (
 
     p5.push();
     p5.translate(x, y);
+    if (rotateBy > 0) p5.rotate(rotateBy);
     p5.scale(w / ow, h / oh);
 
     p5.noFill();
