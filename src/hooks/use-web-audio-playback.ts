@@ -44,28 +44,16 @@ export const useWebAudioFilePlayback = (
     // depends on if the audio buffer has been loaded.
     const [shouldPlay, setShouldPlay] = React.useState(false);
 
-    // Creating the audio context here is permitted – the audio context will
-    // start off in the suspended state, but we'll resume it later on user
-    // interaction (when the user taps the play button).
-    //
-    // However, creating the audio context here (instead of on first user
-    // interaction) causes Chrome to print a spurious warning on the console.
-    //
-    // But we do need the audio context to decode the audio buffer, so we cannot
-    // delay creating it until the first user interaction.
-    //
-    // So why not create it here? Because of SSR – when Gatsby pre-builds the
-    // static HTML, the window object is not available. So this property needs
-    // to start off as `undefined`, but we create it immediately on page load,
-    // in the useEffect below.
-    const [audioContext, setAudioContext] = React.useState<
-        AudioContext | undefined
-    >();
+    // Track whether or not we've managed to load the audio file(s) into an
+    // audio buffer. The fetch and decoding are both async operations, whose
+    // state we track with here. Subsequently, all audio operations are
+    // synchronous so playback can be started immediately.
+    const [isLoading, setIsLoading] = React.useState(true);
 
-    // The audio buffer into which our audio file is loaded into.
+    // The audio graph
     //
-    // The AudioNode for playing this back created when the audio buffer is
-    // loaded. Subseqently playback is controlled by pausing / resuming the
+    // The AudioNode for playing the audio file is created when the audio buffer
+    // is loaded. Subseqently playback is controlled by pausing / resuming the
     // audio context itself. See below for details on why it is this way.
     //
     // Pausing WebAudio nodes
@@ -92,8 +80,26 @@ export const useWebAudioFilePlayback = (
     //
     // References:
     // - https://github.com/WebAudio/web-audio-api-v2/issues/105
-    const [audioBuffer, setAudioBuffer] = React.useState<
-        AudioBuffer | undefined
+    //
+    // Initial value
+    // -------------
+    //
+    // Creating the audio context here is permitted – the audio context will
+    // start off in the suspended state, but we'll resume it later on user
+    // interaction (when the user taps the play button).
+    //
+    // However, creating the audio context here (instead of on first user
+    // interaction) causes Chrome to print a spurious warning on the console.
+    //
+    // But we do need the audio context to decode the audio buffer, so we cannot
+    // delay creating it until the first user interaction.
+    //
+    // So why not create it here? Because of SSR – when Gatsby pre-builds the
+    // static HTML, the window object is not available. So this property needs
+    // to start off as `undefined`, but we create it immediately on page load,
+    // in the useEffect below.
+    const [audioContext, setAudioContext] = React.useState<
+        AudioContext | undefined
     >();
 
     // Load the audio file immediately on page load
@@ -118,10 +124,12 @@ export const useWebAudioFilePlayback = (
 
         loadAudioBuffer(ac, url)
             .then((ab) => {
-                setAudioBuffer(ab);
+                setIsLoading(false);
                 loopAudioBuffer(ac, ab);
             })
             .catch((e) => {
+                // We don't currently handle errors, so in this case the user
+                // will see a perpetual spinner.
                 console.warn(e);
             });
 
@@ -157,8 +165,7 @@ export const useWebAudioFilePlayback = (
         setShouldPlay(shouldPlayNew);
     };
 
-    const isPlaying = shouldPlay && !!audioBuffer;
-    const isLoading = shouldPlay && !audioBuffer;
+    const isPlaying = shouldPlay && !isLoading;
 
     return [isPlaying, isLoading, toggleShouldPlay];
 };
