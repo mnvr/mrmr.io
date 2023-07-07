@@ -68,6 +68,12 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // Rotate the stars at a speed indexed by the bass note.
     const rotateStar = ensure(bassNotesByBar[iB]);
 
+    if (iB % 4 === 2 && Math.floor(tBf * 10) >= 7) {
+        p5.background(0);
+        p5.scale(1.01 + Math.random() * 0.005);
+    }
+    p5.rotate(Math.sin((p5.frameCount / 800) % 20) / 3);
+
     gridDots(p5, { gap, stroke: strokeDots });
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
 
