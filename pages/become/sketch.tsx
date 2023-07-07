@@ -15,10 +15,26 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     p5.push();
 
-    const u = 4 * (60 / 110);
+    // --------
+    // Pulse the colors to the beat
+    //
+
+    // Every fourth beat
+    const u = 4 * (60 / ts.bpm);
+    // How near are we to it
     const z = t % u;
+    // Emphasize
     const x = Math.cos(z);
-    console.log(z.toFixed(2), x.toFixed(2));
+    // Slightly offset variation
+    const x1 = Math.abs(Math.sin(x + Math.PI));
+
+    // Make different things pulse a bit differently
+    const strokeDots = color(235 + x * 20);
+    const strokeStar = color(235 + x1 * 20);
+    // Using the randomness here gives a flickering effect
+    const strokeCircle = Math.random() > 0.5 ? strokeDots : strokeStar;
+
+    // --------
 
     // p5.translate(0, 0);
     // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
@@ -28,17 +44,15 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // not cut in half; just make things look a bit more pleasing to start with.
     p5.translate(4, 4);
 
-    gridDots(p5, { gap, stroke });
+    gridDots(p5, { gap, stroke: strokeDots });
+    gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar });
 
-    let strokeStar = color(200 + x * 30);
     // const [tb1, tb2] = [ts.bass1, ts.bass2];
     // if (t > tb1 && t < tb2) {
     //     const l = 1 - (t - tb1) / (tb2 - tb1);
     //     console.log("lighten", l);
     //     strokeStar = lighten(stroke, l * 0.5);
     // }
-
-    gridCirclesAndStars(p5, { gap, stroke, strokeStar });
 
     p5.pop();
 
@@ -50,6 +64,7 @@ const ts = {
     bass1: 1, // Basoon note-1 decay start
     bass2: 3, // Basoon note-2 onset
     duration: 39.31, // Song duration
+    bpm: 110, // In units of BPM (beats per minute)
 };
 
 interface DotsDrawOpts {
@@ -72,7 +87,7 @@ const gridDots = (p5: p5Types, o = {} as DotsDrawOpts) => {
 
 interface CirclesAndStarsDrawOpts {
     gap: number;
-    stroke: Color;
+    strokeCircle: Color;
     strokeStar: Color;
 }
 
@@ -80,7 +95,7 @@ const gridCirclesAndStars = (
     p5: p5Types,
     o = {} as CirclesAndStarsDrawOpts
 ) => {
-    const { gap, stroke, strokeStar } = o;
+    const { gap, strokeCircle, strokeStar } = o;
 
     p5.strokeWeight(4);
 
@@ -98,7 +113,7 @@ const gridCirclesAndStars = (
         for (let x = -(gap + offset); x < p5.width + offset; x += gap) {
             // Alternate between the circle and the star
             if (c++ % 2) {
-                p5.stroke(p5c(stroke));
+                p5.stroke(p5c(strokeCircle));
                 p5.circle(x, y, d);
             } else {
                 curvedStar(p5, x, y, gap, gap, strokeStar);
