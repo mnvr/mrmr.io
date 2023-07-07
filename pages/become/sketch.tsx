@@ -7,7 +7,7 @@ import { color, p5c, setAlpha } from "utils/colorsjs";
 export const draw = (p5: p5Types) => {
     p5.clear();
 
-    const fois = toFois(p5, tois);
+    const f = p5.frameCount;
 
     const stroke = color(237);
     const gap = 50;
@@ -23,7 +23,15 @@ export const draw = (p5: p5Types) => {
     p5.translate(4, 4);
 
     gridDots(p5, { gap, stroke });
-    gridCircles(p5, { gap, stroke });
+
+    let strokeStar = stroke;
+    const fb1 = frame(p5, tois.bass1);
+    const fb2 = frame(p5, tois.bass2);
+    if (f > fb1 && f < fb2) {
+        strokeStar = setAlpha(stroke, 0.7 + ((fb2 - f) / (fb2 - fb1)) * 0.3);
+    }
+
+    gridCirclesAndStars(p5, { gap, stroke, strokeStar });
 
     p5.pop();
 
@@ -31,11 +39,11 @@ export const draw = (p5: p5Types) => {
 };
 
 // These times of interests are in seconds, extracted from "become.mp3".
-const tois = [
-    1, // Basoon note-1 decay start
-    3, // Basoon note-2 onset
-    39.31, // Song duration
-];
+const tois = {
+    bass1: 1, // Basoon note-1 decay start
+    bass2: 3, // Basoon note-2 onset
+    duration: 39.31, // Song duration
+};
 
 /**
  * Transform timings of interest into units of frameCount
@@ -50,15 +58,14 @@ const tois = [
  * music because, unlike `frameCount`, the `millis` keep ticking away even when
  * noLoop has been called.
  */
-const toFois = (p5: p5Types, tois: number[]) =>
-    tois.map((t) => Math.floor(t * p5.frameRate()));
+const frame = (p5: p5Types, t: number) => Math.floor(t * p5.frameRate());
 
-interface DrawOpts {
+interface DotsDrawOpts {
     gap: number;
     stroke: Color;
 }
 
-const gridDots = (p5: p5Types, o = {} as DrawOpts) => {
+const gridDots = (p5: p5Types, o = {} as DotsDrawOpts) => {
     const { stroke, gap } = o;
 
     p5.stroke(p5c(stroke));
@@ -71,10 +78,18 @@ const gridDots = (p5: p5Types, o = {} as DrawOpts) => {
     }
 };
 
-const gridCircles = (p5: p5Types, o = {} as DrawOpts) => {
-    const { stroke, gap } = o;
+interface CirclesAndStarsDrawOpts {
+    gap: number;
+    stroke: Color;
+    strokeStar: Color;
+}
 
-    p5.stroke(p5c(stroke));
+const gridCirclesAndStars = (
+    p5: p5Types,
+    o = {} as CirclesAndStarsDrawOpts
+) => {
+    const { gap, stroke, strokeStar } = o;
+
     p5.strokeWeight(4);
 
     p5.noFill();
@@ -90,8 +105,12 @@ const gridCircles = (p5: p5Types, o = {} as DrawOpts) => {
     for (let y = -(gap + offset); y < p5.height + offset; y += gap) {
         for (let x = -(gap + offset); x < p5.width + offset; x += gap) {
             // Alternate between the circle and the star
-            if (c++ % 2) p5.circle(x, y, d);
-            else curvedStar(p5, x, y, gap, gap, stroke);
+            if (c++ % 2) {
+                p5.stroke(p5c(stroke));
+                p5.circle(x, y, d);
+            } else {
+                curvedStar(p5, x, y, gap, gap, strokeStar);
+            }
         }
     }
 };
