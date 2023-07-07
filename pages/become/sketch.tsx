@@ -2,7 +2,7 @@ import Color from "colorjs.io";
 import type p5Types from "p5";
 import { debugHUD } from "p5/utils";
 import type { P5DrawEnv } from "types";
-import { color, lighten, p5c, setAlpha } from "utils/colorsjs";
+import { color, p5c, setAlpha } from "utils/colorsjs";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types, env: P5DrawEnv) => {
@@ -10,10 +10,15 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     const t = env.audioTime() % ts.duration;
 
-    const stroke = color(237);
+    let stroke = color(237);
     const gap = 50;
 
     p5.push();
+
+    const u = 4 * (60 / 110);
+    const z = t % u;
+    const x = Math.cos(z);
+    console.log(z.toFixed(2), x.toFixed(2));
 
     // p5.translate(0, 0);
     // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
@@ -25,13 +30,13 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     gridDots(p5, { gap, stroke });
 
-    let strokeStar = stroke;
-    const [tb1, tb2] = [ts.bass1, ts.bass2];
-    if (t > tb1 && t < tb2) {
-        const l = 1 - (t - tb1) / (tb2 - tb1);
-        console.log("lighten", l);
-        strokeStar = lighten(stroke, l * 0.5);
-    }
+    let strokeStar = color(200 + x * 30);
+    // const [tb1, tb2] = [ts.bass1, ts.bass2];
+    // if (t > tb1 && t < tb2) {
+    //     const l = 1 - (t - tb1) / (tb2 - tb1);
+    //     console.log("lighten", l);
+    //     strokeStar = lighten(stroke, l * 0.5);
+    // }
 
     gridCirclesAndStars(p5, { gap, stroke, strokeStar });
 
