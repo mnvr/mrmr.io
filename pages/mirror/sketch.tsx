@@ -1,48 +1,43 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
-import { grid } from "p5/utils";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types) => {
     p5.clear();
 
-    grid(p5, { stroke: "white" });
-
     const stroke = color(237);
+    const gap = 50;
 
-    // gridDots(p5, stroke);
-    // gridCircles(p5);
+    // Offset the grid by a bit so that the initial row and column of dots is
+    // not cut in half; just make things look a bit more pleasing to start with.
+    p5.translate(4, 4);
 
-    // Round the dimension to the nearest of the grid size. Let the extra pixels
-    // remain at the "end" of the sketch (to the right, and at the bottom).
-    const gz = 20;
-    const rw = floorToMultiple(p5.width, gz);
-    const rh = floorToMultiple(p5.height, gz);
-    // Add gz after rounding to make it look visually centered
-    const rcx = floorToMultiple(rw / 2, gz) + gz;
-    const rcy = floorToMultiple(rh / 2, gz) + gz;
-    // Keep a margin at the edges
-    const d = 100; //floorToMultiple(Math.min(rw, rh) - 3 * gz, gz) - 2 * gz;
-    curvedStar(p5, rcx, rcy, d, d, stroke);
+    gridDots(p5, { gap, stroke });
+    gridCircles(p5, { gap, stroke });
 };
 
-/** Floor the given number `x` to the nearest multiple of `n` */
-const floorToMultiple = (x: number, n: number) => Math.floor(x / n) * n;
+interface DrawOpts {
+    gap: number;
+    stroke: Color;
+}
 
-const gridDots = (p5: p5Types, stroke: Color) => {
+const gridDots = (p5: p5Types, o = {} as DrawOpts) => {
+    const { stroke, gap } = o;
+
     p5.stroke(p5c(stroke));
     p5.strokeWeight(8);
 
-    const gap = 40;
-    for (let y = gap; y < p5.height; y += gap) {
-        for (let x = gap; x < p5.width; x += gap) {
+    for (let y = -gap; y < p5.height + gap; y += gap) {
+        for (let x = -gap; x < p5.width + gap; x += gap) {
             p5.point(x, y);
         }
     }
 };
 
-const gridCircles = (p5: p5Types, stroke: Color) => {
+const gridCircles = (p5: p5Types, o = {} as DrawOpts) => {
+    const { stroke, gap } = o;
+
     p5.stroke(p5c(stroke));
     p5.strokeWeight(4);
 
@@ -53,13 +48,14 @@ const gridCircles = (p5: p5Types, stroke: Color) => {
     p5.rectMode(p5.CENTER);
     p5.angleMode(p5.RADIANS);
 
-    const gap = 40;
-    const offset = 20;
-    for (let y = gap + offset; y < p5.height - offset; y += gap) {
-        for (let x = gap + offset; x < p5.width - offset; x += gap) {
+    const offset = gap / 2;
+    // This radius was computed for a gap of 50
+    const d = (gap / 50) * 12;
+    for (let y = -(gap + offset); y < p5.height + offset; y += gap) {
+        for (let x = -(gap + offset); x < p5.width + offset; x += gap) {
             // Alternate between the circle and the star
-            if (c++ % 2) p5.circle(x, y, 12);
-            else curvedStar(p5, x, y, 12, 12, stroke);
+            if (c++ % 2) p5.circle(x, y, d);
+            else curvedStar(p5, x, y, gap, gap, stroke);
         }
     }
 };
@@ -97,9 +93,11 @@ const curvedStar = (
         p5.strokeWeight(1);
         p5.stroke(p5c(setAlpha(stroke, 0.2)));
         p5.rect(0, 0, ow, oh);
-        p5.strokeWeight(6);
-        p5.point(0, 0);
     }
+
+    p5.stroke(p5c(stroke));
+    p5.strokeWeight(40);
+    p5.point(0, 0);
 
     const segment = (
         a: p5Types.Vector,
@@ -117,7 +115,7 @@ const curvedStar = (
         }
 
         p5.stroke(p5c(stroke));
-        p5.strokeWeight(8);
+        p5.strokeWeight(20);
         p5.bezier(a.x, a.y, c.x, c.y, d.x, d.y, b.x, b.y);
     };
 
