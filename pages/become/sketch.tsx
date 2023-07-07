@@ -33,7 +33,11 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // the offbeat.
     const tBfc2 = Math.cos(((tB + 0.5) % 1) * Math.PI);
 
-    console.log({ t, tf, tb, tB, tBf, tBfc, tBfc2 });
+    // Bar number, integral
+    // Useful for indexing notes
+    const iB = Math.floor(tB - tBf);
+
+    console.log({ t, tf, tb, tB, iB, tBf, tBfc, tBfc2 });
 
     // // At the end of the song, drain out the color and set a black background.
     // if (tf > 0.8 && tf < 0.95)
@@ -54,8 +58,8 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // --------
 
     p5.translate(0, 0);
-    p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
-    p5.translate((p5.frameCount / 600) % 100, 0);
+    // p5.rotate(0.5 * Math.sin(p5.frameCount / 600));
+    // p5.translate((p5.frameCount / 600) % 100, 0);
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -73,7 +77,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     p5.pop();
 
-    debugHUD(p5, `${t.toFixed(2)}`, { stroke: "blue" });
+    debugHUD(p5, `${bassNotesByBar[iB]} - ${iB}`, { stroke: "blue" });
 };
 
 // These times of interests are in seconds, extracted from "become.mp3".
@@ -83,6 +87,27 @@ const ts = {
     duration: 39.273, // Song duration
     bpm: 110, // In units of BPM (beats per minute)
 };
+
+const bassNotesByBar = [
+    6, // F1 - 2 bars
+    6,
+    5, // E1 - 1 bar
+    3, // D1 - 4 bars
+    3,
+    3,
+    3,
+    0, // Rest - 2 bars
+    0,
+    1, // C1 - 2 bars
+    1,
+    3, // D1 - 2.x bars
+    3,
+    3,
+    0,
+    0,
+    0,
+    0,
+];
 
 interface DotsDrawOpts {
     gap: number;
