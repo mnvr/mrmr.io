@@ -30,9 +30,12 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // Smoothen this number by using a cosine
     // - Scale this number to [0, π/2] so that the cosine is between [1, 0]
     const tBfc = Math.cos(tBf * Math.PI);
-    // Offset this value by half a bar to obtain a similarity index [1, 0] for
-    // the offbeat.
+
+    // Offset the beat similarity value by half a bar to obtain a similarity
+    // index [1, 0] for the offbeat.
     const tBfc2 = Math.cos(((tB + 0.5) % 1) * Math.PI);
+    // And another one for the pre-offbeat kick (the kick at the 7/16-th note)
+    const tBfc3 = Math.cos(((tB - 6 / 16) % 1) * Math.PI);
 
     // Bar number, integral
     // Useful for indexing notes
@@ -54,7 +57,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     const strokeDots = color(Math.max(235 + tBfc2 * 20, 235 + tBfc * 20));
     const strokeStar = color(237 + tBfc * 11);
-    const strokeCircle = color(237);
+    const strokeCircle = color(237 + tBfc3 * 11);
 
     // --------
 
