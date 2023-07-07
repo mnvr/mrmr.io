@@ -2,6 +2,7 @@ import { PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
+import type p5Types from "p5";
 import * as React from "react";
 import styled from "styled-components";
 import type { P5Draw } from "types";
@@ -35,13 +36,25 @@ interface PlayerP5WebAudioProps {
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ draw, songURL }) => {
-    const [isPlaying, isLoading, toggleShouldPlay] =
-        useWebAudioFilePlayback(songURL);
+    const p5Ref = React.useRef<p5Types | undefined>();
+
+    const [isPlaying, isLoading, toggleShouldPlay] = useWebAudioFilePlayback(
+        songURL,
+        (isPlaying) => {
+            const p5 = p5Ref.current;
+            if (isPlaying) p5?.loop();
+            else p5?.noLoop();
+        }
+    );
 
     return (
         <Grid>
             <SketchContainer onClick={toggleShouldPlay} isPlaying={isPlaying}>
-                <ReelSizedP5SketchBox draw={draw} />
+                <ReelSizedP5SketchBox
+                    draw={draw}
+                    p5Ref={p5Ref}
+                    shouldDisableLooping={true}
+                />
             </SketchContainer>
             {!isPlaying && (
                 <PlayButtonContainer onClick={toggleShouldPlay}>
