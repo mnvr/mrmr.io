@@ -36,7 +36,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
         p5.background(0);
         p5.scale(1.01 + Math.random() * 0.005);
     }
-    // Slow rotate
+    // Slow speed rotation around the origin
     p5.rotate(Math.sin(p5.frameCount / 800) / 4);
 
     gridDots(p5, { gap, stroke: strokeDots });
@@ -84,8 +84,11 @@ const gridDots = (p5: p5Types, o = {} as DotsDrawOpts) => {
     p5.stroke(p5c(stroke));
     p5.strokeWeight(8);
 
-    for (let y = -gap; y < p5.height + gap; y += gap) {
-        for (let x = -gap; x < p5.width + gap; x += gap) {
+    // Draw beyond the edges so that we can still see the grid even after the
+    // viewport has been rotated.
+    const [h, w] = [p5.height, p5.width];
+    for (let y = -(h + gap); y < 2 * h + gap; y += gap) {
+        for (let x = -(w + gap); x < 2 * w + gap; x += gap) {
             p5.point(x, y);
         }
     }
@@ -116,8 +119,13 @@ const gridCirclesAndStars = (
     const offset = gap / 2;
     // This radius was computed for a gap of 50
     const d = (gap / 50) * 12;
-    for (let y = -(gap + offset); y < p5.height + offset; y += gap) {
-        for (let x = -(gap + offset); x < p5.width + offset; x += gap) {
+
+    // Draw beyond the edges so that we can still see the grid even after the
+    // viewport has been rotated.
+    const [h, w] = [p5.height, p5.width];
+
+    for (let y = -(h + gap + offset); y < 2 * h + offset; y += gap) {
+        for (let x = -(w + gap + offset); x < 2 * w + offset; x += gap) {
             // Alternate between the circle and the star
             if (c++ % 2) {
                 p5.stroke(p5c(strokeCircle));
