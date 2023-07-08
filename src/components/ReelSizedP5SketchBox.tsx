@@ -52,9 +52,14 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
     const defaultHeight = 640;
     const aspectRatio = 9 / 16;
 
-    const setup = (p5: p5Types, canvasParentRef: Element) => {
+    const computeSize = (p5: p5Types): [number, number] => {
         const height = Math.min(defaultHeight, p5.windowHeight);
         const width = height * aspectRatio;
+        return [width, height];
+    };
+
+    const setup = (p5: p5Types, canvasParentRef: Element) => {
+        const [width, height] = computeSize(p5);
 
         // Use the `parent` method to ask p5 render to the provided canvas ref
         // instead of creating and rendering to a canvas of its own.
@@ -69,6 +74,12 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
         if (shouldDisableLooping === true) p5.noLoop();
     };
 
+    const windowResized = (p5: p5Types) => {
+        const [width, height] = computeSize(p5);
+
+        p5.resizeCanvas(width, height);
+    };
+
     const env = {
         audioTime: () => {
             return audioContext?.currentTime ?? 0;
@@ -79,5 +90,11 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
         draw(p5, env);
     };
 
-    return <Sketch setup={setup} draw={wrappedDraw} />;
+    return (
+        <Sketch
+            setup={setup}
+            draw={wrappedDraw}
+            windowResized={windowResized}
+        />
+    );
 };
