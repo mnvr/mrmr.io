@@ -1,5 +1,6 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
+import { extractAudioMarkersAtTime } from "p5/audio";
 import { debugHUD } from "p5/utils";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
@@ -10,53 +11,21 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.clear();
 
     const gap = 50;
+    const audio = extractAudioMarkersAtTime(trackInfo, env.audioTime());
 
     p5.push();
 
-    // time, in seconds
-    const t = env.audioTime() % ts.duration;
-    // time, normalized to the loop length
-    const tf = t / ts.duration;
-    // We have a beat every 60 / bpm seconds. Divide by this value to obtain the
-    // time in units of beats.
-    const tb = t / (60 / ts.bpm);
-    // A bar is 4 beats – this is not always true, but is true in this case. We
-    // have a bar every 4 * (60 / bpm) seconds. Divide by this value to obtain
-    // the time in units of bars.
-    const tB = tb / 4;
-    // How far are we away from a bar
-    // This is a number [0, 1]
-    const tBf = tB % 1;
-    // Smoothen this number by using a cosine
-    // - Scale this number to [0, π/2] so that the cosine is between [1, 0]
-    const tBfc = Math.cos(tBf * Math.PI);
-
-    // Offset the beat similarity value by half a bar to obtain a similarity
-    // index [1, 0] for the offbeat.
-    const tBfc2 = Math.cos(((tB + 0.5) % 1) * Math.PI);
     // And another one for the pre-offbeat kick (the kick at the 7/16-th note)
-    const tBfc3 = Math.cos(((tB - 6 / 16) % 1) * Math.PI);
-
-    // Bar number, integral
-    // Useful for indexing notes
-    const iB = Math.floor(tB - tBf);
-
-    // console.log({ t, tf, tb, tB, iB, tBf, tBfc, tBfc2 });
-
-    // // At the end of the song, drain out the color and set a black background.
-    // if (tf > 0.8 && tf < 0.95)
-    //     p5.background(
-    //         p5c(setAlpha(color(0), Math.abs(Math.sin(Math.PI * (0.5 + tf)))))
-    //     );
-
-    let stroke = color(237);
+    const tBfc3 = Math.cos(((audio.bars - 6 / 16) % 1) * Math.PI);
+    const xx = audio.nearBeat(7 / 16);
+    console.log(tBfc3, xx);
 
     // --------
     // Pulse the colors to the beat
     //
 
-    const strokeDots = color(Math.max(235 + tBfc2 * 20, 235 + tBfc * 20));
-    const strokeStar = color(237 + tBfc * 11);
+    const strokeDots = color(Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20, ));
+    const strokeStar = color(237 + audio.nearOnBeat * 11);
     const strokeCircle = color(237 + tBfc3 * 11);
 
     // --------
@@ -66,9 +35,14 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.translate(4, 4);
 
     // Rotate the stars at a speed indexed by the bass note.
-    const rotateStar = ensure(bassNotesByBar[iB]);
+    const rotateStar = bassNoteForBar(audio.bar);
 
-    if ([2, 10, 14].includes(iB) && Math.floor(tBf * 10) >= 7) {
+    // Switch to black and jiggle the stars in the latter 3/10ths of some of the
+    // 3rd bars (the one with the repeating snares).
+    if (
+        [2, 10, 14].includes(audio.bar) &&
+        Math.floor(audio.barOffset * 10) >= 7
+    ) {
         p5.background(0);
         p5.scale(1.01 + Math.random() * 0.005);
     }
@@ -77,46 +51,40 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     gridDots(p5, { gap, stroke: strokeDots });
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
 
-    // const [tb1, tb2] = [ts.bass1, ts.bass2];
-    // if (t > tb1 && t < tb2) {
-    //     const l = 1 - (t - tb1) / (tb2 - tb1);
-    //     console.log("lighten", l);
-    //     strokeStar = lighten(stroke, l * 0.5);
-    // }
-
     p5.pop();
 
-    debugHUD(p5, `${bassNotesByBar[iB]} - ${iB}`, { stroke: "blue" });
+    debugHUD(p5, `${rotateStar} - ${audio.bar}`, { stroke: "blue" });
 };
 
-// These times of interests are in seconds, extracted from "become.mp3".
-const ts = {
-    bass1: 1, // Basoon note-1 decay start
-    bass2: 3, // Basoon note-2 onset
-    duration: 39.273, // Song duration
-    bpm: 110, // In units of BPM (beats per minute)
+// Extracted from "become.mp3"
+const trackInfo = {
+    duration: 39.273,
+    bpm: 110,
 };
 
-const bassNotesByBar = [
-    6, // F1 - 2 bars
-    6,
-    5, // E1 - 1 bar
-    3, // D1 - 4 bars
-    3,
-    3,
-    3,
-    0, // Rest - 2 bars
-    0,
-    1, // C1 - 2 bars
-    1,
-    3, // D1 - 2.x bars
-    3,
-    3,
-    0,
-    0,
-    0,
-    0,
-];
+const bassNoteForBar = (bar: number) =>
+    ensure(
+        [
+            6, // F1 - 2 bars
+            6,
+            5, // E1 - 1 bar
+            3, // D1 - 4 bars
+            3,
+            3,
+            3,
+            0, // Rest - 2 bars
+            0,
+            1, // C1 - 2 bars
+            1,
+            3, // D1 - 2.x bars
+            3,
+            3,
+            0,
+            0,
+            0,
+            0,
+        ][bar]
+    );
 
 interface DotsDrawOpts {
     gap: number;
