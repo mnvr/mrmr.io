@@ -41,7 +41,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // Useful for indexing notes
     const iB = Math.floor(tB - tBf);
 
-    console.log({ t, tf, tb, tB, iB, tBf, tBfc, tBfc2 });
+    // console.log({ t, tf, tb, tB, iB, tBf, tBfc, tBfc2 });
 
     // // At the end of the song, drain out the color and set a black background.
     // if (tf > 0.8 && tf < 0.95)
@@ -68,7 +68,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     // Rotate the stars at a speed indexed by the bass note.
     const rotateStar = ensure(bassNotesByBar[iB]);
 
-    if (iB % 4 === 2 && Math.floor(tBf * 10) >= 7) {
+    if ([2, 10, 14].includes(iB) && Math.floor(tBf * 10) >= 7) {
         p5.background(0);
         p5.scale(1.01 + Math.random() * 0.005);
     }
