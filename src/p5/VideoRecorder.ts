@@ -60,4 +60,34 @@ export class VideoRecorder {
 
         recorder.stop();
     }
+
+    /**
+     * A convenience method to recording the next `duration` seconds.
+     *
+     * This method is structured such that it can be directly called from the
+     * {@link didPlay} callback to {@link useWebAudioFilePlayback}, reducing the
+     * amount of code that has to be uncommented to record the canvas (we don't
+     * need recording functionality in the actual site).
+     *
+     * The recording won't be sample accurate, so it is maybe to overrecord a
+     * bit and then crop out the excess part that goes beyond the audio.
+     *
+     * Known issues:
+     *
+     * - The stream is recorded in a compressed format ("webm" on Chrome and
+     *   "mp4" on Safari). In terms of quality, the mp4 produced by Safari is
+     *   slightly better (at least for the examples I tested with).
+     *
+     */
+    recordIfNeeded(duration: number, isPlaying: boolean) {
+        if (!isPlaying) return;
+        if (this._recorder) return;
+        const _this = this;
+        _this.start();
+        console.log(`Starting recording, will stop after ${duration} seconds`);
+        setTimeout(() => {
+            _this.stopAndSave();
+            console.log("Recording done");
+        }, duration * 1000);
+    }
 }

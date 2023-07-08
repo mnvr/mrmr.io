@@ -1,11 +1,7 @@
 import p5Types from "p5";
 import Sketch from "p5/Sketch";
-import { VideoRecorder } from "p5/VideoRecorder";
 import * as React from "react";
 import type { P5Draw } from "types";
-import { isDevelopment } from "utils/debug";
-
-const enableTestRecording = false;
 
 interface ReelSizedP5SketchBoxProps {
     /**
@@ -49,8 +45,6 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
     shouldDisableLooping,
     audioContext,
 }) => {
-    const [recorder, _] = React.useState(new VideoRecorder());
-
     // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
     // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
     // that as the height. However, if the window is smaller than that, we limit
@@ -73,16 +67,6 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
         // still see the rendered sketch, but animations (or more generally,
         // subsequent draw calls) will be stopped.
         if (shouldDisableLooping === true) p5.noLoop();
-
-        if (isDevelopment() && enableTestRecording) {
-            setTimeout(() => {
-                recorder.start();
-            }, 5000);
-
-            setTimeout(() => {
-                recorder.stopAndSave();
-            }, 10000);
-        }
     };
 
     const env = {
