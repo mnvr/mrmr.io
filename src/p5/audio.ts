@@ -75,11 +75,12 @@ interface AudioMarkers {
      */
     barOffset: number;
     /**
-     * Similarity index to the start of a bar.
+     * Similarity index to the start of a bar. onset
      *
      * This is a sinusoidally varying version of barOffset. This value is
-     * between [0, 1]. It can be used to drive smooth animations that come into
-     * effect the closer we're to the onset of the first beat in a bar.
+     * between [1, -1]. 1 at the onset of the bar, and -1 as we're just about to
+     * loop back around. It can be used to drive smooth animations that come
+     * into effect the closer we're to the onset of the first beat in a bar.
      */
     nearOnBeat: number;
     /**
@@ -89,8 +90,8 @@ interface AudioMarkers {
     nearOffBeat: number;
     /**
      * A generalization of {@link nearOnBeat} and {@link nearOffBeat} that
-     * computes the sinusoidal similarity to an arbitrary offset since the start
-     * of a bar.
+     * computes the sinusoidal similarity to the onset of an arbitrary offset
+     * since the start of a bar.
      */
     nearBeat: (offset: number) => number;
 }
@@ -142,12 +143,12 @@ export const extractAudioMarkersAtTime = (
     // but with a sinusoidal decay, and supporting similarity to arbitrary
     // points in the bar.
     //
-    // - Add an offset
+    // - Add an offset (cycling back if needed to ensure we don't go negative)
     // - Smoothen this number by using a cosine
-    // - Scale this number to [0, π/2] so that the cosine is between [1, 0]
+    // - Scale this number to [0, π] so that the cosine is between [1, -1]
     //
     const nearBeat = (offset: number) =>
-        Math.cos(((bars + offset) % 1) * Math.PI);
+        Math.cos(((1 + bars - offset) % 1) * Math.PI);
 
     const nearOnBeat = nearBeat(0);
     const nearOffBeat = nearBeat(1 / 2);

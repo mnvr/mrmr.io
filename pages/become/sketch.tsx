@@ -15,18 +15,16 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     p5.push();
 
-    // And another one for the pre-offbeat kick (the kick at the 7/16-th note)
-    const tBfc3 = Math.cos(((audio.bars - 6 / 16) % 1) * Math.PI);
-    const xx = audio.nearBeat(7 / 16);
-    console.log(tBfc3, xx);
-
     // --------
     // Pulse the colors to the beat
     //
 
-    const strokeDots = color(Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20, ));
+    const strokeDots = color(
+        Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20)
+    );
     const strokeStar = color(237 + audio.nearOnBeat * 11);
-    const strokeCircle = color(237 + tBfc3 * 11);
+    // Link to the pre-offbeat kick (the kick at the 6/16-th note).
+    const strokeCircle = color(237 + audio.nearBeat(6 / 16) * 11);
 
     // --------
 
