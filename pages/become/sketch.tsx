@@ -1,7 +1,6 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
 import { extractAudioMarkersAtTime } from "p5/audio";
-import { debugHUD } from "p5/utils";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
@@ -13,20 +12,13 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     const gap = 50;
     const audio = extractAudioMarkersAtTime(trackInfo, env.audioTime());
 
-    p5.push();
-
-    // --------
     // Pulse the colors to the beat
-    //
-
     const strokeDots = color(
         Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20)
     );
     const strokeStar = color(237 + audio.nearOnBeat * 11);
     // Link to the pre-offbeat kick (the kick at the 6/16-th note).
     const strokeCircle = color(237 + audio.nearBeat(6 / 16) * 11);
-
-    // --------
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -44,14 +36,11 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
         p5.background(0);
         p5.scale(1.01 + Math.random() * 0.005);
     }
-    p5.rotate(Math.sin((p5.frameCount / 800) % 20) / 3);
+    // Slow rotate
+    p5.rotate(Math.sin(p5.frameCount / 800) / 4);
 
     gridDots(p5, { gap, stroke: strokeDots });
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
-
-    p5.pop();
-
-    debugHUD(p5, `${rotateStar} - ${audio.bar}`, { stroke: "blue" });
 };
 
 // Extracted from "become.mp3"
