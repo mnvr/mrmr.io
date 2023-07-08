@@ -31,8 +31,14 @@ type UseWebAudioPlaybackReturn = {
  * This function is invoked when the playback state actually changes. It
  * will be called with true when audio initially starts playing (or is
  * subsequently resumed), and with false when audio is paused.
+ *
+ * @param audioContext The audio context whose playback changed. This'll be the
+ * same as the audio context that is returned by the
+ * {@link useWebAudioFilePlayback} method, but also passed here for convenience.
+ *
+ * @param isPlaying The changed playback state.
  */
-type DidPlay = (isPlaying: boolean) => void;
+type DidPlay = (audioContext: AudioContext, isPlaying: boolean) => void;
 
 /**
  * A React hook to wrap the playback and loading state of a single audio file,
@@ -180,7 +186,7 @@ export const useWebAudioFilePlayback = (
         }
 
         // Fire the callback, if provided.
-        if (didPlay) didPlay(shouldPlayNew);
+        if (didPlay) didPlay(ac, shouldPlayNew);
 
         setShouldPlay(shouldPlayNew);
     };

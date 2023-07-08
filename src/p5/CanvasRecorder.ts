@@ -2,7 +2,7 @@ import FileSaver from "file-saver";
 import { ensure } from "utils/ensure";
 
 /**
- * Record the p5 canvas
+ * Record the p5 canvas alongwith audio
  *
  * This is a simple/minimal homegrown class for recording the canvas used by
  * p5.js onto a video. The other libraries I tried:
@@ -15,12 +15,17 @@ import { ensure } from "utils/ensure";
  *
  * - p5.videorecorder: Uses various window globals not accessible during SSR.
  *   Plus, it's also not in TypeScript.
+ *
+ * This class assumes that there is a single canvas element. The audio is taken
+ * from the audio context that is passed to the start recording method. This
+ * class will then record the canvas contents and audio into a video file. Once
+ * recording completes, it'll trigger a download of this video file.
  */
-export class VideoRecorder {
+export class CanvasRecorder {
     _recorder: MediaRecorder | undefined;
 
     /** Start recording */
-    start() {
+    start(audioContext: AudioContext) {
         if (this._recorder)
             throw new Error(
                 "Attempting to start a new recording without stopping the previous one"
@@ -33,6 +38,13 @@ export class VideoRecorder {
         // The return value is a reference to a MediaStream object, which has a
         // single CanvasCaptureMediaStreamTrack in it.
         const mediaStream = canvas.captureStream(frameRate);
+
+        // Add the audio as a track to the media stream that is being recorded.
+        const audioStreamDestination =
+            audioContext.createMediaStreamDestination();
+        const audioStream = audioStreamDestination.stream;
+        const audioTrack = ensure(audioStream.getTracks()[0]);
+        mediaStream.addTrack(audioTrack);
 
         const recorder = new MediaRecorder(mediaStream);
         this._recorder = recorder;
@@ -52,7 +64,8 @@ export class VideoRecorder {
     }
 
     /**
-     * Stop the previously started recording, and save it to a file.
+     * Stop the previously started recording, save it to a file and trigger a
+     * download of the resultant file.
      */
     stopAndSave() {
         const recorder = ensure(this._recorder);
@@ -79,11 +92,15 @@ export class VideoRecorder {
      *   slightly better (at least for the examples I tested with).
      *
      */
-    recordIfNeeded(duration: number, isPlaying: boolean) {
+    recordIfNeeded(
+        duration: number,
+        audioContext: AudioContext,
+        isPlaying: boolean
+    ) {
         if (!isPlaying) return;
         if (this._recorder) return;
         const _this = this;
-        _this.start();
+        _this.start(audioContext);
         console.log(`Starting recording, will stop after ${duration} seconds`);
         setTimeout(() => {
             _this.stopAndSave();

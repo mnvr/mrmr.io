@@ -3,7 +3,7 @@ import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
 import type p5Types from "p5";
-import { VideoRecorder } from "p5/VideoRecorder";
+import { CanvasRecorder } from "p5/CanvasRecorder";
 import * as React from "react";
 import styled from "styled-components";
 import type { P5Draw } from "types";
@@ -37,14 +37,14 @@ interface PlayerP5WebAudioProps {
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ draw, songURL }) => {
-    const recorderRef = React.useRef(new VideoRecorder());
+    const recorderRef = React.useRef(new CanvasRecorder());
 
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
-        useWebAudioFilePlayback(songURL, (isPlaying) => {
+        useWebAudioFilePlayback(songURL, (audioContext, isPlaying) => {
             // Uncomment this to record the canvas
-            // recorderRef.current.recordIfNeeded(40, isPlaying);
+            // recorderRef.current.recordIfNeeded(40, audioContext, isPlaying);
 
             const p5 = p5Ref.current;
             if (isPlaying) p5?.loop();

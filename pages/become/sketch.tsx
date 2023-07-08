@@ -108,8 +108,6 @@ const gridCirclesAndStars = (
 
     p5.noFill();
 
-    let c = 0;
-
     p5.rectMode(p5.CENTER);
     p5.angleMode(p5.RADIANS);
 
@@ -121,7 +119,10 @@ const gridCirclesAndStars = (
     // viewport has been rotated.
     const [h, w] = [p5.height, p5.width];
 
+    let c = 0;
+
     for (let y = -(h + gap + offset); y < 2 * h + offset; y += gap) {
+        let lineCount = 0;
         for (let x = -(w + gap + offset); x < 2 * w + offset; x += gap) {
             // Alternate between the circle and the star
             if (c++ % 2) {
@@ -135,7 +136,12 @@ const gridCirclesAndStars = (
                 let rotateBy = (Math.PI * rotateStar) / 11;
                 curvedStar(p5, x, y, gap, gap, strokeStar, rotateBy);
             }
+            lineCount++;
         }
+        // If this line ended with an even number of items, increment the count
+        // by 1 so that the next line starts with a a piece that retains the
+        // alignment.
+        if (lineCount % 2 === 0) c++;
     }
 };
 
