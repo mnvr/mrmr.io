@@ -29,15 +29,12 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     // Switch to black and jiggle the stars in the latter 3/10ths of some of the
     // 3rd bars (the one with the repeating snares).
-    if (
-        [2, 10, 14].includes(audio.bar) &&
-        Math.floor(audio.barOffset * 10) >= 7
-    ) {
+    if ([2, 14].includes(audio.bar) && Math.floor(audio.barOffset * 10) >= 7) {
         p5.background(0);
-        p5.scale(1.01 + Math.random() * 0.005);
+        p5.scale(1.02 + audio.bar / 100 + Math.random() * 0.005);
     }
     // Slow speed rotation around the origin
-    p5.rotate(Math.sin(p5.frameCount / 800) / 4);
+    p5.rotate(Math.sin(audio.loopOffset * Math.PI) / 2);
 
     gridDots(p5, { gap, stroke: strokeDots });
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
