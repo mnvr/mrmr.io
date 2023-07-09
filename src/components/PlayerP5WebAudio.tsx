@@ -38,8 +38,6 @@ export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ draw, songURL }) => {
     const recorderRef = React.useRef(new CanvasRecorder());
-    // Set this to `true` to record.
-    const shouldRecord = false;
 
     const p5Ref = React.useRef<p5Types | undefined>();
 
@@ -48,7 +46,7 @@ export const PlayerP5WebAudio: React.FC<
             songURL,
             (audioContext, audioSourceNode, isPlaying) => {
                 recorderRef.current.record(
-                    isPlaying && shouldRecord,
+                    isPlaying && false, // set this to `true` to record
                     audioContext,
                     audioSourceNode
                 );
@@ -66,7 +64,6 @@ export const PlayerP5WebAudio: React.FC<
                     draw={draw}
                     p5Ref={p5Ref}
                     shouldDisableLooping={true}
-                    shouldRecord={shouldRecord}
                     audioContext={audioContext}
                 />
             </SketchContainer>

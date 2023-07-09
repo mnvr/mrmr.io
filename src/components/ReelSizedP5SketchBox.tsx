@@ -30,13 +30,6 @@ interface ReelSizedP5SketchBoxProps {
     shouldDisableLooping?: boolean;
 
     /**
-     * If true, set up the canvas for recording. This'll result in a canvas
-     * that's sized more than the viewport so that the recording can be of a
-     * higher quality.
-     */
-    shouldRecord?: boolean;
-
-    /**
      * The audio context in which audio is being (or will be) played.
      *
      * This will be undefined both (a) if the sketch does not have any
@@ -50,32 +43,17 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
     draw,
     p5Ref,
     shouldDisableLooping,
-    shouldRecord,
     audioContext,
 }) => {
     // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
     // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
     // that as the height. However, if the window is smaller than that, we limit
-    // to the window's height. Also, 640 is a bit too small for some screens, so
-    // we use 800 as our limit (moving in increments of 160: 640 => 800 => 960
-    // => ... => 1920).
-    //
-    // Note about recording
-    // --------------------
-    //
-    // When recording the canvas using our `CanvasRecorder`, we can record at a
-    // higher size to account for the fact that the MediaRecorder API produces
-    // compressed videos that have compression artifacts. Since the recording is
-    // capturing the canvas and not the part we see on screen, we can
-    // arbitrarily increase the canvas size, e.g. by setting the `defaultHeight`
-    // to 1920.
-    const defaultHeight = 800;
+    // to the window's height.
+    const defaultHeight = 640;
     const aspectRatio = 9 / 16;
 
     const computeSize = (p5: p5Types): [number, number] => {
-        const height = shouldRecord
-            ? 1920
-            : Math.min(defaultHeight, p5.windowHeight);
+        const height = Math.min(defaultHeight, p5.windowHeight);
         const width = height * aspectRatio;
         return [width, height];
     };
