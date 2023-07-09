@@ -79,12 +79,15 @@ export const recordIfNeeded = (p5: p5Types, audio: AudioMarkers) => {
                 "Only recording of on-screen HTML canvases is currently supported"
             );
         const remainingTime = audio.track.duration - audio.audioTime;
+        console.log("recordIfNeeded", { fc, remainingTime });
         canvas.toBlob((blob) => {
+            console.log("toBlob        ", { fc, remainingTime });
+
             // Trigger the downloads after we're done recording. This is an
             // attempt to try and ensure a smoother frame rate.
             setTimeout(() => {
                 console.log(`canvas-${ns}.png`);
-                FileSaver.saveAs(ensure(blob), `canvas-${ns}.png`);
+                if (false) FileSaver.saveAs(ensure(blob), `canvas-${ns}.png`);
             }, remainingTime * 1000);
         }, "image/png");
         // p5.save(`/tmp/b/canvas-${ns}.png`, );
