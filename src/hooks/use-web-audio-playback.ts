@@ -32,20 +32,9 @@ type UseWebAudioPlaybackReturn = {
  * called with true when audio initially starts playing (or is subsequently
  * resumed), and with false when audio is paused.
  *
- * @param audioContext The audio context whose playback changed. This'll be the
- * same as the audio context that is returned by the
- * {@link useWebAudioFilePlayback} method, but also passed here for convenience.
- *
- * @param audioBufferNode The audio node that is playing the sound file that was
- * passed to {@link useWebAudioFilePlayback} as the `url` parameter.
- *
  * @param isPlaying The changed playback state.
  */
-type DidPlay = (
-    audioContext: AudioContext,
-    audioBufferNode: AudioBufferSourceNode,
-    isPlaying: boolean
-) => void;
+type DidPlay = (isPlaying: boolean) => void;
 
 /**
  * A React hook to wrap the playback and loading state of a single audio file,
@@ -132,14 +121,6 @@ export const useWebAudioFilePlayback = (
         AudioContext | undefined
     >();
 
-    // The audio source that is playing the audio file.
-    //
-    // We need to keep a reference to this around so that we can connect it to
-    // the mediastream, to capture the audio when recording.
-    const [audioBufferNode, setAudioBufferNode] = React.useState<
-        AudioBufferSourceNode | undefined
-    >();
-
     // Load the audio file immediately on page load
     React.useEffect(() => {
         // Create an audio context when the useEffect first runs. We cannot do
@@ -163,7 +144,7 @@ export const useWebAudioFilePlayback = (
         loadAudioBuffer(ac, url)
             .then((ab) => {
                 setIsLoading(false);
-                setAudioBufferNode(loopAudioBuffer(ac, ab));
+                loopAudioBuffer(ac, ab);
             })
             .catch((e) => {
                 // We don't currently handle errors, so in this case the user
@@ -201,7 +182,7 @@ export const useWebAudioFilePlayback = (
         }
 
         // Fire the callback, if provided.
-        if (didPlay) didPlay(ac, ensure(audioBufferNode), shouldPlayNew);
+        if (didPlay) didPlay(shouldPlayNew);
 
         setShouldPlay(shouldPlayNew);
     };
