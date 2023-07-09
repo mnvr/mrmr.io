@@ -111,21 +111,6 @@ const SketchContainer = styled.div<SketchContainerProps>`
        same grid position so that the play button appears on top (with the
        overlay behind it) when playback is stopped. */
     grid-area: 1/-1;
-
-    /* Explicitly set a background color for the canvas so that it appears in
-       the background of the frames that we record using p5.saveFrame.
-
-       We don't set a background color on the canvas in P5, and instead use a
-       transparent background by using p5.clear. This is because colors in P5
-       are restricted to the sRGB space. So we instead set the background color
-       in CSS, and rely on the background to show through. This works fine for
-       the page itself, but is a problem during recording since the recorded
-       frames are transparent. Thus, here we also set a background explicitly.
-     */
-    canvas {
-        background-color: red;
-        color: blue;
-    }
 `;
 
 const PlayButtonContainer = styled.div`

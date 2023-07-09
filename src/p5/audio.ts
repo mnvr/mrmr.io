@@ -28,7 +28,7 @@ interface TrackInfo {
  *
  * In particular, this is the return value of {@link extractAudioMarkersAtTime}.
  */
-interface AudioMarkers {
+export interface AudioMarkers {
     /**
      * We retain a reference to the track info that was passed to us in
      * {@link extractAudioMarkersAtTime}.

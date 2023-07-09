@@ -43,7 +43,6 @@ export class CanvasRecorder {
      * that is not specified it determines the duration from the length of the
      * buffer associated with the passed in `audioSourceNode`.
      *
-     *
      * Once the recording is complete, this method will save it to an in-memory
      * file and trigger a download of the resultant file.
      *
@@ -69,6 +68,11 @@ export class CanvasRecorder {
      * - The stream is recorded in a compressed format ("webm" on Chrome and
      *   "mp4" on Safari). In terms of quality, the mp4 produced by Safari is
      *   slightly better (at least for the examples I tested with).
+     *
+     * Both of these are problematic, thus we don't currently use this class.
+     * Instead, we use a slightly more involved method of saving individual
+     * frames and then stiching them together (with the audio). See the
+     * `recordIfNeeded` function in `record.ts`.
      */
     record(
         shouldRecord: boolean,

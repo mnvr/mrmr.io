@@ -1,10 +1,6 @@
 import p5Types from "p5";
 
 export const draw = (p5: p5Types) => {
-    // Using clear instead background here because clear clears out the canvas
-    // to a transparent background. This way, we do not need to specify the
-    // background color as a p5.Color, and can use a more vibrant color
-    // specified e.g. using OKLCH.
     p5.clear();
 
     p5.stroke(255);
