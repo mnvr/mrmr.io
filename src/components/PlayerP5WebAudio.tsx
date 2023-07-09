@@ -6,6 +6,7 @@ import type p5Types from "p5";
 import * as React from "react";
 import styled from "styled-components";
 import type { P5Draw } from "types";
+import { ensure } from "utils/ensure";
 
 interface PlayerP5WebAudioProps {
     /**
@@ -101,9 +102,42 @@ export const PlayerP5WebAudio: React.FC<
     // Unconditionally restrict the aspect ratio if we're recording
     if (isRecording) restrictAspectRatio = true;
 
+    // Workaround for Safari not using the backdrop-filter on initial page load.
+    //
+    // We overlay a frosted glass effect on top of the sketch when playback is
+    // paused. This effect is implemented using the CSS backdrop-filter.
+    //
+    // This works fine in Chrome. But it only works in Safari the next time
+    // after the page has been loaded – on initial page load, the backdrop
+    // filter doesn't show up.
+    //
+    // This is a functional issue, since without the frosted glass overlay the
+    // play / expand buttons get lost amongst the sketch elements themselves.
+    //
+    // As a workaround, I tried reducing the opacity of the sketch when the
+    // overlay is shown. This worked in Safari, but this now caused the overlay
+    // to look incorrect in Chrome.
+    //
+    // Hence, this hackier workaround. This essentially forces a repaint, which
+    // is apparently enough for Safari to notice the backdrop filter.
+    //
+    // Source for this workaround:
+    // https://stackoverflow.com/questions/65450735/backdrop-filter-doesnt-work-on-safari-most-of-the-times
+    React.useEffect(() => {
+        setTimeout(() => {
+            const el = ensure(
+                window.document.getElementById("sketch-container")
+            );
+            el.style.display = "table";
+            el.offsetHeight;
+            el.style.display = "block";
+        }, 500);
+    }, []);
+
     return (
         <Grid>
             <SketchContainer
+                id="sketch-container"
                 onClick={toggleShouldPlay}
                 showOverlay={showOverlay}
             >
