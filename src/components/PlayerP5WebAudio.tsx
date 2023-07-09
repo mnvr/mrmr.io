@@ -167,14 +167,6 @@ const SketchContainer = styled.div<SketchContainerProps>`
         display: ${(props) => (props.showOverlay ? "block" : "none")};
     }
 
-    /* On Safari, the frosted glass effect of the overlay (using the
-       backdrop-filter) does not show up initially on page load.
-
-       To better accomodate this functional problem (since the play button might
-       not be visible), reduce the opacity of the entire container.
-     */
-    opacity: ${(props) => (props.showOverlay ? 0.7 : 1)};
-
     /* Slot both the sketch and the (conditionally displayed) play button in the
        same grid position so that the play button appears on top (with the
        overlay behind it) when playback is stopped. */
