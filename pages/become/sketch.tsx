@@ -42,7 +42,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
 // Extracted from "become.mp3"
 const trackInfo = {
-    duration: 39.273,
+    duration: 39.272743,
     bpm: 110,
 };
 

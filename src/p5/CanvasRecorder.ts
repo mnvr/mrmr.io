@@ -2,7 +2,7 @@ import FileSaver from "file-saver";
 import { ensure } from "utils/ensure";
 
 /**
- * Record the p5 canvas alongwith audio
+ * Record the p5 canvas alongwith audio from an WebAudio source node.
  *
  * This is a simple/minimal homegrown class for recording the canvas used by
  * p5.js onto a video. The other libraries I tried:
@@ -16,12 +16,19 @@ import { ensure } from "utils/ensure";
  * - p5.videorecorder: Uses various window globals not accessible during SSR.
  *   Plus, it's also not in TypeScript.
  *
- * This class assumes that there is a single canvas element. The audio is taken
- * from the audio source node in the audio context that is passed to the start
- * recording method.
+ * This class assumes that there is a single canvas element in the DOM, and
+ * captures that as the video source. The audio is taken from the audio source
+ * node that is passed to the start recording method.
  *
- * This class will then record the canvas contents and audio into a video file.
- * Once recording completes, it'll trigger a download of this video file.
+ * The recorder will then record the canvas contents and audio into a video
+ * file. The duration of the recording will be the same as the length of the
+ * audio file (buffer) that is loaded in the audio source node that we're using.
+ * The effect we're aiming for is to record one loop of the audio (and the video
+ * that accompanies it). Unfortunately, the timing of this will not be sample
+ * accurate, so the recording might not loop perfectly.
+ *
+ * Once recording completes, the recorder will trigger a download of the video
+ * file.
  */
 export class CanvasRecorder {
     _recorder: MediaRecorder | undefined;
@@ -78,15 +85,18 @@ export class CanvasRecorder {
     }
 
     /**
-     * A convenience method to recording the next `duration` seconds.
+     * A convenience method to recording a single loop
+     *
+     * This method supports specifying an optional `duration` seconds, but if
+     * that is not specified it determines the duration from the length of the
+     * buffer associated with the passed in `audioSourceNode`.
      *
      * This method is structured such that it can be directly called from the
      * {@link didPlay} callback to {@link useWebAudioFilePlayback}, reducing the
      * amount of code that has to be uncommented to record the canvas (we don't
      * need recording functionality in the actual site).
      *
-     * The recording won't be sample accurate, so it is maybe to overrecord a
-     * bit and then crop out the excess part that goes beyond the audio.
+     * The recording won't be sample accurate.
      *
      * Known issues:
      *
@@ -96,13 +106,14 @@ export class CanvasRecorder {
      *
      */
     recordIfNeeded(
-        duration: number,
+        shouldRecord: boolean,
         audioContext: AudioContext,
         audioSourceNode: AudioBufferSourceNode,
-        isPlaying: boolean
+        duration?: number
     ) {
-        if (!isPlaying) return;
+        if (!shouldRecord) return;
         if (this._recorder) return;
+        if (!duration) duration = ensure(audioSourceNode.buffer?.duration);
         const _this = this;
         _this.start(audioContext, audioSourceNode);
         console.log(`Starting recording, will stop after ${duration} seconds`);

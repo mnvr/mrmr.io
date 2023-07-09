@@ -45,12 +45,10 @@ export const PlayerP5WebAudio: React.FC<
         useWebAudioFilePlayback(
             songURL,
             (audioContext, audioSourceNode, isPlaying) => {
-                // Uncomment this to record the canvas
                 recorderRef.current.recordIfNeeded(
-                    10,
+                    isPlaying && false, // set this to `true` to record
                     audioContext,
-                    audioSourceNode,
-                    isPlaying
+                    audioSourceNode
                 );
 
                 const p5 = p5Ref.current;
