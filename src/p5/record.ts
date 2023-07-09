@@ -8,6 +8,8 @@ import { ensure } from "utils/ensure";
 /**
  * Set the canvas background, but to an arbitrary CSS color.
  *
+ * __Notice: Doesn't work, see the Known Issue section below__
+ *
  * The `background` method provided by P5 first converts colors to its own
  * internal representation. This only supports basic SRGB colors, so we cannot
  * do something like the following:
@@ -33,6 +35,19 @@ import { ensure } from "utils/ensure";
  *
  * So when recording, we need to use this function and explicitly set a
  * background color of the canvas.
+ *
+ * Known Issues
+ * ------------
+ *
+ * The color still gets rendered in the sRGB color space, because the default
+ * color space for HTML canvas elements is "sRGB".
+ *
+ * Newer browsers support other color spaces, but unlocking those would require
+ * modifications to P5.
+ *
+ * References:
+ * - https://github.com/WICG/canvas-color-space/blob/main/CanvasColorSpaceProposal.md
+ * - https://stackoverflow.com/questions/69274916/how-to-specify-color-space-for-canvas-in-javascript
  */
 export const backgroundCSS = (p5: p5Types, cssColorString: string) => {
     const context = p5.drawingContext;
@@ -46,6 +61,8 @@ export const backgroundCSS = (p5: p5Types, cssColorString: string) => {
 
 /**
  * Save a frame of the canvas if we're still rendering the first loop of audio.
+ *
+ * __Notice: Doesn't work, see the Known Issue section below__
  *
  * We use the current state of audio playback (provided to us as the `audio`
  * param) to determine if we're still rendering the first loop of audio. If so,
@@ -66,6 +83,21 @@ export const backgroundCSS = (p5: p5Types, cssColorString: string) => {
  * 1. Add a call to `recordIfNeeded` at the end of the sketch. You'll also
  *    likely need to add a call to `backgroundCSS` at the beginning of the
  *    sketch (right after `p5.clear`).
+ *
+ * 2. Use `scripts/make-vid` to patch them up into a video.
+ *
+ * Known Issues
+ * ------------
+ *
+ * Frames get skipped. This is likely because toBlob
+ * (`HTMLCanvasElement#toBlob`), which `saveCanvas` also uses internally, is
+ * asynchronous with the actual drawing.
+ *
+ * There would be a way to fix this possibly by disentangling the frame saving
+ * with audio and then doing it with an OfflineCanvas. But the other issue - of
+ * not being able to specify a OKLCH background color (see `backgroundCSS`) – is
+ * a blocker anyways, so no point in pursuing this line of approach further
+ * until that gets fixed / worked around.
  */
 export const recordIfNeeded = (p5: p5Types, audio: AudioMarkers) => {
     if (audio.audioTime > 0 && audio.audioTime < audio.track.duration) {
@@ -82,7 +114,6 @@ export const recordIfNeeded = (p5: p5Types, audio: AudioMarkers) => {
         console.log("recordIfNeeded", { fc, remainingTime });
         canvas.toBlob((blob) => {
             console.log("toBlob        ", { fc, remainingTime });
-
             // Trigger the downloads after we're done recording. This is an
             // attempt to try and ensure a smoother frame rate.
             setTimeout(() => {

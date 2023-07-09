@@ -1,7 +1,6 @@
 import Color from "colorjs.io";
 import type p5Types from "p5";
 import { extractAudioMarkersAtTime } from "p5/audio";
-import { backgroundCSS, recordIfNeeded } from "p5/record";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
@@ -9,7 +8,6 @@ import { ensure } from "utils/ensure";
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.clear();
-    backgroundCSS(p5, "oklch(72.5% 0.19 45)");
 
     const gap = 50;
     const audio = extractAudioMarkersAtTime(trackInfo, env.audioTime());
@@ -40,8 +38,6 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     gridDots(p5, { gap, stroke: strokeDots });
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
-
-    recordIfNeeded(p5, audio);
 };
 
 // Extracted from "become.mp3"
