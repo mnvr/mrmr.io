@@ -45,9 +45,24 @@ export const PlayerP5WebAudio: React.FC<
             else p5?.noLoop();
         });
 
+    // Switch to a special "recording" mode if the "#record" fragment is present
+    // in the URL. This will:
+    // 1. Disable the overlay and hide the play button so as to remove any extra
+    //    animations when audio starts playing.
+    const [isRecording, setIsRecording] = React.useState(false);
+    React.useEffect(() => {
+        if (window.location.hash === "#record") setIsRecording(true);
+    }, []);
+
+    let showOverlay = !isPlaying;
+    if (isRecording) showOverlay = false;
+
     return (
         <Grid>
-            <SketchContainer onClick={toggleShouldPlay} isPlaying={isPlaying}>
+            <SketchContainer
+                onClick={toggleShouldPlay}
+                showOverlay={showOverlay}
+            >
                 <ReelSizedP5SketchBox
                     draw={draw}
                     p5Ref={p5Ref}
@@ -57,7 +72,11 @@ export const PlayerP5WebAudio: React.FC<
             </SketchContainer>
             {!isPlaying && (
                 <PlayButtonContainer onClick={toggleShouldPlay}>
-                    {isLoading ? <LoadingIndicator /> : <PlayButton />}
+                    {isLoading ? (
+                        <LoadingIndicator />
+                    ) : (
+                        !isRecording && <PlayButton />
+                    )}
                 </PlayButtonContainer>
             )}
         </Grid>
@@ -71,7 +90,7 @@ const Grid = styled.div`
 `;
 
 interface SketchContainerProps {
-    isPlaying: boolean;
+    showOverlay: boolean;
 }
 
 const SketchContainer = styled.div<SketchContainerProps>`
@@ -92,7 +111,7 @@ const SketchContainer = styled.div<SketchContainerProps>`
         -webkit-backdrop-filter: blur(8px) saturate(100%) contrast(60%)
             brightness(130%);
 
-        display: ${(props) => (props.isPlaying ? "none" : "block")};
+        display: ${(props) => (props.showOverlay ? "block" : "none")};
     }
 
     /* Slot both the sketch and the (conditionally displayed) play button in the
