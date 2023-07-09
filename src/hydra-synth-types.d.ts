@@ -262,8 +262,6 @@ declare module "hydra-synth" {
          *
          * @param speed
          * @param offset
-         *
-         * TODO Actually document
          */
     }
 
