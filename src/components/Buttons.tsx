@@ -1,5 +1,6 @@
 import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
+import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
 
 export const IconButton = styled.button`
@@ -38,4 +39,19 @@ export const PlayButton: React.FC = () => {
 const IconWrapper2rem = styled.div`
     /* Workaround - Safari doesn't support rem units on SVG elements */
     font-size: 2rem;
+`;
+
+export const ExpandButton: React.FC<
+    React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>
+> = ({ ...props }) => {
+    return (
+        <IconButton {...props}>
+            <FaExpandAlt title="Expand" />
+        </IconButton>
+    );
+};
+
+const IconWrapper1d8rem = styled.div`
+    /* Workaround - Safari doesn't support rem units on SVG elements */
+    font-size: 1.2rem;
 `;

@@ -1,4 +1,4 @@
-import { PlayButton } from "components/Buttons";
+import { ExpandButton, PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
@@ -25,19 +25,6 @@ interface PlayerP5WebAudioProps {
      * This file will be played, in an infinite loop, using WebAudio.
      */
     songURL: string;
-    /**
-     * If true, then we'll restrict the aspect ratio of the canvas to match
-     * Instagram Reel sizes.
-     *
-     * This is useful when recording, and we'll automatically do this when we're
-     * in the special record mode. However, it is also a good idea for certain
-     * sketches that might look better in a restricted frame instead of filling
-     * the entire window.
-     *
-     * Thus, we expose this property to allow upstream to restrict the aspect
-     * ratio if that's what makes sense for the sketch.
-     */
-    restrictAspectRatio?: boolean;
 }
 
 /**
@@ -48,7 +35,7 @@ interface PlayerP5WebAudioProps {
  */
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
-> = ({ draw, songURL, restrictAspectRatio }) => {
+> = ({ draw, songURL }) => {
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
@@ -70,7 +57,48 @@ export const PlayerP5WebAudio: React.FC<
     let showOverlay = !isPlaying;
     if (isRecording) showOverlay = false;
 
-    // Unconditonally restrict the aspect ratio if we're recording
+    // If true, then we'll restrict the aspect ratio of the canvas to match
+    // Instagram Reel sizes.
+    //
+    // Restricting the aspect ratio is useful when recording, and we'll always
+    // do this when we're in the special record mode.
+    //
+    // And there might be some sketches that might not look great when expanded
+    // to arbitrary ratios, so that's another reason why we might want to
+    // restrict the aspect ratio.
+    //
+    // But these (relatively) edge cases aside, it'd have been a better default
+    // to expand to the window, and only restrict the size for these special
+    // cases.
+    //
+    // We don't do that though, because the 2d canvas performance is horrible on
+    // Safari as of today. The same sketch renders smoothly on Chrome, even on a
+    // full screen, whilst on Safari going beyond the restricted aspect ratio
+    // size starts to stutter.
+    //
+    // So instead of unilaterally switching to the full screen on all browsers;
+    // and instead, we introduce a new button that allows the user to expand the
+    // canvas. Is this a better idea than doing a Chrome user agent check? I
+    // don't quite know.
+    let restrictAspectRatio = true;
+
+    const [shouldExpand, setShouldExpand] = React.useState(false);
+    const expandCanvas = () => {
+        setShouldExpand(true);
+        // This'll usually be called after the P5's setup method has already
+        // been called, and the canvas has been created and sized. Modifying the
+        // `expandCanvas` state, and transitively, the `restrictAspectRatio`
+        // will thus not have any effect on the existing canvas.
+        //
+        // So we go ahead and resize that right now.
+        const p5 = p5Ref.current;
+        if (p5) {
+            p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
+        }
+    };
+    if (shouldExpand) restrictAspectRatio = false;
+
+    // Unconditionally restrict the aspect ratio if we're recording
     if (isRecording) restrictAspectRatio = true;
 
     return (
@@ -86,6 +114,14 @@ export const PlayerP5WebAudio: React.FC<
                     audioContext={audioContext}
                     restrictAspectRatio={restrictAspectRatio}
                 />
+                {restrictAspectRatio &&
+                    !isPlaying &&
+                    !isLoading &&
+                    !isRecording && (
+                        <ExpandButtonContainer onClick={expandCanvas}>
+                            <ExpandButton />
+                        </ExpandButtonContainer>
+                    )}
             </SketchContainer>
             {!isPlaying && (
                 <PlayButtonContainer onClick={toggleShouldPlay}>
@@ -142,4 +178,21 @@ const PlayButtonContainer = styled.div`
 
     display: grid;
     z-index: 1;
+`;
+
+const ExpandButtonContainer = styled.div`
+    /** Only show this on large enough windows */
+    display: none;
+    @media (min-width: 600px) {
+        display: block;
+    }
+
+    /* Absolutely position to the bottom left of the nearest relatively
+     * positioned container (which'll be the SketchContainer). */
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    padding: 1rem;
+    z-index: 2;
 `;
