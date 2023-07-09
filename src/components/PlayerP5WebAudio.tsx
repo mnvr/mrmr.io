@@ -25,6 +25,19 @@ interface PlayerP5WebAudioProps {
      * This file will be played, in an infinite loop, using WebAudio.
      */
     songURL: string;
+    /**
+     * If true, then we'll restrict the aspect ratio of the canvas to match
+     * Instagram Reel sizes.
+     *
+     * This is useful when recording, and we'll automatically do this when we're
+     * in the special record mode. However, it is also a good idea for certain
+     * sketches that might look better in a restricted frame instead of filling
+     * the entire window.
+     *
+     * Thus, we expose this property to allow upstream to restrict the aspect
+     * ratio if that's what makes sense for the sketch.
+     */
+    restrictAspectRatio?: boolean;
 }
 
 /**
@@ -35,7 +48,7 @@ interface PlayerP5WebAudioProps {
  */
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
-> = ({ draw, songURL }) => {
+> = ({ draw, songURL, restrictAspectRatio }) => {
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
@@ -57,6 +70,9 @@ export const PlayerP5WebAudio: React.FC<
     let showOverlay = !isPlaying;
     if (isRecording) showOverlay = false;
 
+    // Unconditonally restrict the aspect ratio if we're recording
+    if (isRecording) restrictAspectRatio = true;
+
     return (
         <Grid>
             <SketchContainer
@@ -68,6 +84,7 @@ export const PlayerP5WebAudio: React.FC<
                     p5Ref={p5Ref}
                     shouldDisableLooping={true}
                     audioContext={audioContext}
+                    restrictAspectRatio={restrictAspectRatio}
                 />
             </SketchContainer>
             {!isPlaying && (
