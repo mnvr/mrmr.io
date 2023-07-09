@@ -31,22 +31,63 @@ import { ensure } from "utils/ensure";
  * file.
  */
 export class CanvasRecorder {
-    _recorder: MediaRecorder | undefined;
+    /**
+     * Record a single loop, and trigger a download when done.
+     *
+     * This method is structured such that it can be directly called from the
+     * {@link didPlay} callback to {@link useWebAudioFilePlayback}, reducing the
+     * amount of code that has to be uncommented / changed to record the canvas
+     * (we don't need recording functionality in the actual site).
+     *
+     * The method supports specifying an optional `duration` seconds, but if
+     * that is not specified it determines the duration from the length of the
+     * buffer associated with the passed in `audioSourceNode`.
+     *
+     *
+     * Once the recording is complete, this method will save it to an in-memory
+     * file and trigger a download of the resultant file.
+     *
+     * @param shouldRecord A boolean to control recording. If false, then the
+     * method call will be a no-op. This parameter is provided to reduce the
+     * amount of code that is needed at the call site, and make it easier to
+     * disable / enable recording without shuffling a lot of code.
+     *
+     * @param audioContext The AudioContext in which audio is being played.
+     *
+     * @param audioSourceNode The AudioNode that is playing the audio file that
+     * we wish to record. If a duration is not specified, then we use the length
+     * of this file to determine the duration of the loop that we should record.
+     *
+     * @param duration An optional duration, in seconds. If not specified, a
+     * duration will be deduced from the `audioSourceNode`.
+     *
+     * Known issues
+     * ------------
+     *
+     * - The recording won't be sample accurate, and so will not loop properly.
+     *
+     * - The stream is recorded in a compressed format ("webm" on Chrome and
+     *   "mp4" on Safari). In terms of quality, the mp4 produced by Safari is
+     *   slightly better (at least for the examples I tested with).
+     */
+    record(
+        shouldRecord: boolean,
+        audioContext: AudioContext,
+        audioSourceNode: AudioBufferSourceNode,
+        duration?: number
+    ) {
+        if (!shouldRecord) return;
 
-    /** Start recording */
-    start(audioContext: AudioContext, audioSourceNode: AudioBufferSourceNode) {
-        if (this._recorder)
-            throw new Error(
-                "Attempting to start a new recording without stopping the previous one"
-            );
+        if (!duration) duration = ensure(audioSourceNode.buffer?.duration);
+        console.log(`Starting recording, will stop after ${duration} seconds`);
 
-        const frameRate = 60;
+        const canvasFrameRate = 60;
 
         // Assume there is only one canvas, and that's the one that p5 uses
         const canvas = ensure(document.querySelector("canvas"));
         // The return value is a reference to a MediaStream object, which has a
         // single CanvasCaptureMediaStreamTrack in it.
-        const mediaStream = canvas.captureStream(frameRate);
+        const mediaStream = canvas.captureStream(canvasFrameRate);
 
         // Add the audio as a track to the media stream that is being recorded.
         const audioStreamDestination =
@@ -56,70 +97,47 @@ export class CanvasRecorder {
         const audioTrack = ensure(audioStream.getTracks()[0]);
         mediaStream.addTrack(audioTrack);
 
-        const recorder = new MediaRecorder(mediaStream);
-        this._recorder = recorder;
+        let recorder: MediaRecorder | undefined = new MediaRecorder(
+            mediaStream
+        );
+        let startTime: number;
 
         // Fires when the entire media has been recorded. The event, of type
-        // BlobEvent, contains the recorded media in its data property
+        // BlobEvent, contains the recorded media in its data property.
+        //
+        // In our case, this'll fire when a chunk has been recorded since we
+        // explicitly pass a millisecond time slice to the `start` method below.
+        //
+        // The intent is that passing the chunk duration will allow us to use
+        // the (hopefully) more accurate timeslicing built into MediaRecorder to
+        // stop the recording and get a clip that more accurately matches the
+        // specified duration.
         recorder.ondataavailable = (event) => {
+            if (!recorder) return;
+
+            // Stop when we get the first chunk. The callback will get called
+            // again when the recording is stopped, but we'll ignore the second
+            // chunk.
+            recorder.stop();
+
+            const recordedDuration = (performance.now() - startTime) / 1000;
+            console.log(`Recording done - ${recordedDuration} seconds`);
+
             const blob = event.data;
             // Chrome saves it as webm, Safari as MP4. So we need to look at the
             // MIME type to determine the extension. Use a hacky way to obtain
             // the extension that works at least for these two types.
             const ext = recorder.mimeType.split("/")[1]?.split(";")[0];
             FileSaver.saveAs(blob, `canvas.${ext}`);
+
+            recorder = undefined;
         };
 
-        recorder.start();
-    }
-
-    /**
-     * Stop the previously started recording, save it to a file and trigger a
-     * download of the resultant file.
-     */
-    stopAndSave() {
-        const recorder = ensure(this._recorder);
-        this._recorder = undefined;
-
-        recorder.stop();
-    }
-
-    /**
-     * A convenience method to recording a single loop
-     *
-     * This method supports specifying an optional `duration` seconds, but if
-     * that is not specified it determines the duration from the length of the
-     * buffer associated with the passed in `audioSourceNode`.
-     *
-     * This method is structured such that it can be directly called from the
-     * {@link didPlay} callback to {@link useWebAudioFilePlayback}, reducing the
-     * amount of code that has to be uncommented to record the canvas (we don't
-     * need recording functionality in the actual site).
-     *
-     * The recording won't be sample accurate.
-     *
-     * Known issues:
-     *
-     * - The stream is recorded in a compressed format ("webm" on Chrome and
-     *   "mp4" on Safari). In terms of quality, the mp4 produced by Safari is
-     *   slightly better (at least for the examples I tested with).
-     *
-     */
-    recordIfNeeded(
-        shouldRecord: boolean,
-        audioContext: AudioContext,
-        audioSourceNode: AudioBufferSourceNode,
-        duration?: number
-    ) {
-        if (!shouldRecord) return;
-        if (this._recorder) return;
-        if (!duration) duration = ensure(audioSourceNode.buffer?.duration);
-        const _this = this;
-        _this.start(audioContext, audioSourceNode);
-        console.log(`Starting recording, will stop after ${duration} seconds`);
-        setTimeout(() => {
-            _this.stopAndSave();
-            console.log("Recording done");
-        }, duration * 1000);
+        startTime = performance.now();
+        // If we don't pass a timeslice, the `ondataavailable` would get invoked
+        // when we call `stop` on the recorder. In our case, we do pass a
+        // timeslice so that we get a first chunk of the exact duration that we
+        // need, and then we stop recording.
+        recorder.start(duration * 1000);
     }
 }

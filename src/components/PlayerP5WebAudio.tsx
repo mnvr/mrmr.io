@@ -45,7 +45,7 @@ export const PlayerP5WebAudio: React.FC<
         useWebAudioFilePlayback(
             songURL,
             (audioContext, audioSourceNode, isPlaying) => {
-                recorderRef.current.recordIfNeeded(
+                recorderRef.current.record(
                     isPlaying && false, // set this to `true` to record
                     audioContext,
                     audioSourceNode
