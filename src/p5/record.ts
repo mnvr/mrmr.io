@@ -67,6 +67,9 @@ export const backgroundCSS = (p5: p5Types, cssColorString: string) => {
  */
 export const recordIfNeeded = (p5: p5Types, audio: AudioMarkers) => {
     if (audio.audioTime > 0 && audio.audioTime < audio.track.duration) {
-        p5.saveCanvas(`canvas-${p5.frameCount}`, "png");
+        const fc = p5.frameCount;
+        // Generate a number representation with up to 6 leading zeros
+        const ns = (fc + 1000000).toString().slice(-6);
+        p5.saveCanvas(`canvas-${ns}`, "png");
     }
 };
