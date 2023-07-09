@@ -17,15 +17,17 @@ import { ensure } from "utils/ensure";
  *   Plus, it's also not in TypeScript.
  *
  * This class assumes that there is a single canvas element. The audio is taken
- * from the audio context that is passed to the start recording method. This
- * class will then record the canvas contents and audio into a video file. Once
- * recording completes, it'll trigger a download of this video file.
+ * from the audio source node in the audio context that is passed to the start
+ * recording method.
+ *
+ * This class will then record the canvas contents and audio into a video file.
+ * Once recording completes, it'll trigger a download of this video file.
  */
 export class CanvasRecorder {
     _recorder: MediaRecorder | undefined;
 
     /** Start recording */
-    start(audioContext: AudioContext) {
+    start(audioContext: AudioContext, audioSourceNode: AudioBufferSourceNode) {
         if (this._recorder)
             throw new Error(
                 "Attempting to start a new recording without stopping the previous one"
@@ -42,6 +44,7 @@ export class CanvasRecorder {
         // Add the audio as a track to the media stream that is being recorded.
         const audioStreamDestination =
             audioContext.createMediaStreamDestination();
+        audioSourceNode.connect(audioStreamDestination);
         const audioStream = audioStreamDestination.stream;
         const audioTrack = ensure(audioStream.getTracks()[0]);
         mediaStream.addTrack(audioTrack);
@@ -95,12 +98,13 @@ export class CanvasRecorder {
     recordIfNeeded(
         duration: number,
         audioContext: AudioContext,
+        audioSourceNode: AudioBufferSourceNode,
         isPlaying: boolean
     ) {
         if (!isPlaying) return;
         if (this._recorder) return;
         const _this = this;
-        _this.start(audioContext);
+        _this.start(audioContext, audioSourceNode);
         console.log(`Starting recording, will stop after ${duration} seconds`);
         setTimeout(() => {
             _this.stopAndSave();

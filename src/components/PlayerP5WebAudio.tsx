@@ -42,14 +42,22 @@ export const PlayerP5WebAudio: React.FC<
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
-        useWebAudioFilePlayback(songURL, (audioContext, isPlaying) => {
-            // Uncomment this to record the canvas
-            // recorderRef.current.recordIfNeeded(40, audioContext, isPlaying);
+        useWebAudioFilePlayback(
+            songURL,
+            (audioContext, audioSourceNode, isPlaying) => {
+                // Uncomment this to record the canvas
+                recorderRef.current.recordIfNeeded(
+                    10,
+                    audioContext,
+                    audioSourceNode,
+                    isPlaying
+                );
 
-            const p5 = p5Ref.current;
-            if (isPlaying) p5?.loop();
-            else p5?.noLoop();
-        });
+                const p5 = p5Ref.current;
+                if (isPlaying) p5?.loop();
+                else p5?.noLoop();
+            }
+        );
 
     return (
         <Grid>
