@@ -46,14 +46,14 @@ const indexColorPalettes = {
             "hsl(0, 0%, 100%)",
             "hsl(0, 0%, 0%)",
             "hsl(0, 0%, 33%)",
-            "hsl(0, 0%, 20%)",
+            "hsl(0, 0%, 30%)",
         ])
     ),
     darkColors: parseColorPalette([
         "hsl(240, 6%, 20%)",
         "hsl(240, 12%, 90%)",
         "hsl(240, 12%, 70%)",
-        "hsl(240, 12%, 95%)",
+        "hsl(240, 12%, 75%)",
     ]),
 };
 
@@ -204,6 +204,6 @@ const LinkButtonsContainer = styled.div`
     }
 
     a:hover {
-        color: var(--mrmr-color-3);
+        color: var(--mrmr-color-1);
     }
 `;
