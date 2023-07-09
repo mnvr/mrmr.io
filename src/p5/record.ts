@@ -1,7 +1,9 @@
 /** Utilities that are helpful to record sketches */
 
+import FileSaver from "file-saver";
 import type p5Types from "p5";
 import { type AudioMarkers } from "p5/audio";
+import { ensure } from "utils/ensure";
 
 /**
  * Set the canvas background, but to an arbitrary CSS color.
@@ -70,6 +72,21 @@ export const recordIfNeeded = (p5: p5Types, audio: AudioMarkers) => {
         const fc = p5.frameCount;
         // Generate a number representation with up to 6 leading zeros
         const ns = (fc + 1000000).toString().slice(-6);
-        p5.saveCanvas(`canvas-${ns}`, "png");
+        // p5.saveCanvas(`canvas-${ns}`, "png");
+        const canvas = p5.drawingContext.canvas;
+        if (!(canvas instanceof HTMLCanvasElement))
+            throw new Error(
+                "Only recording of on-screen HTML canvases is currently supported"
+            );
+        const remainingTime = audio.track.duration - audio.audioTime;
+        canvas.toBlob((blob) => {
+            // Trigger the downloads after we're done recording. This is an
+            // attempt to try and ensure a smoother frame rate.
+            setTimeout(() => {
+                console.log(`canvas-${ns}.png`);
+                FileSaver.saveAs(ensure(blob), `canvas-${ns}.png`);
+            }, remainingTime * 1000);
+        }, "image/png");
+        // p5.save(`/tmp/b/canvas-${ns}.png`, );
     }
 };
