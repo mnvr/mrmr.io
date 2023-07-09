@@ -5,6 +5,7 @@ import * as React from "react";
 import { BuildTimePageContext } from "templates/page";
 import { P5Draw } from "types";
 import { ensure } from "utils/ensure";
+import { onlyValue } from "utils/object";
 
 interface P5LayoutProps {
     /**
@@ -27,9 +28,7 @@ export const P5Layout: React.FC<P5LayoutProps> = ({ draw }) => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { mp3s } = page;
 
-    const mp3Keys = Object.keys(mp3s);
-    const onlyMP3Key = mp3Keys.length === 1 ? mp3Keys[0] : undefined;
-    const onlyMP3URL = onlyMP3Key ? mp3s[onlyMP3Key] : undefined;
+    const onlyMP3URL = onlyValue(mp3s);
 
     return (
         <div>
