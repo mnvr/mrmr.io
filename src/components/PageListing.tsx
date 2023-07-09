@@ -71,7 +71,7 @@ const PageGrid = styled.div`
     }
 
     a:hover {
-        border: 1px solid black;
+        border: 1px solid var(--mrmr-color-1-transparent);
     }
 `;
 
