@@ -66,7 +66,7 @@ const BackgroundImageContainer = styled.div`
     bottom: 0;
     width: 100%;
 
-    mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
+    mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
 `;
 
 /** A CSS transition that makes the background color changes more pleasing */

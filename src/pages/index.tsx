@@ -111,6 +111,7 @@ export const query = graphql`
                     title
                     colors
                     dark_colors
+                    no_preview
                 }
                 fields {
                     slug
@@ -209,7 +210,8 @@ const parsePages = (data: Queries.IndexPageQuery) => {
 
         const title = ensure(frontmatter?.title);
 
-        const previewImage = previewImageForPage(slug);
+        let previewImage = previewImageForPage(slug);
+        if (frontmatter?.no_preview) previewImage = undefined;
 
         return { title, slug, colors, darkColors, previewImage };
     });
