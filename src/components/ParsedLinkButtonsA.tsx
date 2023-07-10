@@ -33,7 +33,7 @@ export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsPropsA> = ({
 const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.3rem;
 `;
 
 /**

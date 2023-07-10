@@ -202,7 +202,7 @@ const ExternalLinks: React.FC = () => {
 };
 
 const LinkButtonsContainer = styled.div`
-    margin-block: 4rem;
+    margin-block: 6rem;
     margin-inline-start: 1.7rem;
 
     a {
