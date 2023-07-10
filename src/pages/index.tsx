@@ -117,6 +117,12 @@ const TitleContainer = styled.div`
     flex-wrap: wrap;
     gap: 2rem;
     min-height: 75svh;
+
+    /* Increase the size on small (mobile) screens a bit */
+    @media (max-width: 600px) {
+        font-size: 1.1rem;
+    }
+
 `;
 
 const Title: React.FC = () => {
