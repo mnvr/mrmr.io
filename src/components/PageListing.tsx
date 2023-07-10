@@ -1,4 +1,5 @@
 import { Link } from "gatsby";
+import { type ImageDataLike } from "gatsby-plugin-image";
 import { ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
@@ -9,6 +10,7 @@ export interface Page {
     slug: string;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
+    previewImage?: ImageDataLike;
 }
 
 interface PageListingProps {

@@ -72,13 +72,15 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
 /**
  * Fetch the data needed by the home page.
  *
- * - In particular, fetch the preview (meta/og:image) image
+ * - In particular, fetch the preview (meta/og:image) image.
  *
  * Fetch all pages, sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
  * - Right now this returns all pages; if this list grows too big then we add a
  *   limit here too.
+ *
+ * Fetch all page preview images ("preview.png/jpg").
  */
 export const query = graphql`
     query IndexPage {
@@ -108,6 +110,20 @@ export const query = graphql`
                 }
             }
         }
+        previewImages: allFile(
+            filter: {
+                sourceInstanceName: { eq: "pages" },
+                ext: { regex: "/\\.(jpg|png)/" }
+                name: { eq: "preview" }
+            }
+        ) {
+            nodes {
+                relativeDirectory
+                childImageSharp {
+                    gatsbyImageData
+                }
+            }
+        }
     }
 `;
 
@@ -122,7 +138,6 @@ const TitleContainer = styled.div`
     @media (max-width: 600px) {
         font-size: 1.1rem;
     }
-
 `;
 
 const Title: React.FC = () => {
@@ -175,6 +190,10 @@ const parsePages = (data: Queries.IndexPageQuery) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 
+    const previewImages = replaceNullsWithUndefineds(data.previewImages);
+    const previewImageForPage = (slug: string) =>
+        previewImages.nodes.find((pi) => `/${pi.relativeDirectory}` === slug);
+
     return nodes.map((node) => {
         const { frontmatter, fields } = node;
         const colors = parseColorPalette(frontmatter?.colors);
@@ -183,7 +202,9 @@ const parsePages = (data: Queries.IndexPageQuery) => {
 
         const title = ensure(frontmatter?.title);
 
-        return { title, slug, colors, darkColors };
+        const previewImage = previewImageForPage(slug);
+
+        return { title, slug, colors, darkColors, previewImage };
     });
 };
 
