@@ -43,45 +43,60 @@ export const Description: React.FC = () => {
                 <Poem />
             </PoemContainer>
             <FooterContainer>
-                <FooterContents>
-                    <small>
-                        <span className="link-prelude">
-                            music, words and art by{" "}
-                        </span>
-                        <Link to="/">manav</Link>
-                    </small>
-                </FooterContents>
+                <Footer />
             </FooterContainer>
         </>
     );
 };
 
-const PoemContainer = styled.main`
+const PoemContainer = styled.div`
     display: grid;
     place-content: center start;
     min-height: 80svh;
     padding: 1.3rem;
 
-    line-height: 1.4rem;
+    line-height: 1.5rem;
 `;
 
-const FooterContainer = styled.footer`
+const Footer: React.FC = () => {
+    return (
+        <FooterContents>
+            <small>
+                <p>
+                    music, words and art by <Link to="/">manav</Link>
+                </p>
+                <p id="footer-description">
+                    the song was composed in garageband, and the visuals were
+                    generated using p5js. the source code for the sketch is open
+                    - you can download both the garageband file and the p5 code
+                    from my{" "}
+                    <Link to="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
+                        github
+                    </Link>
+                </p>
+            </small>
+        </FooterContents>
+    );
+};
+const FooterContainer = styled.div`
     padding: 1.3rem;
     margin-block-end: 4rem;
 `;
 
-const FooterContents = styled.div`
-    .link-prelude {
-        opacity: 0.7;
+const FooterContents = styled.footer`
+    color: oklch(99% 0 0 / 0.7);
+
+    p#footer-description {
+        max-width: 21rem;
+        color: oklch(96% 0 0 / 0.6);
     }
 
     a {
         text-decoration: none;
-        opacity: 0.7;
         border-bottom: 1px solid currentColor;
     }
 
     a:hover {
-        opacity: 1;
+        color: oklch(99% 0 0 / 1);
     }
 `;
