@@ -62,8 +62,11 @@ const BackgroundImage: React.FC<{ page: Page }> = ({ page }) => {
 
 const BackgroundImageContainer = styled.div`
     position: absolute;
-    opacity: 0.5;
-    clip-path: border-box;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+
+    mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.4));
 `;
 
 /** A CSS transition that makes the background color changes more pleasing */
@@ -106,8 +109,6 @@ const PageItem = styled.div<Page>`
     padding-block: 0.33rem;
     padding-inline: 0.66rem;
     position: relative;
-    border: 1px solid red;
-    display: grid;
 `;
 
 const PageItemP = styled.p`

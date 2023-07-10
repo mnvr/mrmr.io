@@ -82,10 +82,12 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *
  * Fetch all page preview images ("preview.png/jpg").
  *
- * - Use an aspect ratio same as the aspect ratio of the page cards on the
- *   homepage (`pages/index.tsx`). Specifically, the width and height of the
- *   `PageItem` component in `components/PageListing.tsx` is defined as `13.7ch`
- *   and `9.7ch` respectively, so we get 13.7 / 9.7 = 1.4123.
+ * - These images will be shown in the `PageItem` component in
+ *   `components/PageListing.tsx`, which has a fixed width and height – `13.7ch`
+ *   and `9.7ch` respectively. These have an aspect ratio of 1.4, but we set an
+ *   aspect ratio of 2 so that the image doesn't ever overflow the height;
+ *   visually, this is fine since we also have a transparent opacity gradient
+ *   for the image so the top portion will anyways be cutoff.
  */
 export const query = graphql`
     query IndexPage {
@@ -125,7 +127,7 @@ export const query = graphql`
             nodes {
                 relativeDirectory
                 childImageSharp {
-                    gatsbyImageData
+                    gatsbyImageData(aspectRatio: 2)
                 }
             }
         }
