@@ -81,6 +81,11 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *   limit here too.
  *
  * Fetch all page preview images ("preview.png/jpg").
+ *
+ * - Use an aspect ratio same as the aspect ratio of the page cards on the
+ *   homepage (`pages/index.tsx`). Specifically, the width and height of the
+ *   `PageItem` component in `components/PageListing.tsx` is defined as `13.7ch`
+ *   and `9.7ch` respectively, so we get 13.7 / 9.7 = 1.4123.
  */
 export const query = graphql`
     query IndexPage {

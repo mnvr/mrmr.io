@@ -1,5 +1,5 @@
 import { Link } from "gatsby";
-import { type ImageDataLike } from "gatsby-plugin-image";
+import { GatsbyImage, getImage, type ImageDataLike } from "gatsby-plugin-image";
 import { ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
@@ -38,12 +38,33 @@ export const PageListing: React.FC<PageListingProps> = ({
                     <PageItem {...page}>
                         <PageItemP>{page.title.toLowerCase()}</PageItemP>
                         <PageItemCount>{n - i}</PageItemCount>
+                        <BackgroundImage page={page} />
                     </PageItem>
                 </Link>
             ))}
         </PageGrid>
     );
 };
+
+const BackgroundImage: React.FC<{ page: Page }> = ({ page }) => {
+    const previewImage = page.previewImage;
+    const image = previewImage ? getImage(previewImage) : undefined;
+
+    // Use an empty alt since this is a decorative background image
+    return (
+        image && (
+            <BackgroundImageContainer>
+                <GatsbyImage image={image} alt="" />
+            </BackgroundImageContainer>
+        )
+    );
+};
+
+const BackgroundImageContainer = styled.div`
+    position: absolute;
+    opacity: 0.5;
+    clip-path: border-box;
+`;
 
 /** A CSS transition that makes the background color changes more pleasing */
 export const BodyBackgroundColorTransitionStyle = createGlobalStyle`
@@ -85,6 +106,8 @@ const PageItem = styled.div<Page>`
     padding-block: 0.33rem;
     padding-inline: 0.66rem;
     position: relative;
+    border: 1px solid red;
+    display: grid;
 `;
 
 const PageItemP = styled.p`
