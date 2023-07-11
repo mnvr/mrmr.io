@@ -4,6 +4,7 @@ import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
 import type p5Types from "p5";
 import * as React from "react";
+import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import styled from "styled-components";
 import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
@@ -124,6 +125,8 @@ export const PlayerP5WebAudio: React.FC<
     // Source for this workaround:
     // https://stackoverflow.com/questions/65450735/backdrop-filter-doesnt-work-on-safari-most-of-the-times
     React.useEffect(() => {
+        // We need this workaround only on Safari
+        if (!(isSafari || isMobileSafari)) return;
         setTimeout(() => {
             const el = ensure(
                 window.document.getElementById("sketch-container")
@@ -149,6 +152,12 @@ export const PlayerP5WebAudio: React.FC<
                     restrictAspectRatio={restrictAspectRatio}
                 />
                 {restrictAspectRatio &&
+                    /* Show the expand button only on Chrome where the expanded
+                       animation runs at full FPS. On other browsers (I tested
+                       Safari) the user might expand it initially and then
+                       suffer through the horribly laggy animation and go away
+                       thinking that was the only option */
+                    isChrome &&
                     !isPlaying &&
                     !isLoading &&
                     !isRecording && (

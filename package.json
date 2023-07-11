@@ -35,6 +35,7 @@
         "hydra-synth": "^1.3.24",
         "raf-loop": "^1.1.3",
         "react": "^18.2.0",
+        "react-device-detect": "^2.2.3",
         "react-dom": "^18.2.0",
         "react-icons": "^4.10.1",
         "react-p5": "^1.3.35",
