@@ -5,14 +5,14 @@ import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
-import { createLoopSequencer } from "webaudio/audio";
+import { createSequencer } from "./sequencer";
 import { draw } from "./sketch";
 
 export const Content: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
     let { mp3s } = page;
 
-    const sequencer = createLoopSequencer(ensure(mp3s["become"]));
+    const sequencer = createSequencer(mp3s);
 
     return (
         <div>
