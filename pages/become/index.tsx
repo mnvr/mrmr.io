@@ -1,3 +1,4 @@
+import { ExternalLink } from "components/ExternalLink";
 import { PlayerP5WebAudio } from "components/PlayerP5WebAudio";
 import { Link } from "gatsby";
 import * as React from "react";
@@ -73,9 +74,9 @@ const Footer: React.FC = () => {
                     generated using p5js. the source code for the sketch is open
                     - you can download both the garageband file and the p5 code
                     from my{" "}
-                    <Link to="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
+                    <ExternalLink href="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
                         github
-                    </Link>
+                    </ExternalLink>
                 </p>
             </small>
         </FooterContents>
