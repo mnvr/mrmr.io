@@ -12,24 +12,41 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
     const gap = 50;
     const audio = extractAudioMarkersAtTime(trackInfo, env.audioTime());
 
-    // Pulse the colors to the beat
+    const isIntro = audio.loop === 0;
+    const isBeforeIntroDrums = isIntro && audio.bar < 8;
+
+    // Pulse the colors to the beat (except during the first half of the intro)
     const strokeDots = color(
-        Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20)
+        isBeforeIntroDrums
+            ? 235
+            : Math.max(
+                  235 + audio.nearOnBeat * 20,
+                  235 + audio.nearOffBeat * 20
+              )
     );
-    const strokeStar = color(237 + audio.nearOnBeat * 11);
+    const strokeStar = color(
+        237 + (isBeforeIntroDrums ? 0 : audio.nearOnBeat * 11)
+    );
     // Link to the pre-offbeat kick (the kick at the 6/16-th note).
-    const strokeCircle = color(237 + audio.nearBeat(6 / 16) * 11);
+    const strokeCircle = color(
+        237 + (isBeforeIntroDrums ? 0 : audio.nearBeat(6 / 16) * 11)
+    );
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
     p5.translate(4, 4);
 
     // Rotate the stars at a speed indexed by the bass note.
-    const rotateStar = bassNoteForBar(audio.bar);
+    // Don't do this during the intro.
+    const rotateStar = isIntro ? 0 : bassNoteForBar(audio.bar);
 
     // Switch to black and jiggle the stars in the latter 3/10ths of some of the
     // 3rd bars (the one with the repeating snares).
-    if ([2, 14].includes(audio.bar) && Math.floor(audio.barOffset * 10) >= 7) {
+    if (
+        !isIntro &&
+        [2, 14].includes(audio.bar) &&
+        Math.floor(audio.barOffset * 10) >= 7
+    ) {
         p5.background(0);
         p5.scale(1.02 + audio.bar / 100 + Math.random() * 0.005);
     }

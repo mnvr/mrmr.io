@@ -46,6 +46,14 @@ export interface AudioMarkers {
      */
     time: number;
     /**
+     * Loop / iteration number
+     *
+     * We continuously loop audio in `track.duration` chunks. Each loop counts
+     * as one iteration, and this is the integral counter signifying the
+     * iteration number.
+     */
+    loop: number;
+    /**
      * Time, normalized to the loop length
      *
      * A normalized representation of {@link time}. This will be a value between
@@ -118,6 +126,8 @@ export const extractAudioMarkersAtTime = (
 ): AudioMarkers => {
     // Time, in seconds
     const time = audioTime % track.duration;
+    // Loop number
+    const loop = Math.floor(audioTime / track.duration);
     // Time, normalized to the loop length
     const loopOffset = time / track.duration;
     // We have a beat every 60 / bpm seconds. Divide by this value to obtain the
@@ -157,6 +167,7 @@ export const extractAudioMarkersAtTime = (
         track,
         audioTime,
         time,
+        loop,
         loopOffset,
         beats,
         bars,
