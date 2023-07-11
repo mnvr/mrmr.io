@@ -4,16 +4,18 @@ import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
-import { onlyValue } from "utils/object";
+import { createLoopSequencer } from "webaudio/audio";
 import { draw } from "./sketch";
 
 export const Content: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { mp3s } = page;
+    let { mp3s } = page;
+
+    const sequencer = createLoopSequencer(ensure(mp3s["become"]));
 
     return (
         <div>
-            <PlayerP5WebAudio draw={draw} songURL={ensure(onlyValue(mp3s))} />
+            <PlayerP5WebAudio {...{ draw, sequencer }} />
             <Description />
         </div>
     );

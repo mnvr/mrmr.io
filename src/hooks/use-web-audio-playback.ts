@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ensure } from "utils/ensure";
-import { loadAudioBuffer, loopAudioBuffer } from "webaudio/audio";
+import { Sequencer } from "webaudio/audio";
 
 type UseWebAudioPlaybackReturn = {
     /** If playback is currently active */
@@ -37,25 +37,27 @@ type UseWebAudioPlaybackReturn = {
 type DidPlay = (isPlaying: boolean) => void;
 
 /**
- * A React hook to wrap the playback and loading state of a single audio file,
- * played back using WebAudio.
+ * A React hook to wrap the playback of arbitrary WebAudio graphs.
  *
- * The hook will initiate the loading of the URL into an audio buffer.
- * Subsequently, it'll maintain a playback state, and expose a way to toggle the
- * playback state.
+ * The hook will call the provided sequencer, which is asynchronous so that it
+ * can, for example, download and decode audio buffers. Subsequently, the hook
+ * will maintain a playback state, and expose a way to toggle the playback
+ * state.
  *
  * The playback can be toggled in response to user action. If the playback is
- * started before the audio buffer has been fetched, then the hook will
- * transition into a loading state.
+ * started before the sequencer is done, then the hook will transition into a
+ * loading state.
  *
- * @param url The URL of the audio file (MP3) that should be played.
+ * @param sequencer A {@link Sequencer} to asynchronously construct the audio
+ * graph for playing audio on this page.
+ *
  * @param didPlay An optional callback to monitor changes to playback state.
  *
  * @returns A {@link UseWebAudioPlaybackReturn} `[isPlaying, isLoading,
  * toggleShouldPlay]`
  */
 export const useWebAudioFilePlayback = (
-    url: string,
+    sequencer: Sequencer,
     didPlay: DidPlay | undefined
 ): UseWebAudioPlaybackReturn => {
     // Track the user's intent (whether or not they've pressed the play button).
@@ -141,10 +143,9 @@ export const useWebAudioFilePlayback = (
         // history.
         ac.suspend();
 
-        loadAudioBuffer(ac, url)
-            .then((ab) => {
+        sequencer(ac)
+            .then(() => {
                 setIsLoading(false);
-                loopAudioBuffer(ac, ab);
             })
             .catch((e) => {
                 // We don't currently handle errors, so in this case the user

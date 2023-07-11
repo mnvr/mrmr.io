@@ -8,6 +8,7 @@ import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import styled from "styled-components";
 import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
+import { type Sequencer } from "webaudio/audio";
 
 interface PlayerP5WebAudioProps {
     /**
@@ -22,11 +23,9 @@ interface PlayerP5WebAudioProps {
      */
     draw: P5Draw;
     /**
-     * The URL of the audio file to play
-     *
-     * This file will be played, in an infinite loop, using WebAudio.
+     * A function to construct the WebAudio graph to play audio in the page.
      */
-    songURL: string;
+    sequencer: Sequencer;
 }
 
 /**
@@ -37,11 +36,11 @@ interface PlayerP5WebAudioProps {
  */
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
-> = ({ draw, songURL }) => {
+> = ({ draw, sequencer }) => {
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
-        useWebAudioFilePlayback(songURL, (isPlaying) => {
+        useWebAudioFilePlayback(sequencer, (isPlaying) => {
             const p5 = p5Ref.current;
             if (isPlaying) p5?.loop();
             else p5?.noLoop();

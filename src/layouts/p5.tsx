@@ -6,6 +6,7 @@ import { BuildTimePageContext } from "templates/page";
 import { P5Draw } from "types";
 import { ensure } from "utils/ensure";
 import { onlyValue } from "utils/object";
+import { createLoopSequencer } from "webaudio/audio";
 
 interface P5LayoutProps {
     /**
@@ -33,7 +34,10 @@ export const P5Layout: React.FC<P5LayoutProps> = ({ draw }) => {
     return (
         <div>
             {onlyMP3URL ? (
-                <PlayerP5WebAudio draw={draw} songURL={onlyMP3URL} />
+                <PlayerP5WebAudio
+                    draw={draw}
+                    sequencer={createLoopSequencer(onlyMP3URL)}
+                />
             ) : (
                 <PlayerP5 draw={draw} />
             )}

@@ -1,4 +1,40 @@
 /**
+ * An async function to construct the WebAudio graph
+ *
+ * @param audioContext The {@link AudioContext} in which playback will take
+ * place.
+ *
+ * The {@link useWebAudioFilePlayback} hook uses a sequencer to construct an
+ * audio graph when the page is opened.
+ *
+ * - It starts off in a loading state, and invokes the sequencer passed to it.
+ *
+ * - The sequencer is async so that it can download / decode various audio
+ *   buffers if needed.
+ *
+ * - Once the sequencer finishes, the audio graph is assumed (if no errors were
+ *   thrown) to have been connected to the destination of the given audio
+ *   context.
+ */
+export type Sequencer = (audioContext: AudioContext) => Promise<void>;
+
+/**
+ * Construct a simple sequencer that downloads and loops a file.
+ *
+ * @param loopURL The URL to the MP3 file that should be looped.
+ *
+ * @returns a {@link Sequencer} that willdownload the audio file from `loopURL`,
+ * decode it into an audio buffer and then construct and connect an audio node
+ * to play that buffer indefinitely in the sequencer's audio context.
+ */
+export const createLoopSequencer = (loopURL: string) => {
+    return async (audioContext: AudioContext) => {
+        const audioBuffer = await loadAudioBuffer(audioContext, loopURL);
+        loopAudioBuffer(audioContext, audioBuffer);
+    };
+};
+
+/**
  * Load (Fetch and decode) an audio file into a AudioBuffer
  *
  * @param audioContext The AudioContext` to use for decoding
