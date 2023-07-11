@@ -200,6 +200,16 @@ const SketchContainer = styled.div<SketchContainerProps>`
         left: 0;
         width: 100%;
         height: 100%;
+        /* Safari doesn't cover the entire sketch, and a bit of the pixels on
+           the left and right show right throw the ::after overlay. I don't know
+           or understand why, though my best guess is that it has something to
+           do with fractional pixel positions for the sketch.
+
+           Adding a tranparent border fixes the issue on the right hand side
+           (and right hand side only). So this is half a workaround, and the
+           problem still persists on the left hand side, but hey, the glass now
+           contains less poison than before. */
+        border: 1px solid transparent;
 
         /* Frosted glass effect */
         backdrop-filter: blur(8px) saturate(100%) contrast(60%) brightness(130%);
