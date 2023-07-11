@@ -28,7 +28,8 @@ const Poem: React.FC = () => {
             <br />
             Go out and find the living ones
             <br />
-            And if you can’t find them
+            <br />
+            If you can’t find them
             <br />
             Become
             <br />
@@ -52,7 +53,7 @@ export const Description: React.FC = () => {
 const PoemContainer = styled.div`
     display: grid;
     place-content: center start;
-    min-height: 80svh;
+    min-height: 100svh;
     padding: 1.3rem;
 
     line-height: 1.5rem;
