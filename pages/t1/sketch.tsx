@@ -1,23 +1,22 @@
 import p5Types from "p5";
-
-const x1w = 50;
-let x1start = -x1w / 2;
-let x1end = x1w / 2;
-let part = 0;
+import { atEvery } from "p5/utils";
 
 export const draw = (p5: p5Types) => {
     p5.clear();
     p5.background(250);
 
-    p5.translate(p5.width / 2, p5.height / 2);
-    eqt(p5, 0, 0, 100);
+    const r = 100;
+    atEvery(p5, r, () => {
+        dot(p5, 0, 0);
+        eqt(p5, r);
+    });
 };
 
 // A shape based on an equilateral triangle, circumscribed by a circle with
-// center x, y and radius r.
+// radius r and centered at the origin.
 //
 // This is a useful primitive since an equilateral tiling fills up the plane.
-const eqt = (p5: p5Types, x: number, y: number, r: number) => {
+const eqt = (p5: p5Types, r: number) => {
     p5.push();
     p5.stroke(80, 200);
     p5.fill(252, 150);
@@ -56,6 +55,8 @@ const eqt = (p5: p5Types, x: number, y: number, r: number) => {
     p5.circle(0, -r, cr);
     p5.circle(-dx, dy, cr);
     p5.circle(+dx, dy, cr);
+
+    p5.pop();
 };
 
 const dot = (p5: p5Types, x: number, y: number) => {

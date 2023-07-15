@@ -68,3 +68,24 @@ export const debugHUD = (p5: p5Types, s: string, o = {} as DebugHUDOpts) => {
     p5.text(s, 5, 20);
     p5.pop();
 };
+
+/**
+ * Invoke a function at every grid point spaced out with radius r
+ *
+ * The function will be invoked with the origin translated to the grid point.
+ * Also, it is guaranteed that the center of the sketch will be a grid point.
+ */
+export const atEvery = (p5: p5Types, r: number, f: () => void) => {
+    const [w, h] = [p5.width, p5.height];
+    let [x0, y0] = [w / 2, h / 2];
+    while (x0 > 0) x0 -= r;
+    while (y0 > 0) y0 -= r;
+    for (let y = y0; y < h; y += r) {
+        for (let x = x0; x < w; x += r) {
+            p5.push();
+            p5.translate(x, y);
+            f();
+            p5.pop();
+        }
+    }
+};
