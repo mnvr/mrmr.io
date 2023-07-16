@@ -8,10 +8,11 @@ export const draw = (p5: p5Types) => {
     const r = 50;
     const gap = Math.abs(Math.sin(p5.frameCount / 100)) * r * 0.8;
     let rot = Math.sin(p5.frameCount / 100);
-    atEvery(p5, r * 4, () => {
-        // p5.translate(p5.width / 2, p5.height / 2);
-        p5.rotate(rot);
-        rot += Math.PI / 2;
+    let rs = 1;
+    atEvery(p5, r * 3.6, () => {
+        p5.rotate(rs * rot);
+        rs *= -1;
+        rot += Math.PI / 3;
         tile(p5, r, gap);
     });
 };

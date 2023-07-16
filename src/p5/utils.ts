@@ -70,18 +70,51 @@ export const debugHUD = (p5: p5Types, s: string, o = {} as DebugHUDOpts) => {
 };
 
 /**
+ * (Possibly unused variant of `atEvery`, kept as a reference)
+ *
  * Invoke a function at every grid point spaced out with radius r
  *
  * The function will be invoked with the origin translated to the grid point.
  * Also, it is guaranteed that the center of the sketch will be a grid point.
  */
-export const atEvery = (p5: p5Types, r: number, f: () => void) => {
+export const atEvery0 = (p5: p5Types, r: number, f: () => void) => {
     const [w, h] = [p5.width, p5.height];
     let [x0, y0] = [w / 2, h / 2];
     while (x0 > 0) x0 -= r;
     while (y0 > 0) y0 -= r;
     for (let y = y0; y < h; y += r) {
         for (let x = x0; x < w; x += r) {
+            p5.push();
+            p5.translate(x, y);
+            f();
+            p5.pop();
+        }
+    }
+};
+
+/**
+ * Invoke a function at every grid point spaced out with radius r
+ *
+ * The function will be invoked with the origin translated to the grid point.
+ *
+ * The function provides the following guarantees:
+ * - the center of the sketch will be a grid point.
+ * - each row will have an odd number of items.
+ */
+export const atEvery = (p5: p5Types, r: number, f: () => void) => {
+    const h = p5.height;
+    // `c` counts the number of items per row.
+    let [x, y, c] = [p5.width / 2, h / 2, 0];
+    while (x >= 0) [x, c] = [x - r, c + 1];
+    while (y >= 0) y -= r;
+    // Extend in the other direction
+    c *= 2;
+    // Ensure that we draw an odd number of items in every row
+    if (c % 2 === 0) c++;
+    const x0 = x;
+    for (; y < h; y += r) {
+        for (let i = 0; i < c; i++) {
+            x = x0 + r * i;
             p5.push();
             p5.translate(x, y);
             f();
