@@ -54,12 +54,15 @@ export const lighten = (c: Color, amount: number) => {
 /**
  * Output the color as a string that P5 can understand.
  *
+ * First, we need to convert the colors to a color space that P5 can understand.
+ * We have two options here - (s)RGB and HSL. We go with SRGB.
+ *
  * colorjs knows how to output colors as RGB(A) too. However, the default format
  * for toString uses the CSS 4 syntax ("rgb(R G B / A)") that P5 cannot yet
  * understand. So instead, we output as the hex format which P5 happily consumes
  * (it works fine even with the fourth alpha component).
  */
-export const p5c = (c: Color) => c.toString({ format: "hex" });
+export const p5c = (c: Color) => c.to("srgb").toString({ format: "hex" });
 
 /**
  * Create a grayscale color from a value 0-255
