@@ -29,5 +29,22 @@ export const song: TidalSong = () => {
         .sustain(0.1)
         .release(0.5);
 
-    return stack(p1.velocity(0.6), p2.velocity(0.2), p3.velocity(0.2));
+    const p4 = note(m`<[a5 c6 a5] ~ [g#5 c6 g#5] ~ g5 ~ f5 ~>`)
+        .slow(3)
+        .attack(0.005)
+        .decay(0.2)
+        .sustain(m`<0.5 0.3>/12`)
+        .release(m`<1.5 1.5 2 1.5>/6`)
+        .s("square")
+        .cutoff(perlin.range(1000, 2000))
+        .resonance(perlin.range(10, 15))
+        .velocity(0.3)
+        .room(2);
+
+    return stack(
+        p1.velocity(0.6),
+        p2.velocity(0.2),
+        p3.velocity(0.2),
+        p4.velocity(0.2)
+    );
 };
