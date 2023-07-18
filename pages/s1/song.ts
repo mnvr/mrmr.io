@@ -21,5 +21,13 @@ export const song: TidalSong = () => {
         .sustain(0.1)
         .release(0.5);
 
-    return stack(p1.velocity(0.6), p2.velocity(0.4));
+    const p3 = note(m`[[a3 c4 a3 f#3 f3 f#3] [c4 e4 e4 e4 c4 a3]]/4`)
+        .attack(m`[0.01 0.01 0.01]`)
+        .decay(0.2)
+        .gain(m`[0.6 0.4 0.6]`)
+        .s("triangle")
+        .sustain(0.1)
+        .release(0.5);
+
+    return stack(p1.velocity(0.6), p2.velocity(0.2), p3.velocity(0.2));
 };
