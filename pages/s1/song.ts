@@ -12,7 +12,7 @@ export const song: TidalSong = () => {
         .s("sine")
         .sustain(0);
 
-    const p2 = note(m`[[a3 c4 a3 f#3 f3 f#3] [c4 e4 e4 e4 c4 a3]]/4`)
+    const p2 = note(m`<[a3 c4 a3 f#3 f3 f#3] [c4 e4 e4 e4 c4 a3]>/2`)
         .attack(m`[0.01 0.01 0.01]`)
         .decay(0.2)
         .gain(m`[0.6 0.4 0.6]`)
