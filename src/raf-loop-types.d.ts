@@ -1,3 +1,8 @@
+/**
+ * TypeScript d.ts type declarations for raf-loop
+ *
+ * By Manav Rathi (https://github.com/mnvr/mrmr.io)
+ */
 declare module "raf-loop" {
     import { EventEmitter } from "events";
 

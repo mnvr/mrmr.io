@@ -1,6 +1,8 @@
 /**
  * TypeScript d.ts type declarations for Hydra (Visual) Synth
  * https://github.com/hydra-synth/hydra
+ *
+ * By Manav Rathi (https://github.com/mnvr/mrmr.io)
  */
 
 declare module "hydra-synth" {

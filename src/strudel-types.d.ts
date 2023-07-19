@@ -1,8 +1,9 @@
 /**
  * TypeScript d.ts type declarations for strudel
  * https://github.com/tidalcycles/strudel
+ *
+ * By Manav Rathi (https://github.com/mnvr/mrmr.io)
  */
-
 declare module "@strudel.cycles/core" {
     /**
      * Patterns are the core abstraction of Tidal(Cycles).
