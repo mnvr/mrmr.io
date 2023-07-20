@@ -18,7 +18,7 @@ interface SketchState {
      * kept as a 1D array in row-major order instead of as the 2D matrix that it
      * conceptually is.
      *
-     * Thus, the cell at row j and col i is at `j * rows + i`.
+     * Thus, the cell at row j and col i is at `j * cols + i`.
      */
     cells: boolean[];
 }
@@ -66,10 +66,11 @@ const makeCells = (rows: number, cols: number): boolean[] =>
  * Set the cell at row j and col i of the cells array to true.
  *
  * @param cells The 1D array representation of the cells matrix.
- * @param rows The conceptual number of rows in the cells matrix.
+ * @param cols The conceptual number of cols in the cells matrix.
  */
-const setCell = (cells: boolean[], rows: number, j: number, i: number) => {
-    cells[j * rows + i] = true;
+const setCell = (cells: boolean[], cols: number, j: number, i: number) => {
+    ensure(cells[j * cols + i]);
+    cells[j * cols + i] = true;
 };
 
 const setInitialPattern = (cells: boolean[], rows: number, cols: number) => {
@@ -81,35 +82,11 @@ const setInitialPattern = (cells: boolean[], rows: number, cols: number) => {
     //       x
     //
     const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-    setCell(cells, rows, cj - 1, ci + 0);
-    setCell(cells, rows, cj - 1, ci + 1);
-    setCell(cells, rows, cj + 0, ci - 1);
-    setCell(cells, rows, cj + 0, ci + 0);
-    setCell(cells, rows, cj + 1, ci + 0);
-
-    // Blinker
-    // Oscillates
-    //
-    //       x
-    //       X
-    //       x
-    //
-    // setCell(cells, rows, cj - 1, ci + 0);
-    // setCell(cells, rows, cj + 0, ci + 0);
-    // setCell(cells, rows, cj + 1, ci + 0);
-
-    // Toad
-    // Oscillates
-    //
-    //        xxx
-    //       xXx
-    //
-    // setCell(cells, rows, cj - 1, ci - 1);
-    // setCell(cells, rows, cj - 1, ci + 0);
-    // setCell(cells, rows, cj - 1, ci + 1);
-    // setCell(cells, rows, cj + 0, ci - 2);
-    // setCell(cells, rows, cj + 0, ci - 1);
-    // setCell(cells, rows, cj + 0, ci + 0);
+    setCell(cells, cols, cj - 1, ci + 0);
+    setCell(cells, cols, cj - 1, ci + 1);
+    setCell(cells, cols, cj + 0, ci - 1);
+    setCell(cells, cols, cj + 0, ci + 0);
+    setCell(cells, cols, cj + 1, ci + 0);
 };
 
 let advance = false;
@@ -154,7 +131,7 @@ export const draw = (p5: p5Types) => {
         for (let i = 0; i < cols; i++) {
             const c = aliveNeighbourCount(cells, rows, cols, j, i);
 
-            const isAlive = cells[j * rows + i] === true;
+            const isAlive = ensure(cells[j * cols + i]);
             let nextIsAlive = false;
 
             if (isAlive) {
@@ -171,7 +148,7 @@ export const draw = (p5: p5Types) => {
                 if (c === 3) nextIsAlive = true;
             }
 
-            if (nextIsAlive) setCell(next, rows, j, i);
+            if (nextIsAlive) setCell(next, cols, j, i);
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
@@ -182,6 +159,12 @@ export const draw = (p5: p5Types) => {
             // need it later on.
             // p5.rect(x, y, cellD, cellD);
             p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
+            p5.strokeWeight(5);
+            if (isAlive) {
+                p5.strokeWeight(2 * c);
+            } else {
+                p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
+            }
             p5.point(x + cellD / 2, y + cellD / 2);
         }
     }
@@ -190,7 +173,8 @@ export const draw = (p5: p5Types) => {
         advance = false;
         state.cells = next;
     }
-    if (p5.frameCount % 15 === 0) state.cells = next;
+
+    if (p5.frameCount % 1 === 15) state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number) => {
@@ -223,7 +207,33 @@ const aliveNeighbourCount = (
         [j + 1, i],
         [j + 1, i + 1],
     ];
-    return ni.filter(([j, i]) =>
-        ensure(cells[mod(j, rows) * rows + mod(i, cols)])
+    // console.log(cells.length);
+    // console.log(
+    //     ni.map(([j, i]) => [
+    //         j,
+    //         i,
+    //         rows,
+    //         cols,
+    //         mod(j, rows),
+    //         mod(i, cols),
+    //         mod(j, rows) * rows + mod(i, cols),
+    //     ])
+    // );
+    const c = ni.filter(([j, i]) =>
+        ensure(cells[mod(j, rows) * cols + mod(i, cols)])
     ).length;
+
+    let c2 = 0;
+    ni.forEach(([j, i]) => {
+        if (j < 0) j = rows + j;
+        if (j >= rows) j = j % rows;
+        if (i < 0) i = cols + i;
+        if (i >= cols) i = i % cols;
+        const v = ensure(cells[j * cols + i]);
+        if (v) c2++;
+    });
+
+    if (c !== c2) throw new Error(`Mismatch ${c} ${c2}`);
+
+    return c;
 };
