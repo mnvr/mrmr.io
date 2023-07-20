@@ -69,7 +69,9 @@ const setInitialPattern = (cells: boolean[][]) => {
     const cols = cells[0]?.length ?? 0;
 
     // Randomly fill some positions
-    [...Array(700)].forEach(() => safeSet(randomInt(cols), randomInt(rows)));
+    [...Array(Math.floor(randomInt(rows * cols) * 0.8))].forEach(() =>
+        safeSet(randomInt(cols), randomInt(rows))
+    );
 };
 
 /**
