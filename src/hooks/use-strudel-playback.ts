@@ -3,7 +3,7 @@ import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
 import * as React from "react";
 import { initStrudel } from "strudel/init";
 import { connectWebAudio } from "strudel/webaudio";
-import { TidalSong } from "types";
+import { StrudelSong } from "types";
 import { ensure } from "utils/ensure";
 
 type UseStrudelPlaybackReturn = [
@@ -22,13 +22,13 @@ type UseStrudelPlaybackReturn = [
  * playback state. It'll also return a boolean indicating if playback has
  * started at least once.
  *
- * @param song The {@link TidalSong} to play.
+ * @param song The {@link StrudelSong} to play.
  *
  * @returns A {@link UseStrudelPlaybackReturn} `[isPlaying, toggleIsPlaying,
  * wasPlayingOnce]`
  */
 export const useStrudelPlayback = (
-    song: TidalSong
+    song: StrudelSong
 ): UseStrudelPlaybackReturn => {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const schedulerRef = React.useRef<Scheduler | null>(null);

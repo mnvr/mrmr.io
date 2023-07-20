@@ -1,8 +1,8 @@
 import { controls, perlin, sine, stack } from "@strudel.cycles/core";
 import { m } from "strudel/mini";
-import type { TidalSong } from "types";
+import type { StrudelSong } from "types";
 
-export const song: TidalSong = () => {
+export const song: StrudelSong = () => {
     const { note } = controls;
 
     const p1 = note(m`a4!3`)

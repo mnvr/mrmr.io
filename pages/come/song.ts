@@ -1,9 +1,9 @@
 import { controls, rand, saw, sine, stack } from "@strudel.cycles/core";
 import { m } from "strudel/mini";
 import { fadeIn } from "strudel/util";
-import type { TidalSong } from "types";
+import type { StrudelSong } from "types";
 
-export const song: TidalSong = () => {
+export const song: StrudelSong = () => {
     const { note } = controls;
 
     const p1 = note(

@@ -16,10 +16,10 @@ export interface HydraVisProps {
 }
 
 /**
- * A pattern describing a song written using Tidal (specifically, it's
+ * A pattern describing a song written using TidalCycles (specifically, it's
  * JavaScript port, Strudel).
  */
-export type TidalSong = () => Pattern;
+export type StrudelSong = () => Pattern;
 
 /**
  * A function that renders a P5 visualization

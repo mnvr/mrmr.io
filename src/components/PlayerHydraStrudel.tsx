@@ -3,13 +3,13 @@ import { HydraCanvas } from "components/HydraCanvas";
 import { useStrudelPlayback } from "hooks/use-strudel-playback";
 import * as React from "react";
 import styled from "styled-components";
-import type { HydraVis, TidalSong } from "types";
+import type { HydraVis, StrudelSong } from "types";
 
 interface PlayerHydraStrudelProps {
     /** The Hydra visualization to render */
     vis: HydraVis;
     /** The Strudel (Tidal) song to play */
-    song: TidalSong;
+    song: StrudelSong;
 }
 
 /**
