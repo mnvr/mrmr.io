@@ -53,7 +53,7 @@ const initState = (p5: p5Types) => {
 };
 
 /** Return a cols x rows matrix, initialized to all false values */
-const makeCells = (rows: number, cols: number) =>
+const makeCells = (rows: number, cols: number): boolean[][] =>
     [...Array(rows)].map(() => Array(cols).fill(false));
 
 const setInitialPattern = (cells: boolean[][]) => {
@@ -110,9 +110,12 @@ export const draw = (p5: p5Types) => {
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
             const c = aliveNeighbourCount(cells, j, i);
-            if (c >= 4) next[j][i] = true;
+            // We need to use the "!" operator to tell TypeScript that next[j]
+            // is not undefined (using the `at` function works with "?" chaining
+            // when getting the array values, but not when trying to set them).
+            if (c >= 4) next[j]![i] = true;
 
-            const isAlive = cells[j][i] === true;
+            const isAlive = cells.at(j)?.at(i) === true;
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
