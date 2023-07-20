@@ -1,7 +1,6 @@
 import p5Types from "p5";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
-import { randomInt } from "utils/random";
 
 interface SketchState {
     /** Number of cell rows */
@@ -69,9 +68,23 @@ const setInitialPattern = (cells: boolean[][]) => {
     const cols = cells[0]?.length ?? 0;
 
     // Randomly fill some positions
-    [...Array(Math.floor(randomInt(rows * cols) * 0.8))].forEach(() =>
-        safeSet(randomInt(cols), randomInt(rows))
-    );
+    // [...Array(Math.floor(randomInt(rows * cols) * 0.8))].forEach(() =>
+    //     safeSet(randomInt(cols), randomInt(rows))
+    // );
+
+    // Start with an R-Pentomino, where the capital X indicates the center most
+    // cell of the board.
+    //
+    //       xx
+    //      xX
+    //       x
+    //
+    const [cx, cy] = [Math.floor(cols / 2), Math.floor(rows / 2)];
+    safeSet(cx + 0, cy - 1);
+    safeSet(cx + 1, cy - 1);
+    safeSet(cx - 1, cy + 0);
+    safeSet(cx + 0, cy + 0);
+    safeSet(cx + 0, cy + 1);
 };
 
 /**
