@@ -1,8 +1,7 @@
-import { PlayerHydraStrudel } from "components/PlayerHydraStrudel";
+import { P5Layout } from "layouts/p5";
 import * as React from "react";
-import { song } from "./song";
-import { vis } from "./vis";
+import { draw } from "./sketch";
 
 export const Content: React.FC = () => {
-    return <PlayerHydraStrudel vis={vis} song={song} />;
+    return <P5Layout draw={draw} />;
 };
