@@ -11,7 +11,8 @@ interface SketchState {
     /**
      * Each cell tracks whether or not a particular location is "alive"
      *
-     * We're doing a "game of life" simulation here.
+     * We're doing a "game of life" simulation here, and this is the state of
+     * the game, tracking which cells are currently alive.
      */
     cells: boolean[][];
 }
@@ -40,18 +41,22 @@ const inactiveColor = color("oklch(97% 0.242 151.39)");
 const aliveColorP5 = p5c(aliveColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
-export const initState = (p5: p5Types) => {
+const initState = (p5: p5Types) => {
     const cols = Math.floor(p5.width / cellD);
     const rows = Math.floor(p5.height / cellD);
 
-    const cells = [...Array(rows)].map(() => Array(cols).fill(false));
+    const cells = makeCells(rows, cols);
 
     setInitialPattern(cells);
 
     return { cols, rows, cells };
 };
 
-export const setInitialPattern = (cells: boolean[][]) => {
+/** Return a cols x rows matrix, initialized to all false values */
+const makeCells = (rows: number, cols: number) =>
+    [...Array(rows)].map(() => Array(cols).fill(false));
+
+const setInitialPattern = (cells: boolean[][]) => {
     const safeSet = (x: number, y: number) => {
         const row = cells[y];
         if (!row) return;
@@ -64,7 +69,7 @@ export const setInitialPattern = (cells: boolean[][]) => {
     const cols = cells[0]?.length ?? 0;
 
     // Randomly fill some positions
-    [...Array(70)].forEach(() => safeSet(randomInt(cols), randomInt(rows)));
+    [...Array(700)].forEach(() => safeSet(randomInt(cols), randomInt(rows)));
 };
 
 /**
@@ -72,7 +77,7 @@ export const setInitialPattern = (cells: boolean[][]) => {
  */
 export const draw = (p5: p5Types) => {
     if (!state) state = initState(p5);
-    const s = ensure(state);
+    const { rows, cols, cells } = ensure(state);
 
     p5.clear();
 
@@ -96,27 +101,61 @@ export const draw = (p5: p5Types) => {
     //
     // This offset computation handles both cases.
 
-    p5.translate(offset(p5.width, s.cols), offset(p5.height, s.rows));
+    p5.translate(offset(p5.width, cols), offset(p5.height, rows));
 
     p5.strokeWeight(5);
 
-    s.cells.forEach((row, j) => {
-        row.forEach((isAlive, i) => {
+    const next = makeCells(rows, cols);
+
+    for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < cols; i++) {
+            const c = aliveNeighbourCount(cells, j, i);
+            if (c >= 4) next[j][i] = true;
+
+            const isAlive = cells[j][i] === true;
+
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
             const x = i * cellD;
             const y = j * cellD;
+
             // This is apparently causing a FPS drop, but that's fine, we won't
             // need it later on.
             // p5.rect(x, y, cellD, cellD);
             p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
             p5.point(x + cellD / 2, y + cellD / 2);
-        });
-    });
+        }
+    }
+
+    if (p5.frameCount % 700) state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number) => {
     const extra = availableSpace - count * cellD;
     if (extra <= 0) return 0;
     return extra / 2;
+};
+
+/**
+ * Return a count of the number of neighbours of the cell at [i, j] that are
+ * alive.
+ */
+const aliveNeighbourCount = (cells: boolean[][], j: number, i: number) => {
+    // Neighbouring indices. Initializing this separately so that we can provide
+    // a type annotation and make the TypeScript compiler happy about the [x, y]
+    // destructuring later on.
+    const ni: [number, number][] = [
+        [j - 1, i - 1],
+        [j - 1, i],
+        [j - 1, i + 1],
+        [j + 0, i - 1],
+        [j + 0, i],
+        [j + 0, i + 1],
+        [j + 1, i - 1],
+        [j + 1, i],
+        [j + 1, i + 1],
+    ];
+    return ni.reduce((s, [y, x]) => {
+        return s + (cells.at(y)?.at(x) === true ? 1 : 0);
+    }, 0);
 };
