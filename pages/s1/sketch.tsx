@@ -3,17 +3,23 @@ import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 interface SketchState {
-    /** Number of cell rows */
+    /** Number of rows (y/j values) in `cells` */
     rows: number;
-    /** Number of cell columns */
+    /** Number of columns (x/i values) in `cells` */
     cols: number;
     /**
      * Each cell tracks whether or not a particular location is "alive"
      *
      * We're doing a "game of life" simulation here, and this is the state of
      * the game, tracking which cells are currently alive.
+     *
+     * For ease of coding (and possibly better runtime performance), this is
+     * kept as a 1D array in row-major order instead of as the 2D matrix that it
+     * conceptually is.
+     *
+     * Thus, the cell at row j and col i is at `j * rows + i`.
      */
-    cells: boolean[][];
+    cells: boolean[];
 }
 
 let state: SketchState | undefined;
@@ -41,37 +47,31 @@ const aliveColorP5 = p5c(aliveColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
 const initState = (p5: p5Types) => {
-    const cols = Math.floor(p5.width / cellD);
     const rows = Math.floor(p5.height / cellD);
+    const cols = Math.floor(p5.width / cellD);
 
     const cells = makeCells(rows, cols);
 
-    setInitialPattern(cells);
+    setInitialPattern(cells, rows, cols);
 
     return { cols, rows, cells };
 };
 
-/** Return a cols x rows matrix, initialized to all false values */
-const makeCells = (rows: number, cols: number): boolean[][] =>
-    [...Array(rows)].map(() => Array(cols).fill(false));
+/** Return a cells array initialized to all false values */
+const makeCells = (rows: number, cols: number): boolean[] =>
+    Array(rows * cols).fill(false);
 
-const setInitialPattern = (cells: boolean[][]) => {
-    const safeSet = (x: number, y: number) => {
-        const row = cells[y];
-        if (!row) return;
-        if (y <= row.length) {
-            row[x] = true;
-        }
-    };
+/**
+ * Set the cell at row j and col i of the cells array to true.
+ *
+ * @param cells The 1D array representation of the cells matrix.
+ * @param rows The conceptual number of rows in the cells matrix.
+ */
+const setCell = (cells: boolean[], rows: number, j: number, i: number) => {
+    cells[j * rows + i] = true;
+};
 
-    const rows = cells.length;
-    const cols = cells[0]?.length ?? 0;
-
-    // Randomly fill some positions
-    // [...Array(Math.floor(randomInt(rows * cols) * 0.8))].forEach(() =>
-    //     safeSet(randomInt(cols), randomInt(rows))
-    // );
-
+const setInitialPattern = (cells: boolean[], rows: number, cols: number) => {
     // Start with an R-Pentomino, where the capital X indicates the center most
     // cell of the board.
     //
@@ -79,24 +79,27 @@ const setInitialPattern = (cells: boolean[][]) => {
     //      xX
     //       x
     //
-    const [cx, cy] = [Math.floor(cols / 2), Math.floor(rows / 2)];
-    safeSet(cx + 0, cy - 1);
-    safeSet(cx + 1, cy - 1);
-    safeSet(cx - 1, cy + 0);
-    safeSet(cx + 0, cy + 0);
-    safeSet(cx + 0, cy + 1);
+    const [cj, ci] = [Math.floor(cols / 2), Math.floor(rows / 2)];
+    setCell(cells, rows, ci - 1, cj + 0);
+    setCell(cells, rows, ci - 1, cj + 1);
+    setCell(cells, rows, ci + 0, cj - 1);
+    setCell(cells, rows, ci + 0, cj + 0);
+    setCell(cells, rows, ci + 1, cj + 0);
 };
+
+let advance = false;
 
 /**
  * Simulate a game of life.
  */
 export const draw = (p5: p5Types) => {
+    if (!state) p5.mouseClicked = () => (advance = true);
     if (!state) state = initState(p5);
     const { rows, cols, cells } = ensure(state);
 
     p5.clear();
 
-    // Starting position [x, y] of the first cell
+    // Translate to the starting position of the first cell
     //
     // An offset would be needed in 2 cases:
     //
@@ -124,13 +127,10 @@ export const draw = (p5: p5Types) => {
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
-            const c = aliveNeighbourCount(cells, j, i);
-            // We need to use the "!" operator to tell TypeScript that next[j]
-            // is not undefined (using the `at` function works with "?" chaining
-            // when getting the array values, but not when trying to set them).
-            if (c >= 4) next[j]![i] = true;
+            const c = aliveNeighbourCount(cells, rows, j, i);
+            if (c === 4) setCell(next, rows, j, i);
 
-            const isAlive = cells.at(j)?.at(i) === true;
+            const isAlive = cells[j * rows + i] === true;
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
@@ -145,7 +145,14 @@ export const draw = (p5: p5Types) => {
         }
     }
 
-    if (p5.frameCount % 700) state.cells = next;
+    if (p5.mouseIsPressed) {
+    }
+
+    if (advance) {
+        advance = false;
+        state.cells = next;
+    }
+    // if (p5.frameCount % 700) state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number) => {
@@ -155,10 +162,15 @@ const offset = (availableSpace: number, count: number) => {
 };
 
 /**
- * Return a count of the number of neighbours of the cell at [i, j] that are
- * alive.
+ * Return a count of the number of neighbours of the cell at row j and col i
+ * that are alive.
  */
-const aliveNeighbourCount = (cells: boolean[][], j: number, i: number) => {
+const aliveNeighbourCount = (
+    cells: boolean[],
+    rows: number,
+    j: number,
+    i: number
+) => {
     // Neighbouring indices. Initializing this separately so that we can provide
     // a type annotation and make the TypeScript compiler happy about the [x, y]
     // destructuring later on.
@@ -173,7 +185,7 @@ const aliveNeighbourCount = (cells: boolean[][], j: number, i: number) => {
         [j + 1, i],
         [j + 1, i + 1],
     ];
-    return ni.reduce((s, [y, x]) => {
-        return s + (cells.at(y)?.at(x) === true ? 1 : 0);
+    return ni.reduce((s, [j, i]) => {
+        return s + (cells[j * rows + i] === true ? 1 : 0);
     }, 0);
 };
