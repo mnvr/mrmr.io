@@ -69,7 +69,6 @@ const makeCells = (rows: number, cols: number): boolean[] =>
  * @param cols The conceptual number of cols in the cells matrix.
  */
 const setCell = (cells: boolean[], cols: number, j: number, i: number) => {
-    ensure(cells[j * cols + i]);
     cells[j * cols + i] = true;
 };
 
@@ -123,8 +122,6 @@ export const draw = (p5: p5Types) => {
 
     p5.translate(offset(p5.width, cols), offset(p5.height, rows));
 
-    p5.strokeWeight(5);
-
     const next = makeCells(rows, cols);
 
     for (let j = 0; j < rows; j++) {
@@ -155,15 +152,11 @@ export const draw = (p5: p5Types) => {
             const x = i * cellD;
             const y = j * cellD;
 
-            // This is apparently causing a FPS drop, but that's fine, we won't
-            // need it later on.
-            // p5.rect(x, y, cellD, cellD);
             p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
-            p5.strokeWeight(5);
             if (isAlive) {
                 p5.strokeWeight(2 * c);
             } else {
-                p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
+                p5.strokeWeight(4);
             }
             p5.point(x + cellD / 2, y + cellD / 2);
         }
@@ -174,7 +167,8 @@ export const draw = (p5: p5Types) => {
         state.cells = next;
     }
 
-    if (p5.frameCount % 1 === 15) state.cells = next;
+    // if (p5.frameCount % 15 === 0)
+    state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number) => {
@@ -207,33 +201,6 @@ const aliveNeighbourCount = (
         [j + 1, i],
         [j + 1, i + 1],
     ];
-    // console.log(cells.length);
-    // console.log(
-    //     ni.map(([j, i]) => [
-    //         j,
-    //         i,
-    //         rows,
-    //         cols,
-    //         mod(j, rows),
-    //         mod(i, cols),
-    //         mod(j, rows) * rows + mod(i, cols),
-    //     ])
-    // );
-    const c = ni.filter(([j, i]) =>
-        ensure(cells[mod(j, rows) * cols + mod(i, cols)])
-    ).length;
-
-    let c2 = 0;
-    ni.forEach(([j, i]) => {
-        if (j < 0) j = rows + j;
-        if (j >= rows) j = j % rows;
-        if (i < 0) i = cols + i;
-        if (i >= cols) i = i % cols;
-        const v = ensure(cells[j * cols + i]);
-        if (v) c2++;
-    });
-
-    if (c !== c2) throw new Error(`Mismatch ${c} ${c2}`);
-
-    return c;
+    return ni.filter(([j, i]) => cells[mod(j, rows) * cols + mod(i, cols)])
+        .length;
 };
