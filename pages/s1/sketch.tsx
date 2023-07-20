@@ -37,7 +37,7 @@ const aliveColor = color("oklch(77% 0.242 151.39)");
 /**
  * The color to use for drawing inactive cells.
  */
-const inactiveColor = color("oklch(97% 0.242 151.39)");
+const inactiveColor = color("oklch(96.5% 0.242 151.39)");
 
 /**
  * Cache P5 representations of some of the fixed colors that we use to avoid
@@ -79,12 +79,36 @@ const setInitialPattern = (cells: boolean[], rows: number, cols: number) => {
     //      xX
     //       x
     //
-    const [cj, ci] = [Math.floor(cols / 2), Math.floor(rows / 2)];
-    setCell(cells, rows, ci - 1, cj + 0);
-    setCell(cells, rows, ci - 1, cj + 1);
-    setCell(cells, rows, ci + 0, cj - 1);
-    setCell(cells, rows, ci + 0, cj + 0);
-    setCell(cells, rows, ci + 1, cj + 0);
+    const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
+    setCell(cells, rows, cj - 1, ci + 0);
+    setCell(cells, rows, cj - 1, ci + 1);
+    setCell(cells, rows, cj + 0, ci - 1);
+    setCell(cells, rows, cj + 0, ci + 0);
+    setCell(cells, rows, cj + 1, ci + 0);
+
+    // Blinker
+    // Oscillates
+    //
+    //       x
+    //       X
+    //       x
+    //
+    // setCell(cells, rows, cj - 1, ci + 0);
+    // setCell(cells, rows, cj + 0, ci + 0);
+    // setCell(cells, rows, cj + 1, ci + 0);
+
+    // Toad
+    // Oscillates
+    //
+    //        xxx
+    //       xXx
+    //
+    // setCell(cells, rows, cj - 1, ci - 1);
+    // setCell(cells, rows, cj - 1, ci + 0);
+    // setCell(cells, rows, cj - 1, ci + 1);
+    // setCell(cells, rows, cj + 0, ci - 2);
+    // setCell(cells, rows, cj + 0, ci - 1);
+    // setCell(cells, rows, cj + 0, ci + 0);
 };
 
 let advance = false;
@@ -128,9 +152,25 @@ export const draw = (p5: p5Types) => {
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
             const c = aliveNeighbourCount(cells, rows, j, i);
-            if (c === 4) setCell(next, rows, j, i);
 
             const isAlive = cells[j * rows + i] === true;
+            let nextIsAlive = false;
+
+            if (isAlive) {
+                // Staying alive
+                //
+                // If a cell is alive and has exactly 2 or 3 live neighbours, it
+                // stays alive.
+                if (c === 2 || c === 3) nextIsAlive = true;
+            } else {
+                // Birth
+                //
+                // If a cell is inactive, it'll become alive if it has exactly 3
+                // live neighbours.
+                if (c === 3) nextIsAlive = true;
+            }
+
+            if (nextIsAlive) setCell(next, rows, j, i);
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
@@ -145,14 +185,11 @@ export const draw = (p5: p5Types) => {
         }
     }
 
-    if (p5.mouseIsPressed) {
-    }
-
     if (advance) {
         advance = false;
         state.cells = next;
     }
-    // if (p5.frameCount % 700) state.cells = next;
+    if (p5.frameCount % 15 === 0) state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number) => {
@@ -172,14 +209,13 @@ const aliveNeighbourCount = (
     i: number
 ) => {
     // Neighbouring indices. Initializing this separately so that we can provide
-    // a type annotation and make the TypeScript compiler happy about the [x, y]
+    // a type annotation and make the TypeScript compiler happy about the [j, i]
     // destructuring later on.
     const ni: [number, number][] = [
         [j - 1, i - 1],
         [j - 1, i],
         [j - 1, i + 1],
         [j + 0, i - 1],
-        [j + 0, i],
         [j + 0, i + 1],
         [j + 1, i - 1],
         [j + 1, i],
