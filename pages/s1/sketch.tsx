@@ -1,6 +1,7 @@
 import p5Types from "p5";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
+import { randomInt } from "utils/random";
 
 interface SketchState {
     /** Number of cell rows */
@@ -58,7 +59,12 @@ export const setInitialPattern = (cells: boolean[][]) => {
             row[x] = true;
         }
     };
-    safeSet(15, 15);
+
+    const rows = cells.length;
+    const cols = cells[0]?.length ?? 0;
+
+    // Randomly fill some positions
+    [...Array(70)].forEach(() => safeSet(randomInt(cols), randomInt(rows)));
 };
 
 /**
