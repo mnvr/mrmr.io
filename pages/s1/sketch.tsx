@@ -223,7 +223,7 @@ const aliveNeighbourCount = (
         [j + 1, i],
         [j + 1, i + 1],
     ];
-    return ni.reduce((s, [j, i]) => {
-        return s + (cells[mod(j, rows) * rows + mod(i, cols)] === true ? 1 : 0);
-    }, 0);
+    return ni.filter(([j, i]) =>
+        ensure(cells[mod(j, rows) * rows + mod(i, cols)])
+    ).length;
 };
