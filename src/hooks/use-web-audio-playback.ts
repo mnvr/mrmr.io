@@ -6,8 +6,8 @@ type UseWebAudioPlaybackReturn = {
     /** If playback is currently active */
     isPlaying: boolean;
     /**
-     * If the user has initiated playback, but we're waiting for the file load
-     * to complete.
+     * If the user has initiated playback, but we're waiting for asynchronous
+     * loading operations (e.g. audio file downloads) to complete.
      */
     isLoading: boolean;
     /**
@@ -56,7 +56,7 @@ type DidPlay = (isPlaying: boolean) => void;
  * @returns A {@link UseWebAudioPlaybackReturn} `[isPlaying, isLoading,
  * toggleShouldPlay]`
  */
-export const useWebAudioFilePlayback = (
+export const useWebAudioPlayback = (
     sequencer: Sequencer,
     didPlay: DidPlay | undefined
 ): UseWebAudioPlaybackReturn => {
@@ -65,17 +65,24 @@ export const useWebAudioFilePlayback = (
     // depends on if the audio buffer has been loaded.
     const [shouldPlay, setShouldPlay] = React.useState(false);
 
-    // Track whether or not we've managed to load the audio file(s) into an
-    // audio buffer. The fetch and decoding are both async operations, whose
+    // Track whether the sequencer has finished loading.
+    //
+    // The sequencer is an async method, and this boolean tracks if that async
+    // operation has completed.
+    //
+    // As a concrete example, we usually use this to track whether or not we've
+    // managed to load the audio file(s) that are needed by the sequencer into
+    // audio buffer(s). The fetch and decoding are both async operations, whose
     // state we track with here. Subsequently, all audio operations are
     // synchronous so playback can be started immediately.
     const [isLoading, setIsLoading] = React.useState(true);
 
     // The audio graph
     //
-    // The AudioNode for playing the audio file is created when the audio buffer
-    // is loaded. Subseqently playback is controlled by pausing / resuming the
-    // audio context itself. See below for details on why it is this way.
+    // The AudioNodes for playing, say the audio files, are created right when
+    // the audio buffer is loaded. Subseqently playback is controlled by pausing
+    // / resuming the audio context itself (instead of pausing the AudioNodes
+    // themselves). See below for details on why it is this way.
     //
     // Pausing WebAudio nodes
     // ----------------------
@@ -123,7 +130,11 @@ export const useWebAudioFilePlayback = (
         AudioContext | undefined
     >();
 
-    // Load the audio file immediately on page load
+    // Load the audio file(s) immediately on page load
+    //
+    // We call the sequencer immediately on page load, without waiting for user
+    // interaction. This way, the sequencer can prepare the audio graph (say,
+    // download any needed audio files) while the user is dithering around.
     React.useEffect(() => {
         // Create an audio context when the useEffect first runs. We cannot do
         // it when creating the useState because the window object is not

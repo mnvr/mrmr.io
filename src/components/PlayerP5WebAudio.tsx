@@ -1,7 +1,7 @@
 import { ExpandButton, PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
-import { useWebAudioFilePlayback } from "hooks/use-web-audio-playback";
+import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
 import type p5Types from "p5";
 import * as React from "react";
 import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
@@ -40,7 +40,7 @@ export const PlayerP5WebAudio: React.FC<
     const p5Ref = React.useRef<p5Types | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
-        useWebAudioFilePlayback(sequencer, (isPlaying) => {
+        useWebAudioPlayback(sequencer, (isPlaying) => {
             const p5 = p5Ref.current;
             if (isPlaying) p5?.loop();
             else p5?.noLoop();

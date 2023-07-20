@@ -25,9 +25,9 @@ export type Sequencer = (audioContext: AudioContext) => Promise<void>;
  *
  * @param loopURL The URL to the MP3 file that should be looped.
  *
- * @returns a {@link Sequencer} that willdownload the audio file from `loopURL`,
- * decode it into an audio buffer and then construct and connect an audio node
- * to play that buffer indefinitely in the sequencer's audio context.
+ * @returns a {@link Sequencer} that will download the audio file from
+ * `loopURL`, decode it into an audio buffer and then construct and connect an
+ * audio node to play that buffer indefinitely in the sequencer's audio context.
  */
 export const createLoopSequencer = (loopURL: string) => {
     return async (audioContext: AudioContext) => {
