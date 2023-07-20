@@ -1,6 +1,7 @@
 import p5Types from "p5";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
+import { mod } from "utils/math";
 
 interface SketchState {
     /** Number of rows (y/j values) in `cells` */
@@ -151,7 +152,7 @@ export const draw = (p5: p5Types) => {
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
-            const c = aliveNeighbourCount(cells, rows, j, i);
+            const c = aliveNeighbourCount(cells, rows, cols, j, i);
 
             const isAlive = cells[j * rows + i] === true;
             let nextIsAlive = false;
@@ -205,6 +206,7 @@ const offset = (availableSpace: number, count: number) => {
 const aliveNeighbourCount = (
     cells: boolean[],
     rows: number,
+    cols: number,
     j: number,
     i: number
 ) => {
@@ -222,6 +224,6 @@ const aliveNeighbourCount = (
         [j + 1, i + 1],
     ];
     return ni.reduce((s, [j, i]) => {
-        return s + (cells[j * rows + i] === true ? 1 : 0);
+        return s + (cells[mod(j, rows) * rows + mod(i, cols)] === true ? 1 : 0);
     }, 0);
 };
