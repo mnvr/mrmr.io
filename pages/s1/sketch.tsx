@@ -1,4 +1,5 @@
 import p5Types from "p5";
+import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 interface SketchState {
@@ -21,6 +22,23 @@ let state: SketchState | undefined;
  */
 const cellD = 10;
 
+/**
+ * The color to use for drawing alive cells.
+ */
+const aliveColor = color("oklch(77% 0.242 151.39)");
+
+/**
+ * The color to use for drawing inactive cells.
+ */
+const inactiveColor = color("oklch(97% 0.242 151.39)");
+
+/**
+ * Cache P5 representations of some of the fixed colors that we use to avoid
+ * recreating them each loop.
+ */
+const aliveColorP5 = p5c(aliveColor);
+const inactiveColorP5 = p5c(inactiveColor);
+
 export const initState = (p5: p5Types) => {
     const cols = Math.floor(p5.width / cellD);
     const rows = Math.floor(p5.height / cellD);
@@ -36,11 +54,11 @@ export const setInitialPattern = (cells: boolean[][]) => {
     const safeSet = (x: number, y: number) => {
         const row = cells[y];
         if (!row) return;
-        if (row.length <= y) {
+        if (y <= row.length) {
             row[x] = true;
         }
     };
-    safeSet(4, 4);
+    safeSet(15, 15);
 };
 
 /**
@@ -51,7 +69,6 @@ export const draw = (p5: p5Types) => {
     const s = ensure(state);
 
     p5.clear();
-    p5.background(250);
 
     // Starting position [x, y] of the first cell
     //
@@ -75,16 +92,19 @@ export const draw = (p5: p5Types) => {
 
     p5.translate(offset(p5.width, s.cols), offset(p5.height, s.rows));
 
+    p5.strokeWeight(5);
+
     s.cells.forEach((row, j) => {
-        row.forEach((cell, i) => {
+        row.forEach((isAlive, i) => {
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
             const x = i * cellD;
             const y = j * cellD;
             // This is apparently causing a FPS drop, but that's fine, we won't
             // need it later on.
-            p5.rect(x, y, cellD, cellD);
-            dot(p5, x + cellD / 2, y + cellD / 2);
+            // p5.rect(x, y, cellD, cellD);
+            p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
+            p5.point(x + cellD / 2, y + cellD / 2);
         });
     });
 };
@@ -93,12 +113,4 @@ const offset = (availableSpace: number, count: number) => {
     const extra = availableSpace - count * cellD;
     if (extra <= 0) return 0;
     return extra / 2;
-};
-
-const dot = (p5: p5Types, x: number, y: number) => {
-    p5.push();
-    p5.stroke(0);
-    p5.strokeWeight(5);
-    p5.point(x, y);
-    p5.pop();
 };
