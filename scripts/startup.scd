@@ -15,9 +15,12 @@
 
 (
 s.reboot {
-	// Free any old instances of SuperDirt to avoid duplicates.
-	// This won't do anything if `~dirt` is nil.
-	~dirt.free;
+	// Disable input
+	//
+	// Comment this out if we need input. Disabling it currently since we don't
+	// need it right now, and on macOS it causes the OS to show the orange
+	// recording indicator if SuperCollider opens the microphone input stream.
+	s.options.inputStreamsEnabled_("00");
 
 	// Increased this because we were getting "alloc failed" messages
 	// > alloc failed, increase server's RT memory
@@ -47,6 +50,10 @@ s.reboot {
 	//
 	// Default value is 0.2(?)
 	// s.latency = 0.3
+
+	// Free any old instances of SuperDirt to avoid duplicates.
+	// This won't do anything if `~dirt` is nil.
+	~dirt.free;
 
 	// Boot the server and start SuperDirt
 	s.waitForBoot {
