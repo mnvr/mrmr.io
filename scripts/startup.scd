@@ -1,12 +1,22 @@
 // Startup file for SuperCollider
 //
-// Place this into Platform.userAppSupportDir as "startup.scd"
+// - Configures SuperCollider for running SuperDirt,
+// - Boots SuperDirt whenever SuperCollider boots,
+// - And tweak a few more things.
 //
-// - Configures SuperCollider for running SuperDirt
-// - Boots SuperDirt whenever SuperCollider boots
+// Installation
+//
+// Place this into Platform.userAppSupportDir as "startup.scd". Alternatively,
+// open "startup.scd" (File > Open startup file) and just add the following:
+//
+//    "/path/to/this/file.scd".load;
+//
+// If done this way, we won't need to bother keeping both the copies in sync.
 
 (
 s.reboot {
+	// Free any old instances of SuperDirt to avoid duplicates.
+	// This won't do anything if `~dirt` is nil.
 	~dirt.free;
 
 	// Increased this because we were getting "alloc failed" messages
