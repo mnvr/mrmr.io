@@ -24,6 +24,7 @@ s.reboot {
 
 	// Increased this because we were getting "alloc failed" messages
 	// > alloc failed, increase server's RT memory
+	//
 	// Default is 8192
 	s.options.memSize = 8192 * 32;
 
@@ -64,7 +65,11 @@ s.reboot {
 		~dirt.loadSoundFiles();
 		// Wait for the samples to be loaded.
 		s.sync;
-		~dirt.start();
+		// Start SuperDirt, asking it to create some number of orbits (one for
+		// each of the given outBusses).
+		//
+		// If we don't specify the orbits here explicitly, it'll only create 1.
+		~dirt.start(outBusses: 0 ! 4);
 	}
 }
 )
