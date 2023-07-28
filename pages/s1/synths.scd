@@ -88,6 +88,14 @@
    "envelope" does not get invoked, we'll need to call these something other
    than "attack" or "release". Remember that there is already a 1 ms attack
    implicitly applied by SuperDirt as the fadeInTime.
+
+ - The curious ones amongst you who've also gone spelunking into the SuperDirt
+   source might wonder about the Env.asr that is applied by the (global)
+   dirt_monitor effect; whether it adds an attack of its own. Well, no. Because
+   the gate for that EnvGen gets triggered only once, but it doesn't go back
+   down to 0. As in, it is a global singleton-ish envelope, not a per note /
+   sample envelope, and practically (say except for the first note maybe)
+   doesn't come into the picture.
  */
 SynthDef(\sin, { |out, freq=440, sustain=1, pan=0|
 	// var env = Line.ar(1, 0, sustain, doneAction: Done.freeSelf);
