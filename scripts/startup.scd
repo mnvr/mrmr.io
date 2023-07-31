@@ -49,7 +49,28 @@ s.reboot {
 
 	// Increase this if you start seeing "late 0.xxx" messages
 	//
-	// Default value is 0.2(?)
+	// The latency defines how far ahead in the future sclang asks scsynth to
+	// schedule the events that it sends (precisely, it is used as the time
+	// delta in the bundles that sclang sends to scsynth, e.g. when using
+	// `s.bind`). Since bundles deltas are from the logical time, this ensures
+	// events are always in sync (as long as the OSC bundle reaches scsynth and
+	// gets rendered before the delta has elapsed).
+	//
+	// The late messages appear if this delta has elapsed, and scsynth gets a
+	// bundle with a time tag in the past.
+	//
+	// Default value is 0.2.
+	//
+	// Increasing latency will reduce the chances of it happening, but it is a
+	// tradeoff, since increased latency also delays the responsiveness of
+	// scsynth to the commands that we issue to it from sclang.
+	//
+	// Note that this is not automatically applied to all OSC messages! Pbind
+	// for example uses this value when sending OSC bundles, but say raw
+	// Synth(...) evaluations do not. Generally, sequencing routines should use
+	// a bundle latency (this or otherwise), but synths triggered by live input
+	// should be sent immediately.
+	//
 	// s.latency = 0.3
 
 	// Free any old instances of SuperDirt to avoid duplicates.
@@ -60,7 +81,7 @@ s.reboot {
 	s.waitForBoot {
 		~dirt = SuperDirt();
 		// Lazy load the samples
-        // https://tidalcycles.org/docs/configuration/AudioSamples/lazy_loading
+		// https://tidalcycles.org/docs/configuration/AudioSamples/lazy_loading
 		~dirt.doNotReadYet = true;
 		~dirt.loadSoundFiles();
 		// Wait for the samples to be loaded.
