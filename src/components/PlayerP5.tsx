@@ -10,12 +10,6 @@ interface PlayerP5Props {
      * See the draw property in {@link PlayerP5WebAudioProps} for more details.
      */
     draw: P5Draw;
-    /**
-     * If true, use a fake audio time to drive the animation.
-     *
-     * See the `timeProvider` property in {@link ReelSizedP5SketchBoxProps} for
-     * more details.
-     */
 }
 
 /**

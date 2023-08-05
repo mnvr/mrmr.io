@@ -40,7 +40,7 @@ export type P5Draw =
 export interface P5DrawEnv {
     /**
      * If this is an audio enabled sketch, then this getter will return the
-     * (highly accurate) timestamp since audio started.
+     * (highly accurate) timestamp counting seconds since audio started.
      *
      * Specifically, this'll be the `currentTime` of the `AudioContext` in which
      * audio is being played.
@@ -49,4 +49,14 @@ export interface P5DrawEnv {
      * associated audio playback. Doing so will throw an exception.
      */
     audioTime: () => number;
+    /**
+     * Return the time (in seconds) since the page was loaded.
+     *
+     * This is useful as a an alternative for {@link audioTime} in sketches
+     * which were designed with some (external) audio in mind. Since the audio
+     * is not being played currently, there won't be an audioContext, nor an
+     * audioTime. So to instead drive the animation forward, we can use this
+     * replacement timestamp that counts the number of seconds since page load.
+     */
+    pageTime: () => number;
 }
