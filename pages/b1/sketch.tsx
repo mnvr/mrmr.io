@@ -5,32 +5,20 @@ import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
-// This sketch is inspired by the cover of a notebook I have.
+// Variant of /become
 export const draw = (p5: p5Types, env: P5DrawEnv) => {
     p5.clear();
 
     const gap = 50;
-    const audio = extractAudioMarkersAtTime(trackInfo, env.audioTime());
+    const audio = extractAudioMarkersAtTime(trackInfo, env.pageTime());
 
-    const isIntro = audio.loop === 0;
-    const isBeforeIntroDrums = isIntro && audio.bar < 8;
-
-    // Pulse the colors to the beat (except during the first half of the intro)
+    // Pulse the colors to the beat
     const strokeDots = color(
-        isBeforeIntroDrums
-            ? 235
-            : Math.max(
-                  235 + audio.nearOnBeat * 20,
-                  235 + audio.nearOffBeat * 20
-              )
+        Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20)
     );
-    const strokeStar = color(
-        237 + (isBeforeIntroDrums ? 0 : audio.nearOnBeat * 11)
-    );
+    const strokeStar = color(237 + audio.nearOnBeat * 11);
     // Link to the pre-offbeat kick (the kick at the 6/16-th note).
-    const strokeCircle = color(
-        237 + (isBeforeIntroDrums ? 0 : audio.nearBeat(6 / 16) * 11)
-    );
+    const strokeCircle = color(237 + audio.nearBeat(6 / 16) * 11);
 
     // Offset the grid by a bit so that the initial row and column of dots is
     // not cut in half; just make things look a bit more pleasing to start with.
@@ -38,18 +26,8 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     // Rotate the stars at a speed indexed by the bass note.
     // Don't do this during the intro.
-    const rotateStar = isIntro ? 0 : bassNoteForBar(audio.bar);
+    const rotateStar = bassNoteForBar(audio.bar);
 
-    // Switch to black and jiggle the stars in the latter 3/10ths of some of the
-    // 3rd bars (the one with the repeating snares).
-    if (
-        !isIntro &&
-        [2, 14].includes(audio.bar) &&
-        Math.floor(audio.barOffset * 10) >= 7
-    ) {
-        p5.background(0);
-        p5.scale(1.02 + audio.bar / 100 + Math.random() * 0.005);
-    }
     // Slow speed rotation around the origin
     p5.rotate(Math.sin(audio.loopOffset * Math.PI) / 2);
 

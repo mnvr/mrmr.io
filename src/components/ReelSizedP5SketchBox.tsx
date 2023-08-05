@@ -98,10 +98,10 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
             return audioContext?.currentTime ?? 0;
         },
         pageTime: () => {
-            const t = performance.now() / 1000;
-            console.log(t);
-            return t;
-        }
+            // `performance.now` is in milliseconds. convert it to seconds so
+            // that we have the same external interface as `audioTime` above.
+            return performance.now() / 1000;
+        },
     };
 
     const wrappedDraw = (p5: p5Types) => {
