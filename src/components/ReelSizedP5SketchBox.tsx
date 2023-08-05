@@ -39,6 +39,22 @@ interface ReelSizedP5SketchBoxProps {
     audioContext?: AudioContext;
 
     /**
+     * An alternative source for audio time.
+     *
+     * This is useful in sketches that are made to go along with an associated
+     * audio file, but do not have a audio playing along in the browser (e.g.,
+     * perhaps we're recording the output of the sketch to later composite it
+     * with the audio externally).
+     *
+     * In such cases, we'll not have an audio time, so the animations in the
+     * sketch would stop. This object will provide an alternative timeline in
+     * such cases then.
+     */
+    timeProvider?: {
+        currentTime: () => number;
+    };
+
+    /**
      * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
      * expand to fill the window.
      */
@@ -50,6 +66,7 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
     p5Ref,
     shouldDisableLooping,
     audioContext,
+    timeProvider,
     restrictAspectRatio,
 }) => {
     // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
@@ -95,7 +112,9 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = ({
 
     const env = {
         audioTime: () => {
-            return audioContext?.currentTime ?? 0;
+            return (
+                audioContext?.currentTime ?? timeProvider?.currentTime() ?? 0
+            );
         },
     };
 
