@@ -82,6 +82,7 @@ const Footer: React.FC = () => {
         </FooterContents>
     );
 };
+
 const FooterContainer = styled.div`
     padding: 1.3rem;
     margin-block-end: 4rem;
