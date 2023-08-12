@@ -40,6 +40,20 @@ const sortByLightness = (css: string[]): ColorInfo[] => {
     return colorAndNames;
 };
 
+/**
+ * Return a RGB component representation of the given color.
+ *
+ * e.g. "rgb(255 215 0)"
+ */
+const rgb255String = (c: Color) => {
+    return c.to("srgb").toString({
+        format: {
+            name: "rgb",
+            coords: Array(3).fill("<number>[0, 255]"),
+        },
+    });
+};
+
 const Grid = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -51,8 +65,11 @@ interface ColorCellProps {
 
 const ColorCell: React.FC<ColorCellProps> = ({ colorInfo }) => {
     const { color, name, lightness } = colorInfo;
-    const handleClick = (e: any) => {
-        console.log(e);
+
+    // Print a 0-255 RGB component representation of the color on the console on
+    // click. This is handy when copy pasting into vanilla P5 sketches.
+    const handleClick = () => {
+        console.log(rgb255String(color));
     };
 
     return (
