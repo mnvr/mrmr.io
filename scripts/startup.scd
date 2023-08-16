@@ -86,10 +86,8 @@ s.reboot {
 		~dirt.loadSoundFiles();
 		// Wait for the samples to be loaded.
 		s.sync;
-		// Start SuperDirt, asking it to create some number of orbits (one for
-		// each of the given outBusses).
-		//
-		// If we don't specify the orbits here explicitly, it'll only create 1.
+		// Start SuperDirt with 4 orbits, all writing to the outBus 0.
+		// (By default, it'll only create one orbit).
 		~dirt.start(outBusses: 0 ! 4);
 	}
 }
