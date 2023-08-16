@@ -2,7 +2,8 @@
 //
 // - Configures SuperCollider for running SuperDirt,
 // - Boots SuperDirt whenever SuperCollider boots,
-// - And tweak a few more things.
+// - Boots SuperCollider, and
+// - Configures SuperDirt.
 //
 // Installation
 //
@@ -84,8 +85,6 @@ s.reboot {
 		// https://tidalcycles.org/docs/configuration/AudioSamples/lazy_loading
 		~dirt.doNotReadYet = true;
 		~dirt.loadSoundFiles();
-		// Wait for the samples to be loaded.
-		s.sync;
 		// Start SuperDirt with 4 orbits, all writing to the outBus 0.
 		// (By default, it'll only create one orbit).
 		~dirt.start(outBusses: 0 ! 4);
