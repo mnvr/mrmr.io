@@ -78,8 +78,8 @@ s.reboot {
 	// This won't do anything if `~dirt` is nil.
 	~dirt.free;
 
-	// Boot the server and start SuperDirt
-	s.waitForBoot {
+	// Start SuperDirt once the audio server has booted.
+	s.doWhenBooted {
 		~dirt = SuperDirt();
 		// Lazy load the samples
 		// https://tidalcycles.org/docs/configuration/AudioSamples/lazy_loading
