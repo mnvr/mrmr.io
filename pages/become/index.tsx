@@ -67,7 +67,8 @@ const Footer: React.FC = () => {
         <FooterContents>
             <small>
                 <p>
-                    music, words and art by <Link to="/">manav</Link>
+                    music, words and art by <Link to="/">manav</Link> · july
+                    2023
                 </p>
                 <p id="footer-description">
                     the song was composed in garageband, and the visuals were
