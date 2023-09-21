@@ -17,12 +17,11 @@ export default BlogPostLayout;
 const ContentContainer = styled.div`
     margin-block: 2rem;
 
-
     hr {
         opacity: 0.075;
         @media (prefers-color-scheme: dark) {
-            opacity: 0.2;
+            opacity: 0.15;
         }
-        margin-block: 1rem;
+        margin-block: 2rem;
     }
 `;

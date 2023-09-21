@@ -7,6 +7,7 @@ import { ensure } from "utils/ensure";
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { formattedDateMY } = page;
+
     return (
         <TitleContainer>
             <p>
@@ -17,18 +18,6 @@ export const Title: React.FC = () => {
                     {formattedDateMY}
                 </Caption>
             </p>
-        </TitleContainer>
-    );
-};
-
-export const Footer: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    return (
-        <TitleContainer>
-            <NavContainer>
-                <hr />
-                <NavA page={page} />
-            </NavContainer>
         </TitleContainer>
     );
 };
@@ -46,9 +35,24 @@ const Caption = styled.small`
     color: var(--mrmr-color-2);
 `;
 
-const NavContainer = styled.div`
-    /* margin-block-start: 4rem; */
+export const Footer: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
 
+    return (
+        <FooterContainer>
+            <hr />
+            <NavContainer>
+                <NavA page={page} />
+            </NavContainer>
+        </FooterContainer>
+    );
+};
+
+const FooterContainer = styled.div`
+    margin-block: 4rem;
+`;
+
+const NavContainer = styled.div`
     letter-spacing: 0.045ch;
 
     color: var(--mrmr-color-2);
