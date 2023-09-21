@@ -36,12 +36,29 @@ that's a detail that doesn't matter much for our purposes here)</Aside>.
 
 In a rather surprising turn of events, we found that if we make these language
 models large enough (the _L_ in *L*LM), then they start passing the Turing test
-<Aside>(i.e. you can't tell in a conversation with it over the internet if it is a human or a machine)</Aside>.
+<Aside> (i.e. you can't tell in a conversation with it over the internet if it
+is a human or a machine)</Aside>.
 
 It is worth highlighting how surprising this was, because this element of
 surprise indicates that practice (engineering) has jumped ahead of theory
 (science). That is, we don't really know what's going on, but we can do it. It's
 sortof like making fire without understanding chemistry, though that was a much
 larger gap in time and understanding than I suppose this one will be.
+
+---
+
+I said earlier that LLMs would pass a Turing test. That's not true though. A
+"raw" LLM by itself wouldn't fool anyone. It would say brilliant things, like a
+inspired poet, but would soon descend into incoherent madman territory,
+eventually outing itself as an incomprehensible madmachine.
+
+We need to add something called RLHF to prevent this from happening. Armed with
+RLHF, then a LLM can pass a Turing test.
+
+Now this is very much a definitional hairsplitting, whether RLHF should be
+considered as a part of the LLM or if the LLM and the RLHF are two separate
+things. Normally, casually, the former is the case: RLHF is considered as part
+of the LLM. But for our purposes here, I'd like to consider these two as
+separate things, so that we can contrast between their functions.
 
 <Footer />
