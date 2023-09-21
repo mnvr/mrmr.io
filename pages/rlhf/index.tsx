@@ -62,25 +62,22 @@ export const Title: React.FC = () => {
         <TitleContainer>
             <p>
                 <h1>RLHF is like the left/right brain split</h1>
-                <Caption>Manav Rathi<br/>{formattedDateMY}</Caption>
+                <Caption>
+                    Manav Rathi
+                    <br />
+                    {formattedDateMY}
+                </Caption>
             </p>
-            <NavContainer>
-                <NavA page={page} />
-            </NavContainer>
         </TitleContainer>
     );
 };
 
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedDateMY } = page;
     return (
         <TitleContainer>
-            <p>
-                <h1>RLHF is like the left/right brain split</h1>
-                <Caption>Manav Rathi<br/>{formattedDateMY}</Caption>
-            </p>
             <NavContainer>
+                <hr />
                 <NavA page={page} />
             </NavContainer>
         </TitleContainer>
@@ -88,8 +85,12 @@ export const Footer: React.FC = () => {
 };
 
 const TitleContainer = styled.div`
-    /* margin-block-start: 4rem; */
-    /* line-height: 1.5rem; */
+    margin-block-start: 2rem;
+    margin-block-end: 4rem;
+    @media (min-width: 600px) {
+        margin-block-start: 3rem;
+        margin-block-end: 5rem;
+    }
 `;
 
 const Caption = styled.small`
@@ -97,7 +98,7 @@ const Caption = styled.small`
 `;
 
 const NavContainer = styled.div`
-    margin-block-start: 4rem;
+    /* margin-block-start: 4rem; */
 
     letter-spacing: 0.045ch;
 
