@@ -29,6 +29,10 @@ export const MarginQuote = styled.p`
     margin-block-end: 2rem;
 `;
 
+export const Aside = styled.span`
+    color: var(--mrmr-color-2);
+`;
+
 const TitleContainer = styled.div`
     margin-block-start: 2rem;
     margin-block-end: 4rem;

@@ -5,7 +5,7 @@ layout: blog
 description: RLHF used in LLMs is like the left/right brain split in humans
 ---
 
-import { Footer, Title, MarginQuote } from "./index.tsx";
+import { Aside, Footer, MarginQuote, Title } from "./index.tsx";
 
 <Title />
 
@@ -28,5 +28,20 @@ just an imperfect analogy.
 
 RLHF (Reinforcement Learning from Human Feedback) is a mechanism used by current
 state of the art LLMs (Large Language Models), e.g. ChatGPT.
+
+For our purposes here, we can consider a language model (the _LM_ in the L*LM*)
+to be a neural network that predicts the next word in a sequence <Aside>
+(they actually predict something more akin to the next _syllable_, but
+that's a detail that doesn't matter much for our purposes here)</Aside>.
+
+In a rather surprising turn of events, we found that if we make these language
+models large enough (the _L_ in *L*LM), then they start passing the Turing test
+<Aside>(i.e. you can't tell in a conversation with it over the internet if it is a human or a machine)</Aside>.
+
+It is worth highlighting how surprising this was, because this element of
+surprise indicates that practice (engineering) has jumped ahead of theory
+(science). That is, we don't really know what's going on, but we can do it. It's
+sortof like making fire without understanding chemistry, though that was a much
+larger gap in time and understanding than I suppose this one will be.
 
 <Footer />
