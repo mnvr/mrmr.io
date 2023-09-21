@@ -22,6 +22,6 @@ const ContentContainer = styled.div`
         @media (prefers-color-scheme: dark) {
             opacity: 0.15;
         }
-        margin-block: 2rem;
+        margin-block-start: 2rem;
     }
 `;

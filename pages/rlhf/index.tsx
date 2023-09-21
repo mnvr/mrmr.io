@@ -22,6 +22,13 @@ export const Title: React.FC = () => {
     );
 };
 
+export const MarginQuote = styled.p`
+    color: var(--mrmr-color-2);
+    font-family: serif;
+    font-style: italic;
+    margin-block-end: 2rem;
+`;
+
 const TitleContainer = styled.div`
     margin-block-start: 2rem;
     margin-block-end: 4rem;
@@ -40,7 +47,7 @@ export const Footer: React.FC = () => {
 
     return (
         <FooterContainer>
-            <hr />
+            <FooterHR />
             <NavContainer>
                 <NavA page={page} />
             </NavContainer>
@@ -50,6 +57,10 @@ export const Footer: React.FC = () => {
 
 const FooterContainer = styled.div`
     margin-block: 4rem;
+`;
+
+const FooterHR = styled.hr`
+    margin-block-end: 2rem;
 `;
 
 const NavContainer = styled.div`
