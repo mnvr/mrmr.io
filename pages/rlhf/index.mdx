@@ -91,10 +91,10 @@ in a room, and ask them to fill in the next word of a sequence.
 The idea behind RLHF is to add another (smaller) neural network on top of the
 LLM to modify its output.
 
-The RLHF neural network doesn't have any text prediction capabilites, it is much
-smaller and simpler than the LLM itself. It is trained on a curated set of
-examples prepared by humans, with the goal that given two, say, sentences,
-it should select the one which better matches how humans would've responded.
+This RLHF neural network doesn't have any text prediction capabilites, it is
+much smaller and simpler than the LLM itself. It is trained on a curated set of
+examples prepared by humans, with the goal that given two, say, sentences, it
+should select the one which better matches how humans would've responded.
 
 <I.AsideP>
     <p>
@@ -112,11 +112,15 @@ it should select the one which better matches how humans would've responded.
 It was seen that by adding this RLHF on top of a vanilla / raw LLM, the
 consistency of the LLMs output improved. The RLHF were, so to say, acting like a
 supportive teacher, gently guiding the LLM back on track by encouraging it (by
-increasing the weightage) to answer in ways that humans would.
+increasing the weightage) to answer in ways that other humans would.
 
 If you squint enough, you'll see how the RLHF <I.Aside>(which stands for
 Reinforcement Learning with Human Feedback, I hope you can see how the acronym
 comes from what I've told you about it)</I.Aside> encodes the "preferences" of
-(some) humans. Their "value system". Their _ethics_.
+(some) humans. Their _ethics_.
+
+Over time, the role of the RLHF has changed, and now it is has a more repressive
+function. It is now more of an overbearing mother, insisting their child behave
+a certain way to better fit in the company of those around them.
 
 <I.Footer />
