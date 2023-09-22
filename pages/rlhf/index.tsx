@@ -100,3 +100,18 @@ export const Example = styled.blockquote`
 export const Aside = styled.span`
     color: var(--mrmr-color-2);
 `;
+
+export const AsideP: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <small><AsideP1>
+            {children}
+        </AsideP1></small>
+    );
+};
+
+export const AsideP1 = styled.blockquote`
+    color: var(--mrmr-color-2);
+    border-inline-start: 2px dotted var(--mrmr-color-2);
+    margin-inline-start: 0.1rem;
+    padding-inline-start: 0.5rem;
+`;

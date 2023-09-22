@@ -63,57 +63,26 @@ separate things, so that we can contrast between their functions.
 
 <I.HRT />
 
-So we have a LLM that given a sequence of text, predicts the next word that is
-the most likely. Most likely in which sense? Suppose that we get 10 people in a
-room, give them a sequence of text, let us say
+We can think of a LLM as a black box which when given a sequence of text,
+predicts the next word that is the most likely. Most likely in which sense?
+Suppose that we get 10 people in a room, give them a sequence of text, let us
+say
 
 <I.Example>I like to ___</I.Example>
 
-and ask them to fill in the blank - predict the next word in the sequence.
-What'll they fill in, I ask you?
+and ask them to fill in the blank - i.e., predict the next word in the sequence.
+What'll they fill?
 
-Well, yes, the answer is not possible to guess since this is a very subjective
-ask. The word here will depend a lot on the idiosyncracies of these 10
-individuals, on their entire life history. For many of them, I'll wager that
-word they fill in ("predict") will change over time, if we were to ask them
-again later.
+For 10 people, there might not be a common word that the majority fills. But
+what if we put 10 thousand people in the room? 10 million?
 
-But what if we get 10 thousand people in a room? Or 10 million of them?
+Firstly we'll need bigger rooms. Secondly, at some point we'll start getting
+majority predictions. LLMs are like this. They're as if we put 10 million people
+in a room, and ask them to fill in the next word of a sequence.
 
-Firstly we'll need bigger rooms. Secondly, if there is some homogenity in the
-way these 10 million people are selected from amongst the (almost) 10 billion
-people on our planet, we will start to see some statistical regularity in the
-answers. In some cases where there is extreme homogenity, there might even be a
-clear cut majority answer.
-
-LLMs are like this. They're as if we put 10 million people in a room, and ask
-them to fill in the next word of a sequence. Just how the prediction of the 10
-million people depends on how those people were picked, similarily the
-prediction of the LLM depends on the data it was trained on.
-
-Our example sentence thus highlights two aspects of LLMs
-
--   There is no one right answer (i.e. "best prediction" / next word in the
-    sequence).
-
--   The LLMs response ("personality" so as to say) depends on the data it was
-    trained on.
-
-But I dislike my example sentence because to people that might not be aware of
-the underlying mechanics, it might give off the wrong impression that LLMs
-"just" memorize the data set they're trained on and parrot off the most common
-next word. That's very much not the case.
-
-**LLMs can understand our language.** We know this because we can ask them to
-predict the next words for text sequences that are not even remotely in the data
-set, and as far as we can tell, they can understand our _intent_.
-
-They might not
-be able to predict the correct word (which would imply that
-that particular LLM is maybe not too intelligent)
-
-consciousness, the thing we can't seem to be able to define but that we are
-absolutely certain that exists, because it is indeed the only thing we be
-certain that exists.
+<I.AsideP>This comparison of a LLM to an average of 10 million people is helpful
+to get a basic gist of what's going on, but be aware that it is a flawed
+comparison ultimately. To see how, consider this: would you rather fight 100
+duck sized Obamas or one Obama sized duck? </I.AsideP>
 
 <I.Footer />
