@@ -103,9 +103,9 @@ export const Aside = styled.span`
 
 export const AsideP: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <small><AsideP1>
-            {children}
-        </AsideP1></small>
+        <small>
+            <AsideP1>{children}</AsideP1>
+        </small>
     );
 };
 
@@ -114,4 +114,8 @@ export const AsideP1 = styled.blockquote`
     border-inline-start: 2px dotted var(--mrmr-color-2);
     margin-inline-start: 0.1rem;
     padding-inline-start: 0.5rem;
+`;
+
+export const Skimmable = styled.div`
+    color: var(--mrmr-color-2);
 `;
