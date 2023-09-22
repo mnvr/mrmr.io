@@ -50,7 +50,7 @@ larger gap in time and understanding than I suppose this one will be.
 I said earlier that LLMs would pass a Turing test. That's not true though. A
 "raw" LLM by itself wouldn't fool anyone. It would say brilliant things, like a
 inspired poet, but would soon descend into incoherent madman territory,
-eventually outing itself as an incomprehensible madmachine.
+eventually outing itself as an meirl machine.
 
 We need to add something called RLHF to prevent this from happening. Armed with
 RLHF, then a LLM can pass a Turing test.
@@ -63,10 +63,9 @@ separate things, so that we can contrast between their functions.
 
 <I.HRT />
 
-We can think of a LLM as a black box which when given a sequence of text,
-predicts the next word that is the most likely. Most likely in which sense?
-Suppose that we get 10 people in a room, give them a sequence of text, let us
-say
+So a LLM is a black box which when given a sequence of text, predicts the next
+word that is the most likely. Most likely in which sense? Suppose that we get 10
+people in a room, give them a sequence of text, let us say
 
 <I.Example>I like to ___</I.Example>
 
@@ -80,9 +79,44 @@ Firstly we'll need bigger rooms. Secondly, at some point we'll start getting
 majority predictions. LLMs are like this. They're as if we put 10 million people
 in a room, and ask them to fill in the next word of a sequence.
 
-<I.AsideP>This comparison of a LLM to an average of 10 million people is helpful
-to get a basic gist of what's going on, but be aware that it is a flawed
-comparison ultimately. To see how, consider this: would you rather fight 100
-duck sized Obamas or one Obama sized duck? </I.AsideP>
+<I.AsideP>
+    This comparison of a LLM to an average of 10 million people is helpful to
+    get a basic gist of what's going on, but be aware that it is a flawed
+    comparison ultimately. To see how, consider this: would you rather fight 100
+    duck sized Obamas or one Obama sized duck?
+</I.AsideP>
+
+<I.HRT />
+
+The idea behind RLHF is to add another (smaller) neural network on top of the
+LLM to modify its output.
+
+The RLHF neural network doesn't have any text prediction capabilites, it is much
+smaller and simpler than the LLM itself. It is trained on a curated set of
+examples prepared by humans, with the goal that given two, say, sentences,
+it should select the one which better matches how humans would've responded.
+
+<I.AsideP>
+    <p>
+        Which humans though? There are (almost) 10 billion of us around, and it
+        is hard to find universal commonality in our responses. So no matter how
+        curated, the RLHF will invariably reflect the bias of the people who
+        prepared the example responses it was trained on.
+    </p>
+    <p>
+        Since the RLHF modifies the output of the LLM, this bias will thus carry
+        over to the output of the entire system.
+    </p>
+</I.AsideP>
+
+It was seen that by adding this RLHF on top of a vanilla / raw LLM, the
+consistency of the LLMs output improved. The RLHF were, so to say, acting like a
+supportive teacher, gently guiding the LLM back on track by encouraging it (by
+increasing the weightage) to answer in ways that humans would.
+
+If you squint enough, you'll see how the RLHF <I.Aside>(which stands for
+Reinforcement Learning with Human Feedback, I hope you can see how the acronym
+comes from what I've told you about it)</I.Aside> encodes the "preferences" of
+(some) humans. Their "value system". Their _ethics_.
 
 <I.Footer />
