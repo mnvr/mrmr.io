@@ -22,17 +22,6 @@ export const Title: React.FC = () => {
     );
 };
 
-export const MarginQuote = styled.p`
-    color: var(--mrmr-color-2);
-    font-family: serif;
-    font-style: italic;
-    margin-block-end: 2rem;
-`;
-
-export const Aside = styled.span`
-    color: var(--mrmr-color-2);
-`;
-
 const TitleContainer = styled.div`
     margin-block-start: 2rem;
     margin-block-end: 4rem;
@@ -63,14 +52,6 @@ const FooterContainer = styled.div`
     margin-block: 4rem;
 `;
 
-export const HR22 = styled.hr`
-    margin-block: 2rem;
-`;
-
-export const HR2d = styled.hr`
-    margin-block-start: 2rem;
-`;
-
 const NavContainer = styled.div`
     letter-spacing: 0.045ch;
 
@@ -85,4 +66,37 @@ const NavContainer = styled.div`
         border-bottom: 1px solid currentColor;
         opacity: 1;
     }
+`;
+
+export const HR22 = styled.hr`
+    margin-block: 2rem;
+`;
+
+export const HR2d = styled.hr`
+    margin-block-start: 2rem;
+`;
+
+export const HRT = styled.hr`
+    width: 50%;
+    margin-block: 2rem;
+`;
+
+export const MarginQuote = styled.p`
+    color: var(--mrmr-color-2);
+    font-family: serif;
+    font-style: italic;
+    margin-block-end: 2rem;
+`;
+
+export const Example = styled.blockquote`
+    color: royalblue;
+    @media (prefers-color-scheme: dark) {
+        color: paleturquoise;
+    }
+    font-family: serif;
+    font-style: italic;
+`;
+
+export const Aside = styled.span`
+    color: var(--mrmr-color-2);
 `;
