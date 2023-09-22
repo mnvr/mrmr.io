@@ -5,9 +5,9 @@ layout: blog
 description: RLHF used in LLMs is like the left/right brain split in humans
 ---
 
-import { Aside, Footer, MarginQuote, Title } from "./index.tsx";
+import * as I from "./index.tsx";
 
-<Title />
+<I.Title />
 
 The title of the post is really all I have to say. There is an interesting,
 perhaps even illuminating, analogy between how we've ended up with a RLHF
@@ -22,22 +22,22 @@ If you already see the connection, then there's nothing more to see here. If you
 already see the connection but think it is trite / silly, oh well, maybe it is
 just an imperfect analogy.
 
----
+<I.HR2d />
 
-<MarginQuote>Men create god in their own image</MarginQuote>
+<I.MarginQuote>Men create god in their own image</I.MarginQuote>
 
 RLHF (Reinforcement Learning from Human Feedback) is a mechanism used by current
 state of the art LLMs (Large Language Models), e.g. ChatGPT.
 
 For our purposes here, we can consider a language model (the _LM_ in the L*LM*)
-to be a neural network that predicts the next word in a sequence <Aside>
+to be a neural network that predicts the next word in a sequence <I.Aside>
 (they actually predict something more akin to the next _syllable_, but
-that's a detail that doesn't matter much for our purposes here)</Aside>.
+that's a detail that doesn't matter much for our purposes here)</I.Aside>.
 
 In a rather surprising turn of events, we found that if we make these language
-models large enough (the _L_ in *L*LM), then they start passing the Turing test
-<Aside> (i.e. you can't tell in a conversation with it over the internet if it
-is a human or a machine)</Aside>.
+models large enough (the _L_ in *L*LM), then they start passing the Turing
+test<I.Aside>(i.e. you can't tell in a conversation with it over the internet if
+it is a human or a machine)</I.Aside>.
 
 It is worth highlighting how surprising this was, because this element of
 surprise indicates that practice (engineering) has jumped ahead of theory
@@ -45,7 +45,7 @@ surprise indicates that practice (engineering) has jumped ahead of theory
 sortof like making fire without understanding chemistry, though that was a much
 larger gap in time and understanding than I suppose this one will be.
 
----
+<I.HR22 />
 
 I said earlier that LLMs would pass a Turing test. That's not true though. A
 "raw" LLM by itself wouldn't fool anyone. It would say brilliant things, like a
@@ -61,4 +61,4 @@ things. Normally, casually, the former is the case: RLHF is considered as part
 of the LLM. But for our purposes here, I'd like to consider these two as
 separate things, so that we can contrast between their functions.
 
-<Footer />
+<I.Footer />

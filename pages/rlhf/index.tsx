@@ -51,7 +51,7 @@ export const Footer: React.FC = () => {
 
     return (
         <FooterContainer>
-            <FooterHR />
+            <HR22 />
             <NavContainer>
                 <NavA page={page} />
             </NavContainer>
@@ -63,8 +63,12 @@ const FooterContainer = styled.div`
     margin-block: 4rem;
 `;
 
-const FooterHR = styled.hr`
-    margin-block-end: 2rem;
+export const HR22 = styled.hr`
+    margin-block: 2rem;
+`;
+
+export const HR2d = styled.hr`
+    margin-block-start: 2rem;
 `;
 
 const NavContainer = styled.div`
