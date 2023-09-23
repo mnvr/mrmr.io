@@ -97,7 +97,7 @@ export const Example = styled.blockquote`
     font-style: italic;
 `;
 
-export const Aside = styled.span`
+export const Sub = styled.span`
     color: var(--mrmr-color-2);
 `;
 
