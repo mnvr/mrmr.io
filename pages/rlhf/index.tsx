@@ -119,3 +119,10 @@ export const AsideP1 = styled.blockquote`
 export const Skimmable = styled.div`
     color: var(--mrmr-color-2);
 `;
+
+export const Cmp = styled.span`
+    background-color: honeydew;
+    color: darkgreen;
+    @media (prefers-color-scheme: dark) {
+    }
+`;
