@@ -19,53 +19,54 @@ pointing at. I'll simplify things a bit, maybe too much at places, to keep the
 post short.
 
 If you already see the connection, then there's nothing more to see here. If you
-already see the connection but think it is trite / silly, oh well, maybe it is
-just an imperfect analogy.
+already see the connection but think it is trite / imperfect, oh well, maybe it
+is just a silly analogy.
 
 <I.HR2d />
 
-<I.MarginQuote>Men create god in their own image</I.MarginQuote>
+<I.MarginQuote>Man has created god in his own image</I.MarginQuote>
 
 RLHF (Reinforcement Learning from Human Feedback) is a mechanism used by current
 state of the art LLMs (Large Language Models), e.g. ChatGPT.
 
-For our purposes here, we can consider a language model (the _LM_ in the L*LM*)
-to be a neural network that predicts the next word in a sequence <I.Sub> (they
-actually predict something more akin to the next _syllable_, but that's a detail
-that doesn't matter much for our purposes here)</I.Sub>.
+A language model (the _LM_ in the L*LM*) is a neural network that predicts the
+next _word_ in a sequence of text <I.Sub>(they actually predict something more
+akin to the next _syllable_, but that's a detail we can overlook here)</I.Sub>.
 
 In a rather surprising turn of events, we found that if we make these language
-models large enough (the _L_ in *L*LM), then they start passing the Turing
-test<I.Sub>(i.e. you can't tell in a conversation with it over the internet if
-it is a human or a machine)</I.Sub>.
+models large enough (the _L_ in *L*LM), then they start passing the Turing test
+(~ if you have a conversation with an LLM over the internet you cannot tell if
+it is a human or a machine).
 
 It is worth highlighting how surprising this was, because this element of
 surprise indicates that practice (engineering) has jumped ahead of theory
-(science). That is, we don't really know what's going on, but we can do it. It's
-sortof like making fire without understanding chemistry, though that was a much
-larger gap in time and understanding than I suppose this one will be.
+(science). We don't really know what's going on, but we can do it. It's sortof
+like making fire without understanding chemistry, though that was a much larger
+gap in time and understanding than I suppose this one will be.
 
 <I.HRT />
 
-I said earlier that LLMs would pass a Turing test. That's not true though. A
-"raw" LLM by itself wouldn't fool anyone. It would say brilliant things, like a
-inspired poet, but would soon descend into incoherent madman territory,
-eventually outing itself as an meirl machine.
+I said earlier that LLMs would pass a Turing test. That wasn't true though, in
+the beginning. A "raw" LLM by itself wouldn't fool anyone, not for long. It
+would start off a conversation by saying brilliant things, like a inspired poet,
+but would soon descend into incoherent madman territory, eventually outing
+itself as an insipid machine.
 
-We need to add something called RLHF to prevent this from happening. Armed with
-RLHF, then a LLM can pass a Turing test.
+People found out though that if we add something called RLHF, we can prevent
+this trailing off from happening. Armed with RLHF, then a LLM can pass a Turing
+test.
 
 Now this is very much a definitional hairsplitting, whether RLHF should be
 considered as a part of the LLM or if the LLM and the RLHF are two separate
-things. Normally, casually, the former is the case: RLHF is considered as part
-of the LLM. But for our purposes here, I'd like to consider these two as
+things. Normally, in casual conversation, the former is the case: the RLHF setup
+is considered as part of the LLM. But here I'd like to consider these two as
 separate things, so that we can contrast between their functions.
 
 <I.HRT />
 
-So a LLM is a black box which when given a sequence of text, predicts the next
-word that is the most likely. Most likely in which sense? Suppose that we get 10
-people in a room, give them a sequence of text, let us say
+So a LLM is a black box which, given a sequence of text, predicts the next _most
+likely_ word. Most likely in which sense? Suppose we put 10 people in a room,
+give them a sequence of text, let's say
 
 <I.Example>I like to ___</I.Example>
 
@@ -88,31 +89,36 @@ in a room, and ask them to fill in the next word of a sequence.
 
 <I.HRT />
 
-The idea behind RLHF is to add another (smaller) neural network on top of the
-LLM to modify its output.
+RLHF adds another (smaller) neural network atop the LLM to modify its output.
 
 This RLHF neural network doesn't have any text prediction capabilites, it is
-much smaller and simpler than the LLM itself. It is trained on a curated set of
-examples prepared by humans, with the goal that given two, say, sentences, it
-should select the one which better matches how humans would've responded.
+much smaller and simpler than the LLM itself. It is trained on a specifically
+created, curated set of examples prepared by humans, with the goal that given
+two, say, sentences, it should select the one which better matches how humans
+would've responded.
 
 <I.AsideP>
     <p>
         Which humans though? There are (almost) 10 billion of us around, and it
         is hard to find universal commonality in our responses. So no matter how
-        curated, the RLHF will invariably reflect the bias of the people who
+        curated, RLHF will invariably reflect the bias of the people who
         prepared the example responses it was trained on.
     </p>
     <p>
         Since the RLHF modifies the output of the LLM, this bias will thus carry
         over to the output of the entire system.
     </p>
+    <p>
+        Interestingly, whilst the LLM is to an extent able to imagine its way
+        out of the biases present in the data set that it was trained on, it
+        cannot do so for the biases present in the RLHF training data.
+    </p>
 </I.AsideP>
 
-It was seen that by adding this RLHF on top of a vanilla / raw LLM, the
-consistency of the LLMs output improved. The RLHF were, so to say, acting like a
-supportive teacher, gently guiding the LLM back on track by encouraging it (by
-increasing the weightage) to answer in ways that other humans would.
+People figured that by adding this RLHF on top of a vanilla LLM, the consistency
+of the LLMs output improved. The RLHF were, so to say, acting like a supportive
+teacher, gently guiding the LLM back on track by encouraging it (by increasing
+the weightage) to answer in ways that other humans would.
 
 If you squint enough, you'll see how the RLHF <I.Sub>(which stands for
 Reinforcement Learning with Human Feedback, I hope you can see how the acronym
@@ -279,9 +285,9 @@ form of non-animal intelligence we had dealt with before LLMs appeared on the
 scene. And I can't think of an analogous structural component of corporations.
 This could mean a bunch of things:
 
-* I'm not intelligent enough to see the analogous analogy.
-* Corporations are not intelligent enough to warrant the analogous structures.
-* Corporations are too alien, an entirely different form of intelligence that we
-  cannot comprehend, to warrant the structures analogous to human intelligence.
+-   I'm not intelligent enough to see the analogous analogy.
+-   Corporations are not intelligent enough to warrant the analogous structures.
+-   Corporations are too alien, an entirely different form of intelligence that we
+    cannot comprehend, to warrant the structures analogous to human intelligence.
 
 <I.Footer />

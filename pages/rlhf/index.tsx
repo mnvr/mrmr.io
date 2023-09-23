@@ -68,10 +68,12 @@ const NavContainer = styled.div`
     }
 `;
 
+/** 2rem margin on both vertical sides */
 export const HR22 = styled.hr`
     margin-block: 2rem;
 `;
 
+/** 2rem margin on top, default at bottom */
 export const HR2d = styled.hr`
     margin-block-start: 2rem;
 `;
