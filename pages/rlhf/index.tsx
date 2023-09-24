@@ -11,7 +11,7 @@ export const Title: React.FC = () => {
     return (
         <TitleContainer>
             <p>
-                <h1>RLHF is like the left/right brain split</h1>
+                <h1>LLM-RLHF is like the left-right brain split</h1>
                 <Caption>
                     Manav Rathi
                     <br />
