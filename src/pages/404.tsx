@@ -26,7 +26,7 @@ export const Head: HeadFC = () => {
 
 const colorPalettes = {
     colors: ensure(
-        parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 33.3%)"])
+        parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 33.3%)"]),
     ),
     darkColors: parseColorPalette(["hsl(0, 0%, 26.6%)", "hsl(0, 0%, 93.3%)"]),
 };

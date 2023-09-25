@@ -186,7 +186,7 @@ const aliveNeighbourCount = (
     rows: number,
     cols: number,
     j: number,
-    i: number
+    i: number,
 ) => {
     // Neighbouring indices. Initializing this separately so that we can provide
     // a type annotation and make the TypeScript compiler happy about the [j, i]

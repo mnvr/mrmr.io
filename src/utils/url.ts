@@ -20,12 +20,12 @@ export const fullURLForSlug = (slug: string) => {
 
     if (!slug.startsWith("/"))
         throw new Error(
-            `Specify a leading slash when providing the slug (was "${slug}")`
+            `Specify a leading slash when providing the slug (was "${slug}")`,
         );
 
     if (slug.endsWith("/"))
         throw new Error(
-            `Do not specify a trailing slash when providing the canonicalPath (was "${slug}")`
+            `Do not specify a trailing slash when providing the canonicalPath (was "${slug}")`,
         );
 
     return `${siteURL}${slug}`;

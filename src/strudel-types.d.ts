@@ -710,7 +710,7 @@ declare module "@strudel.cycles/core" {
      */
     export const register = (
         name: string,
-        f: (...args: Pattern[]) => Patternable
+        f: (...args: Pattern[]) => Patternable,
     ) => PatternTransform;
 
     /**

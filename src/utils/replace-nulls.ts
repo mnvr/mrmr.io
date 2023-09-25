@@ -22,7 +22,7 @@ type RecursivelyReplaceNullWithUndefined<T> = T extends null
  * If nulls were a billion dollar mistake, Javascript made two of them.
  */
 export const replaceNullsWithUndefineds = <T>(
-    obj: T
+    obj: T,
 ): RecursivelyReplaceNullWithUndefined<T> => {
     const newObj: any = {};
     Object.keys(obj as any).forEach((k) => {

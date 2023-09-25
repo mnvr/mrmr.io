@@ -129,14 +129,14 @@ export interface ColorPaletteSet {
  * mish-mash.
  */
 export const parseColorPalette = (
-    colors: readonly (string | undefined)[] | undefined
+    colors: readonly (string | undefined)[] | undefined,
 ) => {
     if (!colors) return;
 
     const all = colors.filter(isDefined);
     if (all.length < 2) {
         throw new Error(
-            "At least 2 colors are required to construct a palette"
+            "At least 2 colors are required to construct a palette",
         );
     }
 

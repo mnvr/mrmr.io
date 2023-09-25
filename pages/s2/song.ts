@@ -29,7 +29,7 @@ export const song: StrudelSong = () => {
 [[a5!2] c6 d6 d6 c6 a5 a5 c6 [d6!2]!2 d6 ~]/4
 
     ]/1
-        `
+        `,
     )
         .slow(1.1)
         .attack(0.01)

@@ -58,7 +58,7 @@ type DidPlay = (isPlaying: boolean) => void;
  */
 export const useWebAudioPlayback = (
     sequencer: Sequencer,
-    didPlay: DidPlay | undefined
+    didPlay: DidPlay | undefined,
 ): UseWebAudioPlaybackReturn => {
     // Track the user's intent (whether or not they've pressed the play button).
     // Whether or not we're actually playing right now (`isPlaying` below)

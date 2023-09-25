@@ -10,7 +10,7 @@ import * as React from "react";
  * the passed in `shareData`.
  */
 export const useShare = (
-    shareData: ShareData
+    shareData: ShareData,
 ): [canShare: boolean, handleShareClick: React.MouseEventHandler] => {
     const [canShare, setCanShare] = React.useState(true);
 

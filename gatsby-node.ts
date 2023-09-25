@@ -69,7 +69,7 @@ export const createPages: GatsbyNode<
     const nodes = data.allMdx.nodes;
 
     const activity = reporter.activityTimer(
-        `Creating pages from MDX files [${nodes.length}]`
+        `Creating pages from MDX files [${nodes.length}]`,
     );
     activity.start();
 

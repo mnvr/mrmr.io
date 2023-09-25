@@ -47,7 +47,7 @@ const indexColorPalettes = {
             "hsl(0, 0%, 0%)",
             "hsl(0, 0%, 33%)",
             "hsl(0, 0%, 30%)",
-        ])
+        ]),
     ),
     darkColors: parseColorPalette([
         "hsl(240, 6%, 20%)",

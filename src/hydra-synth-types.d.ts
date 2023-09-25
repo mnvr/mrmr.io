@@ -412,6 +412,6 @@ declare module "hydra-synth" {
      * {@link osc} source function.
      */
     type GLSLSource = (
-        st: [number, number]
+        st: [number, number],
     ) => [r: number, g: number, b: number, a: number];
 }

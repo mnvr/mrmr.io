@@ -128,7 +128,7 @@ export const PlayerP5WebAudio: React.FC<
         if (!(isSafari || isMobileSafari)) return;
         setTimeout(() => {
             const el = ensure(
-                window.document.getElementById("sketch-container")
+                window.document.getElementById("sketch-container"),
             );
             el.style.display = "table";
             el.offsetHeight;

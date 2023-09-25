@@ -14,7 +14,7 @@ export const draw = (p5: p5Types, env: P5DrawEnv) => {
 
     // Pulse the colors to the beat
     const strokeDots = color(
-        Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20)
+        Math.max(235 + audio.nearOnBeat * 20, 235 + audio.nearOffBeat * 20),
     );
     const strokeStar = color(237 + audio.nearOnBeat * 11);
     // Link to the pre-offbeat kick (the kick at the 6/16-th note).
@@ -62,7 +62,7 @@ const bassNoteForBar = (bar: number) =>
             0,
             0,
             0,
-        ][bar]
+        ][bar],
     );
 
 interface DotsDrawOpts {
@@ -95,7 +95,7 @@ interface CirclesAndStarsDrawOpts {
 
 const gridCirclesAndStars = (
     p5: p5Types,
-    o = {} as CirclesAndStarsDrawOpts
+    o = {} as CirclesAndStarsDrawOpts,
 ) => {
     const { gap, strokeCircle, strokeStar, rotateStar } = o;
 
@@ -156,7 +156,7 @@ const curvedStar = (
     h: number,
     stroke: Color,
     rotateBy: number,
-    showOutlines = false
+    showOutlines = false,
 ) => {
     // The coordinates below were laid out for a 240 x 240 sized shape. We scale
     // them appropriately depending on the actual width and height passed to us.
@@ -186,7 +186,7 @@ const curvedStar = (
         a: p5Types.Vector,
         b: p5Types.Vector,
         c: p5Types.Vector,
-        d: p5Types.Vector
+        d: p5Types.Vector,
     ) => {
         if (showOutlines) {
             p5.stroke(p5c(setAlpha(stroke, 0.6)));

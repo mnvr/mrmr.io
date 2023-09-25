@@ -122,7 +122,7 @@ export interface AudioMarkers {
  */
 export const extractAudioMarkersAtTime = (
     track: TrackInfo,
-    audioTime: number
+    audioTime: number,
 ): AudioMarkers => {
     // Time, in seconds
     const time = audioTime % track.duration;

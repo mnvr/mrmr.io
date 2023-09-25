@@ -28,7 +28,7 @@ export type PageTemplateContext = {
  * in the future we add more contexts that have these fields as a subset.
  */
 export const isPageTemplateContext = (
-    c: Record<string, unknown>
+    c: Record<string, unknown>,
 ): c is PageTemplateContext => {
     const pageID = c["pageID"];
     if (typeof pageID === "string") return true;

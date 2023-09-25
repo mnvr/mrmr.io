@@ -30,7 +30,7 @@ export const song: StrudelSong = () => {
         .release(0.5);
 
     const p4 = note(
-        m`<[a3 c4 a3 f#3 f3 f#3]!3 [a3!6] [f#3 a3 c4 d4!3]!3 [c4 d4!5]>/2`
+        m`<[a3 c4 a3 f#3 f3 f#3]!3 [a3!6] [f#3 a3 c4 d4!3]!3 [c4 d4!5]>/2`,
     )
         .s("sine")
         .cutoff(sine.slow(12).range(120, 160));
@@ -39,6 +39,6 @@ export const song: StrudelSong = () => {
         p1.velocity(0.6),
         p2.velocity(0.2),
         p3.velocity(0.2),
-        p4.velocity(0.4)
+        p4.velocity(0.4),
     );
 };

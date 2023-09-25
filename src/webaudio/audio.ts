@@ -74,7 +74,7 @@ export interface SequencerHelpers {
  */
 export const createHelpers = (
     mp3s: Record<string, string>,
-    ctx: AudioContext
+    ctx: AudioContext,
 ): SequencerHelpers => {
     const load = (name: string) => loadAudioBuffer(ctx, ensure(mp3s[name]));
 
@@ -135,7 +135,7 @@ export const createHelpers = (
  */
 export const loadAudioBuffer = async (
     audioContext: AudioContext,
-    url: string
+    url: string,
 ) => {
     const response = await fetch(url);
     const arrayBuffer = await response.arrayBuffer();
@@ -159,7 +159,7 @@ export const loadAudioBuffer = async (
  */
 export const loopAudioBuffer = (
     audioContext: AudioContext,
-    audioBuffer: AudioBuffer
+    audioBuffer: AudioBuffer,
 ) => {
     const bufferSource = new AudioBufferSourceNode(audioContext, {
         buffer: audioBuffer,

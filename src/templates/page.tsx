@@ -213,7 +213,7 @@ export const parsePageIgnoringTypeSafety = (data: Record<string, unknown>) =>
  * within your components.
  */
 export const BuildTimePageContext = React.createContext<Page | undefined>(
-    undefined
+    undefined,
 );
 
 interface LayoutProps {

@@ -12,7 +12,7 @@ type UseStrudelPlaybackReturn = [
     /** Toggle playback */
     toggleIsPlaying: () => void,
     /** Has user started playback at least once */
-    wasPlayingOnce: boolean
+    wasPlayingOnce: boolean,
 ];
 
 /**
@@ -28,7 +28,7 @@ type UseStrudelPlaybackReturn = [
  * wasPlayingOnce]`
  */
 export const useStrudelPlayback = (
-    song: StrudelSong
+    song: StrudelSong,
 ): UseStrudelPlaybackReturn => {
     const [isPlaying, setIsPlaying] = React.useState(false);
     const schedulerRef = React.useRef<Scheduler | null>(null);
@@ -37,7 +37,7 @@ export const useStrudelPlayback = (
     // to successfully play. We will reset back to this if a new one cannot be
     // loaded (say due to syntax errors during live reload editing).
     const [lastPattern, setLastPattern] = React.useState<Pattern | undefined>(
-        undefined
+        undefined,
     );
 
     // Keep the canvas hidden until the first playback
