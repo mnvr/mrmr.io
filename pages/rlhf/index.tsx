@@ -117,5 +117,7 @@ export const Cmp = styled.span`
     background-color: honeydew;
     color: darkgreen;
     @media (prefers-color-scheme: dark) {
+        background-color: darkgreen;
+        color: honeydew;
     }
 `;
