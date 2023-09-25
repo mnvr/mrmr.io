@@ -40,7 +40,6 @@ export const Footer: React.FC = () => {
 
     return (
         <FooterContainer>
-            <HR22 />
             <NavContainer>
                 <NavA page={page} />
             </NavContainer>
@@ -49,7 +48,8 @@ export const Footer: React.FC = () => {
 };
 
 const FooterContainer = styled.div`
-    margin-block: 4rem;
+    margin-block-start: 7rem;
+    margin-block-end: 4rem;
 `;
 
 const NavContainer = styled.div`
@@ -66,11 +66,6 @@ const NavContainer = styled.div`
         border-bottom: 1px solid currentColor;
         opacity: 1;
     }
-`;
-
-/** 2rem margin on both vertical sides */
-export const HR22 = styled.hr`
-    margin-block: 2rem;
 `;
 
 /** 2rem margin on top, default at bottom */
@@ -103,23 +98,19 @@ export const Sub = styled.span`
     color: var(--mrmr-color-2);
 `;
 
-export const AsideP: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Aside: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <small>
-            <AsideP1>{children}</AsideP1>
+            <AsideBQ>{children}</AsideBQ>
         </small>
     );
 };
 
-export const AsideP1 = styled.blockquote`
+const AsideBQ = styled.blockquote`
     color: var(--mrmr-color-2);
     border-inline-start: 2px dotted var(--mrmr-color-2);
     margin-inline-start: 0.1rem;
     padding-inline-start: 0.5rem;
-`;
-
-export const Skimmable = styled.div`
-    color: var(--mrmr-color-2);
 `;
 
 export const Cmp = styled.span`
