@@ -11,7 +11,7 @@ export const Title: React.FC = () => {
     return (
         <TitleContainer>
             <p>
-                <h1>LLM-RLHF is like the left-right brain split</h1>
+                <h1>RLHF is like the left/right brain split</h1>
                 <Caption>
                     Manav Rathi
                     <br />
@@ -68,20 +68,20 @@ const NavContainer = styled.div`
     }
 `;
 
-/** 2rem margin on top, default at bottom */
-export const HR2d = styled.hr`
-    margin-block-start: 2rem;
-`;
-
 export const HRT = styled.hr`
     width: 50%;
     margin-block: 2rem;
+`;
+
+export const HRMQ = styled.hr`
+    margin-block-start: 3rem;
 `;
 
 export const MarginQuote = styled.p`
     color: var(--mrmr-color-2);
     font-family: serif;
     font-style: italic;
+    margin-block-start: 1.5rem;
     margin-block-end: 2rem;
 `;
 
