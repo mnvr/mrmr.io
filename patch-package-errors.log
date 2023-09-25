@@ -1,7 +1,5 @@
-diff --git a/node_modules/hydra-synth/dist/hydra-synth.js b/node_modules/hydra-synth/dist/hydra-synth.js
-index 83e7e76..7c55a03 100644
---- a/node_modules/hydra-synth/dist/hydra-synth.js
-+++ b/node_modules/hydra-synth/dist/hydra-synth.js
+Cannot apply hunk 1 for file node_modules/hydra-synth/dist/hydra-synth.js
+```diff
 @@ -2861,7 +2861,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  
  // import strudel from './lib/strudel.js'
@@ -20,19 +18,11 @@ index 83e7e76..7c55a03 100644
  
      this.synth = {
        time: 0,
-@@ -3090,7 +3090,7 @@ class HydraRenderer {
-     this.regl = (0, _regl.default)({
-       //  profile: true,
-       canvas: this.canvas,
--      pixelRatio: 1 //,
-+      // pixelRatio: 1 //,
-       // extensions: [
-       //   'oes_texture_half_float',
-       //   'oes_texture_half_float_linear'
-diff --git a/node_modules/hydra-synth/src/hydra-synth.js b/node_modules/hydra-synth/src/hydra-synth.js
-index ea0e3b1..fe305fc 100644
---- a/node_modules/hydra-synth/src/hydra-synth.js
-+++ b/node_modules/hydra-synth/src/hydra-synth.js
+```
+
+
+Cannot apply hunk 1 for file node_modules/hydra-synth/src/hydra-synth.js
+```diff
 @@ -14,7 +14,7 @@ import regl from 'regl'
  
  
@@ -51,12 +41,4 @@ index ea0e3b1..fe305fc 100644
      // object that contains all properties that will be made available on the global context and during local evaluation
      this.synth = {
        time: 0,
-@@ -248,7 +248,7 @@ class HydraRenderer {
-     this.regl = regl({
-     //  profile: true,
-       canvas: this.canvas,
--      pixelRatio: 1//,
-+      // pixelRatio: 1//,
-       // extensions: [
-       //   'oes_texture_half_float',
-       //   'oes_texture_half_float_linear'
+```

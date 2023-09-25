@@ -2099,27 +2099,27 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@strudel.cycles/core@0.8.1", "@strudel.cycles/core@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.8.1.tgz#768565c3c1d7bf915201a4f950ad6f00c0044a37"
-  integrity sha512-CZ9DMiY/8vvK0XeQCrB542MnKoiMKpykaoSrzdb8yCyp9SA7TTAsUz+RIvj8MgPz8/tmdOZ0y12FJMI0HGVsgw==
+"@strudel.cycles/core@0.9.0", "@strudel.cycles/core@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.9.0.tgz#5363c48701221534bf9be99ec888230a8ea8b999"
+  integrity sha512-ZGXE9AmOUTZJNXXAyPI0eF+rdWnqJAI6bo6Ya7jORqLlvDaa/3Z/0gSHMdMro/7J3GqqIHWnqtyhUKngBB9/hw==
   dependencies:
     fraction.js "^4.2.0"
 
-"@strudel.cycles/mini@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.8.1.tgz#2517fb26419d17aa0d72f07227c1044cc41c02e7"
-  integrity sha512-4W7TgS/+EbMDlyRkJy6sgdA3uwP+EeFOcYLCczjjLZwYVaj9IuCM1uxQQBaSNx3t1WPBdtH55KAnm/yR4eQrVA==
+"@strudel.cycles/mini@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.9.0.tgz#ff6dd6a334eb2ef89dde4b1aec848ab97cd2d6f5"
+  integrity sha512-1RhTL41550U4lo6C6aVuLb3ku14V+3qcfk50D9ex+O/HPLUTBwcqsVY/eh0+ZeV2ZPo0kM3HFgnbMHeK+UsKWA==
   dependencies:
-    "@strudel.cycles/core" "0.8.1"
+    "@strudel.cycles/core" "0.9.0"
 
-"@strudel.cycles/webaudio@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.8.1.tgz#c0eaaae760500037c2ceb9cbac3b6d7fd669163f"
-  integrity sha512-UzEP3Z7gHGPxGaB/xtngMpjyoalLr2hb1s/+x2uLtz9oDGdmMs5/GhrKENid5WFnChZR5C7KzaNonLDi34C8gA==
+"@strudel.cycles/webaudio@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.9.0.tgz#1ea17b08e34827bf1c5ba865a4eb269903cf82c3"
+  integrity sha512-f2FOsR9YCwf4Lqd9AeoedPz9mziBM2zTNwOzqP8omrikNrK9sGbD2srWDFG3KzJEC+ff2ZCs5Xk7FE8/cW5MwQ==
   dependencies:
-    "@strudel.cycles/core" "0.8.1"
-    nanostores "^0.8.1"
+    "@strudel.cycles/core" "0.9.0"
+    superdough "0.9.8"
 
 "@swc/helpers@^0.4.12":
   version "0.4.14"
@@ -6370,10 +6370,10 @@ human-signals@^2.1.0:
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
 
-hydra-synth@^1.3.24:
-  version "1.3.27"
-  resolved "https://registry.yarnpkg.com/hydra-synth/-/hydra-synth-1.3.27.tgz#1b505b3f9a9ec8364a3d650a6e8193dbb150ae95"
-  integrity sha512-zjBfSci7p9gH880lS/XOG0BvjuBcO+9dJAhk2ShKDMpf40qCTigXR+jDOiJ0AorkLYmmGfni/Ug8cXvw2MeTtw==
+hydra-synth@^1.3.29:
+  version "1.3.29"
+  resolved "https://registry.yarnpkg.com/hydra-synth/-/hydra-synth-1.3.29.tgz#f8163ad5aae6dfc61f92bdeda6c219638ed4db73"
+  integrity sha512-KK1wMGpo9AuVivvD9SP7ukPS7T/rMaYA7XMlnRF3oFbTw9u4l4aVTyexG+KmCd5XDD/4GulR1jVzySZlAuGPCw==
   dependencies:
     meyda "^5.5.1"
     raf-loop "^1.1.3"
@@ -6939,6 +6939,13 @@ json-stable-stringify-without-jsonify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz#9db7b59496ad3f3cfef30a75142d2d930ad72651"
   integrity sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==
 
+json-stable-stringify@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.2.tgz#e06f23128e0bbe342dc996ed5a19e28b57b580e0"
+  integrity sha512-eunSSaEnxV12z+Z73y/j5N37/In40GK4GmsSy+tEHJMxknvqnA7/djeYtAgW0GsWHUfg+847WJjKaEylk2y09g==
+  dependencies:
+    jsonify "^0.0.1"
+
 json5@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json5/-/json5-1.0.2.tgz#63d98d60f21b313b77c4d6da18bfa69d80e1d593"
@@ -6959,6 +6966,11 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
+
+jsonify@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.1.tgz#2aa3111dae3d34a0f151c63f3a45d995d9420978"
+  integrity sha512-2/Ki0GcmuqSrgFyelQq9M05y7PS0mEwuIzrf3f1fPqkVDVRvZrPZtVSMHxdgo8Aq0sxAOb/cr2aqqA3LeWHVPg==
 
 "jsx-ast-utils@^2.4.1 || ^3.0.0", jsx-ast-utils@^3.3.3:
   version "3.3.4"
@@ -8454,10 +8466,10 @@ password-prompt@^1.0.4:
     ansi-escapes "^3.1.0"
     cross-spawn "^6.0.5"
 
-patch-package@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-7.0.0.tgz#5c646b6b4b4bf37e5184a6950777b21dea6bb66e"
-  integrity sha512-eYunHbnnB2ghjTNc5iL1Uo7TsGMuXk0vibX3RFcE/CdVdXzmdbMsG/4K4IgoSuIkLTI5oHrMQk4+NkFqSed0BQ==
+patch-package@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-8.0.0.tgz#d191e2f1b6e06a4624a0116bcb88edd6714ede61"
+  integrity sha512-da8BVIhzjtgScwDJ2TtKsfT5JFWz1hYoBl9rUQ1f38MC2HwnEIkK8VN3dKMKcP7P7bvvgzNDbfNHtx3MsQb5vA==
   dependencies:
     "@yarnpkg/lockfile" "^1.1.0"
     chalk "^4.1.2"
@@ -8465,11 +8477,12 @@ patch-package@^7.0.0:
     cross-spawn "^7.0.3"
     find-yarn-workspace-root "^2.0.0"
     fs-extra "^9.0.0"
+    json-stable-stringify "^1.0.2"
     klaw-sync "^6.0.0"
     minimist "^1.2.6"
     open "^7.4.2"
     rimraf "^2.6.3"
-    semver "^5.6.0"
+    semver "^7.5.3"
     slash "^2.0.0"
     tmp "^0.0.33"
     yaml "^2.2.2"
@@ -9607,7 +9620,7 @@ section-matter@^1.0.0:
     extend-shallow "^2.0.1"
     kind-of "^6.0.0"
 
-semver@^5.5.0, semver@^5.6.0, semver@^5.7.1:
+semver@^5.5.0, semver@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
@@ -9621,6 +9634,13 @@ semver@^7.2.1, semver@^7.3.2, semver@^7.3.4, semver@^7.3.5, semver@^7.3.7, semve
   version "7.5.3"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.3.tgz#161ce8c2c6b4b3bdca6caadc9fa3317a4c4fe88e"
   integrity sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==
+  dependencies:
+    lru-cache "^6.0.0"
+
+semver@^7.5.3:
+  version "7.5.4"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.5.4.tgz#483986ec4ed38e1c6c48c34894a9182dbff68a6e"
+  integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
   dependencies:
     lru-cache "^6.0.0"
 
@@ -10154,6 +10174,13 @@ sudo-prompt@^8.2.0:
   version "8.2.5"
   resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-8.2.5.tgz#cc5ef3769a134bb94b24a631cc09628d4d53603e"
   integrity sha512-rlBo3HU/1zAJUrkY6jNxDOC9eVYliG6nS4JA8u8KAshITd07tafMc/Br7xQwCSseXwJ2iCcHCE8SNWX3q8Z+kw==
+
+superdough@0.9.8:
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/superdough/-/superdough-0.9.8.tgz#de30e364b2613a15a46f35f359a2a0ce30d52611"
+  integrity sha512-3xy2LXAH4K0JMwwY4G0eJz+u1VIhSFxIE4YZL7E4isjUQZTN9Y0jpX17EzQgvFIW1V3PUJMkDiDgEDWZTRCTKg==
+  dependencies:
+    nanostores "^0.8.1"
 
 supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"
