@@ -1,8 +1,24 @@
+import { Column } from "components/Column";
 import { NavA } from "components/NavA";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
+
+
+export const ContentContainer: React.FC<React.PropsWithChildren> = ({
+    children,
+}) => {
+    return (
+        <Column>
+            <ContentContainer2>{children}</ContentContainer2>
+        </Column>
+    );
+};
+
+const ContentContainer2 = styled.div`
+    margin-block: 2rem;
+`;
 
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
