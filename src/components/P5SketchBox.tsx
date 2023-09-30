@@ -28,15 +28,15 @@ export interface P5SketchBoxProps {
     p5Ref?: React.MutableRefObject<P5CanvasInstance | undefined>;
 
     /**
-     * If true, then disable looping the draw function by calling the P5
+     * If false, then disable looping the draw function by calling the P5
      * `noLoop` function during setup.
      *
      * This is useful for sketches that are linked to audio. For such sketches,
-     * the animations can be initially disabled, and re-enabled (using
-     * {@link p5Ref}) when the user starts the audio so that the frameCount
+     * the animations can be initially disabled, and re-enabled by setting this
+     * prop to `true` when the user starts the audio. This way, the frameCount
      * moves in a deterministic sync with the audio being played.
      */
-    shouldDisableLooping?: boolean;
+    shouldDraw?: boolean;
 
     /**
      * The audio context in which audio is being (or will be) played.
@@ -62,11 +62,15 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     draw,
     computeSize,
     p5Ref,
-    shouldDisableLooping,
+    shouldDraw,
     audioContext,
 }) => {
     const setup = (p5: p5) => {
         const [width, height] = computeSize(p5);
+
+        // Create and return a new canvas that'll be used by the ReactP5Wrapper
+        // library that we're using.
+        const canvas = p5.createCanvas(width, height);
 
         // Save a reference to the p5 instance if we were asked to.
         if (p5Ref) p5Ref.current = p5;
@@ -74,11 +78,9 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         // Calling noLoop will ask P5 to call draw once, and then stop. So we'll
         // still see the rendered sketch, but animations (or more generally,
         // subsequent draw calls) will be stopped.
-        if (shouldDisableLooping === true) p5.noLoop();
+        if (shouldDraw === false) p5.noLoop();
 
-        // Create and return a new canvas that'll be used by the ReactP5Wrapper
-        // library that we're using.
-        return p5.createCanvas(width, height);
+        return canvas;
     };
 
     const windowResized = (p5: P5CanvasInstance) => {
@@ -99,6 +101,12 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     };
 
     const sketch: Sketch = (p5) => {
+        if (shouldDraw) {
+            if (!p5.isLooping) p5.loop();
+        } else {
+            p5.noLoop();
+        }
+
         p5.setup = () => setup(p5);
         p5.draw = () => draw(p5, env);
     };
