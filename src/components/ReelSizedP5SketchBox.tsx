@@ -1,5 +1,5 @@
 import { P5SketchBox, type P5SketchBoxProps } from "components/P5SketchBox";
-import P5CanvasInstance from "p5";
+import type p5 from "p5";
 import * as React from "react";
 
 interface ReelSizedP5SketchBoxProps
@@ -21,7 +21,7 @@ export const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = (
     const defaultHeight = 640;
     const aspectRatio = 9 / 16;
 
-    const computeSize = (p5: P5CanvasInstance): [number, number] => {
+    const computeSize = (p5: p5): [number, number] => {
         if (props.restrictAspectRatio) {
             // Compute the sizes based on the aspect ratios
             const height = Math.min(defaultHeight, p5.windowHeight);

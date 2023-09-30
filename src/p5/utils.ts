@@ -1,4 +1,4 @@
-import P5CanvasInstance from "p5";
+import type p5 from "p5";
 import { color, p5c, setAlpha, type Colorish } from "utils/colorsjs";
 
 interface GridOpts {
@@ -7,14 +7,14 @@ interface GridOpts {
 }
 
 /** Draw a grid onto the canvas */
-export const grid = (p5: P5CanvasInstance, o = {} as GridOpts) => {
+export const grid = (p5: p5, o = {} as GridOpts) => {
     p5.push();
     lineGrid(p5, o);
     pointGrid(p5, o);
     p5.pop();
 };
 
-export const pointGrid = (p5: P5CanvasInstance, o = {} as GridOpts) => {
+export const pointGrid = (p5: p5, o = {} as GridOpts) => {
     const gap = o.gap ?? 20;
 
     // If a color is provided, use a transparent version of it. Otherwise use
@@ -32,7 +32,7 @@ export const pointGrid = (p5: P5CanvasInstance, o = {} as GridOpts) => {
     }
 };
 
-export const lineGrid = (p5: P5CanvasInstance, o = {} as GridOpts) => {
+export const lineGrid = (p5: p5, o = {} as GridOpts) => {
     const gap = o.gap ?? 20;
 
     // Use a transparent stroke that goes well with the (opaquer) stroke used in
@@ -57,11 +57,7 @@ interface DebugHUDOpts {
 }
 
 /** Show a debug value at the top left */
-export const debugHUD = (
-    p5: P5CanvasInstance,
-    s: string,
-    o = {} as DebugHUDOpts,
-) => {
+export const debugHUD = (p5: p5, s: string, o = {} as DebugHUDOpts) => {
     const c = p5c(color(o.stroke ?? "black"));
     p5.push();
     p5.fill(c);
@@ -81,7 +77,7 @@ export const debugHUD = (
  * The function will be invoked with the origin translated to the grid point.
  * Also, it is guaranteed that the center of the sketch will be a grid point.
  */
-export const atEvery0 = (p5: P5CanvasInstance, r: number, f: () => void) => {
+export const atEvery0 = (p5: p5, r: number, f: () => void) => {
     const [w, h] = [p5.width, p5.height];
     let [x0, y0] = [w / 2, h / 2];
     while (x0 > 0) x0 -= r;
@@ -105,7 +101,7 @@ export const atEvery0 = (p5: P5CanvasInstance, r: number, f: () => void) => {
  * - the center of the sketch will be a grid point.
  * - each row will have an odd number of items.
  */
-export const atEvery = (p5: P5CanvasInstance, r: number, f: () => void) => {
+export const atEvery = (p5: p5, r: number, f: () => void) => {
     const h = p5.height;
     // `c` counts the number of items per row.
     let [x, y, c] = [p5.width / 2, h / 2, 0];

@@ -2,7 +2,7 @@ import { ExpandButton, PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
-import type P5CanvasInstance from "p5";
+import type p5 from "p5";
 import * as React from "react";
 import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import styled from "styled-components";
@@ -37,7 +37,7 @@ interface PlayerP5WebAudioProps {
 export const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ draw, sequencer }) => {
-    const p5Ref = React.useRef<P5CanvasInstance | undefined>();
+    const p5Ref = React.useRef<p5 | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
         useWebAudioPlayback(sequencer, (isPlaying) => {

@@ -1,4 +1,5 @@
 import type { P5CanvasInstance, Sketch } from "@p5-wrapper/react";
+import type p5 from "p5";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import type { P5Draw } from "types";
@@ -15,7 +16,7 @@ export interface P5SketchBoxProps {
      * It should return a pair of numbers, representing the width and the height
      * of the box.
      */
-    computeSize: (p5: P5CanvasInstance) => [number, number];
+    computeSize: (p5: p5) => [number, number];
 
     /**
      * A ref to the P5 instance that'll be set by {@link P5SketchBox} when setup
@@ -64,7 +65,7 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     shouldDisableLooping,
     audioContext,
 }) => {
-    const setup = (p5: P5CanvasInstance) => {
+    const setup = (p5: p5) => {
         const [width, height] = computeSize(p5);
 
         // Save a reference to the p5 instance if we were asked to.
