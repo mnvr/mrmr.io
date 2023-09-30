@@ -1,8 +1,6 @@
-import p5Types from "p5";
-import Sketch from "p5/Sketch";
-import * as React from "react";
-import type { P5Draw } from "types";
 import { P5SketchBox, type P5SketchBoxProps } from "components/P5SketchBox";
+import p5Types from "p5";
+import * as React from "react";
 
 interface ReelSizedP5SketchBoxProps extends P5SketchBoxProps {
     /**
