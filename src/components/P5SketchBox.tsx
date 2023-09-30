@@ -111,9 +111,8 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
 
         p5.setup = () => setup(p5);
         p5.draw = () => draw(p5, env);
+        p5.windowResized = () => windowResized(p5);
     };
 
-    // TODO: XXX
-    // windowResized={windowResized}
     return <ReactP5Wrapper sketch={sketch} />;
 };
