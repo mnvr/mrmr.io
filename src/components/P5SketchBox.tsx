@@ -28,15 +28,14 @@ export interface P5SketchBoxProps {
     p5Ref?: React.MutableRefObject<P5CanvasInstance | undefined>;
 
     /**
-     * If false, then disable looping the draw function by calling the P5
-     * `noLoop` function during setup.
+     * If true, then pause the draw function by calling P5 `noLoop`.
      *
      * This is useful for sketches that are linked to audio. For such sketches,
      * the animations can be initially disabled, and re-enabled by setting this
-     * prop to `true` when the user starts the audio. This way, the frameCount
+     * prop to false when the user starts the audio. This way, the frameCount
      * moves in a deterministic sync with the audio being played.
      */
-    shouldDraw?: boolean;
+    isPaused?: boolean;
 
     /**
      * The audio context in which audio is being (or will be) played.
@@ -62,7 +61,7 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     draw,
     computeSize,
     p5Ref,
-    shouldDraw,
+    isPaused,
     audioContext,
 }) => {
     const setup = (p5: p5) => {
@@ -76,9 +75,9 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         if (p5Ref) p5Ref.current = p5;
 
         // Calling noLoop will ask P5 to call draw once, and then stop. So we'll
-        // still see the rendered sketch, but animations (or more generally,
-        // subsequent draw calls) will be stopped.
-        if (shouldDraw === false) p5.noLoop();
+        // still see the rendered sketch, but animations will be stopped since
+        // no subsequent draw calls will happen (until isPaused is set to true).
+        if (isPaused) p5.noLoop();
 
         return canvas;
     };
@@ -101,13 +100,13 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     };
 
     const sketch: Sketch = (p5) => {
-        if (shouldDraw) {
+        if (isPaused) {
+            p5.noLoop();
+        } else {
             // Calling p5.loop also calls draw() immediately. So we do an
             // isLooping check beforehand so as to no unnecessarily call draw
             // (as that would get the frameCount to get out of sync).
             if (!p5.isLooping) p5.loop();
-        } else {
-            p5.noLoop();
         }
 
         p5.setup = () => setup(p5);

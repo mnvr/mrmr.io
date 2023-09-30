@@ -142,7 +142,7 @@ export const PlayerP5WebAudio: React.FC<
                 <ReelSizedP5SketchBox
                     draw={draw}
                     p5Ref={p5Ref}
-                    shouldDraw={isPlaying}
+                    isPaused={!isPlaying}
                     audioContext={audioContext}
                     restrictAspectRatio={restrictAspectRatio}
                 />
