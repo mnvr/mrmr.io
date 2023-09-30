@@ -39,15 +39,8 @@ export const PlayerP5WebAudio: React.FC<
 > = ({ draw, sequencer }) => {
     const p5Ref = React.useRef<p5 | undefined>();
 
-    const [shouldDraw, setShouldDraw] = React.useState(false);
-
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
-        useWebAudioPlayback(sequencer, (isPlaying) => {
-            const p5 = p5Ref.current;
-            setShouldDraw(isPlaying);
-            // if (isPlaying) p5?.loop();
-            // else p5?.noLoop();
-        });
+        useWebAudioPlayback(sequencer);
 
     // Switch to a special "recording" mode if the "#record" fragment is present
     // in the URL. This will:
@@ -149,7 +142,7 @@ export const PlayerP5WebAudio: React.FC<
                 <ReelSizedP5SketchBox
                     draw={draw}
                     p5Ref={p5Ref}
-                    shouldDraw={true}
+                    shouldDraw={isPlaying}
                     audioContext={audioContext}
                     restrictAspectRatio={restrictAspectRatio}
                 />
