@@ -96,21 +96,19 @@ two, say, sentences, it should select the one which better matches how humans
 would've responded.
 
 <C.Aside>
-    <p>
-        Which humans though? There are (almost) 10 billion of us around, and it
-        is hard to find universal commonality in our responses. So no matter how
-        curated, RLHF will invariably reflect the bias of the people who
-        prepared the example responses it was trained on.
-    </p>
-    <p>
-        Since the RLHF modifies the output of the LLM, this bias will thus carry
-        over to the output of the entire system.
-    </p>
-    <p>
-        Interestingly, whilst the LLM is to an extent able to imagine its way
-        out of the biases present in the data set that it was trained on, it
-        cannot do so for the biases present in the RLHF training data.
-    </p>
+
+Which humans though? There are (almost) 10 billion of us around, and it is hard
+to find universal commonality in our responses. So no matter how curated, RLHF
+will invariably reflect the bias of the people who prepared the example
+responses it was trained on.
+
+Since the RLHF modifies the output of the LLM, this bias will thus carry over to
+the output of the entire system.
+
+Interestingly, whilst the LLM is to an extent able to imagine its way out of the
+biases present in the data set that it was trained on, it cannot do so for the
+biases present in the RLHF training data.
+
 </C.Aside>
 
 People figured out that by adding this RLHF on top of a vanilla LLM, the

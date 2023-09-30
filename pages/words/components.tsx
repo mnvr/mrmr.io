@@ -32,14 +32,12 @@ export const Title: React.FC = () => {
 
     return (
         <TitleContainer>
-            <p>
-                <h1>Test</h1>
-                <Caption>
-                    Manav Rathi
-                    <br />
-                    {formattedDateMY}
-                </Caption>
-            </p>
+            <h1>Test</h1>
+            <Caption>
+                Manav Rathi
+                <br />
+                {formattedDateMY}
+            </Caption>
         </TitleContainer>
     );
 };
