@@ -5,19 +5,20 @@ import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
 
-
-export const ContentContainer: React.FC<React.PropsWithChildren> = ({
+export const EssayContainer: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
     return (
         <Column>
-            <ContentContainer2>{children}</ContentContainer2>
+            <EssayContainer2>{children}</EssayContainer2>
         </Column>
     );
 };
 
-const ContentContainer2 = styled.div`
+const EssayContainer2 = styled.div`
     margin-block: 2rem;
+    color: var(--mrmr-color-2);
+    color: oklch(80% 1 100);
 `;
 
 export const Title: React.FC = () => {
