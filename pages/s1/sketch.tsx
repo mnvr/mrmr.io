@@ -1,4 +1,4 @@
-import p5Types from "p5";
+import P5CanvasInstance from "p5";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 import { mod } from "utils/math";
@@ -47,7 +47,7 @@ const inactiveColor = color("oklch(77% 0.242 151.39 / 0.75)");
 const aliveColorP5 = p5c(aliveColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
-const initState = (p5: p5Types) => {
+const initState = (p5: P5CanvasInstance) => {
     const rows = Math.floor(p5.height / cellD);
     const cols = Math.floor(p5.width / cellD);
 
@@ -93,7 +93,7 @@ let advance = false;
 /**
  * Simulate a game of life.
  */
-export const draw = (p5: p5Types) => {
+export const draw = (p5: P5CanvasInstance) => {
     if (!state) p5.mouseClicked = () => (advance = true);
     if (!state) state = initState(p5);
     const { rows, cols, cells } = ensure(state);

@@ -1,5 +1,5 @@
-import p5Types from "p5";
-import Sketch from "p5/Sketch";
+import type { P5CanvasInstance, Sketch } from "@p5-wrapper/react";
+import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import type { P5Draw } from "types";
 
@@ -15,7 +15,7 @@ export interface P5SketchBoxProps {
      * It should return a pair of numbers, representing the width and the height
      * of the box.
      */
-    computeSize: (p5: p5Types) => [number, number];
+    computeSize: (p5: P5CanvasInstance) => [number, number];
 
     /**
      * A ref to the P5 instance that'll be set by {@link P5SketchBox} when setup
@@ -24,7 +24,7 @@ export interface P5SketchBoxProps {
      * This ref can then subsequently be used to perform actions on the P5
      * object externally. e.g. it can be used to resume looping.
      */
-    p5Ref?: React.MutableRefObject<p5Types | undefined>;
+    p5Ref?: React.MutableRefObject<P5CanvasInstance | undefined>;
 
     /**
      * If true, then disable looping the draw function by calling the P5
@@ -64,12 +64,8 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     shouldDisableLooping,
     audioContext,
 }) => {
-    const setup = (p5: p5Types, canvasParentRef: Element) => {
+    const setup = (p5: P5CanvasInstance) => {
         const [width, height] = computeSize(p5);
-
-        // Use the `parent` method to ask p5 render to the provided canvas ref
-        // instead of creating and rendering to a canvas of its own.
-        p5.createCanvas(width, height).parent(canvasParentRef);
 
         // Save a reference to the p5 instance if we were asked to.
         if (p5Ref) p5Ref.current = p5;
@@ -78,9 +74,13 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         // still see the rendered sketch, but animations (or more generally,
         // subsequent draw calls) will be stopped.
         if (shouldDisableLooping === true) p5.noLoop();
+
+        // Create and return a new canvas that'll be used by the ReactP5Wrapper
+        // library that we're using.
+        return p5.createCanvas(width, height);
     };
 
-    const windowResized = (p5: p5Types) => {
+    const windowResized = (p5: P5CanvasInstance) => {
         const [width, height] = computeSize(p5);
 
         p5.resizeCanvas(width, height);
@@ -97,15 +97,12 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         },
     };
 
-    const wrappedDraw = (p5: p5Types) => {
-        draw(p5, env);
+    const sketch: Sketch = (p5) => {
+        p5.setup = () => setup(p5);
+        p5.draw = () => draw(p5, env);
     };
 
-    return (
-        <Sketch
-            setup={setup}
-            draw={wrappedDraw}
-            windowResized={windowResized}
-        />
-    );
+    // TODO: XXX
+    // windowResized={windowResized}
+    return <ReactP5Wrapper sketch={sketch} />;
 };

@@ -11,6 +11,6 @@ import Loadable from "@loadable/component";
  *
  * https://github.com/Gherciu/react-p5#using-it-in-an-ssr-environment-nextjs-or-gatsby
  */
-const Sketch = Loadable(() => import("react-p5"));
+const ReactP5Wrapper = Loadable(() => import("@p5-wrapper/react"));
 
-export default Sketch;
+export default ReactP5Wrapper;

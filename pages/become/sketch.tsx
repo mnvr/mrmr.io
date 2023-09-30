@@ -1,12 +1,12 @@
 import Color from "colorjs.io";
-import type p5Types from "p5";
+import type P5CanvasInstance from "p5";
 import { extractAudioMarkersAtTime } from "p5/audio";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 // This sketch is inspired by the cover of a notebook I have.
-export const draw = (p5: p5Types, env: P5DrawEnv) => {
+export const draw = (p5: P5CanvasInstance, env: P5DrawEnv) => {
     p5.clear();
 
     const gap = 50;
@@ -92,7 +92,7 @@ interface DotsDrawOpts {
     stroke: Color;
 }
 
-const gridDots = (p5: p5Types, o = {} as DotsDrawOpts) => {
+const gridDots = (p5: P5CanvasInstance, o = {} as DotsDrawOpts) => {
     const { stroke, gap } = o;
 
     p5.stroke(p5c(stroke));
@@ -116,7 +116,7 @@ interface CirclesAndStarsDrawOpts {
 }
 
 const gridCirclesAndStars = (
-    p5: p5Types,
+    p5: P5CanvasInstance,
     o = {} as CirclesAndStarsDrawOpts,
 ) => {
     const { gap, strokeCircle, strokeStar, rotateStar } = o;
@@ -171,7 +171,7 @@ const gridCirclesAndStars = (
  *        points used to draw the shape are shown. This is useful for debugging.
  */
 const curvedStar = (
-    p5: p5Types,
+    p5: P5CanvasInstance,
     x: number,
     y: number,
     w: number,
@@ -205,10 +205,10 @@ const curvedStar = (
     p5.point(0, 0);
 
     const segment = (
-        a: p5Types.Vector,
-        b: p5Types.Vector,
-        c: p5Types.Vector,
-        d: p5Types.Vector,
+        a: P5CanvasInstance.Vector,
+        b: P5CanvasInstance.Vector,
+        c: P5CanvasInstance.Vector,
+        d: P5CanvasInstance.Vector,
     ) => {
         if (showOutlines) {
             p5.stroke(p5c(setAlpha(stroke, 0.6)));
