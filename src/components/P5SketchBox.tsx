@@ -45,12 +45,6 @@ export interface P5SketchBoxProps {
      * playback has not started at least once.
      */
     audioContext?: AudioContext;
-
-    /**
-     * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
-     * expand to fill the window.
-     */
-    restrictAspectRatio?: boolean;
 }
 
 /**

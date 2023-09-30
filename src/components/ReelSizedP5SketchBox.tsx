@@ -2,7 +2,8 @@ import { P5SketchBox, type P5SketchBoxProps } from "components/P5SketchBox";
 import p5Types from "p5";
 import * as React from "react";
 
-interface ReelSizedP5SketchBoxProps extends P5SketchBoxProps {
+interface ReelSizedP5SketchBoxProps
+    extends Omit<P5SketchBoxProps, "computeSize"> {
     /**
      * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
      * expand to fill the window.
