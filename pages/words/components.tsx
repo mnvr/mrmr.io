@@ -1,9 +1,24 @@
 import { Column } from "components/Column";
 import { NavA } from "components/NavA";
+import { P5SketchBox } from "components/P5SketchBox";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
+import { draw } from "./sketch";
+
+export const Sketch: React.FC = () => {
+    return (
+        <Column>
+            <P5SketchBox
+                draw={draw}
+                computeSize={function (): [number, number] {
+                    return [100, 100];
+                }}
+            />
+        </Column>
+    );
+};
 
 export const EssayContainer: React.FC<React.PropsWithChildren> = ({
     children,
