@@ -17,6 +17,13 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 
 const EssayContainer_ = styled.div`
     margin-block: 2rem;
+    line-height: 1.4rem;
+    p {
+        padding-block: 0.3rem;
+        padding-inline: 0.5rem;
+        border-radius: 2pt;
+        background-color: oklch(100% 0 0 / 0.8);
+    }
 `;
 
 export const Title: React.FC = () => {
