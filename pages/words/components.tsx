@@ -10,15 +10,13 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 }) => {
     return (
         <Column>
-            <EssayContainer2>{children}</EssayContainer2>
+            <EssayContainer_>{children}</EssayContainer_>
         </Column>
     );
 };
 
-const EssayContainer2 = styled.div`
+const EssayContainer_ = styled.div`
     margin-block: 2rem;
-    color: var(--mrmr-color-2);
-    color: oklch(80% 1 100);
 `;
 
 export const Title: React.FC = () => {
