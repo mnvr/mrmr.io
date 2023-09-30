@@ -22,7 +22,7 @@ const EssayContainer_ = styled.div`
         padding-block: 0.3rem;
         padding-inline: 0.5rem;
         border-radius: 2pt;
-        background-color: oklch(100% 0 0 / 0.8);
+        background-color: oklch(100% 0 0 / 0.75);
     }
 `;
 
