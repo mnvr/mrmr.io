@@ -1,6 +1,6 @@
-import type p5 from "p5";
 import { Pattern } from "@strudel.cycles/core";
 import HydraRenderer, { type HydraSynth } from "hydra-synth";
+import type p5 from "p5";
 
 /**
  * A function that renders a Hydra visualization
@@ -27,9 +27,7 @@ export type StrudelSong = () => Pattern;
  * A sketch can export either the vanilla 1-argument form or the extended 2-
  * argument form that also takes in an environment.
  */
-export type P5Draw =
-    | ((p5: p5) => void)
-    | ((p5: p5, env: P5DrawEnv) => void);
+export type P5Draw = ((p5: p5) => void) | ((p5: p5, env: P5DrawEnv) => void);
 
 /**
  * Environment in which the P5 visualization is being rendered

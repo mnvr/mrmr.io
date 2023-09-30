@@ -1,4 +1,4 @@
-import Loadable from "@loadable/component";
+import loadable from "@loadable/component";
 
 /**
  * Importing the Sketch component from the p5-react package in a SSR environment
@@ -8,9 +8,9 @@ import Loadable from "@loadable/component";
  *
  * To resolve this, we can use Gatsby's loadable-components, which allow us to
  * load client-side dependent components asynchronously.
- *
- * https://github.com/Gherciu/react-p5#using-it-in-an-ssr-environment-nextjs-or-gatsby
  */
-const ReactP5Wrapper = Loadable(() => import("@p5-wrapper/react"));
+const P5Wrapper = loadable(() => import("@p5-wrapper/react"), {
+    resolveComponent: ({ ReactP5Wrapper }) => ReactP5Wrapper,
+});
 
-export default ReactP5Wrapper;
+export default P5Wrapper;
