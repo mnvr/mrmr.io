@@ -1,18 +1,17 @@
 import type p5 from "p5";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
-import { mod } from "utils/math";
 
 interface SketchState {
-    /** Number of rows (y/j values) in `cells` */
-    rows: number;
-    /** Number of columns (x/i values) in `cells` */
-    cols: number;
     /**
-     * Each cell tracks whether or not a particular location is "alive"
+     * Dimensions of the (covering) rectangle used by each cell
+     */
+    cellD: number;
+    /**
+     * Each cell tracks whether or not a particular location is occupied.
      *
-     * We're doing a "game of life" simulation here, and this is the state of
-     * the game, tracking which cells are currently alive.
+     * Our universe here is a chess board. Here we keep track of which of the
+     * positions on the checkerboard are occupied.
      *
      * For ease of coding (and possibly better runtime performance), this is
      * kept as a 1D array in row-major order instead of as the 2D matrix that it
@@ -26,6 +25,12 @@ interface SketchState {
 let state: SketchState | undefined;
 
 /**
+ * Number of rows ("y" or "j" values) and colums ("x" or "i") on the
+ * checker-board / chess-board.
+ */
+const [rows, cols] = [3, 3];
+
+/**
  * Dimensions of the (covering) rectangle used by each cell
  */
 const cellD = 10;
@@ -33,12 +38,12 @@ const cellD = 10;
 /**
  * The color to use for drawing alive cells.
  */
-const aliveColor = color("oklch(97% 0.242 151.39)");
+const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
 
 /**
  * The color to use for drawing inactive cells.
  */
-const inactiveColor = color("oklch(77% 0.242 151.39 / 0.75)");
+const inactiveColor = color("oklch(7% 0.242 151.39 / 0.75)");
 
 /**
  * Cache P5 representations of some of the fixed colors that we use to avoid
@@ -48,57 +53,48 @@ const aliveColorP5 = p5c(aliveColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
 const initState = (p5: p5) => {
-    const rows = Math.floor(p5.height / cellD);
-    const cols = Math.floor(p5.width / cellD);
+    const cellD = Math.min(
+        Math.floor(p5.height / rows),
+        Math.floor(p5.width / cols),
+    );
 
-    const cells = makeCells(rows, cols);
+    const cells = makeCells();
 
-    setInitialPattern(cells, rows, cols);
+    setInitialPattern(cells);
 
-    return { cols, rows, cells };
+    return { cellD, cells };
 };
 
 /** Return a cells array initialized to all false values */
-const makeCells = (rows: number, cols: number): boolean[] =>
-    Array(rows * cols).fill(false);
+const makeCells = () => Array(rows * cols).fill(false);
 
 /**
  * Set the cell at row j and col i of the cells array to true.
  *
  * @param cells The 1D array representation of the cells matrix.
- * @param cols The conceptual number of cols in the cells matrix.
  */
-const setCell = (cells: boolean[], cols: number, j: number, i: number) => {
+const setCell = (cells: boolean[], j: number, i: number) => {
     cells[j * cols + i] = true;
 };
 
-const setInitialPattern = (cells: boolean[], rows: number, cols: number) => {
-    // Start with an R-Pentomino, where the capital X indicates the center most
-    // cell of the board.
-    //
-    //       xx
-    //      xX
-    //       x
-    //
+const setInitialPattern = (cells: boolean[]) => {
     const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-    setCell(cells, cols, cj - 1, ci + 0);
-    setCell(cells, cols, cj - 1, ci + 1);
-    setCell(cells, cols, cj + 0, ci - 1);
-    setCell(cells, cols, cj + 0, ci + 0);
-    setCell(cells, cols, cj + 1, ci + 0);
+    setCell(cells, cj - 1, ci + 0);
+    setCell(cells, cj - 1, ci + 1);
+    setCell(cells, cj + 0, ci - 1);
+    setCell(cells, cj + 0, ci + 0);
+    setCell(cells, cj + 1, ci + 0);
 };
 
-let advance = false;
-
 /**
- * Simulate a game of life.
+ * Draw pieces on a chessboard.
  */
 export const draw = (p5: p5) => {
-    if (!state) p5.mouseClicked = () => (advance = true);
     if (!state) state = initState(p5);
-    const { rows, cols, cells } = ensure(state);
+    const { cellD, cells } = ensure(state);
 
     p5.clear();
+    p5.strokeWeight(0);
 
     // Translate to the starting position of the first cell
     //
@@ -106,30 +102,28 @@ export const draw = (p5: p5) => {
     //
     // - During the normal course of things, we'll usually end up with number of
     //   rows and cols that don't exactly cover the width and height of the
-    //   canvas – the leftover would be less that `cellD`, but still large
-    //   enough to cause the cells not to appear "off" if we'd start drawing
-    //   them from 0, 0. In these cases, the offset will be set to the half of
-    //   the remainder space, so that the cells that are visible seem centered
-    //   within the available space.
+    //   canvas – the leftover would cause the cells not to appear "off" if we'd
+    //   start drawing them from 0, 0. In these cases, the offset will be set to
+    //   the half of the remainder space, so that the cells that are visible
+    //   seem centered within the available space.
     //
     // - The canvas might get resized since we began. There are multiple ways to
     //   handle this: the approach we take is that our cols and rows (and the
-    //   cells matrix) stay fixed, but we center them within the new area
-    //   (if the canvas got larger) or just let the tails clip (if the canvas
-    //   got smaller).
+    //   cells matrix) stay fixed, but we center them within the new area (if
+    //   the canvas got larger) or just let the tails clip (if the canvas got
+    //   smaller).
     //
     // This offset computation handles both cases.
 
-    p5.translate(offset(p5.width, cols), offset(p5.height, rows));
+    p5.translate(offset(p5.width, cols, cellD), offset(p5.height, rows, cellD));
 
-    const next = makeCells(rows, cols);
+    const next = makeCells();
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
-            const c = aliveNeighbourCount(cells, rows, cols, j, i);
-
+            let c = 2;
             const isAlive = ensure(cells[j * cols + i]);
-            let nextIsAlive = false;
+            let nextIsAlive = true;
 
             if (isAlive) {
                 // Staying alive
@@ -145,62 +139,25 @@ export const draw = (p5: p5) => {
                 if (c === 3) nextIsAlive = true;
             }
 
-            if (nextIsAlive) setCell(next, cols, j, i);
+            if (nextIsAlive) setCell(next, j, i);
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
             const x = i * cellD;
             const y = j * cellD;
 
-            p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
-            if (isAlive) {
-                p5.strokeWeight(2 * c);
-            } else {
-                p5.strokeWeight(4);
-            }
-            p5.point(x + cellD / 2, y + cellD / 2);
+            // p5.point(x + cellD / 2, y + cellD / 2);
+            p5.fill(isAlive ? aliveColorP5 : inactiveColorP5);
+            p5.rect(x, y, cellD, cellD);
         }
     }
 
-    if (advance) {
-        advance = false;
-        state.cells = next;
-    }
-
     // if (p5.frameCount % 15 === 0)
-    state.cells = next;
+    // state.cells = next;
 };
 
-const offset = (availableSpace: number, count: number) => {
+const offset = (availableSpace: number, count: number, cellD: number) => {
     const extra = availableSpace - count * cellD;
     if (extra <= 0) return 0;
     return extra / 2;
-};
-
-/**
- * Return a count of the number of neighbours of the cell at row j and col i
- * that are alive.
- */
-const aliveNeighbourCount = (
-    cells: boolean[],
-    rows: number,
-    cols: number,
-    j: number,
-    i: number,
-) => {
-    // Neighbouring indices. Initializing this separately so that we can provide
-    // a type annotation and make the TypeScript compiler happy about the [j, i]
-    // destructuring later on.
-    const ni: [number, number][] = [
-        [j - 1, i - 1],
-        [j - 1, i],
-        [j - 1, i + 1],
-        [j + 0, i - 1],
-        [j + 0, i + 1],
-        [j + 1, i - 1],
-        [j + 1, i],
-        [j + 1, i + 1],
-    ];
-    return ni.filter(([j, i]) => cells[mod(j, rows) * cols + mod(i, cols)])
-        .length;
 };
