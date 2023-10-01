@@ -9,14 +9,14 @@ import { draw } from "./sketch";
 
 export const Sketch: React.FC = () => {
     return (
-        <Column>
+        <>
             <P5SketchBox
                 draw={draw}
                 computeSize={function (): [number, number] {
-                    return [100, 100];
+                    return [400, 400];
                 }}
             />
-        </Column>
+        </>
     );
 };
 
