@@ -38,12 +38,15 @@ const cellD = 10;
 /**
  * The color to use for drawing alive cells.
  */
-const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
+// const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
+const aliveColor = color("oklch(54% 0.22 29)");
 
 /**
  * The color to use for drawing inactive cells.
  */
-const inactiveColor = color("oklch(7% 0.242 151.39 / 0.75)");
+// const inactiveColor = color("oklch(7% 0.242 151.39 / 0.75)");
+const inactiveColor = color("oklch(20% 0 0)");
+// const inactiveColor = color("oklch(54% 0.22 310)");
 
 /**
  * Cache P5 representations of some of the fixed colors that we use to avoid
