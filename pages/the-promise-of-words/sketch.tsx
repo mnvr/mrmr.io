@@ -1,5 +1,5 @@
 import type p5 from "p5";
-import { color, p5c, lighten } from "utils/colorsjs";
+import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 interface SketchState {
@@ -56,7 +56,7 @@ const initState = (p5: p5) => {
         Math.floor(p5.width / 2 / cols),
     );
 
-    const cells = makeCells(rows, cols);
+    let cells = makeCells(rows, cols);
 
     setInitialCells(cells, rows, cols);
 
@@ -87,18 +87,22 @@ const setInitialCells = (cells: boolean[], rows: number, cols: number) => {
 
 /**
  * Draw pieces on a chessboard.
+ *
+ * @param n An identifier for each sketch. There are multiple sketches on this
+ * page, and this id acts as low effort way to tweak the sketches a bit whilst
+ * reusing the general draw method.
  */
-export const draw = (p5: p5) => {
+export const draw = (p5: p5, n: number) => {
     if (!state) state = initState(p5);
     const { rows, cols, cellD, cells } = ensure(state);
 
     p5.clear();
     p5.strokeWeight(0);
 
-    const alpha = Math.sin(p5.frameCount / 50) * 0.5 + 0.5;
-    const unsetCellColor = lighten(unsetCellColorMax, 0);
+    const alpha = Math.sin(p5.frameCount / 150) * 0.5 + 0.5;
+    const unsetCellColor = unsetCellColorMax.clone();
     unsetCellColor.darken(alpha);
-    const unsetCellColorP5 = p5c(unsetCellColorMax);
+    const unsetCellColorP5 = p5c(n === 0 ? unsetCellColorMax : unsetCellColor);
 
     // Translate to the starting position of the first cell
     //

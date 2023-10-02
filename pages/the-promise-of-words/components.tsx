@@ -8,8 +8,22 @@ import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
 import { draw } from "./sketch";
 
-export const Sketch: React.FC = () => {
-    return <P5SketchBox draw={draw} computeSize={essaySketchSize} />;
+interface SketchProps {
+    /**
+     * An identifier for each sketch.
+     *
+     * This is used to modulate the draw function.
+     */
+    n: number;
+}
+
+export const Sketch: React.FC<SketchProps> = ({ n }) => {
+    return (
+        <P5SketchBox
+            draw={(p5: p5) => draw(p5, n)}
+            computeSize={essaySketchSize}
+        />
+    );
 };
 
 /**
@@ -48,7 +62,13 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 };
 
 const EssayContainer_ = styled.div`
-    margin-block: 2rem;
+    margin-block: 1rem;
+
+    /* Style all the canvas elements in the EssayContainer_ */
+    canvas {
+        /* Increase their bottom margin so that visually they look centered */
+        margin-bottom: 0.5rem;
+    }
 
     /* Style all the p elements created from the Markdown paragraphs within
        EssayContainer_ */
