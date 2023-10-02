@@ -1,5 +1,5 @@
 import type p5 from "p5";
-import { color, p5c, setAlpha } from "utils/colorsjs";
+import { color, p5c, lighten } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 interface SketchState {
@@ -95,8 +95,9 @@ export const draw = (p5: p5) => {
     p5.clear();
     p5.strokeWeight(0);
 
-    const alpha = Math.sin(p5.frameCount / 50) * 0.2 + 0.8;
-    const unsetCellColor = setAlpha(unsetCellColorMax, alpha);
+    const alpha = Math.sin(p5.frameCount / 50) * 0.5 + 0.5;
+    const unsetCellColor = lighten(unsetCellColorMax, 0);
+    unsetCellColor.darken(alpha);
     const unsetCellColorP5 = p5c(unsetCellColor);
 
     // Translate to the starting position of the first cell
