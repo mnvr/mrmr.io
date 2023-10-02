@@ -99,23 +99,23 @@ const spring = (t: number) => {
     // Consider it as the (y-) position of a spring. Solve the equations of
     // motion to obtain the "next" position of the spring, and return that
     // instead.
+
     // Spring simulation constants
     let M = 0.8, // Mass
         K = 0.2, // Spring constant
         D = 0.92, // Damping
-        R = 150; // Rest position
+        R = 0; // Rest position
 
-    let ps = R, // Position
-        vs = 0.0, // Velocity
-        as = 0, // Acceleration
-        f = 0; // Force
+    let p = t; // Position
 
-    f = -K * (ps - R); // f=-ky
-    as = f / M; // Set the acceleration, f=ma == a=f/m
-    vs = D * (vs + as); // Set the velocity
-    ps = ps + vs;
+    const f = -K * (p - R); // F = -k * y
+    const a = f / M; // Acceleration, f = m * a => a = f / m
+    const v = D * a; // Velocity
+    p += v;
 
-    return t;
+    // return t;
+    // console.log(t - p);
+    return p;
 };
 
 /**
@@ -132,8 +132,7 @@ export const draw = (p5: p5, n: number) => {
     p5.clear();
     p5.strokeWeight(0);
 
-    // const alpha = Math.sin(p5.millis() / 1500) * 0.5 + 0.5;
-    const alpha = spring(p5.millis() / (1000 * 15));
+    const alpha = spring(p5.millis() / (1000 * 1.5));
     const unsetCellColor = unsetCellColorMax.clone();
     unsetCellColor.darken(alpha);
     const unsetCellColorP5 = p5c(n === 0 ? unsetCellColorMax : unsetCellColor);
