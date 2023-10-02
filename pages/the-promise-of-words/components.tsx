@@ -1,6 +1,7 @@
 import { Column } from "components/Column";
 import { NavA } from "components/NavA";
 import { P5SketchBox } from "components/P5SketchBox";
+import p5 from "p5";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -8,16 +9,32 @@ import { ensure } from "utils/ensure";
 import { draw } from "./sketch";
 
 export const Sketch: React.FC = () => {
-    return (
-        <>
-            <P5SketchBox
-                draw={draw}
-                computeSize={function (): [number, number] {
-                    return [400, 400];
-                }}
-            />
-        </>
-    );
+    return <P5SketchBox draw={draw} computeSize={essaySketchSize} />;
+};
+
+/**
+ * Return the size of the sketches we put in the EssayContainer.
+ *
+ * We'll use the size of the EssayContainer (obtainable at runtime by using
+ * getComputedSize on an element with ID "essay-container") to determine the
+ * width. The height will be set as per the square (1:1) aspect ratio.
+ */
+const essaySketchSize = (p5: p5): [number, number] => {
+    const w = essayContainerWidthOrDefault(p5);
+    return [w, w];
+};
+
+const essayContainerWidthOrDefault = (p5: p5) => {
+    let result = 396;
+
+    const essayContainer = p5.select("#essay-container");
+    if (essayContainer) {
+        const { width } = essayContainer.size() as { width: number };
+        result = width;
+    }
+
+    // As a sanity check, set minimum and maximum bounds on the size.
+    return p5.constrain(result, 100, p5.windowWidth);
 };
 
 export const EssayContainer: React.FC<React.PropsWithChildren> = ({
@@ -25,7 +42,7 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 }) => {
     return (
         <Column>
-            <EssayContainer_>{children}</EssayContainer_>
+            <EssayContainer_ id="essay-container">{children}</EssayContainer_>
         </Column>
     );
 };

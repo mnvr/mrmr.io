@@ -98,7 +98,7 @@ export const draw = (p5: p5) => {
     const alpha = Math.sin(p5.frameCount / 50) * 0.5 + 0.5;
     const unsetCellColor = lighten(unsetCellColorMax, 0);
     unsetCellColor.darken(alpha);
-    const unsetCellColorP5 = p5c(unsetCellColor);
+    const unsetCellColorP5 = p5c(unsetCellColorMax);
 
     // Translate to the starting position of the first cell
     //
