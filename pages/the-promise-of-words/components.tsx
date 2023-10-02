@@ -32,13 +32,13 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 
 const EssayContainer_ = styled.div`
     margin-block: 2rem;
-    line-height: 1.4rem;
+    /* line-height: 1.4rem; */
     p {
         padding-block: 0.3rem;
         padding-inline: 0.5rem;
         border-radius: 2pt;
         font-family: monospace;
-        /* font-size: 1.4rem; */
+        font-size: 0.75rem;
         font-weight: 800;
         background-color: oklch(100% 0 0 / 0.75);
         background-color: oklch(54% 0.22 29);
@@ -55,6 +55,9 @@ const EssayContainer_ = styled.div`
         color: oklch(74% 0.22 60); //oklch(8% 0 0);
         color: oklch(84% 0.22 60); //oklch(8% 0 0);
         color: oklch(100% 0.1 90); //oklch(8% 0 0);
+        background-color: oklch(100% 0.1 90); //oklch(8% 0 0);
+        color: oklch(20% 0.1 90); //oklch(8% 0 0);
+        color: oklch(54% 0.22 29);
     }
 `;
 

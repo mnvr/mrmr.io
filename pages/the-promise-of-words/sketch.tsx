@@ -40,6 +40,7 @@ const cellD = 10;
  */
 // const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
 const aliveColor = color("oklch(54% 0.22 29)");
+const aliveStrokeColor = color("oklch(96% 0.1 90)");
 
 /**
  * The color to use for drawing inactive cells.
@@ -53,6 +54,7 @@ const inactiveColor = color("oklch(20% 0 0)");
  * recreating them each loop.
  */
 const aliveColorP5 = p5c(aliveColor);
+const aliveStrokeColorP5 = p5c(aliveStrokeColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
 const initState = (p5: p5) => {
@@ -150,7 +152,10 @@ export const draw = (p5: p5) => {
             const y = j * cellD;
 
             // p5.point(x + cellD / 2, y + cellD / 2);
+            // p5.stroke(aliveStrokeColorP5);
+            // p5.strokeWeight(isAlive ? 0 : 1);
             p5.fill(isAlive ? aliveColorP5 : inactiveColorP5);
+            p5.fill(isAlive ? aliveColorP5 : aliveStrokeColorP5);
             p5.rect(x, y, cellD, cellD);
         }
     }
