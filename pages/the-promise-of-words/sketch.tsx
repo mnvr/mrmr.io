@@ -53,8 +53,8 @@ const initState = (p5: p5) => {
     const [rows, cols] = [3, 3];
 
     const cellD = Math.min(
-        Math.floor(p5.height / rows),
-        Math.floor(p5.width / cols),
+        Math.floor(p5.height / 2 / rows),
+        Math.floor(p5.width / 2 / cols),
     );
 
     const cells = makeCells(rows, cols);
