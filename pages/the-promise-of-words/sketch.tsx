@@ -1,5 +1,5 @@
 import type p5 from "p5";
-import { color, p5c } from "utils/colorsjs";
+import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
 interface SketchState {
@@ -33,21 +33,20 @@ interface SketchState {
 let state: SketchState | undefined;
 
 /**
- * The color to use for drawing set cells.
+ * The color to use for drawing set cells, at its maximum alpha.
  */
-const setCellColor = color("oklch(54% 0.22 29)");
+const setCellColorMax = color("oklch(54% 0.22 29)");
 
 /**
- * The color to use for drawing unset cells.
+ * The color to use for drawing unset cells, at its maximum alpha.
  */
-const unsetCellColor = color("oklch(97% 0.09 105)");
+const unsetCellColorMax = color("oklch(97% 0.09 105)");
 
 /**
  * Cache P5 representations of some of the fixed colors that we use to avoid
  * recreating them each loop.
  */
-const setCellColorP5 = p5c(setCellColor);
-const unsetCellColorP5 = p5c(unsetCellColor);
+const setCellColorP5 = p5c(setCellColorMax);
 
 const initState = (p5: p5) => {
     const [rows, cols] = [3, 3];
@@ -95,6 +94,10 @@ export const draw = (p5: p5) => {
 
     p5.clear();
     p5.strokeWeight(0);
+
+    const alpha = Math.sin(p5.frameCount / 50) * 0.2 + 0.8;
+    const unsetCellColor = setAlpha(unsetCellColorMax, alpha);
+    const unsetCellColorP5 = p5c(unsetCellColor);
 
     // Translate to the starting position of the first cell
     //
