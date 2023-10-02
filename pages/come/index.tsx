@@ -60,6 +60,11 @@ const Text: React.FC = () => {
                 <br />
                 Endlessly
             </P>
+            <P>
+                Come dream with me
+                <br/>
+                The stars are yet to be
+            </P>
         </Column>
     );
 };
