@@ -86,39 +86,6 @@ const setInitialCells = (cells: boolean[], rows: number, cols: number) => {
 };
 
 /**
- * Convert an arbitrary number to an spring oscillation between 0-1.
- *
- * The intent is to use this value for driving more natural seeming animation
- * curves.
- */
-const spring = (t: number) => {
-    t = Math.abs(t);
-    t = t % 1;
-    // t is now a positive number between 0 and 1.
-    //
-    // Consider it as the (y-) position of a spring. Solve the equations of
-    // motion to obtain the "next" position of the spring, and return that
-    // instead.
-
-    // Spring simulation constants
-    let M = 0.8, // Mass
-        K = 0.2, // Spring constant
-        D = 0.92, // Damping
-        R = 0; // Rest position
-
-    let p = t; // Position
-
-    const f = -K * (p - R); // F = -k * y
-    const a = f / M; // Acceleration, f = m * a => a = f / m
-    const v = D * a; // Velocity
-    p += v;
-
-    // return t;
-    // console.log(t - p);
-    return p;
-};
-
-/**
  * Draw pieces on a chessboard.
  *
  * @param n An identifier for each sketch. There are multiple sketches on this
@@ -132,9 +99,9 @@ export const draw = (p5: p5, n: number) => {
     p5.clear();
     p5.strokeWeight(0);
 
-    const alpha = spring(p5.millis() / (1000 * 1.5));
+    const d = linear(p5.millis() / (1000 * 32));
     const unsetCellColor = unsetCellColorMax.clone();
-    unsetCellColor.darken(alpha);
+    unsetCellColor.darken(1 - d);
     const unsetCellColorP5 = p5c(n === 0 ? unsetCellColorMax : unsetCellColor);
 
     // Translate to the starting position of the first cell
@@ -242,4 +209,13 @@ const hasState = (
     if (j < 0 || j >= cols) return false; // out of bounds
     if (i < 0 || i >= rows) return false; // out of bounds
     return cells[j * cols + i] === cellState;
+};
+
+/**
+ * Convert an arbitrary number to a linear oscillation between 0-1.
+ */
+const linear = (t: number) => {
+    t = Math.abs(t);
+    t = t % 2;
+    return t > 1 ? 2 - t : t;
 };
