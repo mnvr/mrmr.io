@@ -66,8 +66,9 @@ const EssayContainer_ = styled.div`
 
     /* Style all the canvas elements in the EssayContainer_ */
     canvas {
-        /* Increase their bottom margin so that visually they look centered */
-        margin-bottom: 0.5rem;
+        /* Asymmetric margins so that visually they look centered */
+        margin-block-start: -1.5rem;
+        margin-block-end: -1rem;
     }
 
     /* Style all the p elements created from the Markdown paragraphs within
@@ -84,7 +85,31 @@ const EssayContainer_ = styled.div`
         background-color: var(--mrmr-color-2);
         color: var(--mrmr-background-color-1);
     }
+
+    p#poem-p {
+        background-color: var(--mrmr-background-color-1);
+        color: var(--mrmr-color-2);
+    }
 `;
+
+export const PoemP: React.FC = () => {
+    return (
+        <p id="poem-p">
+            Every word
+            <br />
+            A promise
+            <br />
+            That holds me down
+            <br />
+            In a cage of my own making
+            <br />
+            Until I can't fly anymore
+            <br />
+            <br />
+            Yet I write
+        </p>
+    );
+};
 
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
