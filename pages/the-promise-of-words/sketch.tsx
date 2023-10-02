@@ -151,12 +151,31 @@ export const draw = (p5: p5) => {
             const x = i * cellD;
             const y = j * cellD;
 
+            // These radii start with the top-left and move clockwise.
+            let cornerRadiii = [2, 2, 2, 2];
+            // If any of the neighbouring cells has the same state as this cell
+            // then turn off the corner radius for edges on that side to create
+            // a smooth, single figure for each neighbourhood.
+
+            // - previous row
+            if (hasState(cells, j - 1, i, isAlive))
+                cornerRadiii[0] = cornerRadiii[1] = 0;
+            // - next column
+            if (hasState(cells, j, i + 1, isAlive))
+                cornerRadiii[1] = cornerRadiii[2] = 0;
+            // - next row
+            if (hasState(cells, j + 1, i, isAlive))
+                cornerRadiii[2] = cornerRadiii[3] = 0;
+            // - previous column
+            if (hasState(cells, j, i - 1, isAlive))
+                cornerRadiii[3] = cornerRadiii[0] = 0;
+
             // p5.point(x + cellD / 2, y + cellD / 2);
             // p5.stroke(aliveStrokeColorP5);
             // p5.strokeWeight(isAlive ? 0 : 1);
             p5.fill(isAlive ? aliveColorP5 : inactiveColorP5);
             p5.fill(isAlive ? aliveColorP5 : aliveStrokeColorP5);
-            p5.rect(x, y, cellD, cellD);
+            p5.rect(x, y, cellD, cellD, ...cornerRadiii);
         }
     }
 
@@ -168,4 +187,19 @@ const offset = (availableSpace: number, count: number, cellD: number) => {
     const extra = availableSpace - count * cellD;
     if (extra <= 0) return 0;
     return extra / 2;
+};
+
+/**
+ * Return true if the cell at row j and col i of the cells array is set to
+ * `state`.
+ *
+ * For out of bounds cells, return false.
+ *
+ * @param cells The 1D array representation of the cells matrix.
+ * @param state The state to compare to.
+ */
+const hasState = (cells: boolean[], j: number, i: number, state: boolean) => {
+    if (j < 0 || j >= cols) return false; // out of bounds
+    if (i < 0 || i >= rows) return false; // out of bounds
+    return cells[j * cols + i] === state;
 };
