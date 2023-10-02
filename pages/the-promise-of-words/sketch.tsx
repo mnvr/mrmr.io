@@ -86,6 +86,39 @@ const setInitialCells = (cells: boolean[], rows: number, cols: number) => {
 };
 
 /**
+ * Convert an arbitrary number to an spring oscillation between 0-1.
+ *
+ * The intent is to use this value for driving more natural seeming animation
+ * curves.
+ */
+const spring = (t: number) => {
+    t = Math.abs(t);
+    t = t % 1;
+    // t is now a positive number between 0 and 1.
+    //
+    // Consider it as the (y-) position of a spring. Solve the equations of
+    // motion to obtain the "next" position of the spring, and return that
+    // instead.
+    // Spring simulation constants
+    let M = 0.8, // Mass
+        K = 0.2, // Spring constant
+        D = 0.92, // Damping
+        R = 150; // Rest position
+
+    let ps = R, // Position
+        vs = 0.0, // Velocity
+        as = 0, // Acceleration
+        f = 0; // Force
+
+    f = -K * (ps - R); // f=-ky
+    as = f / M; // Set the acceleration, f=ma == a=f/m
+    vs = D * (vs + as); // Set the velocity
+    ps = ps + vs;
+
+    return t;
+};
+
+/**
  * Draw pieces on a chessboard.
  *
  * @param n An identifier for each sketch. There are multiple sketches on this
@@ -99,7 +132,8 @@ export const draw = (p5: p5, n: number) => {
     p5.clear();
     p5.strokeWeight(0);
 
-    const alpha = Math.sin(p5.frameCount / 150) * 0.5 + 0.5;
+    // const alpha = Math.sin(p5.millis() / 1500) * 0.5 + 0.5;
+    const alpha = spring(p5.millis() / (1000 * 15));
     const unsetCellColor = unsetCellColorMax.clone();
     unsetCellColor.darken(alpha);
     const unsetCellColorP5 = p5c(n === 0 ? unsetCellColorMax : unsetCellColor);
