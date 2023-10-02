@@ -40,7 +40,7 @@ const cellD = 10;
  */
 // const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
 const aliveColor = color("oklch(54% 0.22 29)");
-const aliveStrokeColor = color("oklch(96% 0.1 90)");
+const aliveStrokeColor = color("oklch(97% 0.09 105)");
 
 /**
  * The color to use for drawing inactive cells.

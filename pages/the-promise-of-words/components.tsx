@@ -56,6 +56,12 @@ const EssayContainer_ = styled.div`
         color: oklch(84% 0.22 60); //oklch(8% 0 0);
         color: oklch(100% 0.1 90); //oklch(8% 0 0);
         background-color: oklch(100% 0.1 90); //oklch(8% 0 0);
+        /* background-color: oklch(97% 0.1 104); //oklch(8% 0 0); */
+        background-color: oklch(97% 0.09 105); //oklch(8% 0 0);
+        /* background-color: oklch(97.59% 0.086 107.19); //oklch(8% 0 0); */
+        /* background-color: rgb(253, 252, 184); //oklch(8% 0 0); */
+        /* background-color: oklch(98.17% 0.087 107.21); //oklch(8% 0 0); */
+        /* background-color: rgb(255 254 185); //oklch(8% 0 0); */
         color: oklch(20% 0.1 90); //oklch(8% 0 0);
         color: oklch(54% 0.22 29);
     }
