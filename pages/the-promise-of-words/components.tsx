@@ -32,38 +32,20 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 
 const EssayContainer_ = styled.div`
     margin-block: 2rem;
-    /* line-height: 1.4rem; */
+
+    /* Style all the p elements created from the Markdown paragraphs within
+       EssayContainer_ */
     p {
         padding-block: 0.3rem;
         padding-inline: 0.5rem;
         border-radius: 2pt;
+
         font-family: monospace;
         font-size: 0.75rem;
         font-weight: 800;
-        background-color: oklch(100% 0 0 / 0.75);
-        background-color: oklch(54% 0.22 29);
-        background-color: oklch(20% 0 0 / 0.2);
-        color: oklch(54% 0.22 199); //oklch(8% 0 0);
-        background-color: oklch(4% 0.22 199 / 0.7); //oklch(8% 0 0);
-        color: oklch(54% 0.22 199); //oklch(8% 0 0);
-        background-color: oklch(20% 0 0 / 0.95);
-        background-color: oklch(54% 0.22 310); //oklch(8% 0 0);
-        color: oklch(74% 0.22 310); //oklch(8% 0 0);
-        background-color: oklch(20% 0 0 / 0.95);
-        color: oklch(74% 0.22 180); //oklch(8% 0 0);
-        color: oklch(74% 0.22 120); //oklch(8% 0 0);
-        color: oklch(74% 0.22 60); //oklch(8% 0 0);
-        color: oklch(84% 0.22 60); //oklch(8% 0 0);
-        color: oklch(100% 0.1 90); //oklch(8% 0 0);
-        background-color: oklch(100% 0.1 90); //oklch(8% 0 0);
-        /* background-color: oklch(97% 0.1 104); //oklch(8% 0 0); */
-        background-color: oklch(97% 0.09 105); //oklch(8% 0 0);
-        /* background-color: oklch(97.59% 0.086 107.19); //oklch(8% 0 0); */
-        /* background-color: rgb(253, 252, 184); //oklch(8% 0 0); */
-        /* background-color: oklch(98.17% 0.087 107.21); //oklch(8% 0 0); */
-        /* background-color: rgb(255 254 185); //oklch(8% 0 0); */
-        color: oklch(20% 0.1 90); //oklch(8% 0 0);
-        color: oklch(54% 0.22 29);
+
+        background-color: var(--mrmr-color-2);
+        color: var(--mrmr-background-color-1);
     }
 `;
 

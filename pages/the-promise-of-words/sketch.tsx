@@ -4,7 +4,7 @@ import { ensure } from "utils/ensure";
 
 interface SketchState {
     /**
-     * Dimensions of the (covering) rectangle used by each cell
+     * Dimensions of the (covering) rectangle used by each cell.
      */
     cellD: number;
     /**
@@ -31,30 +31,20 @@ let state: SketchState | undefined;
 const [rows, cols] = [3, 3];
 
 /**
- * Dimensions of the (covering) rectangle used by each cell
+ * The color to use for drawing occupied cells.
  */
-const cellD = 10;
-
-/**
- * The color to use for drawing alive cells.
- */
-// const aliveColor = color("white"); //color("oklch(54% 0.22 29)");
 const aliveColor = color("oklch(54% 0.22 29)");
-const aliveStrokeColor = color("oklch(97% 0.09 105)");
 
 /**
- * The color to use for drawing inactive cells.
+ * The color to use for drawing unoccupied cells.
  */
-// const inactiveColor = color("oklch(7% 0.242 151.39 / 0.75)");
-const inactiveColor = color("oklch(20% 0 0)");
-// const inactiveColor = color("oklch(54% 0.22 310)");
+const inactiveColor = color("oklch(97% 0.09 105)");
 
 /**
  * Cache P5 representations of some of the fixed colors that we use to avoid
  * recreating them each loop.
  */
 const aliveColorP5 = p5c(aliveColor);
-const aliveStrokeColorP5 = p5c(aliveStrokeColor);
 const inactiveColorP5 = p5c(inactiveColor);
 
 const initState = (p5: p5) => {
@@ -122,65 +112,39 @@ export const draw = (p5: p5) => {
 
     p5.translate(offset(p5.width, cols, cellD), offset(p5.height, rows, cellD));
 
-    const next = makeCells();
-
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
-            let c = 2;
-            const isAlive = ensure(cells[j * cols + i]);
-            let nextIsAlive = true;
-
-            if (isAlive) {
-                // Staying alive
-                //
-                // If a cell is alive and has exactly 2 or 3 live neighbours, it
-                // stays alive.
-                if (c === 2 || c === 3) nextIsAlive = true;
-            } else {
-                // Birth
-                //
-                // If a cell is inactive, it'll become alive if it has exactly 3
-                // live neighbours.
-                if (c === 3) nextIsAlive = true;
-            }
-
-            if (nextIsAlive) setCell(next, j, i);
+            const isSet = ensure(cells[j * cols + i]);
 
             // Coordinates of the starting corner of the rectangle that covers
             // the drawing area we have for the cell.
             const x = i * cellD;
             const y = j * cellD;
 
-            // These radii start with the top-left and move clockwise.
-            let cornerRadiii = [2, 2, 2, 2];
             // If any of the neighbouring cells has the same state as this cell
             // then turn off the corner radius for edges on that side to create
             // a smooth, single figure for each neighbourhood.
+            //
+            // * The radii start with the top-left and move clockwise.
+            let cornerRadiii = [2, 2, 2, 2];
 
-            // - previous row
-            if (hasState(cells, j - 1, i, isAlive))
+            // * Previous row
+            if (hasState(cells, j - 1, i, isSet))
                 cornerRadiii[0] = cornerRadiii[1] = 0;
-            // - next column
-            if (hasState(cells, j, i + 1, isAlive))
+            // * Next column
+            if (hasState(cells, j, i + 1, isSet))
                 cornerRadiii[1] = cornerRadiii[2] = 0;
-            // - next row
-            if (hasState(cells, j + 1, i, isAlive))
+            // * Next row
+            if (hasState(cells, j + 1, i, isSet))
                 cornerRadiii[2] = cornerRadiii[3] = 0;
-            // - previous column
-            if (hasState(cells, j, i - 1, isAlive))
+            // * Previous column
+            if (hasState(cells, j, i - 1, isSet))
                 cornerRadiii[3] = cornerRadiii[0] = 0;
 
-            // p5.point(x + cellD / 2, y + cellD / 2);
-            // p5.stroke(aliveStrokeColorP5);
-            // p5.strokeWeight(isAlive ? 0 : 1);
-            p5.fill(isAlive ? aliveColorP5 : inactiveColorP5);
-            p5.fill(isAlive ? aliveColorP5 : aliveStrokeColorP5);
+            p5.fill(isSet ? aliveColorP5 : inactiveColorP5);
             p5.rect(x, y, cellD, cellD, ...cornerRadiii);
         }
     }
-
-    // if (p5.frameCount % 15 === 0)
-    // state.cells = next;
 };
 
 const offset = (availableSpace: number, count: number, cellD: number) => {
