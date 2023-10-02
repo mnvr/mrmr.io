@@ -46,18 +46,6 @@ const EssayContainer_ = styled.div`
 
         background-color: var(--mrmr-color-2);
         color: var(--mrmr-background-color-1);
-
-        /* transition: background-color 200ms ease-out; */
-        animation: pulse 1s ease-in-out infinite alternate;
-    }
-
-    @keyframes pulse {
-        0% {
-            background-color: var(--mrmr-color-2);
-        }
-        100% {
-            background-color: white;
-        }
     }
 `;
 
