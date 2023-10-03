@@ -58,23 +58,7 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      */
     const setCellColorP5 = p5c(setCellColorMax);
 
-    p5.setup = () => {
-        const [width, height] = sketchSize();
-
-        rows = 3;
-        cols = 3;
-
-        cellD = Math.min(
-            Math.floor(height / 2 / rows),
-            Math.floor(width / 2 / cols),
-        );
-
-        cells = makeCells();
-
-        setInitialCells();
-
-        p5.createCanvas(width, height);
-    };
+    p5.setup = () => p5.createCanvas(...sketchSize());
 
     /**
      * Create a squared sized sketch with the same dimensions as the width of the
@@ -105,6 +89,18 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
 
     p5.updateWithProps = (props) => {
         n = props.n;
+
+        rows = n === 0 ? 3 : 4;
+        cols = 3;
+
+        cellD = Math.min(
+            Math.floor(p5.height / 2 / rows),
+            Math.floor(p5.width / 2 / cols),
+        );
+
+        cells = makeCells();
+
+        setInitialCells();
     };
 
     p5.draw = () => {
