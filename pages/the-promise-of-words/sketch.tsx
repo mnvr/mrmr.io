@@ -1,5 +1,4 @@
 import type { Sketch, SketchProps } from "@p5-wrapper/react";
-import { rem } from "utils/browser";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
@@ -72,17 +71,22 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
     p5.setup = () => p5.createCanvas(...sketchSize());
 
     /**
-     * Create a squared sized sketch with the same dimensions as the width of the
-     * EssayContainer (the element with ID "essay-container").
+     * Create a squared sized sketch with the same dimension as the horizontal
+     * span of the text in the paragraphs of EssayContainer.
      */
     const sketchSize = (): [number, number] => {
-        const essayContainer = ensure(p5.select("#essay-container"));
-        let { width } = essayContainer.size() as { width: number };
-
-        // The canvas for this sketch has an extra inline padding of 0.5rem (on
-        // each side) to get it to align with the text.
-        console.log(width, rem());
-        width -= rem();
+        // Select the first paragraph in essay-container.
+        const para = ensure(
+            window.document.querySelector("#essay-container p"),
+        );
+        // We cannot use the p5.select().size() method to obtain the width
+        // because it needs to account for the padding.
+        //
+        // Both the paragraphs, and the canvas elements that host these
+        // sketches, have an (the same) inline padding. So we need to use the
+        // getComputedStyle method to take that into account.
+        const style = window.getComputedStyle(para); // e.g. "378px"
+        const width = parseFloat(style.width);
 
         return [width, width];
     };
