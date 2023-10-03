@@ -122,8 +122,11 @@ export const draw = (p5: p5, n: number) => {
     //   smaller).
     //
     // This offset computation handles both cases.
+    //
+    // For this sketch, the contents are left aligned, so the offset is only
+    // applied in the vertical direction.
 
-    p5.translate(offset(p5.width, cols, cellD), offset(p5.height, rows, cellD));
+    p5.translate(0, offset(p5.height, rows, cellD));
 
     for (let j = 0; j < rows; j++) {
         for (let i = 0; i < cols; i++) {
