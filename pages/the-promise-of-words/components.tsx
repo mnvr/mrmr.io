@@ -98,10 +98,28 @@ export const Poem: React.FC = () => {
             Until I can't fly anymore
             <br />
             <br />
-            Yet I write
+            Yet I write<Blinking>|</Blinking>
         </p>
     );
 };
+
+const Blinking = styled.span`
+    animation: blink 900ms linear infinite alternate;
+
+    @keyframes blink {
+        0% {
+            opacity: 0;
+        }
+
+        60% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 0.9;
+        }
+    }
+`;
 
 export const Info: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
