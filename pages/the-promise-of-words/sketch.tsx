@@ -91,15 +91,23 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         return [width, width];
     };
 
+    p5.windowResized = () => {
+        p5.resizeCanvas(...sketchSize());
+        updateDimensions();
+        if (!animate) p5.redraw();
+    };
+
+    const updateDimensions = () => {
+        cellD = Math.min(
+            Math.floor(p5.height / 1 / rows),
+            Math.floor(p5.width / 1 / cols),
+        );
+    };
+
     p5.updateWithProps = (props) => {
         animate = props.animate === true;
-
         parsePattern(props.pattern);
-
-        cellD = Math.min(
-            Math.floor(p5.height / 2 / rows),
-            Math.floor(p5.width / 2 / cols),
-        );
+        updateDimensions();
     };
 
     /**
