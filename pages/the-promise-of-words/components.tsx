@@ -1,6 +1,6 @@
 import { Column } from "components/Column";
-import { NavA } from "components/NavA";
 import { P5SketchBox } from "components/P5SketchBox";
+import { Link } from "gatsby";
 import p5 from "p5";
 import * as React from "react";
 import styled from "styled-components";
@@ -86,15 +86,22 @@ const EssayContainer_ = styled.div`
         color: var(--mrmr-background-color-1);
     }
 
-    p#poem-p {
+    p#poem {
         background-color: var(--mrmr-background-color-1);
         color: var(--mrmr-color-2);
     }
+
+    p#info {
+        background-color: var(--mrmr-background-color-1);
+        color: var(--mrmr-color-1);
+        margin-block-start: 8rem;
+        margin-block-end: 6rem;
+    }
 `;
 
-export const PoemP: React.FC = () => {
+export const Poem: React.FC = () => {
     return (
-        <p id="poem-p">
+        <p id="poem">
             Every word
             <br />
             A promise
@@ -111,57 +118,27 @@ export const PoemP: React.FC = () => {
     );
 };
 
-export const Title: React.FC = () => {
+export const Info: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { formattedDateMY } = page;
 
     return (
-        <TitleContainer>
-            <h1>Test</h1>
-            <Caption>
+        <p id="info">
+            <div>
                 Manav Rathi
                 <br />
                 {formattedDateMY}
-            </Caption>
-        </TitleContainer>
-    );
-};
-
-const TitleContainer = styled.div`
-    margin-block-start: 2rem;
-    margin-block-end: 4rem;
-    @media (min-width: 600px) {
-        margin-block-start: 3rem;
-        margin-block-end: 5rem;
-    }
-`;
-
-const Caption = styled.small`
-    color: var(--mrmr-color-2);
-`;
-
-export const Footer: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
-    return (
-        <FooterContainer>
+            </div>
+            <br />
+            <br />
             <NavContainer>
-                <NavA page={page} />
+                <Link to={"/"}>More</Link>
             </NavContainer>
-        </FooterContainer>
+        </p>
     );
 };
-
-const FooterContainer = styled.div`
-    margin-block-start: 7rem;
-    margin-block-end: 4rem;
-`;
 
 const NavContainer = styled.div`
-    letter-spacing: 0.045ch;
-
-    color: var(--mrmr-color-2);
-
     a {
         text-decoration: none;
         opacity: 0.8;
@@ -170,59 +147,5 @@ const NavContainer = styled.div`
     a:hover {
         border-bottom: 1px solid currentColor;
         opacity: 1;
-    }
-`;
-
-export const HRT = styled.hr`
-    width: 50%;
-    margin-block: 2rem;
-`;
-
-export const HRMQ = styled.hr`
-    margin-block-start: 3rem;
-`;
-
-export const MarginQuote = styled.p`
-    color: var(--mrmr-color-2);
-    font-family: serif;
-    font-style: italic;
-    margin-block-start: 1.5rem;
-    margin-block-end: 2rem;
-`;
-
-export const Example = styled.blockquote`
-    color: royalblue;
-    @media (prefers-color-scheme: dark) {
-        color: paleturquoise;
-    }
-    font-family: serif;
-    font-style: italic;
-`;
-
-export const Sub = styled.span`
-    color: var(--mrmr-color-2);
-`;
-
-export const Aside: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return (
-        <small>
-            <AsideBQ>{children}</AsideBQ>
-        </small>
-    );
-};
-
-const AsideBQ = styled.blockquote`
-    color: var(--mrmr-color-2);
-    border-inline-start: 2px dotted var(--mrmr-color-2);
-    margin-inline-start: 0.1rem;
-    padding-inline-start: 0.5rem;
-`;
-
-export const Cmp = styled.span`
-    background-color: honeydew;
-    color: darkgreen;
-    @media (prefers-color-scheme: dark) {
-        background-color: darkgreen;
-        color: honeydew;
     }
 `;
