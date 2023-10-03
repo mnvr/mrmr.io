@@ -81,39 +81,15 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         return [width, width];
     };
 
-    /** Return a cells array initialized to all false values */
-    const makeCells = (): boolean[] => Array(rows * cols).fill(false);
-
-    const setInitialCells = () => {
-        const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-        setCell(cj - 1, ci + 0);
-        setCell(cj - 1, ci + 1);
-        setCell(cj + 0, ci - 1);
-        setCell(cj + 0, ci + 0);
-        setCell(cj + 1, ci + 0);
-    };
-
-    /**
-     * Set the cell at row j and col i of the cells array to true.
-     */
-    const setCell = (j: number, i: number) => (cells[j * cols + i] = true);
-
     p5.updateWithProps = (props) => {
         n = props.n;
 
         parsePattern(props.pattern);
 
-        // rows = n === 0 ? 3 : 4;
-        // cols = 3;
-
-        // cellD = Math.min(
-        //     Math.floor(p5.height / 2 / rows),
-        //     Math.floor(p5.width / 2 / cols),
-        // );
-
-        // cells = makeCells();
-
-        // setInitialCells();
+        cellD = Math.min(
+            Math.floor(p5.height / 2 / rows),
+            Math.floor(p5.width / 2 / cols),
+        );
     };
 
     /**
@@ -127,7 +103,7 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      */
     const parsePattern = (pat: string) => {
         const lines = pat.split(/\s+/).filter((line) => line.length > 0);
-        console.log(lines);
+
         rows = lines.length;
         cols = ensure(lines[0]).length;
 
@@ -143,6 +119,12 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
             }
         }
     };
+
+    /** Return a cells array initialized to all false values */
+    const makeCells = (): boolean[] => Array(rows * cols).fill(false);
+
+    /** Set the cell at row j and col i of the cells array to true. */
+    const setCell = (j: number, i: number) => (cells[j * cols + i] = true);
 
     p5.draw = () => {
         p5.clear();
