@@ -226,8 +226,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      * @param state The cell state to compare to.
      */
     const hasState = (state: boolean, j: number, i: number) => {
-        if (j < 0 || j >= cols) return false; // out of bounds
-        if (i < 0 || i >= rows) return false; // out of bounds
+        if (j < 0 || j >= rows) return false; // out of bounds
+        if (i < 0 || i >= cols) return false; // out of bounds
         return cells[j * cols + i] === state;
     };
 };
