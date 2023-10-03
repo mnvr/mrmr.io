@@ -1,4 +1,5 @@
 import type { Sketch, SketchProps } from "@p5-wrapper/react";
+import { linear } from "utils/anim";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
@@ -99,8 +100,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
 
     const updateDimensions = () => {
         cellD = Math.min(
-            Math.floor(p5.height / 1 / rows),
-            Math.floor(p5.width / 1 / cols),
+            Math.floor(p5.height / 2 / rows),
+            Math.floor(p5.width / 2 / cols),
         );
     };
 
@@ -250,13 +251,4 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         if (i < 0 || i >= cols) return false; // out of bounds
         return cells[j * cols + i] === state;
     };
-};
-
-/**
- * Convert an arbitrary number to a linear oscillation between 0-1.
- */
-const linear = (t: number) => {
-    t = Math.abs(t);
-    t = t % 2;
-    return t > 1 ? 2 - t : t;
 };
