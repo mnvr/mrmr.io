@@ -4,11 +4,10 @@ import { ensure } from "utils/ensure";
 
 type SketchProps_ = SketchProps & {
     /**
-     * An identifier for each sketch. There are multiple sketches on this page,
-     * and this id acts as low effort way to tweak the sketches a bit whilst
-     * reusing the general draw method.
+     * If true, animate this sketch. Otherwise this is a static sketch, we draw
+     * it once and then stop re-rendering.
      */
-    n: number;
+    animate?: boolean;
     /**
      * The pattern to render.
      *
@@ -60,8 +59,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      */
     let cells: boolean[];
 
-    /** Sketch identifier. Comes from props. */
-    let n = 0;
+    /** Animate the sketch if this is true. Comes from props. */
+    let animate = false;
 
     /**
      * Cached P5 representations of some of the fixed colors that we use to
@@ -82,7 +81,7 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
     };
 
     p5.updateWithProps = (props) => {
-        n = props.n;
+        animate = props.animate === true;
 
         parsePattern(props.pattern);
 
@@ -134,7 +133,7 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         const unsetCellColor = unsetCellColorMax.clone();
         unsetCellColor.darken(1 - d);
         const unsetCellColorP5 = p5c(
-            n === 0 ? unsetCellColorMax : unsetCellColor,
+            animate ? unsetCellColor : unsetCellColorMax,
         );
 
         translateOrigin();
@@ -155,6 +154,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
                 p5.rect(x, y, cellD, cellD, ...rs);
             }
         }
+
+        if (!animate) p5.noLoop();
     };
 
     /**

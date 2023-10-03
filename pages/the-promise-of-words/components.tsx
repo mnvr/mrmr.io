@@ -7,30 +7,25 @@ import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
 import { sketch } from "./sketch";
 
-interface SketchProps {
-    /**
-     * An identifier for each sketch.
-     *
-     * This is used to modulate the draw function.
-     */
-    n: number;
-}
-
-export const Sketch: React.FC<SketchProps> = ({ n }) => {
-    const s = `
+export const Sketch1: React.FC = () => {
+    const p = `
     -**
     **-
     -*-
     `;
 
-    const s2 = `
+    return <ReactP5Wrapper sketch={sketch} pattern={p} />;
+};
+
+export const Sketch2: React.FC = () => {
+    const p = `
     ---
     -**
     **-
     -*-
     `;
 
-    return <ReactP5Wrapper sketch={sketch} n={n} pattern={n === 0 ? s : s2} />;
+    return <ReactP5Wrapper sketch={sketch} pattern={p} animate={true} />;
 };
 
 export const EssayContainer: React.FC<React.PropsWithChildren> = ({
