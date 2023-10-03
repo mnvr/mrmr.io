@@ -1,4 +1,5 @@
 import type { Sketch, SketchProps } from "@p5-wrapper/react";
+import { rem } from "utils/browser";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
@@ -76,7 +77,13 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      */
     const sketchSize = (): [number, number] => {
         const essayContainer = ensure(p5.select("#essay-container"));
-        const { width } = essayContainer.size() as { width: number };
+        let { width } = essayContainer.size() as { width: number };
+
+        // The canvas for this sketch has an extra inline padding of 0.5rem (on
+        // each side) to get it to align with the text.
+        console.log(width, rem());
+        width -= rem();
+
         return [width, width];
     };
 
