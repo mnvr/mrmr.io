@@ -25,6 +25,18 @@ export const Sketch1: React.FC = () => {
 const Sketch1_ = styled.div`
     margin-block-start: 5.5rem;
     margin-block-end: 6.5rem;
+
+    /**
+     * Set a minimum height to prevent a layout shift when the page loads
+     *
+     * Preventing a layout shift is important for this sketch because it is
+     * at the top of the page, and thus the layout shift is very in the face.
+     *
+     * The height of the sketch will be equal to its width. And the width is
+     * determined by the width of Column, which is 24rem. Using the ch unit
+     * here seems to get us the same value.
+     */
+    min-height: 24ch;
 `;
 
 export const Sketch2: React.FC = () => {
