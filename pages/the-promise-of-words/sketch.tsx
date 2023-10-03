@@ -1,20 +1,40 @@
-import type p5 from "p5";
+import type { Sketch, SketchProps } from "@p5-wrapper/react";
 import { color, p5c } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
-interface SketchState {
+type SketchProps_ = SketchProps & {
+    /**
+     * An identifier for each sketch. There are multiple sketches on this page,
+     * and this id acts as low effort way to tweak the sketches a bit whilst
+     * reusing the general draw method.
+     */
+    n: number;
+};
+
+/** The color to use for drawing set cells, at its maximum alpha. */
+const setCellColorMax = color("oklch(54% 0.22 29)");
+
+/** The color to use for drawing unset cells, at its maximum alpha. */
+const unsetCellColorMax = color("oklch(97% 0.09 105)");
+
+/**
+ * Draw pieces on a chessboard.
+ */
+export const sketch: Sketch<SketchProps_> = (p5) => {
     /**
      * Number of rows ("y" or "j" values) on the checker-board / chess-board.
      */
-    rows: number;
+    let rows: number;
     /**
-     * Number of colums ("x" or "i") on the checker-board / chess-board.
+     * Number of columns ("x" or "i") on the checker-board / chess-board.
      */
-    cols: number;
+    let cols: number;
+
     /**
      * Dimensions of the (covering) rectangle used by each cell.
      */
-    cellD: number;
+    let cellD: number;
+
     /**
      * Each cell tracks whether or not a particular location is set.
      *
@@ -27,191 +47,170 @@ interface SketchState {
      *
      * Thus, the cell at row j and col i is at `j * cols + i`.
      */
-    cells: boolean[];
-}
+    let cells: boolean[];
 
-let state: SketchState | undefined;
+    /** Sketch identifier. Comes from props. */
+    let n = 0;
 
-/**
- * The color to use for drawing set cells, at its maximum alpha.
- */
-const setCellColorMax = color("oklch(54% 0.22 29)");
+    /**
+     * Cached P5 representations of some of the fixed colors that we use to
+     * avoid recreating them each loop.
+     */
+    const setCellColorP5 = p5c(setCellColorMax);
 
-/**
- * The color to use for drawing unset cells, at its maximum alpha.
- */
-const unsetCellColorMax = color("oklch(97% 0.09 105)");
+    p5.updateWithProps = (props) => {
+        n = props.n;
+    };
 
-/**
- * Cache P5 representations of some of the fixed colors that we use to avoid
- * recreating them each loop.
- */
-const setCellColorP5 = p5c(setCellColorMax);
+    p5.setup = () => {
+        const [width, height] = sketchSize();
 
-const initState = (p5: p5) => {
-    const [rows, cols] = [3, 3];
+        rows = 3;
+        cols = 3;
 
-    const cellD = Math.min(
-        Math.floor(p5.height / 2 / rows),
-        Math.floor(p5.width / 2 / cols),
-    );
+        cellD = Math.min(
+            Math.floor(height / 2 / rows),
+            Math.floor(width / 2 / cols),
+        );
 
-    let cells = makeCells(rows, cols);
+        cells = makeCells();
 
-    setInitialCells(cells, rows, cols);
+        setInitialCells();
 
-    return { rows, cols, cellD, cells };
-};
+        p5.createCanvas(width, height);
+    };
 
-/** Return a cells array initialized to all false values */
-const makeCells = (rows: number, cols: number): boolean[] =>
-    Array(rows * cols).fill(false);
+    /**
+     * Create a squared sized sketch with the same dimensions as the width of the
+     * EssayContainer (the element with ID "essay-container").
+     */
+    const sketchSize = (): [number, number] => {
+        const essayContainer = ensure(p5.select("#essay-container"));
+        const { width } = essayContainer.size() as { width: number };
+        return [width, width];
+    };
 
-/**
- * Set the cell at row j and col i of the cells array to true.
- *
- * @param cells The 1D array representation of the cells matrix.
- */
-const setCell = (cells: boolean[], cols: number, j: number, i: number) => {
-    cells[j * cols + i] = true;
-};
+    /** Return a cells array initialized to all false values */
+    const makeCells = (): boolean[] => Array(rows * cols).fill(false);
 
-const setInitialCells = (cells: boolean[], rows: number, cols: number) => {
-    const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-    setCell(cells, cols, cj - 1, ci + 0);
-    setCell(cells, cols, cj - 1, ci + 1);
-    setCell(cells, cols, cj + 0, ci - 1);
-    setCell(cells, cols, cj + 0, ci + 0);
-    setCell(cells, cols, cj + 1, ci + 0);
-};
+    const setInitialCells = () => {
+        const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
+        setCell(cj - 1, ci + 0);
+        setCell(cj - 1, ci + 1);
+        setCell(cj + 0, ci - 1);
+        setCell(cj + 0, ci + 0);
+        setCell(cj + 1, ci + 0);
+    };
 
-/**
- * Draw pieces on a chessboard.
- *
- * @param n An identifier for each sketch. There are multiple sketches on this
- * page, and this id acts as low effort way to tweak the sketches a bit whilst
- * reusing the general draw method.
- */
-export const draw = (p5: p5, n: number) => {
-    if (!state) state = initState(p5);
-    const { rows, cols, cellD, cells } = ensure(state);
+    /**
+     * Set the cell at row j and col i of the cells array to true.
+     */
+    const setCell = (j: number, i: number) => (cells[j * cols + i] = true);
 
-    p5.clear();
-    p5.strokeWeight(0);
+    p5.draw = () => {
+        p5.clear();
+        p5.strokeWeight(0);
 
-    const d = linear(p5.millis() / (1000 * 32));
-    const unsetCellColor = unsetCellColorMax.clone();
-    unsetCellColor.darken(1 - d);
-    const unsetCellColorP5 = p5c(n === 0 ? unsetCellColorMax : unsetCellColor);
+        const d = linear(p5.millis() / (1000 * 32));
+        const unsetCellColor = unsetCellColorMax.clone();
+        unsetCellColor.darken(1 - d);
+        const unsetCellColorP5 = p5c(
+            n === 0 ? unsetCellColorMax : unsetCellColor,
+        );
 
-    // Translate to the starting position of the first cell
-    //
-    // An offset would be needed in 2 cases:
-    //
-    // - During the normal course of things, we'll usually end up with number of
-    //   rows and cols that don't exactly cover the width and height of the
-    //   canvas – the leftover would cause the cells not to appear "off" if we'd
-    //   start drawing them from 0, 0. In these cases, the offset will be set to
-    //   the half of the remainder space, so that the cells that are visible
-    //   seem centered within the available space.
-    //
-    // - The canvas might get resized since we began. There are multiple ways to
-    //   handle this: the approach we take is that our cols and rows (and the
-    //   cells matrix) stay fixed, but we center them within the new area (if
-    //   the canvas got larger) or just let the tails clip (if the canvas got
-    //   smaller).
-    //
-    // This offset computation handles both cases.
-    //
-    // For this sketch, the contents are left aligned, so the offset is only
-    // applied in the vertical direction.
+        translateOrigin();
 
-    p5.translate(0, offset(p5.height, rows, cellD));
+        for (let j = 0; j < rows; j++) {
+            for (let i = 0; i < cols; i++) {
+                // The state of the cell.
+                const cs = ensure(cells[j * cols + i]);
 
-    for (let j = 0; j < rows; j++) {
-        for (let i = 0; i < cols; i++) {
-            // The state of the cell.
-            const s = ensure(cells[j * cols + i]);
+                // Coordinates of the starting corner of the rectangle that covers
+                // the drawing area we have for the cell.
+                const y = j * cellD;
+                const x = i * cellD;
 
-            // Coordinates of the starting corner of the rectangle that covers
-            // the drawing area we have for the cell.
-            const y = j * cellD;
-            const x = i * cellD;
+                const rs = cornerRadii(2, cs, j, i);
 
-            const rs = cornerRadii(state, 2, j, i, s);
-
-            p5.fill(s ? setCellColorP5 : unsetCellColorP5);
-            p5.rect(x, y, cellD, cellD, ...rs);
+                p5.fill(cs ? setCellColorP5 : unsetCellColorP5);
+                p5.rect(x, y, cellD, cellD, ...rs);
+            }
         }
-    }
-};
+    };
 
-const offset = (availableSpace: number, count: number, cellD: number) => {
-    const extra = availableSpace - count * cellD;
-    if (extra <= 0) return 0;
-    return extra / 2;
-};
+    /**
+     * Translate to the starting position of the first cell
+     *
+     * Offsetting (translating) the origin is needed for 2 cases:
+     *
+     * - If the number of rows and cols don't exactly cover the width and height
+     *   of the canvas – the leftover would cause the cells not to appear "off"
+     *   if we'd start drawing them from 0, 0. In such cases, we'll offset to
+     *   half of the remaining space, so that the cells that are visible are
+     *   centered within the available space.
+     *
+     * - The canvas might get resized since we began. There are multiple ways to
+     *   handle this: the approach we take is that our cols and rows (and the
+     *   cells matrix) stay fixed, but we center them within the new area (if
+     *   the canvas got larger) or just let the tails clip (if the canvas got
+     *   smaller).
+     *
+     * This translation takes care of both these scenarios.
+     *
+     * For this sketch, the contents are left aligned, so the offset is only
+     * applied in the vertical direction.
+     */
+    const translateOrigin = () => p5.translate(0, offset(p5.height, rows));
 
-/**
- * Return the corner radii to use when drawing the rectangle representing this
- * cell. The corner radii is set to the default value, unless there is a
- * neighbouring cell that has the same state as us.
- *
- * @param state The state of the sketch.
- * @param r The default corner radius to use.
- * @param j The row of the cell under consideration.
- * @param i The column of the cell under consideration.
- * @param cellState The state of the cell.
- * */
-const cornerRadii = (
-    state: SketchState,
-    r: number,
-    j: number,
-    i: number,
-    cellState: boolean,
-) => {
-    // If any of the neighbouring cells has the same state as this cell
-    // then turn off the corner radius for edges on that side to create
-    // a smooth, single figure for each neighbourhood.
-    //
-    // * The radii start with the top-left and move clockwise.
-    let rs = [r, r, r, r];
+    const offset = (availableSpace: number, count: number) => {
+        const extra = availableSpace - count * cellD;
+        if (extra <= 0) return 0;
+        return extra / 2;
+    };
 
-    // A shorter alias
-    const s = cellState;
+    /**
+     * Return the corner radii to use when drawing the rectangle representing
+     * this cell. The corner radii is set to the default value, unless there is
+     * a neighbouring cell that has the same state as us.
+     *
+     * @param r The default corner radius to use.
+     * @param state The state of the cell.
+     * @param j The row of the cell under consideration.
+     * @param i The column of the cell under consideration.
+     * */
+    const cornerRadii = (r: number, state: boolean, j: number, i: number) => {
+        // If any of the neighbouring cells has the same state as this cell then
+        // turn off the corner radius for edges on that side to create a smooth,
+        // single figure for each neighbourhood.
+        //
+        // * The radii start with the top-left and move clockwise.
+        let rs = [r, r, r, r];
 
-    // * Previous row
-    if (hasState(state, j - 1, i, s)) rs[0] = rs[1] = 0;
-    // * Next column
-    if (hasState(state, j, i + 1, s)) rs[1] = rs[2] = 0;
-    // * Next row
-    if (hasState(state, j + 1, i, s)) rs[2] = rs[3] = 0;
-    // * Previous column
-    if (hasState(state, j, i - 1, s)) rs[3] = rs[0] = 0;
+        // * Previous row
+        if (hasState(state, j - 1, i)) rs[0] = rs[1] = 0;
+        // * Next column
+        if (hasState(state, j, i + 1)) rs[1] = rs[2] = 0;
+        // * Next row
+        if (hasState(state, j + 1, i)) rs[2] = rs[3] = 0;
+        // * Previous column
+        if (hasState(state, j, i - 1)) rs[3] = rs[0] = 0;
 
-    return rs;
-};
+        return rs;
+    };
 
-/**
- * Return true if the cell at row j and col i of the cells array is set to
- * `state`.
- *
- * For out of bounds cells, return false.
- *
- * @param state The state of the sketch. In particular, this contains the state
- * of all cells.
- * @param cellState The state to compare to.
- */
-const hasState = (
-    state: SketchState,
-    j: number,
-    i: number,
-    cellState: boolean,
-) => {
-    const { cells, cols, rows } = state;
-    if (j < 0 || j >= cols) return false; // out of bounds
-    if (i < 0 || i >= rows) return false; // out of bounds
-    return cells[j * cols + i] === cellState;
+    /**
+     * Return true if the cell at row j and col i of the cells array is set to
+     * `state`.
+     *
+     * For out of bounds cells, return false.
+     *
+     * @param state The cell state to compare to.
+     */
+    const hasState = (state: boolean, j: number, i: number) => {
+        if (j < 0 || j >= cols) return false; // out of bounds
+        if (i < 0 || i >= rows) return false; // out of bounds
+        return cells[j * cols + i] === state;
+    };
 };
 
 /**

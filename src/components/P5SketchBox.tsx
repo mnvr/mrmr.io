@@ -105,7 +105,7 @@ export const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         } else {
             // Calling p5.loop also calls draw() immediately. So we do an
             // isLooping check beforehand so as to no unnecessarily call draw
-            // (as that would get the frameCount to get out of sync).
+            // (since that would cause the frameCount to get out of sync).
             if (!p5.isLooping) p5.loop();
         }
 
