@@ -62,7 +62,7 @@ const Text: React.FC = () => {
             </P>
             <P>
                 Come dream with me
-                <br/>
+                <br />
                 The stars are yet to be
             </P>
         </Column>
