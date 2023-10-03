@@ -66,9 +66,7 @@ const EssayContainer_ = styled.div`
 
     /* Style all the canvas elements in the EssayContainer_ */
     canvas {
-        /* Asymmetric margins so that visually they look centered */
-        margin-block-start: -1.5rem;
-        margin-block-end: -1rem;
+        margin-block-start: -1rem;
     }
 
     /* Style all the p elements created from the Markdown paragraphs within
@@ -94,8 +92,8 @@ const EssayContainer_ = styled.div`
     p#info {
         background-color: var(--mrmr-background-color-1);
         color: var(--mrmr-color-1);
-        margin-block-start: 8rem;
-        margin-block-end: 6rem;
+
+        margin-block: 6rem;
     }
 `;
 
