@@ -46,9 +46,13 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 const EssayContainer_ = styled.div`
     margin-block: 1rem;
 
+    font-family: monospace;
+    font-size: 0.75rem;
+    font-weight: 800;
+
     /* Style all the canvas elements in the EssayContainer_ */
     canvas {
-        /* margin-block-start: -1rem; */
+        /* Same padding as the text in the paragraphs */
         padding-inline: 0.5rem;
     }
 
@@ -59,10 +63,6 @@ const EssayContainer_ = styled.div`
         padding-inline: 0.5rem;
         border-radius: 2pt;
 
-        font-family: monospace;
-        font-size: 0.75rem;
-        font-weight: 800;
-
         background-color: var(--mrmr-color-2);
         color: var(--mrmr-background-color-1);
     }
@@ -70,13 +70,6 @@ const EssayContainer_ = styled.div`
     p#poem {
         background-color: var(--mrmr-background-color-1);
         color: var(--mrmr-color-2);
-    }
-
-    p#info {
-        background-color: var(--mrmr-background-color-1);
-        color: var(--mrmr-color-1);
-
-        margin-block: 6rem;
     }
 `;
 
@@ -104,22 +97,30 @@ export const Info: React.FC = () => {
     const { formattedDateMY } = page;
 
     return (
-        <p id="info">
+        <InfoContainer>
             <div>
                 Manav Rathi
                 <br />
                 {formattedDateMY}
             </div>
-            <br />
-            <br />
+
             <NavContainer>
                 <Link to={"/"}>More</Link>
             </NavContainer>
-        </p>
+        </InfoContainer>
     );
 };
 
+const InfoContainer = styled.div`
+    margin-block: 6rem;
+
+    /* Same padding as the text in the paragraphs */
+    padding-inline: 0.5rem;
+`;
+
 const NavContainer = styled.div`
+    margin-block-start: 1.7rem;
+
     a {
         text-decoration: none;
         opacity: 0.8;
