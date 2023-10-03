@@ -14,8 +14,16 @@ export const Sketch1: React.FC = () => {
     -*-
     `;
 
-    return <ReactP5Wrapper sketch={sketch} pattern={p} />;
+    return (
+        <Sketch1_>
+            <ReactP5Wrapper sketch={sketch} pattern={p} />
+        </Sketch1_>
+    );
 };
+
+const Sketch1_ = styled.div`
+    margin-block: 6rem;
+`;
 
 export const Sketch2: React.FC = () => {
     const p = `
@@ -25,8 +33,16 @@ export const Sketch2: React.FC = () => {
     -*-
     `;
 
-    return <ReactP5Wrapper sketch={sketch} pattern={p} animate={true} />;
+    return (
+        <Sketch2_>
+            <ReactP5Wrapper sketch={sketch} pattern={p} animate={true} />
+        </Sketch2_>
+    );
 };
+
+const Sketch2_ = styled.div`
+    margin-block: 4rem;
+`;
 
 export const EssayContainer: React.FC<React.PropsWithChildren> = ({
     children,

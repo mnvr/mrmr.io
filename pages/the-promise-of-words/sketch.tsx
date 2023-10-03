@@ -89,7 +89,9 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         const style = window.getComputedStyle(para); // e.g. "378px"
         const width = parseFloat(style.width);
 
-        return [width, width];
+        const d = width / 2;
+
+        return [d, d];
     };
 
     p5.windowResized = () => {
@@ -100,8 +102,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
 
     const updateDimensions = () => {
         cellD = Math.min(
-            Math.floor(p5.height / 2 / rows),
-            Math.floor(p5.width / 2 / cols),
+            Math.floor(p5.height / rows),
+            Math.floor(p5.width / cols),
         );
     };
 
