@@ -58,10 +58,6 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      */
     const setCellColorP5 = p5c(setCellColorMax);
 
-    p5.updateWithProps = (props) => {
-        n = props.n;
-    };
-
     p5.setup = () => {
         const [width, height] = sketchSize();
 
@@ -106,6 +102,10 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
      * Set the cell at row j and col i of the cells array to true.
      */
     const setCell = (j: number, i: number) => (cells[j * cols + i] = true);
+
+    p5.updateWithProps = (props) => {
+        n = props.n;
+    };
 
     p5.draw = () => {
         p5.clear();
