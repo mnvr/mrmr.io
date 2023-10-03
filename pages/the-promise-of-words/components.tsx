@@ -9,6 +9,7 @@ import { sketch } from "./sketch";
 
 export const Sketch1: React.FC = () => {
     const p = `
+    ***
     -**
     **-
     -*-
@@ -22,7 +23,8 @@ export const Sketch1: React.FC = () => {
 };
 
 const Sketch1_ = styled.div`
-    margin-block: 6rem;
+    margin-block-start: 5.5rem;
+    margin-block-end: 6.5rem;
 `;
 
 export const Sketch2: React.FC = () => {
@@ -55,8 +57,6 @@ export const EssayContainer: React.FC<React.PropsWithChildren> = ({
 };
 
 const EssayContainer_ = styled.div`
-    margin-block: 1rem;
-
     font-family: monospace;
     font-size: 0.75rem;
     font-weight: 800;
