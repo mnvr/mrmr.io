@@ -9,6 +9,17 @@ type SketchProps_ = SketchProps & {
      * reusing the general draw method.
      */
     n: number;
+    /**
+     * The pattern to render.
+     *
+     * The pattern should consist of lines. Each line should have the character
+     * '*' to indicate a filled-in cell, and the character '-' to indicate an
+     * empty one. The number of lines becomes the number of rows, and the number
+     * of characters in each line become the number of colums.
+     *
+     * It is an error to have lines with different number of characters.
+     */
+    pattern: string;
 };
 
 /** The color to use for drawing set cells, at its maximum alpha. */
@@ -90,17 +101,47 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
     p5.updateWithProps = (props) => {
         n = props.n;
 
-        rows = n === 0 ? 3 : 4;
-        cols = 3;
+        parsePattern(props.pattern);
 
-        cellD = Math.min(
-            Math.floor(p5.height / 2 / rows),
-            Math.floor(p5.width / 2 / cols),
-        );
+        // rows = n === 0 ? 3 : 4;
+        // cols = 3;
+
+        // cellD = Math.min(
+        //     Math.floor(p5.height / 2 / rows),
+        //     Math.floor(p5.width / 2 / cols),
+        // );
+
+        // cells = makeCells();
+
+        // setInitialCells();
+    };
+
+    /**
+     * Parse the given string to initialize `cells` (a 1D representation of a
+     * grid, with each cell indicating a boolean on/off state).
+     *
+     * Also set `rows` and `cols`.
+     *
+     * See the {@link pattern} property in {@link SketchProps_} for a detailed
+     * description of the format that this pattern string should adhere to.
+     */
+    const parsePattern = (pat: string) => {
+        const lines = pat.split(/\s+/).filter((line) => line.length > 0);
+        console.log(lines);
+        rows = lines.length;
+        cols = ensure(lines[0]).length;
 
         cells = makeCells();
 
-        setInitialCells();
+        for (let j = 0; j < rows; j++) {
+            const line = ensure(lines[j]);
+            if (line.length !== cols)
+                throw new Error(`Invalid pattern with unequal lines: ${pat}`);
+
+            for (let i = 0; i < cols; i++) {
+                if (line[i] === "*") setCell(j, i);
+            }
+        }
     };
 
     p5.draw = () => {

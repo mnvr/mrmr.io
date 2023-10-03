@@ -20,10 +20,17 @@ export const Sketch: React.FC<SketchProps> = ({ n }) => {
     const s = `
     -**
     **-
-    -*
+    -*-
     `;
 
-    return <ReactP5Wrapper sketch={sketch} n={n} />;
+    const s2 = `
+    ---
+    -**
+    **-
+    -*-
+    `;
+
+    return <ReactP5Wrapper sketch={sketch} n={n} pattern={n === 0 ? s : s2} />;
 };
 
 export const EssayContainer: React.FC<React.PropsWithChildren> = ({
