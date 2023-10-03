@@ -67,6 +67,7 @@ const EssayContainer_ = styled.div`
     /* Style all the canvas elements in the EssayContainer_ */
     canvas {
         /* margin-block-start: -1rem; */
+        padding-inline: 0.5rem;
     }
 
     /* Style all the p elements created from the Markdown paragraphs within
