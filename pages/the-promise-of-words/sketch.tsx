@@ -165,8 +165,8 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
                 // The state of the cell.
                 const cs = ensure(cells[j * cols + i]);
 
-                // Coordinates of the starting corner of the rectangle that covers
-                // the drawing area we have for the cell.
+                // Coordinates of the starting corner of the rectangle that
+                // covers the drawing area we have for the cell.
                 const y = j * cellD;
                 const x = i * cellD;
 
