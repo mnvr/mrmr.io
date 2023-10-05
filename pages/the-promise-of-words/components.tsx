@@ -99,6 +99,19 @@ const EssayContainer_ = styled.div`
 export const Poem: React.FC = () => {
     return (
         <p id="poem">
+            Every word is a promise
+            <br />
+            That binds me down
+            <br />
+            Ever so little
+            <br />
+            Until I can't move under
+            <br />
+            The weight of all the tales
+            <br />
+            I've told
+            <br />
+            <br />
             Every word
             <br />
             A promise
