@@ -47,11 +47,12 @@ export const sketch: Sketch = (p5) => {
      */
     let cells: boolean[];
 
-    let advance = false;
     // if (!state) p5.mouseClicked = () => (advance = true);
 
     p5.setup = () => {
         p5.createCanvas(...sketchSize());
+
+        p5.frameRate(25);
 
         rows = Math.floor(p5.height / cellD);
         cols = Math.floor(p5.width / cellD);
@@ -113,21 +114,21 @@ export const sketch: Sketch = (p5) => {
                 if (isAlive) {
                     // Staying alive
                     //
-                    // If a cell is alive and has exactly 2 or 3 live neighbours, it
-                    // stays alive.
+                    // If a cell is alive and has exactly 2 or 3 live
+                    // neighbours, it stays alive.
                     if (c === 2 || c === 3) nextIsAlive = true;
                 } else {
                     // Birth
                     //
-                    // If a cell is inactive, it'll become alive if it has exactly 3
-                    // live neighbours.
+                    // If a cell is inactive, it'll become alive if it has
+                    // exactly 3 live neighbours.
                     if (c === 3) nextIsAlive = true;
                 }
 
                 if (nextIsAlive) setCell(next, j, i);
 
-                // Coordinates of the starting corner of the rectangle that covers
-                // the drawing area we have for the cell.
+                // Coordinates of the starting corner of the rectangle that
+                // covers the drawing area we have for the cell.
                 const x = i * cellD;
                 const y = j * cellD;
 
@@ -139,10 +140,6 @@ export const sketch: Sketch = (p5) => {
                 }
                 p5.point(x + cellD / 2, y + cellD / 2);
             }
-        }
-
-        if (advance) {
-            advance = false;
         }
 
         cells = next;
