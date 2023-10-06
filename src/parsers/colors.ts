@@ -14,6 +14,7 @@ import { ensure } from "utils/ensure";
  *
  * - https://oklch.com/
  *
+ *
  * LCH Colors
  * ----------
  *
@@ -38,6 +39,7 @@ import { ensure } from "utils/ensure";
  * axis, but uses polar coordinates C (Chroma) and H (Hue) instead of the a/b
  * axes in LAB.
  *
+ *
  * OKLCH Colors
  * ------------
  *
@@ -58,6 +60,7 @@ import { ensure } from "utils/ensure";
  *
  * - Alpha (0-1 or 0-100%) can be specified as oklch(L C H / a). e.g. a
  *   transparent yellow would be "oklch(80% 0.12 100 / 50%)"
+ *
  *
  * Gamut correction
  * ----------------
