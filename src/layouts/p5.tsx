@@ -1,7 +1,8 @@
-import { FooterA } from "components/FooterA";
 import { PlayerP5 } from "components/PlayerP5";
 import { PlayerP5WebAudio } from "components/PlayerP5WebAudio";
+import { Link } from "gatsby";
 import * as React from "react";
+import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { P5Draw } from "types";
 import { ensure } from "utils/ensure";
@@ -47,3 +48,54 @@ export const P5Layout: React.FC<P5LayoutProps> = ({ draw }) => {
 };
 
 export default P5Layout;
+
+/**
+ * A simple footer that takes a full screen, and shows the page title (+ a link
+ * to the home page) in the center.
+ */
+const FooterA: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { title } = page;
+
+    return (
+        <FooterContainer>
+            <FooterContents>
+                <div>
+                    <big>
+                        <b>{title}</b>
+                    </big>
+                </div>
+                <div>
+                    <small>
+                        <span className="link-prelude">by </span>
+                        <Link to="/">Manav</Link>
+                    </small>
+                </div>
+            </FooterContents>
+        </FooterContainer>
+    );
+};
+
+const FooterContainer = styled.footer`
+    display: grid;
+    place-items: center;
+    min-height: 100svh;
+`;
+
+const FooterContents = styled.div`
+    text-align: center;
+
+    .link-prelude {
+        opacity: 0.7;
+    }
+
+    a {
+        text-decoration: none;
+        opacity: 0.7;
+        border-bottom: 1px solid currentColor;
+    }
+
+    a:hover {
+        opacity: 1;
+    }
+`;
