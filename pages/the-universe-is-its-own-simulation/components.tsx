@@ -66,25 +66,18 @@ const PoemP = styled.p`
     font-family: serif;
     font-style: italic;
     font-size: 1.03rem;
-
+    color: white;
 `;
 
 export const ContentContainer = styled.div`
-    background-color: white;
-    background-color: oklch(80% 0 0);
     margin-block: 1rem;
     padding-block: 1rem;
-    `;
+`;
 
 export const EssayContainer = styled.div`
     margin-inline: auto;
     max-width: 24rem;
-    /* color: #f7efef; //oklch(100% 0 0); */
-    color: white;
+    background-color: oklch(90% 0.1 148 / 0.5);
     color: darkgreen;
-    background-color: oklch(80% 0.1 150);
     padding: 1rem;
-
-    /* text-align: justify; */
-    /* background-color: black; */
 `;
