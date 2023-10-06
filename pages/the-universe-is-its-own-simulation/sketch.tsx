@@ -47,8 +47,6 @@ export const sketch: Sketch = (p5) => {
      */
     let cells: boolean[];
 
-    // if (!state) p5.mouseClicked = () => (advance = true);
-
     p5.setup = () => {
         p5.createCanvas(...sketchSize());
 
@@ -59,7 +57,9 @@ export const sketch: Sketch = (p5) => {
 
         cells = makeCells();
 
-        setInitialPattern();
+        // Start with a R-pentomino at the center of the board.
+        const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
+        addRPentomino(cj, ci);
     };
 
     /**
@@ -83,20 +83,28 @@ export const sketch: Sketch = (p5) => {
     const setCell = (cells: boolean[], j: number, i: number) =>
         (cells[j * cols + i] = true);
 
-    const setInitialPattern = () => {
-        // Start with an R-Pentomino, where the capital X indicates the center most
-        // cell of the board.
-        //
-        //       xx
-        //      xX
-        //       x
-        //
+    /**
+     * Add an R-pentomino at the given coordinates (indicated by the capital X
+     * below):
+     *
+     *       xx
+     *      xX
+     *       x
+     *
+     */
+    const addRPentomino = (j: number, i: number) => {
+        setCell(cells, j - 1, i + 0);
+        setCell(cells, j - 1, i + 1);
+        setCell(cells, j + 0, i - 1);
+        setCell(cells, j + 0, i + 0);
+        setCell(cells, j + 1, i + 0);
+    };
+
+    /** Introduce another R-pentomino when the user clicks the sketch */
+    p5.mouseClicked = () => {
+        console.log(p5.mouseX, p5.mouseY);
         const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-        setCell(cells, cj - 1, ci + 0);
-        setCell(cells, cj - 1, ci + 1);
-        setCell(cells, cj + 0, ci - 1);
-        setCell(cells, cj + 0, ci + 0);
-        setCell(cells, cj + 1, ci + 0);
+        addRPentomino(cj, ci);
     };
 
     p5.draw = () => {
