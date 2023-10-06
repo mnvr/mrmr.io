@@ -39,3 +39,16 @@ const TitleContainer = styled.div`
 const Caption = styled.small`
     color: oklch(93.58% 0.12 151);
 `;
+
+export const ContentContainer = styled.div`
+background-color: black;
+`
+
+export const EssayContainer = styled.div`
+    margin-inline: auto;
+    max-width: 24rem;
+    color: #f7efef;//oklch(100% 0 0);
+
+    /* text-align: justify; */
+    /* background-color: black; */
+`;
