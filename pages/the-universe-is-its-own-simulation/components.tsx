@@ -40,14 +40,50 @@ const Caption = styled.small`
     color: oklch(93.58% 0.12 151);
 `;
 
+/*
+
+            */
+
+export const Poem: React.FC = () => {
+    return (
+        <PoemP>
+            The universe is its own simulation
+            <br />
+            The universe shines in its own light
+            <br />
+            There is nothing else that could be
+            <br />
+            There is nothing else as bright
+            <br />
+        </PoemP>
+    );
+};
+
+const PoemP = styled.p`
+    margin-block-start: 3rem;
+    margin-block-end: 2rem;
+    text-align: center;
+    font-family: serif;
+    font-style: italic;
+    font-size: 1.03rem;
+
+`;
+
 export const ContentContainer = styled.div`
-background-color: black;
-`
+    background-color: white;
+    background-color: oklch(80% 0 0);
+    margin-block: 1rem;
+    padding-block: 1rem;
+    `;
 
 export const EssayContainer = styled.div`
     margin-inline: auto;
     max-width: 24rem;
-    color: #f7efef;//oklch(100% 0 0);
+    /* color: #f7efef; //oklch(100% 0 0); */
+    color: white;
+    color: darkgreen;
+    background-color: oklch(80% 0.1 150);
+    padding: 1rem;
 
     /* text-align: justify; */
     /* background-color: black; */
