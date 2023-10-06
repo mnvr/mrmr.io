@@ -86,6 +86,9 @@ export const sketch: Sketch<SketchProps_> = (p5) => {
         // Both the paragraphs, and the canvas elements that host these
         // sketches, have an (the same) inline padding. So we need to use the
         // getComputedStyle method to take that into account.
+        //
+        // Unfortunately, this seems to introduce a perceptible delay before the
+        // canvas initially gets rendered.
         const style = window.getComputedStyle(para); // e.g. "378px"
         const width = parseFloat(style.width);
 
