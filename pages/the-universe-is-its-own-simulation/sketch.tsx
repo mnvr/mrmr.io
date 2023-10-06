@@ -110,6 +110,8 @@ export const sketch: Sketch = (p5) => {
     p5.draw = () => {
         p5.clear();
 
+        translateOrigin();
+
         const next = makeCells();
 
         for (let j = 0; j < rows; j++) {
