@@ -100,12 +100,13 @@ export const sketch: Sketch = (p5) => {
         setCell(cells, j + 1, i + 0);
     };
 
-    /** Introduce another R-pentomino when the user clicks the sketch */
-    p5.mouseClicked = () => {
-        console.log(p5.mouseX, p5.mouseY);
-        const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-        addRPentomino(cj, ci);
-    };
+    /**
+     * Introduce another R-pentomino when the user clicks the sketch.
+     *
+     * It will be added centered on the cell that is nearest to the location of
+     * the click.
+     */
+    p5.mouseClicked = () => addRPentomino(...nearestCell(p5.mouseX, p5.mouseY));
 
     p5.draw = () => {
         p5.clear();
@@ -181,6 +182,24 @@ export const sketch: Sketch = (p5) => {
         const extra = availableSpace - count * cellD;
         if (extra <= 0) return 0;
         return extra / 2;
+    };
+
+    /**
+     * Find the indices ([j, i] values) for the cell that is nearest to the
+     * given coordinate (x, y value) on the canvas.
+     */
+    const nearestCell = (x: number, y: number): [j: number, i: number] => {
+        // Subtract the coordinate of cell [0, 0] (see translateOrigin above).
+        x -= offset(p5.width, cols);
+        y -= offset(p5.height, rows);
+        // Clamp the values to the area occupied by the cells (the canvas can be
+        // bigger, e.g. if it gets resized).
+        x = p5.constrain(x, 0, cols * cellD);
+        y = p5.constrain(y, 0, rows * cellD);
+        // Divide by cellD to get the cell index
+        x = Math.floor(x / cellD);
+        y = Math.floor(y / cellD);
+        return [y, x];
     };
 
     /**
