@@ -115,7 +115,7 @@ export const Footer: React.FC = () => {
     return (
         <FooterContainer>
             <small>
-                <Link to={"/"}>more</Link>
+                <Link to={"/"}>More by me</Link>
             </small>
         </FooterContainer>
     );
@@ -129,7 +129,7 @@ const FooterContainer = styled.div`
 
     a {
         text-decoration: none;
-        color: var(--mrmr-color-2);
+        color: lightgreen;
     }
 
     a:hover {
