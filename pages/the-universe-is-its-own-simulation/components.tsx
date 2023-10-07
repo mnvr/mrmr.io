@@ -1,9 +1,9 @@
-import { FooterHomePageLink } from "components/FooterHomePageLink";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
+import { FooterHomePageLink } from "./FooterHomePageLink";
 import { sketch } from "./sketch";
 
 export const Sketch: React.FC = () => {
