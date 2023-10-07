@@ -6,8 +6,18 @@ import { ensure } from "utils/ensure";
 import { sketch } from "./sketch";
 
 export const Sketch: React.FC = () => {
-    return <ReactP5Wrapper sketch={sketch} />;
+    return (
+        <Sketch_>
+            <ReactP5Wrapper sketch={sketch} />
+        </Sketch_>
+    );
 };
+
+const Sketch_ = styled.div`
+    /** Provide a minimum height to prevent a layout shift on load */
+    min-height: 100vh;
+    margin-bottom: 4rem;
+`;
 
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
@@ -90,4 +100,4 @@ export const QuoteSpan = styled.span`
     font-family: serif;
     font-style: italic;
     font-size: 1.05rem;
-`
+`;
