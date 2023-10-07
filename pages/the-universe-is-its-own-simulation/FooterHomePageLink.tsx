@@ -8,7 +8,7 @@ export const FooterHomePageLink: React.FC = ({}) => {
         <LinkContainer>
             <Link to={"/"} title={"More by me"}>
                 <LinkContents>
-                    <CaptionContainer>More by me</CaptionContainer>
+                    <CaptionContainer>more</CaptionContainer>
                     <FooterHomePageLogo />
                 </LinkContents>
             </Link>
