@@ -10,6 +10,7 @@ export const Sketch: React.FC = () => {
     return (
         <Sketch_>
             <ReactP5Wrapper sketch={sketch} />
+            <MoreContentIndicator />
         </Sketch_>
     );
 };
@@ -19,6 +20,48 @@ const Sketch_ = styled.div`
     min-height: 100vh;
     margin-bottom: 4rem;
 `;
+
+/**
+ * Show an arrow pointing downwards to indicate the presence of more content
+ * below the fold.
+ */
+const MoreContentIndicator: React.FC = () => {
+    return (
+        <Overlay>
+            <Arrow />
+        </Overlay>
+    );
+};
+
+const Overlay = styled.div`
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 94vh;
+
+    opacity: 0;
+    animation: fade-away 4s ease-out;
+    @keyframes fade-away {
+        0% {
+            opacity: 0.6;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+`;
+
+const Arrow: React.FC = () => {
+    return (
+        <div>
+            <svg width="50" height="20">
+                <g stroke="currentColor" strokeWidth={5} strokeLinecap="round">
+                    <path d="M 4 4 L 25 18 L 46 4" fill="transparent" />
+                </g>
+            </svg>
+        </div>
+    );
+};
 
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
