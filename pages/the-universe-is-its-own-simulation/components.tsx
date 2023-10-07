@@ -1,3 +1,4 @@
+import { Logo } from "components/Logo";
 import { Link } from "gatsby";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
@@ -117,6 +118,7 @@ export const Footer: React.FC = () => {
             <small>
                 <Link to={"/"}>More by me</Link>
             </small>
+            <Logo />
         </FooterContainer>
     );
 };
