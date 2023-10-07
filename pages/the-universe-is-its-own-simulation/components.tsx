@@ -48,7 +48,7 @@ const TitleContainer = styled.div`
 `;
 
 const Caption = styled.small`
-    color: oklch(93.58% 0.12 151);
+    color: var(--mrmr-color-2);
 `;
 
 export const Poem: React.FC = () => {
@@ -129,7 +129,7 @@ const FooterContainer = styled.div`
 
     a {
         text-decoration: none;
-        color: oklch(93.58% 0.12 151);
+        color: var(--mrmr-color-2);
     }
 
     a:hover {
