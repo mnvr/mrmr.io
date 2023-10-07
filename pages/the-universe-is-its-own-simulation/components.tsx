@@ -81,3 +81,14 @@ export const EssayContainer = styled.div`
     color: darkgreen;
     padding: 1rem;
 `;
+
+export const EssaySection = styled.div`
+    margin-block: 3rem;
+    margin-inline: auto;
+    max-width: 24rem;
+    background-color: oklch(90% 0.1 148 / 0.5);
+    color: darkgreen;
+    padding-inline: 1.5rem;
+    padding-block: 2px;
+    border-radius: 12px;
+`;
