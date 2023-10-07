@@ -106,3 +106,7 @@ export const QuoteSpan = styled.span`
     font-style: italic;
     font-size: 1.05rem;
 `;
+
+export const MutedSpan = styled.span`
+    opacity: 0.8;
+`;
