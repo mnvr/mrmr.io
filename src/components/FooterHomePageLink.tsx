@@ -2,11 +2,10 @@ import { Link, graphql, useStaticQuery } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
-import "styles/global.css";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-export const Logo: React.FC = ({}) => {
+export const FooterHomePageLink: React.FC = ({}) => {
     const data = useStaticQuery<Queries.LogoQuery>(graphql`
         query Logo {
             file(
@@ -30,24 +29,48 @@ export const Logo: React.FC = ({}) => {
     const image = ensure(getImage(imageData));
 
     return (
-        <LogoContainer>
+        <LinkContainer>
             <Link to={"/"} title={"More by me"}>
-                <GatsbyImage image={image} alt={""} />
+                <LinkContents>
+                    <CaptionContainer>More by me</CaptionContainer>
+                    <GatsbyImage image={image} alt={""} />
+                </LinkContents>
             </Link>
-        </LogoContainer>
+        </LinkContainer>
     );
 };
 
-const LogoContainer = styled.div`
+const LinkContainer = styled.div`
     display: flex;
     justify-content: center;
-    margin-block: 1rem;
 
     a {
+        text-decoration: none;
         opacity: 0.5;
     }
 
     a:hover {
         opacity: 0.77;
     }
+`;
+
+const LinkContents = styled.div`
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    img {
+        border-radius: 5px;
+    }
+`;
+
+const CaptionContainer = styled.div`
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    text-align: center;
+
+    color: oklch(48% 0 0);
 `;

@@ -1,5 +1,4 @@
-import { Logo } from "components/Logo";
-import { Link } from "gatsby";
+import { FooterHomePageLink } from "components/FooterHomePageLink";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import styled from "styled-components";
@@ -114,30 +113,13 @@ export const MutedSpan = styled.span`
 
 export const Footer: React.FC = () => {
     return (
-        <FooterContainer>
-            <small>
-                <small>
-                    <Link to={"/"}>More by me</Link>
-                </small>
-            </small>
-            <Logo />
-        </FooterContainer>
+        <Footer_>
+            <FooterHomePageLink />
+        </Footer_>
     );
 };
 
-const FooterContainer = styled.div`
+const Footer_ = styled.div`
     margin-block-start: 4rem;
-    margin-block-end: 4rem;
-    font-weight: 600;
-
-    text-align: center;
-
-    a {
-        text-decoration: none;
-        color: oklch(48% 0 0 / 0.7);
-    }
-
-    a:hover {
-        color: oklch(48% 0 0);
-    }
+    margin-block-end: 5rem;
 `;
