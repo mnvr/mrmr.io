@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import styled from "styled-components";
@@ -77,7 +78,6 @@ const PoemP = styled.p`
 
 export const EssayContainer = styled.div`
     margin-block-start: 3rem;
-    margin-block-end: 6rem;
     margin-inline: auto;
     max-width: 24rem;
     background-color: oklch(90% 0.1 148 / 0.5);
@@ -109,4 +109,31 @@ export const QuoteSpan = styled.span`
 
 export const MutedSpan = styled.span`
     opacity: 0.8;
+`;
+
+export const Footer: React.FC = () => {
+    return (
+        <FooterContainer>
+            <Caption>
+                <Link to={"/"}>More</Link>
+            </Caption>
+        </FooterContainer>
+    );
+};
+
+const FooterContainer = styled.div`
+    margin-block-start: 4rem;
+    margin-block-end: 4rem;
+
+    text-align: center;
+
+    a {
+        text-decoration: none;
+        opacity: 0.8;
+    }
+
+    a:hover {
+        border-bottom: 1px solid currentColor;
+        opacity: 1;
+    }
 `;
