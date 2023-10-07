@@ -114,9 +114,9 @@ export const MutedSpan = styled.span`
 export const Footer: React.FC = () => {
     return (
         <FooterContainer>
-            <Caption>
-                <Link to={"/"}>More</Link>
-            </Caption>
+            <small>
+                <Link to={"/"}>more</Link>
+            </small>
         </FooterContainer>
     );
 };
@@ -129,11 +129,10 @@ const FooterContainer = styled.div`
 
     a {
         text-decoration: none;
-        opacity: 0.8;
+        color: oklch(93.58% 0.12 151);
     }
 
     a:hover {
-        border-bottom: 1px solid currentColor;
-        opacity: 1;
+        color: white;
     }
 `;
