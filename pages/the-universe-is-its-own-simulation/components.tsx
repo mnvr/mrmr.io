@@ -76,6 +76,8 @@ export const EssayContainer = styled.div`
     padding-block: 12px;
     border-radius: 12px;
 
+    line-height: 1.3rem;
+
     hr {
         width: 30%;
         margin-block: 3rem;
@@ -83,3 +85,9 @@ export const EssayContainer = styled.div`
         color: var(--mrmr-background-color-1);
     }
 `;
+
+export const QuoteSpan = styled.span`
+    font-family: serif;
+    font-style: italic;
+    font-size: 1.05rem;
+`
