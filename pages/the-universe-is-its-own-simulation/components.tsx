@@ -40,10 +40,6 @@ const Caption = styled.small`
     color: oklch(93.58% 0.12 151);
 `;
 
-/*
-
-            */
-
 export const Poem: React.FC = () => {
     return (
         <PoemP>
@@ -69,26 +65,21 @@ const PoemP = styled.p`
     color: white;
 `;
 
-export const ContentContainer = styled.div`
-    margin-block: 1rem;
-    padding-block: 1rem;
-`;
-
 export const EssayContainer = styled.div`
-    margin-inline: auto;
-    max-width: 24rem;
-    background-color: oklch(90% 0.1 148 / 0.5);
-    color: darkgreen;
-    padding: 1rem;
-`;
-
-export const EssaySection = styled.div`
-    margin-block: 3rem;
+    margin-block-start: 3rem;
+    margin-block-end: 6rem;
     margin-inline: auto;
     max-width: 24rem;
     background-color: oklch(90% 0.1 148 / 0.5);
     color: darkgreen;
     padding-inline: 1.5rem;
-    padding-block: 2px;
+    padding-block: 12px;
     border-radius: 12px;
+
+    hr {
+        width: 30%;
+        margin-block: 3rem;
+        height: 2px;
+        color: var(--mrmr-background-color-1);
+    }
 `;
