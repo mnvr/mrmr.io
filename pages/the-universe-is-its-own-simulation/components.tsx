@@ -94,6 +94,11 @@ export const EssayContainer = styled.div`
         height: 2px;
         color: var(--mrmr-background-color-1);
     }
+
+    blockquote {
+        font-family: serif;
+        font-size: 1.05rem;
+    }
 `;
 
 export const QuoteSpan = styled.span`
