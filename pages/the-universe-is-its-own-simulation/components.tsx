@@ -116,7 +116,9 @@ export const Footer: React.FC = () => {
     return (
         <FooterContainer>
             <small>
-                <Link to={"/"}>More by me</Link>
+                <small>
+                    <Link to={"/"}>More by me</Link>
+                </small>
             </small>
             <Logo />
         </FooterContainer>
@@ -126,15 +128,16 @@ export const Footer: React.FC = () => {
 const FooterContainer = styled.div`
     margin-block-start: 4rem;
     margin-block-end: 4rem;
+    font-weight: 600;
 
     text-align: center;
 
     a {
         text-decoration: none;
-        color: lightgreen;
+        color: oklch(48% 0 0 / 0.7);
     }
 
     a:hover {
-        color: white;
+        color: oklch(48% 0 0);
     }
 `;
