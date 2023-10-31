@@ -1,8 +1,28 @@
+import { Column } from "components/Column";
 import { NavA } from "components/NavA";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
+
+export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <Column>
+            <ContentContainer>{children}</ContentContainer>
+        </Column>
+    );
+};
+
+const ContentContainer = styled.div`
+    margin-block: 2rem;
+
+    hr {
+        opacity: 0.075;
+        @media (prefers-color-scheme: dark) {
+            opacity: 0.15;
+        }
+    }
+`;
 
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
