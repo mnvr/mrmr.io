@@ -22,6 +22,9 @@ const ContentContainer = styled.div`
 
     p {
         opacity: 0.9;
+        @media (prefers-color-scheme: dark) {
+            opacity: 0.95;
+        }
     }
 
     hr {
