@@ -125,8 +125,9 @@ export const textColorPalettes = {
     ),
     darkColors: parseColorPalette([
         "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 90%)",
-        "hsl(0, 0%, 50%)",
-        "hsl(0, 0%, 80%)",
+        "hsl(0, 0%, 94%)",
+        "hsl(0, 0%, 83%)",
+        "hsl(0, 0%, 73%)",
+        "hsl(0, 0%, 60%)",
     ]),
 };

@@ -24,9 +24,6 @@ const ContentContainer = styled.div`
 
     p {
         color: var(--mrmr-color-2);
-        @media (prefers-color-scheme: dark) {
-            opacity: 0.95;
-        }
     }
 
     hr {
@@ -112,7 +109,6 @@ const FooterContainer = styled.div`
 
     a:hover {
         color: var(--mrmr-color-2);
-        opacity: 1;
     }
 `;
 
