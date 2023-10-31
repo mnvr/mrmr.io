@@ -14,9 +14,13 @@ uniform vec2 u_resolution;
 
 void main() {
     vec2 uv = (2. * gl_FragCoord.xy - u_resolution) / min(u_resolution.x, u_resolution.y);
+    // A circle of radius 0.8
+    float sdf = length(uv) - 0.8;
+    float d = abs(sdf);
+    // Use the reciprocal to give a neon vibe.
+    float c = 0.01 / (d + 0.01);
 
-    uv = abs(uv);
-    gl_FragColor = vec4(uv.xy, 0.0, 1.0);
+    gl_FragColor = vec4(c, c, c, 1.0);
 }`;
 
 export const sketch: Sketch = (p5) => {
