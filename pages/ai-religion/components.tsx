@@ -16,10 +16,10 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const ContentContainer = styled.div`
-    margin-block: 2.8rem;
+    margin-block: 4rem;
 
     h3 {
-        margin-block: 1.9rem;
+        margin-block: 2.8rem;
     }
 
     p {
@@ -72,8 +72,8 @@ const Sketch_ = styled.div`
      * This is the same value is that in sketch.tsx.
      */
     min-height: 300px;
-    margin-block-start: 1.9rem;
-    margin-block-end: 1.4rem;
+    margin-block-start: 2.9rem;
+    margin-block-end: 2.5rem;
 `;
 
 export const Footer: React.FC = () => {
