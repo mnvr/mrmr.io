@@ -69,11 +69,51 @@ export const paletteSetOrFallback = (
 };
 
 /**
+ * Return one of the {@link MaybeColorPaletteSet} defined below that corresponds
+ * to the "theme" string mentioned in page's frontmatter.
+ *
+ * If no theme is specified, return {@link defaultColorPalettes}.
+ */
+export const colorPalettesForTheme = (
+    theme: string | undefined,
+): MaybeColorPaletteSet => {
+    switch (theme) {
+        case "text":
+            return textColorPalettes;
+        default:
+            return defaultColorPalettes;
+    }
+};
+
+/**
  * A default set of color palettes.
  *
  * Be calm, and readable. Supports both light/dark.
  */
-export const basicColorPalettes = {
+const defaultColorPalettes = {
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 40%)",
+            "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 60%)",
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "hsl(0, 0%, 4%)",
+        "hsl(0, 0%, 90%)",
+        "hsl(0, 0%, 50%)",
+        "hsl(0, 0%, 80%)",
+    ]),
+};
+
+/**
+ * A variant of basicColorPalettes for text heavy pages.
+ *
+ * To use, set "theme: text" in the YAML frontmatter.
+ */
+export const textColorPalettes = {
     colors: ensure(
         parseColorPalette([
             "hsl(0, 0%, 100%)",

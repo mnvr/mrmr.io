@@ -1,6 +1,6 @@
 import { DefaultHead } from "components/Head";
 import {
-    basicColorPalettes,
+    colorPalettesForTheme,
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
@@ -17,7 +17,10 @@ const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
 > = ({ data, children }) => {
     const page = parsePage(data);
-    const colorPalettes = paletteSetOrFallback(page, basicColorPalettes);
+    const colorPalettes = paletteSetOrFallback(
+        page,
+        colorPalettesForTheme(page.theme),
+    );
 
     return (
         <main>
@@ -93,6 +96,7 @@ export const query = graphql`
                 layout
                 colors
                 dark_colors
+                theme
             }
             fields {
                 slug
@@ -117,6 +121,11 @@ export interface Page {
     colors?: ColorPalette;
     darkColors?: ColorPalette;
     /**
+     * An alternative way of specifying colors / darkColors as named palette
+     * sets instead of specifying the individual colors.
+     */
+    theme?: string;
+    /**
      * ImageSharp nodes for images stored in the same directory as the page
      *
      * These are indexed by the name of the image. The image name is the
@@ -140,16 +149,18 @@ export interface Page {
 const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const { mdx, images, mp3s } = replaceNullsWithUndefineds(data);
 
-    const title = ensure(mdx?.frontmatter?.title);
-    const layout = mdx?.frontmatter?.layout;
-    const formattedDateMY = mdx?.frontmatter?.formattedDateMY;
-    const formattedDateDMY = mdx?.frontmatter?.formattedDateDMY;
-    const colors = parseColorPalette(mdx?.frontmatter?.colors);
-    const darkColors = parseColorPalette(mdx?.frontmatter?.dark_colors);
+    const frontmatter = mdx?.frontmatter;
+    const title = ensure(frontmatter?.title);
+    const layout = frontmatter?.layout;
+    const formattedDateMY = frontmatter?.formattedDateMY;
+    const formattedDateDMY = frontmatter?.formattedDateDMY;
+    const colors = parseColorPalette(frontmatter?.colors);
+    const darkColors = parseColorPalette(frontmatter?.dark_colors);
+    const theme = frontmatter?.theme;
 
     const slug = ensure(mdx?.fields?.slug);
 
-    const description = descriptionOrFallback(mdx?.frontmatter?.description);
+    const description = descriptionOrFallback(frontmatter?.description);
 
     // Gatsby's `StaticImage` component currently doesn't support paths that are
     // outside the `src` directory. Our user pages live in the top-level `pages`
@@ -183,6 +194,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         formattedDateDMY,
         colors,
         darkColors,
+        theme,
         images: pageImages,
         mp3s: pageMP3s,
     };
