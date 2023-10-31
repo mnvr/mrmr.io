@@ -20,6 +20,10 @@ const ContentContainer = styled.div`
         margin-block: 1.9rem;
     }
 
+    p {
+        opacity: 0.9;
+    }
+
     hr {
         margin-block: 2.8rem;
 
@@ -61,7 +65,7 @@ const FooterContainer = styled.div`
 
     @media (min-width: 600px) {
         margin-block: 3rem;
-     }
+    }
 
     color: var(--mrmr-color-2);
 
