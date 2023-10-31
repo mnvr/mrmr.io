@@ -71,7 +71,8 @@ const Sketch_ = styled.div`
      *
      * This is the same value is that in sketch.tsx.
      */
-    height: 300px;
+    min-height: 300px;
+    margin-block: 1.3rem;
 `;
 
 export const Footer: React.FC = () => {
