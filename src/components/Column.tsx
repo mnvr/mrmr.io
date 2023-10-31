@@ -26,7 +26,7 @@ const Grid = styled.div`
 
 const WideGrid = styled.div`
     display: grid;
-    grid-template-columns: 1fr min(27rem, 100%) 3fr;
+    grid-template-columns: 1fr min(31rem, 100%) 5fr;
 `;
 
 const Middle = styled.div`

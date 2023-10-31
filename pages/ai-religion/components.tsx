@@ -1,63 +1,74 @@
-import { NavA } from "components/NavA";
+import { WideColumn } from "components/Column";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
 
-export const Title: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedDateMY } = page;
-
+export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <TitleContainer>
-            <h1>AI Religion</h1>
-            <Caption>
-                Manav Rathi
-                <br />
-                {formattedDateMY}
-            </Caption>
-        </TitleContainer>
+        <WideColumn>
+            <ContentContainer>{children}</ContentContainer>
+        </WideColumn>
     );
 };
 
-const TitleContainer = styled.div`
-    margin-block-start: 2rem;
-    margin-block-end: 4rem;
-    @media (min-width: 600px) {
-        margin-block-start: 3rem;
-        margin-block-end: 5rem;
-    }
-`;
+const ContentContainer = styled.div`
+    margin-block: 2.8rem;
 
-const Caption = styled.small`
-    color: var(--mrmr-color-2);
+    h3 {
+        margin-block: 1.9rem;
+    }
+
+    hr {
+        margin-block: 2.8rem;
+
+        opacity: 0.075;
+        @media (prefers-color-scheme: dark) {
+            opacity: 0.15;
+        }
+    }
+
+    blockquote {
+        color: var(--mrmr-color-2);
+        font-family: serif;
+        font-style: italic;
+        margin-block-start: 1.5rem;
+        margin-block-end: 2rem;
+    }
 `;
 
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
+    const { formattedDateMY } = page;
 
     return (
         <FooterContainer>
-            <NavContainer>
-                <NavA page={page} />
-            </NavContainer>
+            <small>
+                Manav Rathi
+                <br />
+                {formattedDateMY}
+                <LinkContainer>
+                    <Link to={"/"}>home</Link>
+                </LinkContainer>
+            </small>
         </FooterContainer>
     );
 };
 
 const FooterContainer = styled.div`
-    margin-block-start: 7rem;
-    margin-block-end: 4rem;
-`;
+    margin-block: 2rem;
 
-const NavContainer = styled.div`
-    letter-spacing: 0.045ch;
+    @media (min-width: 600px) {
+        margin-block: 3rem;
+     }
 
     color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
         opacity: 0.8;
+        font-weight: 500;
     }
 
     a:hover {
@@ -66,56 +77,6 @@ const NavContainer = styled.div`
     }
 `;
 
-export const HRT = styled.hr`
-    width: 50%;
-    margin-block: 2rem;
-`;
-
-export const HRMQ = styled.hr`
-    margin-block-start: 3rem;
-`;
-
-export const MarginQuote = styled.p`
-    color: var(--mrmr-color-2);
-    font-family: serif;
-    font-style: italic;
-    margin-block-start: 1.5rem;
-    margin-block-end: 2rem;
-`;
-
-export const Example = styled.blockquote`
-    color: royalblue;
-    @media (prefers-color-scheme: dark) {
-        color: paleturquoise;
-    }
-    font-family: serif;
-    font-style: italic;
-`;
-
-export const Sub = styled.span`
-    color: var(--mrmr-color-2);
-`;
-
-export const Aside: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return (
-        <small>
-            <AsideBQ>{children}</AsideBQ>
-        </small>
-    );
-};
-
-const AsideBQ = styled.blockquote`
-    color: var(--mrmr-color-2);
-    border-inline-start: 2px dotted var(--mrmr-color-2);
-    margin-inline-start: 0.1rem;
-    padding-inline-start: 0.5rem;
-`;
-
-export const Cmp = styled.span`
-    background-color: honeydew;
-    color: darkgreen;
-    @media (prefers-color-scheme: dark) {
-        background-color: darkgreen;
-        color: honeydew;
-    }
+const LinkContainer = styled.div`
+    margin-block: 3rem;
 `;
