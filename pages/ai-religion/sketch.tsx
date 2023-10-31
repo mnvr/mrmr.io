@@ -23,7 +23,7 @@ void main() {
     float r = 0.02 + sin(u_time / 2.5) * 0.007;
     float c = r / (d + 0.001);
 
-    c = 1.0 - smoothstep(c, 0.01, 0.02);
+    c = smoothstep(0.01, 0.1 - sin(u_time / 2.7) * 0.01, c);
 
     gl_FragColor = vec4(c, c, c, 1.0);
 }`;
