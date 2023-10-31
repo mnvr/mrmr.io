@@ -32,11 +32,18 @@ export const sketch: Sketch = (p5) => {
     let shader: p5.Shader;
 
     p5.setup = () => {
-        p5.createCanvas(p5.min(p5.windowWidth, 600), 300, p5.WEBGL);
+        p5.createCanvas(...sketchSize(), p5.WEBGL);
 
         shader = p5.createShader(vertexShader, fragmentShader);
         p5.shader(shader);
     };
+
+    const sketchSize = (): [number, number] => [
+        p5.min(p5.windowWidth, 600),
+        300,
+    ];
+
+    p5.windowResized = () => p5.resizeCanvas(...sketchSize());
 
     p5.draw = () => {
         const pd = p5.pixelDensity();
