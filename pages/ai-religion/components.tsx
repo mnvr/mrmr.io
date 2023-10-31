@@ -87,7 +87,7 @@ export const Footer: React.FC = () => {
                 <br />
                 {formattedDateMY}
                 <LinkContainer>
-                    <Link to={"/"}>home</Link>
+                    <Link to={"/"}>Home</Link>
                 </LinkContainer>
             </small>
         </FooterContainer>
