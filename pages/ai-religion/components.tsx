@@ -23,7 +23,7 @@ const ContentContainer = styled.div`
     }
 
     p {
-        opacity: 0.9;
+        color: var(--mrmr-color-2);
         @media (prefers-color-scheme: dark) {
             opacity: 0.95;
         }
@@ -39,11 +39,14 @@ const ContentContainer = styled.div`
     }
 
     blockquote {
-        color: var(--mrmr-color-2);
         font-family: serif;
         font-style: italic;
         margin-block-start: 1.5rem;
         margin-block-end: 2rem;
+    }
+
+    blockquote p {
+        color: var(--mrmr-color-3);
     }
 `;
 
@@ -96,21 +99,19 @@ export const Footer: React.FC = () => {
 
 const FooterContainer = styled.div`
     margin-block: 2rem;
-
     @media (min-width: 600px) {
         margin-block: 3rem;
     }
 
-    color: var(--mrmr-color-2);
+    color: var(--mrmr-color-4);
 
     a {
         text-decoration: none;
-        opacity: 0.8;
         font-weight: 500;
     }
 
     a:hover {
-        border-bottom: 1px solid currentColor;
+        color: var(--mrmr-color-2);
         opacity: 1;
     }
 `;
