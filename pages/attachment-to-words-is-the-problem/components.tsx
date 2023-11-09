@@ -15,16 +15,15 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const ContentContainer = styled.div`
     margin-block: 2rem;
+    @media (min-width: 600px) {
+        margin-block: 4rem;
+    }
 
     line-height: 1.3rem;
 
     hr {
         margin-block: 2.8rem;
-
         opacity: 0.075;
-        @media (prefers-color-scheme: dark) {
-            opacity: 0.15;
-        }
     }
 
     blockquote {
@@ -60,15 +59,14 @@ const Title_ = styled.div`
 const TitleH = styled.h3`
     margin-block-end: 0rem;
 
-    color: var(--mrmr-color-1);
+    color: var(--mrmr-color-2);
 `;
 
 const Attribution = styled.p`
     margin-block-start: 0.65rem;
+    line-height: 1.1rem;
 
     color: var(--mrmr-color-3);
-
-    line-height: 1.1rem;
 `;
 
 export const Footer: React.FC = () => {
@@ -92,7 +90,7 @@ const Footer_ = styled.div`
     a {
         text-decoration: none;
         font-weight: 500;
-        color: var(--mrmr-color-3);
+        color: var(--mrmr-color-1);
     }
 
     a:hover {

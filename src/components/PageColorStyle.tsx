@@ -143,17 +143,16 @@ export const textColorPalettes = {
 export const paperColorPalettes = {
     colors: ensure(
         parseColorPalette([
-            "oklch(99.24% 0 48.75)",
-            "oklch(41.28% 0 0)",
-            "oklch(24.78% 0 0)",
-            "oklch(59.65% 0 0)",
+            "oklch(99.24% 0 48.75)", // background
+            "oklch(41.28% 0 0)", // text
+            "oklch(24.78% 0 0)", // title
+            "oklch(59.65% 0 0)", // secondary text
         ]),
     ),
     darkColors: parseColorPalette([
-        "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 83%)", // swapped 2 and 3
-        "hsl(0, 0%, 94%)",
-        "hsl(0, 0%, 73%)", // reduced from 73%
-        "hsl(0, 0%, 60%)",
+        "oklch(18.67% 0.02 251)",
+        "oklch(86.89% 0 0)",
+        "oklch(95.42% 0 0)",
+        "oklch(75.94% 0 0)",
     ]),
 };
