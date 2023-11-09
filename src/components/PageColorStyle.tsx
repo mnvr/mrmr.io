@@ -78,6 +78,8 @@ export const colorPalettesForTheme = (
     theme: string | undefined,
 ): MaybeColorPaletteSet => {
     switch (theme) {
+        case "paper":
+            return paperColorPalettes;
         case "text":
             return textColorPalettes;
         default:
@@ -128,6 +130,30 @@ export const textColorPalettes = {
         "hsl(0, 0%, 94%)",
         "hsl(0, 0%, 83%)",
         "hsl(0, 0%, 73%)",
+        "hsl(0, 0%, 60%)",
+    ]),
+};
+
+/**
+ * A neutralish color palette for blog posts. It differs from text in that the
+ * background is not white, but instead has a subtle paper-ish tint.
+ *
+ * To use, set "theme: paper" in the YAML frontmatter.
+ */
+export const paperColorPalettes = {
+    colors: ensure(
+        parseColorPalette([
+            "oklch(99.24% 0 48.75)",
+            "oklch(41.28% 0 0)",
+            "oklch(24.78% 0 0)",
+            "oklch(59.65% 0 0)",
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "hsl(0, 0%, 4%)",
+        "hsl(0, 0%, 83%)", // swapped 2 and 3
+        "hsl(0, 0%, 94%)",
+        "hsl(0, 0%, 73%)", // reduced from 73%
         "hsl(0, 0%, 60%)",
     ]),
 };
