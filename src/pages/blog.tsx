@@ -1,7 +1,9 @@
+import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
 import { PageColorStyle, paperColorPalettes } from "components/PageColorStyle";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import React from "react";
+import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -12,8 +14,10 @@ const BlogPage: React.FC<PageProps<Queries.BlogPageQuery>> = ({ data }) => {
     return (
         <main>
             <PageColorStyle {...paperColorPalettes} />
-            <Title />
-            <PageListing {...{ pages }} />
+            <Column>
+                <Title />
+                <PageListing {...{ pages }} />
+            </Column>
         </main>
     );
 };
@@ -39,10 +43,7 @@ export const query = graphql`
     query BlogPage {
         allMdx(
             filter: {
-                frontmatter: {
-                    tags: { in: "blog" }
-                    unlisted: { ne: true }
-                }
+                frontmatter: { tags: { in: "blog" }, unlisted: { ne: true } }
             }
             sort: [
                 { frontmatter: { date: DESC } }
@@ -64,11 +65,24 @@ export const query = graphql`
 
 const Title: React.FC = () => {
     return (
-        <div>
-            <h2>blog</h2>
-        </div>
+        <Title_>
+            <h1>blog</h1>
+        </Title_>
     );
 };
+
+const Title_ = styled.div`
+    margin-block-start: 2rem;
+    @media (min-width: 600px) {
+        margin-block-start: 3rem;
+    }
+
+    h1 {
+        font-family: serif;
+        font-style: italic;
+        opacity: 0.5;
+    }
+`;
 
 /** The parsed data for each page item that we show in the listing */
 interface Page {
