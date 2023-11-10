@@ -77,8 +77,8 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  * Fetch all pages, sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
- * - Right now this returns all pages; if this list grows too big then we add a
- *   limit here too.
+ * - Right now this returns all pages; if this list grows too big then we can
+ *   add a limit here.
  *
  * Fetch all page preview images ("preview.png/jpg").
  *
