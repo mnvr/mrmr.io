@@ -74,7 +74,7 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *
  * - In particular, fetch the preview (meta/og:image) image.
  *
- * Fetch all pages, sorted by recency.
+ * Fetch all pages tagged "front-page", sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
  * - Right now this returns all pages; if this list grows too big then we can
@@ -100,7 +100,12 @@ export const query = graphql`
             }
         }
         allMdx(
-            filter: { frontmatter: { unlisted: { ne: true } } }
+            filter: {
+                frontmatter: {
+                    tags: { in: "front-page" }
+                    unlisted: { ne: true }
+                }
+            }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

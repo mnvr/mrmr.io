@@ -29,7 +29,7 @@ export const Head: HeadFC = ({}) => {
 };
 
 /**
- * Fetch all pages with category "blog", sorted by recency.
+ * Fetch all pages with tagged "blog", sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
  * - Right now this returns all pages; if this list grows too big then we can
@@ -40,7 +40,7 @@ export const query = graphql`
         allMdx(
             filter: {
                 frontmatter: {
-                    category: { eq: "blog" }
+                    tags: { in: "blog" }
                     unlisted: { ne: true }
                 }
             }
