@@ -136,14 +136,14 @@ export const textColorPalettes = {
 
 /**
  * A neutralish color palette for blog posts. It differs from text in that the
- * background is not white, but instead has a subtle paper-ish tint.
+ * background is not pure white / black.
  *
  * To use, set "theme: paper" in the YAML frontmatter.
  */
 export const paperColorPalettes = {
     colors: ensure(
         parseColorPalette([
-            "oklch(99.24% 0 48.75)", // background
+            "oklch(99.24% 0 0)", // background
             "oklch(41.28% 0 0)", // text
             "oklch(24.78% 0 0)", // title
             "oklch(59.65% 0 0)", // secondary text

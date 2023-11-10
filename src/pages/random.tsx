@@ -70,7 +70,7 @@ interface Page {
     slug: string;
 }
 
-const parsePages = (data: Queries.RandomPageQuery) => {
+const parsePages = (data: Queries.RandomPageQuery): Page[] => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 
