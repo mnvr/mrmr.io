@@ -114,21 +114,45 @@ interface PageListingProps {
 const PageListing: React.FC<PageListingProps> = ({ pages }) => {
     const n = pages.length;
     return (
-        <div>
+        <PageListing_>
             {pages.map((page) => (
                 <PageItem key={page.slug} {...page} />
             ))}
-        </div>
+        </PageListing_>
     );
 };
 
+const PageListing_ = styled.ul`
+    margin-block-start: 2rem;
+
+    list-style: none;
+    padding-inline-start: 0;
+
+    line-height: 1.2rem;
+
+    a {
+        text-decoration: none;
+        border-bottom: 2px solid blue;
+        font-weight: 600;
+    }
+
+    a:visited {
+        border-bottom: 2px solid currentColor;
+    }
+`;
+
 const PageItem: React.FC<Page> = ({ title, description, slug }) => {
     return (
-        <div>
-            <p>
-                <Link to={slug}>{title}</Link>
-            </p>
-            <p>{description}</p>
-        </div>
+        <li>
+            <Link to={slug}>{title}</Link>.{" "}
+            <Description>{description}</Description>
+        </li>
     );
 };
+
+const Description = styled.span`
+    font-family: serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--mrmr-color-3);
+`;
