@@ -8,11 +8,12 @@ import {
     PageListing,
 } from "components/PageListing";
 import { ParsedLinkButtonsA } from "components/ParsedLinkButtonsA";
-import { PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { parseLinks } from "parsers/links";
 import React from "react";
+import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -34,6 +35,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
             <Title />
             <PageListing {...{ pages, setHoverPage }} />
             <ExternalLinks />
+            <InternalLinks />
         </main>
     );
 };
@@ -237,11 +239,41 @@ const ExternalLinks: React.FC = () => {
 };
 
 const LinkButtonsContainer = styled.div`
-    margin-block: 6rem;
+    margin-block-start: 6rem;
     margin-inline-start: 1.7rem;
 
     a {
         color: var(--mrmr-color-4);
+    }
+
+    a:hover {
+        color: var(--mrmr-color-1);
+    }
+`;
+
+const InternalLinks: React.FC = () => {
+    return (
+        <InternalLinks_>
+            <Link to="/blog">
+                <h2>
+                    all posts
+                    <BsArrowRightShort />
+                </h2>
+            </Link>
+        </InternalLinks_>
+    );
+};
+
+const InternalLinks_ = styled.div`
+    margin-block-start: 3rem;
+    margin-block-end: 3rem;
+    margin-inline-start: 1.7rem;
+    font-family: serif;
+    font-style: italic;
+
+    a {
+        color: var(--mrmr-color-4);
+        text-decoration: none;
     }
 
     a:hover {

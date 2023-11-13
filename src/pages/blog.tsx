@@ -65,7 +65,7 @@ export const query = graphql`
 const Title: React.FC = () => {
     return (
         <Title_>
-            <h1>blog</h1>
+            <h1>all posts</h1>
         </Title_>
     );
 };
@@ -166,7 +166,7 @@ const PageListing_ = styled.ul`
     }
     li:nth-child(even) {
         a {
-            border-bottom: 1px solid currentColor;
+            border-bottom: 1px solid blue;
         }
     }
 `;
@@ -176,8 +176,7 @@ const SectionHeader = styled.h4`
     font-weight: 300;
     font-size: 0.7rem;
     opacity: 0.33;
-            margin-block-end: 0rem;
-
+    margin-block-end: 0rem;
 `;
 
 const PageItem: React.FC<Page> = ({ title, description, slug }) => {
