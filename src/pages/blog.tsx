@@ -162,7 +162,7 @@ const PageListing_ = styled.ul`
     }
 
     li {
-        margin-block: 1rem;
+        /* margin-block: 1rem; */
     }
     li:nth-child(even) {
         a {
@@ -174,7 +174,10 @@ const PageListing_ = styled.ul`
 const SectionHeader = styled.h4`
     font-style: italic;
     font-weight: 300;
+    font-size: 0.7rem;
     opacity: 0.33;
+            margin-block-end: 0rem;
+
 `;
 
 const PageItem: React.FC<Page> = ({ title, description, slug }) => {
