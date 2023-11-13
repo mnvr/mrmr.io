@@ -132,12 +132,12 @@ const PageListing_ = styled.ul`
 
     a {
         text-decoration: none;
-        border-bottom: 2px solid blue;
+        border-bottom: 1px solid blue;
         font-weight: 600;
     }
 
     a:visited {
-        border-bottom: 2px solid currentColor;
+        border-bottom: 1px solid currentColor;
     }
 `;
 
