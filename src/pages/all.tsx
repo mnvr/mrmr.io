@@ -220,14 +220,11 @@ const Footer_ = styled.div`
     a {
         text-decoration: none;
         font-weight: 500;
-        color: var(--mrmr-color-1);
+        opacity: 0.62;
     }
 
     a:hover {
-        color: purple;
-        @media (prefers-color-scheme: dark) {
-            /* light sibling of the background color from "paper" theme */
-            color: oklch(98.67% 0.02 251);
-        }
+        color: var(--mrmr-color-2);
+        opacity: 1;
     }
 `;
