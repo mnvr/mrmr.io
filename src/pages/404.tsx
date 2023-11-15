@@ -2,6 +2,7 @@ import { DefaultHead } from "components/Head";
 import { PageColorStyle, paperColorPalettes } from "components/PageColorStyle";
 import { HeadFC, Link, PageProps } from "gatsby";
 import * as React from "react";
+import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";
 
 const NotFoundPage: React.FC<PageProps> = () => {
@@ -32,6 +33,11 @@ const Main = styled.main`
         border-bottom: 1px solid currentColor;
 
         color: hsl(0, 0%, 40%);
+    }
+
+    a > svg {
+        vertical-align: middle;
+        margin-block-end: 1px;
     }
 
     a:hover {
@@ -91,6 +97,7 @@ const Content: React.FC = () => {
                             like a tear in the rain
                         </i>
                     </Quote>
+                    <BsArrowRightShort />
                 </Link>
             </p>
         </div>
