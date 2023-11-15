@@ -5,12 +5,13 @@ import {
 } from "components/PageColorStyle";
 import {
     BodyBackgroundColorTransitionStyle,
+    FeaturedPage,
     FeaturedPageListing,
 } from "components/index/FeaturedPageListing";
 import { ParsedLinkButtons } from "components/index/ParsedLinkButtons";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
-import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import { parseColorPalette } from "parsers/colors";
 import { parseLinks } from "parsers/links";
 import React from "react";
 import { BsArrowRightShort } from "react-icons/bs";
@@ -20,6 +21,7 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** The home page for mrmr.io */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
+    const recentPages = parseRecentPages(data);
     const featuredPages = parseFeaturedPages(data);
 
     const [hoverPage, setHoverPage] = React.useState<
@@ -35,6 +37,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
             <PageColorStyle {...colorPalettes} />
             <BodyBackgroundColorTransitionStyle />
             <RecentPagesTitle />
+            <RecentPageListing pages={recentPages} />
             <FeaturedPagesTitle />
             <FeaturedPageListing {...{ pages: featuredPages, setHoverPage }} />
             <AboutSectionTitle />
@@ -81,20 +84,25 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *
  * - In particular, fetch the preview (meta/og:image) image.
  *
+ * Fetch a few recent from all pages, sorted by recency.
+ *
+ * - Exclude the pages which are marked `unlisted`.
+ *
  * Fetch all pages tagged "front-page", sorted by recency.
  *
- * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
+ * - Exclude the pages which are marked `unlisted`.
  * - Right now this returns all pages; if this list grows too big then we can
  *   add a limit here.
  *
  * Fetch all page preview images ("preview.png/jpg").
  *
  * - These images will be shown in the `PageItem` component in
- *   `components/PageListing.tsx`, which has a fixed width and height – `13.7ch`
- *   and `9.7ch` respectively. These have an aspect ratio of 1.4, but we set an
- *   aspect ratio of 2 so that the image doesn't ever overflow the height;
- *   visually, this is fine since we also have a transparent opacity gradient
- *   for the image so the top portion will anyways be cutoff.
+ *   `components/index/FeaturePageListing.tsx`, which has a fixed width and
+ *   height – `13.7ch` and `9.7ch` respectively. These have an aspect ratio of
+ *   1.4, but we set an aspect ratio of 2 so that the image doesn't ever
+ *   overflow the height; visually, this is fine since we also have a
+ *   transparent opacity gradient for the image so the top portion will anyways
+ *   be cutoff.
  */
 export const query = graphql`
     query IndexPage {
@@ -106,7 +114,24 @@ export const query = graphql`
                 gatsbyImageData
             }
         }
-        allMdx(
+        recentPages: allMdx(
+            filter: { frontmatter: { unlisted: { ne: true } } }
+            sort: [
+                { frontmatter: { date: DESC } }
+                { frontmatter: { title: ASC } }
+            ]
+        ) {
+            nodes {
+                frontmatter {
+                    title
+                    description
+                }
+                fields {
+                    slug
+                }
+            }
+        }
+        featuredPages: allMdx(
             filter: {
                 frontmatter: {
                     tags: { in: "front-page" }
@@ -146,15 +171,29 @@ export const query = graphql`
     }
 `;
 
-interface FeaturedPage {
+interface RecentPage {
     title: string;
     slug: string;
-    colors?: ColorPalette;
-    darkColors?: ColorPalette;
+    description?: string;
 }
 
-const parseFeaturedPages = (data: Queries.IndexPageQuery) => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
+const parseRecentPages = (data: Queries.IndexPageQuery): RecentPage[] => {
+    const allMdx = replaceNullsWithUndefineds(data.recentPages);
+    const nodes = allMdx.nodes;
+
+    return nodes.map((node) => {
+        const { frontmatter, fields } = node;
+        const slug = ensure(fields?.slug);
+
+        const title = ensure(frontmatter?.title);
+        const description = frontmatter?.description;
+
+        return { slug, title, description };
+    });
+};
+
+const parseFeaturedPages = (data: Queries.IndexPageQuery): FeaturedPage[] => {
+    const allMdx = replaceNullsWithUndefineds(data.featuredPages);
     const nodes = allMdx.nodes;
 
     const previewImages = replaceNullsWithUndefineds(data.previewImages);
@@ -215,6 +254,69 @@ const AboutSectionTitle: React.FC = () => {
         </AboutSectionTitle_>
     );
 };
+
+interface RecentPageListingProps {
+    pages: RecentPage[];
+}
+
+const RecentPageListing: React.FC<RecentPageListingProps> = ({ pages }) => {
+    return (
+        <RecentPageListing_>
+            {pages.map((page) => (
+                <RecentPageItem key={page.slug} {...page} />
+            ))}
+        </RecentPageListing_>
+    );
+};
+
+const RecentPageListing_ = styled.ul`
+    margin-block-start: 2rem;
+
+    list-style: none;
+    padding-inline-start: 0;
+
+    line-height: 1.2rem;
+
+    a {
+        text-decoration: none;
+        border-bottom: 2px solid blue;
+        font-weight: 600;
+    }
+
+    a:visited {
+        /* What I wanted was this
+        border-bottom-width: 1px
+           but that does not work for the :visited pseudo selector due
+           security / privacy restrictions */
+        border-bottom-color: purple;
+    }
+
+    a:hover {
+        /* Slightly darker (lighter for dark mode) versions of the
+           background color from the color theme used in this page
+           ("paper") */
+        background-color: oklch(96.74% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: oklch(21.67% 0.02 251);
+        }
+    }
+`;
+
+const RecentPageItem: React.FC<RecentPage> = ({ title, description, slug }) => {
+    return (
+        <li>
+            <Link to={slug}>{title}</Link>.{" "}
+            <RecentPageDescription>{description}</RecentPageDescription>
+        </li>
+    );
+};
+
+const RecentPageDescription = styled.span`
+    font-family: serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--mrmr-color-3);
+`;
 
 const Poem: React.FC = () => {
     return (

@@ -5,7 +5,7 @@ import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
 /** The data for each page required by the {@link FeaturedPageListing} component */
-export interface Page {
+export interface FeaturedPage {
     title: string;
     slug: string;
     colors?: ColorPalette;
@@ -15,9 +15,9 @@ export interface Page {
 
 interface FeaturedPageListingProps {
     /** The ordered list of pages to show */
-    pages: Page[];
+    pages: FeaturedPage[];
     /** A function that is called when the user hovers over a link to a page */
-    setHoverPage: (page: Page | undefined) => void;
+    setHoverPage: (page: FeaturedPage | undefined) => void;
 }
 
 /** A component that renders a listing of the given pages */
@@ -46,7 +46,7 @@ export const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
     );
 };
 
-const BackgroundImage: React.FC<{ page: Page }> = ({ page }) => {
+const BackgroundImage: React.FC<{ page: FeaturedPage }> = ({ page }) => {
     const previewImage = page.previewImage;
     const image = previewImage ? getImage(previewImage) : undefined;
 
@@ -101,7 +101,7 @@ const PageGrid = styled.div`
     }
 `;
 
-const PageItem = styled.div<Page>`
+const PageItem = styled.div<FeaturedPage>`
     background-color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
     color: ${(props) => props.colors?.color1 ?? "inherit"};
     width: 13.7ch;
