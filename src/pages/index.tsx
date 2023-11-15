@@ -254,7 +254,7 @@ const LinkButtonsContainer = styled.div`
 const InternalLinks: React.FC = () => {
     return (
         <InternalLinks_>
-            <Link to="/blog" title="All posts">
+            <Link to="/all" title="All posts">
                 <h2>
                     all posts
                     <BsArrowRightShort />

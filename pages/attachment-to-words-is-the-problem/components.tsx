@@ -72,7 +72,7 @@ const Attribution = styled.p`
 export const Footer: React.FC = () => {
     return (
         <Footer_>
-            <Link to={"/blog"}>All posts</Link>
+            <Link to={"/all"}>All posts</Link>
             <br />
             <Link to={"/"}>Home</Link>
         </Footer_>

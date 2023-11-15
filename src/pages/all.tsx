@@ -7,8 +7,8 @@ import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** Show a listing of blog posts */
-const BlogPage: React.FC<PageProps<Queries.BlogPageQuery>> = ({ data }) => {
+/** Show a listing of all posts */
+const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
     return (
@@ -22,25 +22,25 @@ const BlogPage: React.FC<PageProps<Queries.BlogPageQuery>> = ({ data }) => {
     );
 };
 
-export default BlogPage;
+export default AllPage;
 
 export const Head: HeadFC = ({}) => {
-    const titleSuffix = "blog";
-    const description = "Listing of all blog posts on mrmr.io";
-    const canonicalPath = "/blog";
+    const titleSuffix = "all posts";
+    const description = "Listing of all posts on mrmr.io";
+    const canonicalPath = "/all";
 
     return <DefaultHead {...{ titleSuffix, description, canonicalPath }} />;
 };
 
 /**
- * Fetch all pages with tagged "blog", sorted by recency.
+ * Fetch all pages, sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
  * - Right now this returns all pages; if this list grows too big then we can
  *   add a limit here.
  */
 export const query = graphql`
-    query BlogPage {
+    query AllPage {
         allMdx(
             filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
@@ -70,7 +70,7 @@ interface Page {
     formattedDateMY: string;
 }
 
-const parsePages = (data: Queries.BlogPageQuery) => {
+const parsePages = (data: Queries.AllPageQuery) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 

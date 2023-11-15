@@ -135,8 +135,8 @@ export const textColorPalettes = {
 };
 
 /**
- * A neutralish color palette for blog posts. It differs from text in that the
- * background is not pure white / black.
+ * A neutralish color palette for text posts. It differs from the "text" theme
+ * in that the background is not pure white / black.
  *
  * To use, set "theme: paper" in the YAML frontmatter.
  */
