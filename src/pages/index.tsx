@@ -116,6 +116,7 @@ export const query = graphql`
             }
         }
         recentPages: allMdx(
+            limit: 7
             filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
                 { frontmatter: { date: DESC } }
