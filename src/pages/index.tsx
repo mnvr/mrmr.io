@@ -254,7 +254,7 @@ const LinkButtonsContainer = styled.div`
 const InternalLinks: React.FC = () => {
     return (
         <InternalLinks_>
-            <Link to="/blog">
+            <Link to="/blog" title="All posts">
                 <h2>
                     all posts
                     <BsArrowRightShort />
@@ -270,6 +270,20 @@ const InternalLinks_ = styled.div`
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
+
+    h2 {
+        display: inline-block;
+    }
+
+    h2 > svg {
+        /* vertically align in the content box */
+        vertical-align: middle;
+        /* but we need to shove a few more pixels in to get it to
+           visually align too */
+        margin-block-end: 2px;
+        /* also add a bit of extra space between the text and the icon */
+        padding-inline-start: 1px;
+    }
 
     a {
         color: var(--mrmr-color-4);
