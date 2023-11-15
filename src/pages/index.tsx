@@ -5,8 +5,8 @@ import {
 } from "components/PageColorStyle";
 import {
     BodyBackgroundColorTransitionStyle,
-    PageListing,
-} from "components/index/PageListing";
+    FeaturedPageListing,
+} from "components/index/FeaturedPageListing";
 import { ParsedLinkButtons } from "components/index/ParsedLinkButtons";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
@@ -20,9 +20,11 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** The home page for mrmr.io */
 const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
-    const pages = parsePages(data);
+    const featuredPages = parseFeaturedPages(data);
 
-    const [hoverPage, setHoverPage] = React.useState<Page | undefined>();
+    const [hoverPage, setHoverPage] = React.useState<
+        FeaturedPage | undefined
+    >();
 
     // If the user is hovering on the link to a page, use that page's colors.
     // Otherwise use the index pages' own color palette.
@@ -34,7 +36,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
             <BodyBackgroundColorTransitionStyle />
             <RecentPagesTitle />
             <FeaturedPagesTitle />
-            <PageListing {...{ pages, setHoverPage }} />
+            <FeaturedPageListing {...{ pages: featuredPages, setHoverPage }} />
             <AboutSectionTitle />
             <Poem />
             <ExternalLinks />
@@ -144,14 +146,14 @@ export const query = graphql`
     }
 `;
 
-interface Page {
+interface FeaturedPage {
     title: string;
     slug: string;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
 }
 
-const parsePages = (data: Queries.IndexPageQuery) => {
+const parseFeaturedPages = (data: Queries.IndexPageQuery) => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 

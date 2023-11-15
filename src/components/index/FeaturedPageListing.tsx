@@ -4,7 +4,7 @@ import { ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
-/** The data for each page required by the {@link PageListing} component */
+/** The data for each page required by the {@link FeaturedPageListing} component */
 export interface Page {
     title: string;
     slug: string;
@@ -13,7 +13,7 @@ export interface Page {
     previewImage?: ImageDataLike;
 }
 
-interface PageListingProps {
+interface FeaturedPageListingProps {
     /** The ordered list of pages to show */
     pages: Page[];
     /** A function that is called when the user hovers over a link to a page */
@@ -21,7 +21,7 @@ interface PageListingProps {
 }
 
 /** A component that renders a listing of the given pages */
-export const PageListing: React.FC<PageListingProps> = ({
+export const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
     pages,
     setHoverPage,
 }) => {
