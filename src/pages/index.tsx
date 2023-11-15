@@ -32,8 +32,11 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
         <main>
             <PageColorStyle {...colorPalettes} />
             <BodyBackgroundColorTransitionStyle />
-            <Title />
+            <RecentPagesTitle />
+            <FeaturedPagesTitle />
             <PageListing {...{ pages, setHoverPage }} />
+            <AboutSectionTitle />
+            <Poem />
             <ExternalLinks />
             <InternalLinks />
         </main>
@@ -169,56 +172,66 @@ const parsePages = (data: Queries.IndexPageQuery) => {
     });
 };
 
-const TitleContainer = styled.div`
-    display: flex;
-    align-content: space-around;
-    flex-wrap: wrap;
-    gap: 2rem;
-    min-height: 75svh;
-
-    /* Increase the size on small (mobile) screens a bit */
-    @media (max-width: 600px) {
-        font-size: 1.1rem;
-    }
+const SectionTitle = styled.div`
+    margin-block-start: 3rem;
+    margin-block-end: 3rem;
+    margin-inline-start: 1.7rem;
+    font-family: serif;
+    font-style: italic;
+    color: var(--mrmr-color-4);
 `;
 
-const Title: React.FC = () => {
+const RecentPagesTitle: React.FC = () => {
     return (
-        <TitleContainer>
-            <div>
-                <H1>mrmr</H1>
-                <Poem />
-            </div>
-        </TitleContainer>
+        <SectionTitle>
+            <h2>recent posts</h2>
+        </SectionTitle>
     );
 };
 
-const H1 = styled.h1`
-    margin-block: 0;
-    margin-inline-start: 1.8rem;
+const FeaturedPagesTitle: React.FC = () => {
+    return (
+        <SectionTitle>
+            <h2>sights and sounds</h2>
+        </SectionTitle>
+    );
+};
+
+const AboutSectionTitle_ = styled.div`
+    margin-block-start: 3rem;
+    margin-block-end: 2rem;
+    margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-color-4);
 `;
+
+const AboutSectionTitle: React.FC = () => {
+    return (
+        <AboutSectionTitle_>
+            <h2>about</h2>
+        </AboutSectionTitle_>
+    );
+};
 
 const Poem: React.FC = () => {
     return (
-        <PoemP>
+        <Poem_>
             <i>murmur</i> to me softly
             <br />
-            &nbsp;&nbsp;tell me <i>it’s all right</i>
+            &nbsp;&nbsp;they tell me <i>it’s all right</i>
             <br />
             in the <i>wind</i> rustle leaves
             <br />
             &nbsp;&nbsp;the moon, and the <i>night</i>
-        </PoemP>
+        </Poem_>
     );
 };
 
-const PoemP = styled.p`
+const Poem_ = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
-    color: var(--mrmr-color-2);
+    color: var(--mrmr-color-3);
 `;
 
 const ExternalLinks: React.FC = () => {
@@ -236,7 +249,7 @@ const ExternalLinks: React.FC = () => {
 };
 
 const LinkButtonsContainer = styled.div`
-    margin-block-start: 6rem;
+    margin-block: 2rem;
     margin-inline-start: 1.7rem;
 
     a {
@@ -262,8 +275,8 @@ const InternalLinks: React.FC = () => {
 };
 
 const InternalLinks_ = styled.div`
-    margin-block-start: 3rem;
-    margin-block-end: 3rem;
+    margin-block-start: 2rem;
+    margin-block-end: 2rem;
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
