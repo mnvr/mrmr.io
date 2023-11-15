@@ -168,6 +168,16 @@ const PageListing_ = styled.ul`
            security / privacy restrictions */
         border-bottom-color: purple;
     }
+
+    a:hover {
+        /* Slightly darker (lighter for dark mode) versions of the
+           background color from the color theme used in this page
+           ("paper") */
+        background-color: oklch(96.74% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: oklch(21.67% 0.02 251);
+        }
+    }
 `;
 
 const SectionHeader = styled.h4`
@@ -214,9 +224,10 @@ const Footer_ = styled.div`
     }
 
     a:hover {
-        color: blue;
+        color: purple;
         @media (prefers-color-scheme: dark) {
-            color: greenyellow;
+            /* light sibling of the background color from "paper" theme */
+            color: oklch(98.67% 0.02 251);
         }
     }
 `;
