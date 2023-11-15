@@ -266,7 +266,7 @@ const RecentPageListing: React.FC<RecentPageListingProps> = ({ pages }) => {
 };
 
 const RecentPageListing_ = styled.ul`
-    margin-inline-start: 2rem;
+    margin-inline: 2rem;
 
     list-style: none;
     padding-inline-start: 0;
@@ -275,22 +275,14 @@ const RecentPageListing_ = styled.ul`
 
     a {
         text-decoration: none;
-        /* border-bottom: 2px solid blue; */
         font-weight: 600;
     }
 
     a:visited {
-        /* What I wanted was this
-        border-bottom-width: 1px
-           but that does not work for the :visited pseudo selector due
-           security / privacy restrictions */
-        border-bottom-color: purple;
+        color: var(--mrmr-color-3);
     }
 
     a:hover {
-        /* Slightly darker (lighter for dark mode) versions of the
-           background color from the color theme used in this page
-           ("paper") */
         background-color: oklch(96.74% 0 0);
         @media (prefers-color-scheme: dark) {
             background-color: oklch(21.67% 0.02 251);
