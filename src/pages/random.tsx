@@ -1,7 +1,6 @@
 import { DefaultHead } from "components/Head";
-import { PageColorStyle } from "components/PageColorStyle";
-import { graphql, HeadFC, navigate, PageProps } from "gatsby";
-import { parseColorPalette } from "parsers/colors";
+import { PageColorStyle, paperColorPalettes } from "components/PageColorStyle";
+import { HeadFC, PageProps, graphql, navigate } from "gatsby";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { randomItem } from "utils/random";
@@ -29,14 +28,9 @@ const RandomPage: React.FC<PageProps<Queries.RandomPageQuery>> = ({ data }) => {
 
     return (
         <main>
-            <PageColorStyle {...colorPalettes} />
+            <PageColorStyle {...paperColorPalettes} />
         </main>
     );
-};
-
-const colorPalettes = {
-    colors: ensure(parseColorPalette(["hsl(0, 0%, 100%)", "hsl(0, 0%, 13%)"])),
-    darkColors: parseColorPalette(["hsl(240, 6%, 20%)", "hsl(240, 12%, 90%)"]),
 };
 
 export default RandomPage;
