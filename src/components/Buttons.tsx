@@ -50,8 +50,3 @@ export const ExpandButton: React.FC<
         </IconButton>
     );
 };
-
-const IconWrapper1d8rem = styled.div`
-    /* Workaround - Safari doesn't support rem units on SVG elements */
-    font-size: 1.2rem;
-`;
