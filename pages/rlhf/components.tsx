@@ -1,5 +1,5 @@
 import { Column } from "components/Column";
-import { NavA } from "components/NavA";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -54,13 +54,11 @@ const Caption = styled.small`
 `;
 
 export const Footer: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
     return (
         <FooterContainer>
-            <NavContainer>
-                <NavA page={page} />
-            </NavContainer>
+            <small>
+                <Link to="/">Home</Link>
+            </small>
         </FooterContainer>
     );
 };
@@ -68,20 +66,16 @@ export const Footer: React.FC = () => {
 const FooterContainer = styled.div`
     margin-block-start: 7rem;
     margin-block-end: 4rem;
-`;
-
-const NavContainer = styled.div`
-    letter-spacing: 0.045ch;
-
-    color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
+        font-weight: 500;
+        color: var(--mrmr-color-2);
         opacity: 0.8;
     }
 
     a:hover {
-        border-bottom: 1px solid currentColor;
+        color: var(--mrmr-color-3);
         opacity: 1;
     }
 `;
