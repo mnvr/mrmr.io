@@ -7,7 +7,7 @@ import {
     BodyBackgroundColorTransitionStyle,
     PageListing,
 } from "components/index/PageListing";
-import { ParsedLinkButtonsA } from "components/index/ParsedLinkButtonsA";
+import { ParsedLinkButtons } from "components/index/ParsedLinkButtons";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
@@ -230,7 +230,7 @@ const ExternalLinks: React.FC = () => {
     ]);
     return (
         <LinkButtonsContainer>
-            <ParsedLinkButtonsA links={links} />
+            <ParsedLinkButtons links={links} />
         </LinkButtonsContainer>
     );
 };

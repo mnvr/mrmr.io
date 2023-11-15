@@ -6,7 +6,7 @@ import { FiGithub, FiLink } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
 import styled from "styled-components";
 
-export interface ParsedLinkButtonsPropsA {
+export interface ParsedLinkButtonsProps {
     /** The links to show */
     links?: ParsedLink[];
 }
@@ -14,17 +14,15 @@ export interface ParsedLinkButtonsPropsA {
 /**
  * A row of icons buttons, each linking to one of the passed in links.
  *
- * Variant A.
- *
- * Each of these links will open in an new tab. @see {@link ParsedLinkButtonA}.
+ * Each of these links will open in an new tab. @see {@link ParsedLinkButton}.
  */
-export const ParsedLinkButtonsA: React.FC<ParsedLinkButtonsPropsA> = ({
+export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
     links,
 }) => {
     return (
         <ParsedLinkRow>
             {links?.map((link) => (
-                <ParsedLinkButtonA key={link.url} link={link} />
+                <ParsedLinkButton key={link.url} link={link} />
             ))}
         </ParsedLinkRow>
     );
@@ -42,9 +40,9 @@ const ParsedLinkRow = styled.div`
  *
  * The link will open in a new tab.
  *
- * @see {@link ParsedLinkButtonsA}
+ * @see {@link ParsedLinkButtons}
  */
-export const ParsedLinkButtonA: React.FC<IconProps> = ({ link }) => {
+const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
     const { url } = link;
     return (
         <ExternalLink href={url}>
