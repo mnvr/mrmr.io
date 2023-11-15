@@ -213,9 +213,14 @@ const parseFeaturedPages = (data: Queries.IndexPageQuery): FeaturedPage[] => {
     });
 };
 
-const SectionTitle = styled.div`
-    margin-block-start: 3rem;
-    margin-block-end: 3rem;
+interface SectionTitleProps {
+    marginBlockStart?: string /* default: 2.4rem */;
+    marginBlockEnd?: string /* default: 2.4rem */;
+}
+
+const SectionTitle = styled.div<SectionTitleProps>`
+    margin-block-start: ${(props) => props.marginBlockStart ?? "2.4rem"};
+    margin-block-end: ${(props) => props.marginBlockEnd ?? "2.4rem"};
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
@@ -232,26 +237,17 @@ const RecentPagesTitle: React.FC = () => {
 
 const FeaturedPagesTitle: React.FC = () => {
     return (
-        <SectionTitle>
+        <SectionTitle marginBlockEnd="2.6rem">
             <h2>sights and sounds</h2>
         </SectionTitle>
     );
 };
 
-const AboutSectionTitle_ = styled.div`
-    margin-block-start: 3rem;
-    margin-block-end: 2rem;
-    margin-inline-start: 1.7rem;
-    font-family: serif;
-    font-style: italic;
-    color: var(--mrmr-color-4);
-`;
-
 const AboutSectionTitle: React.FC = () => {
     return (
-        <AboutSectionTitle_>
+        <SectionTitle marginBlockStart="2.6rem">
             <h2>about</h2>
-        </AboutSectionTitle_>
+        </SectionTitle>
     );
 };
 
@@ -270,7 +266,7 @@ const RecentPageListing: React.FC<RecentPageListingProps> = ({ pages }) => {
 };
 
 const RecentPageListing_ = styled.ul`
-    margin-block-start: 2rem;
+    margin-inline-start: 2rem;
 
     list-style: none;
     padding-inline-start: 0;
@@ -279,7 +275,7 @@ const RecentPageListing_ = styled.ul`
 
     a {
         text-decoration: none;
-        border-bottom: 2px solid blue;
+        /* border-bottom: 2px solid blue; */
         font-weight: 600;
     }
 
@@ -379,13 +375,15 @@ const InternalLinks: React.FC = () => {
 };
 
 const InternalLinks_ = styled.div`
-    margin-block-start: 2rem;
-    margin-block-end: 2rem;
+    margin-block-start: 2.4rem;
+    margin-block-end: 2.4rem;
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
 
     h2 {
+        padding: 0;
+        margin: 0;
         display: inline-block;
     }
 
