@@ -214,13 +214,13 @@ const parseFeaturedPages = (data: Queries.IndexPageQuery): FeaturedPage[] => {
 };
 
 interface SectionTitleProps {
-    marginBlockStart?: string /* default: 2.4rem */;
-    marginBlockEnd?: string /* default: 2.4rem */;
+    marginBlockStart?: string /* default: 2.6rem */;
+    marginBlockEnd?: string /* default: 2.6rem */;
 }
 
 const SectionTitle = styled.div<SectionTitleProps>`
-    margin-block-start: ${(props) => props.marginBlockStart ?? "2.4rem"};
-    margin-block-end: ${(props) => props.marginBlockEnd ?? "2.4rem"};
+    margin-block-start: ${(props) => props.marginBlockStart ?? "2.6rem"};
+    margin-block-end: ${(props) => props.marginBlockEnd ?? "2.6rem"};
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
@@ -229,7 +229,7 @@ const SectionTitle = styled.div<SectionTitleProps>`
 
 const RecentPagesTitle: React.FC = () => {
     return (
-        <SectionTitle>
+        <SectionTitle marginBlockEnd="2.5rem">
             <h2>recent posts</h2>
         </SectionTitle>
     );
@@ -237,7 +237,7 @@ const RecentPagesTitle: React.FC = () => {
 
 const FeaturedPagesTitle: React.FC = () => {
     return (
-        <SectionTitle marginBlockEnd="2.6rem">
+        <SectionTitle>
             <h2>sights and sounds</h2>
         </SectionTitle>
     );
@@ -245,7 +245,7 @@ const FeaturedPagesTitle: React.FC = () => {
 
 const AboutSectionTitle: React.FC = () => {
     return (
-        <SectionTitle marginBlockStart="2.6rem">
+        <SectionTitle marginBlockEnd="2.4rem">
             <h2>about</h2>
         </SectionTitle>
     );
@@ -375,8 +375,8 @@ const InternalLinks: React.FC = () => {
 };
 
 const InternalLinks_ = styled.div`
-    margin-block-start: 2.4rem;
-    margin-block-end: 2.4rem;
+    margin-block-start: 2.6rem;
+    margin-block-end: 2.6rem;
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
