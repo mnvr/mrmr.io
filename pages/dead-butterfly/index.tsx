@@ -1,5 +1,5 @@
 import { Column } from "components/Column";
-import { NavA } from "components/NavA";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, type Page } from "templates/page";
@@ -14,7 +14,7 @@ export const Content: React.FC = () => {
                 <Song />
                 <Title page={page} />
                 <Song2 />
-                <Title2 page={page} />
+                <Title2 />
             </Column>
         </ContentContainer>
     );
@@ -75,17 +75,17 @@ const Title: React.FC<{ page: Page }> = ({ page }) => {
     const { title, formattedDateDMY } = page;
 
     return (
-        <TitleContainer>
+        <Title_>
             <>
                 <TitleBold>{title}</TitleBold>
                 <br />
                 <small>A song, by Manav, {formattedDateDMY}</small>
             </>
-        </TitleContainer>
+        </Title_>
     );
 };
 
-const TitleContainer = styled.div`
+const Title_ = styled.div`
     margin-block: 8rem;
     color: var(--mrmr-color-2);
     opacity: 0.53;
@@ -93,30 +93,31 @@ const TitleContainer = styled.div`
 
 const TitleBold = styled.span`
     font-weight: 700;
-    font-variant: small-caps;
 `;
 
-const Title2: React.FC<{ page: Page }> = ({ page }) => {
+const Title2: React.FC = () => {
     return (
-        <TitleContainer>
+        <Title2_>
             <TitleBold>
-                <NavContainer>
-                    <NavA page={page} separator="•" />
-                </NavContainer>
+                <small>
+                    <Link to="/">Home</Link>
+                </small>
             </TitleBold>
-        </TitleContainer>
+        </Title2_>
     );
 };
 
-const NavContainer = styled.div`
-    letter-spacing: 0.045ch;
+const Title2_ = styled.div`
+    margin-block: 8rem;
+    color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
+        font-weight: 500;
+        opacity: 0.53;
     }
 
     a:hover {
-        border-top: 1px solid currentColor;
-        border-bottom: 2px solid currentColor;
+        opacity: 0.9;
     }
 `;
