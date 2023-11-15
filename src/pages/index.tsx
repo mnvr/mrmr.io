@@ -60,10 +60,11 @@ const indexColorPalettes = {
         ]),
     ),
     darkColors: parseColorPalette([
-        "hsl(240, 6%, 20%)",
-        "hsl(240, 12%, 90%)",
-        "hsl(240, 12%, 70%)",
-        "hsl(240, 12%, 75%)",
+        "oklch(31.14% 0.021 285.75)",
+        "oklch(100.0% 0.008 286.75)",
+        "oklch(90.00% 0.008 286.75)",
+        "oklch(78.61% 0.021 285.75)",
+        "oklch(78.17% 0.021 260.75)",
     ]),
 };
 
@@ -279,13 +280,13 @@ const RecentPageListing_ = styled.ul`
     }
 
     a:visited {
-        color: var(--mrmr-color-3);
+        color: var(--mrmr-color-2);
     }
 
     a:hover {
         background-color: oklch(96.74% 0 0);
         @media (prefers-color-scheme: dark) {
-            background-color: oklch(21.67% 0.02 251);
+            background-color: oklch(41.14% 0.021 285.75);
         }
     }
 `;
