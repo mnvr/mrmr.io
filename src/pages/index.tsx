@@ -142,6 +142,36 @@ export const query = graphql`
     }
 `;
 
+interface Page {
+    title: string;
+    slug: string;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
+}
+
+const parsePages = (data: Queries.IndexPageQuery) => {
+    const allMdx = replaceNullsWithUndefineds(data.allMdx);
+    const nodes = allMdx.nodes;
+
+    const previewImages = replaceNullsWithUndefineds(data.previewImages);
+    const previewImageForPage = (slug: string) =>
+        previewImages.nodes.find((pi) => `/${pi.relativeDirectory}` === slug);
+
+    return nodes.map((node) => {
+        const { frontmatter, fields } = node;
+        const colors = parseColorPalette(frontmatter?.colors);
+        const darkColors = parseColorPalette(frontmatter?.dark_colors);
+        const slug = ensure(fields?.slug);
+
+        const title = ensure(frontmatter?.title);
+
+        let previewImage = previewImageForPage(slug);
+        if (frontmatter?.no_preview) previewImage = undefined;
+
+        return { title, slug, colors, darkColors, previewImage };
+    });
+};
+
 const TitleContainer = styled.div`
     display: flex;
     align-content: space-around;
@@ -193,36 +223,6 @@ const PoemP = styled.p`
     font-family: serif;
     color: var(--mrmr-color-2);
 `;
-
-interface Page {
-    title: string;
-    slug: string;
-    colors?: ColorPalette;
-    darkColors?: ColorPalette;
-}
-
-const parsePages = (data: Queries.IndexPageQuery) => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
-
-    const previewImages = replaceNullsWithUndefineds(data.previewImages);
-    const previewImageForPage = (slug: string) =>
-        previewImages.nodes.find((pi) => `/${pi.relativeDirectory}` === slug);
-
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const colors = parseColorPalette(frontmatter?.colors);
-        const darkColors = parseColorPalette(frontmatter?.dark_colors);
-        const slug = ensure(fields?.slug);
-
-        const title = ensure(frontmatter?.title);
-
-        let previewImage = previewImageForPage(slug);
-        if (frontmatter?.no_preview) previewImage = undefined;
-
-        return { title, slug, colors, darkColors, previewImage };
-    });
-};
 
 const ExternalLinks: React.FC = () => {
     const links = parseLinks([
