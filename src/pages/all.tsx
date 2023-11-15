@@ -17,6 +17,7 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
             <Column>
                 <Title />
                 <PageListing {...{ pages }} />
+                <Footer />
             </Column>
         </main>
     );
@@ -191,4 +192,31 @@ const Description = styled.span`
     font-style: italic;
     font-size: 1.05rem;
     color: var(--mrmr-color-3);
+`;
+
+export const Footer: React.FC = () => {
+    return (
+        <Footer_>
+            <Link to={"/"}>Home</Link>
+        </Footer_>
+    );
+};
+
+const Footer_ = styled.div`
+    margin-block-start: 6rem;
+    margin-block-end: 3rem;
+    font-size: 0.8rem;
+
+    a {
+        text-decoration: none;
+        font-weight: 500;
+        color: var(--mrmr-color-1);
+    }
+
+    a:hover {
+        color: blue;
+        @media (prefers-color-scheme: dark) {
+            color: greenyellow;
+        }
+    }
 `;
