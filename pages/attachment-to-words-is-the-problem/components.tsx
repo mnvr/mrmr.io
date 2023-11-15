@@ -5,6 +5,12 @@ import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
 
+/**
+ * Container for a width-limited column.
+ *
+ * - Designed for containing a text post.
+ * - Initially designed to work with the "paper" theme.
+ */
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <WideColumn>
@@ -19,56 +25,75 @@ const ContentContainer = styled.div`
         margin-block: 4rem;
     }
 
-    line-height: 1.3rem;
-
-    hr {
-        margin-block: 2.8rem;
-        opacity: 0.075;
+    p {
+        line-height: 1.3rem;
     }
 
     blockquote {
         font-family: serif;
         font-style: italic;
-        margin-block: 1.3rem;
         color: var(--mrmr-color-3);
+        margin-inline-start: 1rem;
+    }
+
+    blockquote p {
+        line-height: 1.2rem;
     }
 `;
 
+/**
+ * A simple H3 containing the page title.
+ *
+ * Designed for use at top of the page.
+ */
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { title, formattedDateMY } = page;
+    const { title } = page;
 
-    return (
-        <Title_>
-            <small>
-                <TitleH>{title}</TitleH>
-                <Attribution>
-                    Manav Rathi
-                    <br />
-                    {formattedDateMY}
-                </Attribution>
-            </small>
-        </Title_>
-    );
+    return <Title_>{title}</Title_>;
 };
 
-const Title_ = styled.div`
-    margin-block-start: 3.25rem;
-`;
+const Title_ = styled.h3`
+    @media (min-width: 600px) {
+        margin-block-end: 1.8rem;
+    }
 
-const TitleH = styled.h3`
-    margin-block-end: 0rem;
-
+    line-height: 1.5rem;
     color: var(--mrmr-color-2);
 `;
 
-const Attribution = styled.p`
-    margin-block-start: 0.65rem;
-    line-height: 1.1rem;
+/**
+ * Author and date in subdued, small text.
+ *
+ * Designed for use at bottom of the page, after the text content.
+ */
+export const Signoff: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { formattedDateMY } = page;
 
+    return (
+        <Signoff_>
+            <small>
+                Manav Rathi
+                <br />
+                {formattedDateMY}
+            </small>
+        </Signoff_>
+    );
+};
+
+const Signoff_ = styled.div`
+    margin-block: 2rem;
+
+    line-height: 1.1rem;
     color: var(--mrmr-color-3);
 `;
 
+/**
+ * A minimal Footer containing link to related posts, all posts and home.
+ *
+ * Designed for use with a plain text post.
+ */
 export const Footer: React.FC = () => {
     return (
         <Footer_>
@@ -80,12 +105,13 @@ export const Footer: React.FC = () => {
 };
 
 const Footer_ = styled.div`
-    margin-block-start: 6rem;
-    font-size: 0.8rem;
-    line-height: 2.3rem;
+    margin-block: 2rem;
     @media (min-width: 600px) {
-        line-height: 1.6rem;
+        margin-block: 4rem;
     }
+
+    font-size: 0.8rem;
+    line-height: 2rem;
 
     a {
         text-decoration: none;
