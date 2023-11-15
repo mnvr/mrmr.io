@@ -1,5 +1,5 @@
 import { Column } from "components/Column";
-import { NavA } from "components/NavA";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -57,7 +57,9 @@ const Title: React.FC = () => {
                 <Caption>Manav Rathi, {formattedDateMY}</Caption>
             </p>
             <NavContainer>
-                <NavA page={page} />
+                <small>
+                    <Link to="/">Home</Link>
+                </small>
             </NavContainer>
         </TitleContainer>
     );
@@ -75,17 +77,17 @@ const Caption = styled.small`
 const NavContainer = styled.div`
     margin-block-start: 4rem;
 
-    letter-spacing: 0.045ch;
-
     color: var(--mrmr-color-2);
 
     a {
         text-decoration: none;
-        opacity: 0.8;
+        color: var(--mrmr-color-3);
+        font-weight: 500;
+        opacity: 0.5;
     }
 
     a:hover {
-        border-bottom: 1px solid currentColor;
+        color: var(--mrmr-color-1);
         opacity: 1;
     }
 `;
