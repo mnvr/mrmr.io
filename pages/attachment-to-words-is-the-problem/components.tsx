@@ -83,7 +83,7 @@ export const Signoff: React.FC = () => {
 };
 
 const Signoff_ = styled.div`
-    margin-block: 2rem;
+    margin-block-start: 2rem;
 
     line-height: 1.1rem;
     color: var(--mrmr-color-3);
@@ -97,6 +97,7 @@ const Signoff_ = styled.div`
 export const Footer: React.FC = () => {
     return (
         <Footer_>
+            {false && <RelatedPosts />}
             <Link to={"/all"}>All posts</Link>
             <br />
             <Link to={"/"}>Home</Link>
@@ -105,13 +106,21 @@ export const Footer: React.FC = () => {
 };
 
 const Footer_ = styled.div`
-    margin-block: 2rem;
-    @media (min-width: 600px) {
-        margin-block: 4rem;
-    }
+    /* For a perfect vertical cadence, this should be 2 rem. However, the
+       line-height for text in the footer is not 1 rem but is instead 2.4 rem,
+       and the text is positioned in the center of that 2.2 rem block. So we
+       need to subtract from the desired margin to visually make the distance
+       between the text <--> signoff and signoff <--> footer look rhythmic. */
+    margin-block-start: 2.4rem;
 
     font-size: 0.8rem;
-    line-height: 2rem;
+    line-height: 2.2rem;
+
+    ul {
+        margin: 0;
+        list-style: circle;
+        padding-inline-start: 1.6rem;
+    }
 
     a {
         text-decoration: none;
@@ -122,4 +131,21 @@ const Footer_ = styled.div`
     a:hover {
         color: var(--mrmr-color-2);
     }
+`;
+
+const RelatedPosts: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <div>
+            <RelatedPostsTitle>Related posts</RelatedPostsTitle>
+            <ul>
+                <li>
+                    <Link to={"/all"}>Test post</Link>
+                </li>
+            </ul>
+        </div>
+    );
+};
+
+const RelatedPostsTitle = styled.div`
+    color: var(--mrmr-color-4);
 `;
