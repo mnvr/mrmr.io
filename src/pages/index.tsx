@@ -6,8 +6,8 @@ import {
 import {
     BodyBackgroundColorTransitionStyle,
     PageListing,
-} from "components/PageListing";
-import { ParsedLinkButtonsA } from "components/ParsedLinkButtonsA";
+} from "components/index/PageListing";
+import { ParsedLinkButtonsA } from "components/index/ParsedLinkButtonsA";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
