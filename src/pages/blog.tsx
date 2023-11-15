@@ -62,27 +62,6 @@ export const query = graphql`
     }
 `;
 
-const Title: React.FC = () => {
-    return (
-        <Title_>
-            <h1>all posts</h1>
-        </Title_>
-    );
-};
-
-const Title_ = styled.div`
-    margin-block-start: 2rem;
-    @media (min-width: 600px) {
-        margin-block-start: 3rem;
-    }
-
-    h1 {
-        font-family: serif;
-        font-style: italic;
-        opacity: 0.5;
-    }
-`;
-
 /** The parsed data for each page item that we show in the listing */
 interface Page {
     title: string;
@@ -106,6 +85,27 @@ const parsePages = (data: Queries.BlogPageQuery) => {
         return { slug, title, description, formattedDateMY };
     });
 };
+
+const Title: React.FC = () => {
+    return (
+        <Title_>
+            <h1>all posts</h1>
+        </Title_>
+    );
+};
+
+const Title_ = styled.div`
+    margin-block-start: 2rem;
+    @media (min-width: 600px) {
+        margin-block-start: 3rem;
+    }
+
+    h1 {
+        font-family: serif;
+        font-style: italic;
+        opacity: 0.5;
+    }
+`;
 
 interface PageListingProps {
     /** The ordered list of pages to show */
@@ -131,9 +131,9 @@ type PageOrDate = Page | string;
 
 /**
  * Convert a linear list of pages into one where pages with a creation date
- * within the same calendar month are grouped together by interspersing the
- * original list of pages by strings representing the section titles (the month
- * name)
+ * within the same calendar month are grouped. This grouping is done by
+ * interspersing the original list of pages with strings representing the
+ * section titles (the month + year).
  */
 const sectionByMonth = (pages: Page[]): PageOrDate[] => {
     let currentDate: string | undefined;
@@ -143,7 +143,6 @@ const sectionByMonth = (pages: Page[]): PageOrDate[] => {
             result.push((currentDate = page.formattedDateMY));
         result.push(page);
     });
-    console.log(result);
     return result;
 };
 
@@ -161,13 +160,12 @@ const PageListing_ = styled.ul`
         font-weight: 600;
     }
 
-    li {
-        /* margin-block: 1rem; */
-    }
-    li:nth-child(even) {
-        a {
-            border-bottom: 1px solid blue;
-        }
+    a:visited {
+        /* What I wanted was this
+        border-bottom-width: 1px
+           but that does not work for the :visited pseudo selector due
+           security / privacy restrictions */
+        border-bottom-color: purple;
     }
 `;
 
@@ -184,8 +182,6 @@ const PageItem: React.FC<Page> = ({ title, description, slug }) => {
         <li>
             <Link to={slug}>{title}</Link>.{" "}
             <Description>{description}</Description>
-            {/* <br /> */}
-            {/* <Date>Nov 2023, 780 words</Date> */}
         </li>
     );
 };
@@ -195,17 +191,4 @@ const Description = styled.span`
     font-style: italic;
     font-size: 1.05rem;
     color: var(--mrmr-color-3);
-    margin-bottom: 0;
-    padding-bottom: 0;
-`;
-
-const Date = styled.span`
-    font-family: serif;
-    font-style: italic;
-    font-size: 0.8rem;
-    color: var(--mrmr-color-3);
-    opacity: 0.7;
-    margin-top: 0;
-    padding-top: 0;
-    line-height: 0.5rem;
 `;
