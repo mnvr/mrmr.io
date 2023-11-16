@@ -37,26 +37,25 @@ export interface Theme {
 }
 
 /**
- * The default set of color palettes.
+ * The default set of colors.
  *
- * Neutralish grays, with a pure white background.
+ * It has a pure white background, with neutral gray colors.
  */
 export const defaultTheme: Theme = {
     name: "default",
     colors: ensure(
         parseColorPalette([
             "hsl(0, 0%, 100%)", // background
-            "hsl(0, 0%, 15%)", // text
-            "hsl(0, 0%, 40%)", // title
-            "hsl(0, 0%, 13%)", // secondary text
-            "hsl(0, 0%, 60%)",
+            "hsl(0, 0%,  24%)", // text
+            "hsl(0, 0%,  15%)", // title
+            "hsl(0, 0%,  47%)", // secondary text
         ]),
     ),
     darkColors: parseColorPalette([
         "hsl(0, 0%, 4%)",
         "hsl(0, 0%, 90%)",
-        "hsl(0, 0%, 50%)",
-        "hsl(0, 0%, 80%)",
+        "hsl(0, 0%, 100%)",
+        "hsl(0, 0%, 73%)",
     ]),
 };
 
@@ -67,10 +66,10 @@ export const frontPageTheme: Theme = {
     name: "front-page",
     colors: ensure(
         parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 0%)",
-            "hsl(0, 0%, 33%)",
-            "hsl(0, 0%, 30%)",
+            "hsl(0, 0%, 100%)", // background
+            "hsl(0, 0%,   0%)", // text
+            "hsl(0, 0%,  33%)", // title
+            "hsl(0, 0%,  30%)", // secondary text
         ]),
     ),
     darkColors: parseColorPalette([
@@ -78,30 +77,7 @@ export const frontPageTheme: Theme = {
         "oklch(100.0% 0.008 286.75)",
         "oklch(90.00% 0.008 286.75)",
         "oklch(78.61% 0.021 285.75)",
-        "oklch(78.17% 0.021 260.75)",
-    ]),
-};
-
-/**
- * A neutral/gray theme meant for text heavy pages.
- *
- * It has a pure white background.
- */
-export const textTheme: Theme = {
-    name: "text",
-    colors: ensure(
-        parseColorPalette([
-            "hsl(0, 0%, 100%)", // background
-            "hsl(0, 0%, 24%)", // text
-            "hsl(0, 0%, 15%)", // title
-            "hsl(0, 0%, 47%)", // secondary text
-        ]),
-    ),
-    darkColors: parseColorPalette([
-        "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 90%)",
-        "hsl(0, 0%, 100%)",
-        "hsl(0, 0%, 73%)",
+        "oklch(78.17% 0.021 260.75)", // section headers
     ]),
 };
 
@@ -131,12 +107,7 @@ export const paperTheme: Theme = {
 };
 
 /** All themes, indexed by their name */
-export const allThemes = [
-    defaultTheme,
-    frontPageTheme,
-    textTheme,
-    paperTheme,
-].reduce(
+export const allThemes = [defaultTheme, frontPageTheme, paperTheme].reduce(
     (map, theme) => ((map[theme.name] = theme), map),
     {} as Record<string, Theme>,
 );
