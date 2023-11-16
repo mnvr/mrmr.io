@@ -87,6 +87,16 @@ export const query = graphql`
                 publicURL
             }
         }
+        allMdx(filter: { frontmatter: { unlisted: { ne: true } } }) {
+            nodes {
+                frontmatter {
+                    title
+                }
+                fields {
+                    slug
+                }
+            }
+        }
         mdx(id: { eq: $pageID }) {
             frontmatter {
                 title
@@ -97,6 +107,7 @@ export const query = graphql`
                 colors
                 dark_colors
                 theme
+                related
             }
             fields {
                 slug
@@ -126,6 +137,13 @@ export interface Page {
      */
     theme?: string;
     /**
+     * A list of (links to) related pages.
+     *
+     * This list is populated from the slugs specified in the "related" field
+     * from the frontmatter.
+     */
+    relatedPageLinks: PageLink[];
+    /**
      * ImageSharp nodes for images stored in the same directory as the page
      *
      * These are indexed by the name of the image. The image name is the
@@ -146,8 +164,14 @@ export interface Page {
     mp3s: Record<string, string>;
 }
 
+/** The slug to a page, and a title to show in the anchor tag */
+export interface PageLink {
+    slug: string;
+    title: string;
+}
+
 const parsePage = (data: Queries.PageTemplateQuery): Page => {
-    const { mdx, images, mp3s } = replaceNullsWithUndefineds(data);
+    const { mdx, images, mp3s, allMdx } = replaceNullsWithUndefineds(data);
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
@@ -157,6 +181,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
+    const related = frontmatter?.related;
 
     const slug = ensure(mdx?.fields?.slug);
 
@@ -185,6 +210,31 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         pageMP3s[node.name] = ensure(node.publicURL);
     });
 
+    // To obtain the titles corresponding to related pages, we need to join
+    // using the slugs of related pages (if any) specified in the frontmatter of
+    // this page. There might be better (but more involved) ways of doing this:
+    // for now we just fetch the list of all pages and do the join here in code.
+    //
+    // In a very crude benchmark (`time yarn build`), this doesn't seem to have
+    // made any noticeable difference. But if we run into performance issues
+    // when the number of pages grows, this might be a possible thing to
+    // consider optimizing (e.g. using the @link Gatsby extension for
+    // foreign-key fields in GraphQL).
+    const relatedPageLinks: PageLink[] = [];
+    // The number of related links is expected to be small (a few at max), so we
+    // just iterate over the O(n^2) lists instead of indexing into a map first.
+    related?.forEach((relatedSlug) => {
+        relatedSlug &&
+            allMdx.nodes?.forEach((n) => {
+                if (n.fields?.slug === relatedSlug) {
+                    relatedPageLinks.push({
+                        slug: relatedSlug,
+                        title: ensure(n.frontmatter?.title),
+                    });
+                }
+            });
+    });
+
     return {
         slug,
         title,
@@ -195,6 +245,7 @@ const parsePage = (data: Queries.PageTemplateQuery): Page => {
         colors,
         darkColors,
         theme,
+        relatedPageLinks,
         images: pageImages,
         mp3s: pageMP3s,
     };

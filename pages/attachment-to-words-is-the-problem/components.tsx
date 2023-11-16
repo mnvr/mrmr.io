@@ -2,7 +2,7 @@ import { WideColumn } from "components/Column";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
+import { BuildTimePageContext, PageLink } from "templates/page";
 import { ensure } from "utils/ensure";
 
 /**
@@ -95,9 +95,14 @@ const Signoff_ = styled.div`
  * Designed for use with a plain text post.
  */
 export const Footer: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { relatedPageLinks } = page;
+
     return (
         <Footer_>
-            {false && <RelatedPosts />}
+            {relatedPageLinks.length > 0 && (
+                <RelatedPosts links={relatedPageLinks} />
+            )}
             <Link to={"/all"}>All posts</Link>
             <br />
             <Link to={"/"}>Home</Link>
@@ -133,14 +138,20 @@ const Footer_ = styled.div`
     }
 `;
 
-const RelatedPosts: React.FC<React.PropsWithChildren> = ({ children }) => {
+interface RelatedPostsProps {
+    links: PageLink[];
+}
+
+const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
     return (
         <div>
             <RelatedPostsTitle>Related posts</RelatedPostsTitle>
             <ul>
-                <li>
-                    <Link to={"/all"}>Test post</Link>
-                </li>
+                {links.map(({ slug, title }) => (
+                    <li key={slug}>
+                        <Link to={slug}>{title}</Link>
+                    </li>
+                ))}
             </ul>
         </div>
     );
