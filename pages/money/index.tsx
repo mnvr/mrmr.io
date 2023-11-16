@@ -71,23 +71,18 @@ const TitleContainer = styled.div`
 `;
 
 const Caption = styled.small`
-    color: var(--mrmr-color-2);
+    color: var(--mrmr-color-3);
 `;
 
 const NavContainer = styled.div`
     margin-block-start: 4rem;
 
-    color: var(--mrmr-color-2);
-
     a {
         text-decoration: none;
-        color: var(--mrmr-color-3);
         font-weight: 500;
-        opacity: 0.5;
     }
 
     a:hover {
         color: var(--mrmr-color-1);
-        opacity: 1;
     }
 `;

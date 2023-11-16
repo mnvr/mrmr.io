@@ -15,7 +15,7 @@ export const PageTemplate: React.FC<
     const colorPalettes = paletteSetOrFallback(
         page,
         page.theme ? allThemes[page.theme] : undefined,
-        defaultTheme,
+        // defaultTheme,
     );
 
     return (

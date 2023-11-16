@@ -20,9 +20,6 @@ const ContentContainer = styled.div`
 
     h3 {
         margin-block: 2.8rem;
-    }
-
-    p {
         color: var(--mrmr-color-2);
     }
 
@@ -76,31 +73,44 @@ const Sketch_ = styled.div`
     margin-block-end: 2.5rem;
 `;
 
-export const Footer: React.FC = () => {
+/* TODO - Dedup with attachment-to-words */
+export const Signoff: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { formattedDateMY } = page;
 
     return (
-        <FooterContainer>
+        <Signoff_>
             <small>
                 Manav Rathi
                 <br />
                 {formattedDateMY}
-                <LinkContainer>
-                    <Link to={"/"}>Home</Link>
-                </LinkContainer>
             </small>
-        </FooterContainer>
+        </Signoff_>
     );
 };
 
-const FooterContainer = styled.div`
-    margin-block: 2rem;
-    @media (min-width: 600px) {
-        margin-block: 3rem;
-    }
+const Signoff_ = styled.div`
+    margin-block-start: 2rem;
 
-    color: var(--mrmr-color-4);
+    line-height: 1.1rem;
+    color: var(--mrmr-color-3);
+`;
+
+export const Footer: React.FC = () => {
+    return (
+        <Footer_>
+            <small>
+                <Link to={"/"}>Home</Link>
+            </small>
+        </Footer_>
+    );
+};
+
+const Footer_ = styled.div`
+    margin-block-start: 2rem;
+    @media (min-width: 600px) {
+        margin-block-start: 3rem;
+    }
 
     a {
         text-decoration: none;
@@ -110,8 +120,4 @@ const FooterContainer = styled.div`
     a:hover {
         color: var(--mrmr-color-2);
     }
-`;
-
-const LinkContainer = styled.div`
-    margin-block: 3rem;
 `;

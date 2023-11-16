@@ -17,6 +17,15 @@ export interface Theme {
     name: string;
     /**
      * The light set of colors.
+     *
+     * Whilst the interpretation of colors is up to the markup in each page, a
+     * usual factoring is to have the following meaning to the list of colors:
+     *
+     * 1. background (--mrmr-background-color-1)
+     * 2. text (--mrmr-color-1)
+     * 3. title (--mrmr-color-2)
+     * 4. secondary text (--mrmr-color-3)
+     * 5. arbitrary uses (--mrmr-color-4)
      */
     colors: ColorPalette;
     /**
@@ -36,10 +45,10 @@ export const defaultTheme: Theme = {
     name: "default",
     colors: ensure(
         parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 15%)",
-            "hsl(0, 0%, 40%)",
-            "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 100%)", // background
+            "hsl(0, 0%, 15%)", // text
+            "hsl(0, 0%, 40%)", // title
+            "hsl(0, 0%, 13%)", // secondary text
             "hsl(0, 0%, 60%)",
         ]),
     ),
@@ -82,25 +91,26 @@ export const textTheme: Theme = {
     name: "text",
     colors: ensure(
         parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 15%)",
-            "hsl(0, 0%, 23%)",
-            "hsl(0, 0%, 30%)",
-            "hsl(0, 0%, 47%)",
+            "hsl(0, 0%, 100%)", // background
+            "hsl(0, 0%, 24%)", // text
+            "hsl(0, 0%, 15%)", // title
+            "hsl(0, 0%, 47%)", // secondary text
         ]),
     ),
     darkColors: parseColorPalette([
         "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 94%)",
-        "hsl(0, 0%, 83%)",
+        "hsl(0, 0%, 90%)",
+        "hsl(0, 0%, 100%)",
         "hsl(0, 0%, 73%)",
-        "hsl(0, 0%, 60%)",
     ]),
 };
 
 /**
- * A neutralish color palette for text posts. It differs from the "text" theme
- * in that the background is not pure white / black.
+ * A neutralish color palette for text posts.
+ *
+ * The initial departure from the "default" theme is that the background is not
+ * pure white / black. The rest of the shades of gray follow from the choice of
+ * the background, with text legibility being the primary concern.
  */
 export const paperTheme: Theme = {
     name: "paper",
