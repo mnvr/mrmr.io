@@ -16,13 +16,6 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const ContentContainer = styled.div`
     margin-block: 2rem;
-
-    hr {
-        opacity: 0.05;
-        @media (prefers-color-scheme: dark) {
-            opacity: 0.1;
-        }
-    }
 `;
 
 export const Title: React.FC = () => {

@@ -48,10 +48,6 @@ const Content_ = styled.div`
 
     hr {
         margin-block: 2.6rem;
-        opacity: 0.05;
-        @media (prefers-color-scheme: dark) {
-            opacity: 0.1;
-        }
         width: 50%;
     }
 `;
