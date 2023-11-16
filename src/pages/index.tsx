@@ -264,10 +264,12 @@ const RecentPageListing_ = styled.ul`
     }
 
     a:visited {
-        color: var(--mrmr-color-2);
+        color: var(--mrmr-color-3);
     }
 
     a:hover {
+        color: var(--mrmr-color-2);
+
         background-color: oklch(96.74% 0 0);
         @media (prefers-color-scheme: dark) {
             background-color: oklch(41.14% 0.021 285.75);
@@ -334,7 +336,7 @@ const LinkButtonsContainer = styled.div`
     }
 
     a:hover {
-        color: var(--mrmr-color-1);
+        color: var(--mrmr-color-2);
     }
 `;
 
@@ -380,6 +382,6 @@ const InternalLinks_ = styled.div`
     }
 
     a:hover {
-        color: var(--mrmr-color-1);
+        color: var(--mrmr-color-2);
     }
 `;

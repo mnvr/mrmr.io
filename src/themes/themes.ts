@@ -66,16 +66,16 @@ export const frontPageTheme: Theme = {
     name: "front-page",
     colors: ensure(
         parseColorPalette([
-            "hsl(0, 0%, 100%)", // background
-            "hsl(0, 0%,   0%)", // text
-            "hsl(0, 0%,  33%)", // title
-            "hsl(0, 0%,  30%)", // secondary text
+            "oklch(100.0% 0 0)", // background
+            "oklch(41.84% 0 0)", // text
+            "oklch(    0% 0 0)", // title
+            "oklch(44.64% 0 0)", // secondary text
         ]),
     ),
     darkColors: parseColorPalette([
         "oklch(31.14% 0.021 285.75)",
-        "oklch(100.0% 0.008 286.75)",
         "oklch(90.00% 0.008 286.75)",
+        "oklch(100.0% 0.008 286.75)",
         "oklch(78.61% 0.021 285.75)",
         "oklch(78.17% 0.021 260.75)", // section headers
     ]),
