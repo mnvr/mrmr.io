@@ -11,16 +11,21 @@ import { ensure } from "utils/ensure";
  *
  * - Designed for containing a text post.
  * - Initially designed to work with the "paper" theme.
+ *
+ * The rest of this file contains other components that work well with this
+ * Container. They all are used by the "text" layout, but they're all
+ * individually exported from here too in case some page wants to piecemeal use
+ * these components without using the whole layout.
  */
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <WideColumn>
-            <ContentContainer>{children}</ContentContainer>
+            <Content_>{children}</Content_>
         </WideColumn>
     );
 };
 
-const ContentContainer = styled.div`
+const Content_ = styled.div`
     margin-block: 2rem;
     @media (min-width: 600px) {
         margin-block: 4rem;
