@@ -2,6 +2,7 @@ import { DefaultHead } from "components/Head";
 import { graphql, type HeadFC } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
+import TextLayout from "layouts/text";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import type { PageTemplateContext } from "types/gatsby";
@@ -269,6 +270,8 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
     switch (page.layout) {
         case "basic":
             return <BasicLayout>{children}</BasicLayout>;
+        case "text":
+            return <TextLayout>{children}</TextLayout>;
         default:
             return <>{children}</>;
     }
