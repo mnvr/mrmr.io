@@ -117,8 +117,10 @@ export interface ColorPalette {
  * - falls back to these two if not explicitly specified,
  * - or is heuristically computed from these two base colors.
  *
- * Which array position maps to which color is a bit of a (as yet) undocumented
- * mish-mash.
+ * A common interpretation of the colors in the various positions is described
+ * in the documentation for {@link Theme} (background / text / title / secondary
+ * / misc), but really is up to the markup in each page to decide what to do
+ * with this list and use them in a way appropriate to its content.
  */
 export const parseColorPalette = (
     colors: readonly (string | undefined)[] | undefined,
