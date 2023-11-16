@@ -16,6 +16,7 @@ import { parseLinks } from "parsers/links";
 import React from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";
+import { frontPageTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -30,7 +31,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
 
     // If the user is hovering on the link to a page, use that page's colors.
     // Otherwise use the index pages' own color palette.
-    let colorPalettes = paletteSetOrFallback(hoverPage, indexColorPalettes);
+    let colorPalettes = paletteSetOrFallback(hoverPage, frontPageTheme);
 
     return (
         <main>
@@ -49,24 +50,6 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
 };
 
 export default IndexPage;
-
-const indexColorPalettes = {
-    colors: ensure(
-        parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 0%)",
-            "hsl(0, 0%, 33%)",
-            "hsl(0, 0%, 30%)",
-        ]),
-    ),
-    darkColors: parseColorPalette([
-        "oklch(31.14% 0.021 285.75)",
-        "oklch(100.0% 0.008 286.75)",
-        "oklch(90.00% 0.008 286.75)",
-        "oklch(78.61% 0.021 285.75)",
-        "oklch(78.17% 0.021 260.75)",
-    ]),
-};
 
 export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const description = "music •◦◎◉⦿ words | colors / code";

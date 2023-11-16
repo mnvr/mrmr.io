@@ -1,5 +1,4 @@
 import { DefaultHead } from "components/Head";
-import { PageColorStyle, paperColorPalettes } from "components/PageColorStyle";
 import { HeadFC, PageProps, graphql, navigate } from "gatsby";
 import * as React from "react";
 import { ensure } from "utils/ensure";
@@ -26,11 +25,7 @@ const RandomPage: React.FC<PageProps<Queries.RandomPageQuery>> = ({ data }) => {
         navigate(randomItem(pages)?.slug ?? "/");
     }, []);
 
-    return (
-        <main>
-            <PageColorStyle {...paperColorPalettes} />
-        </main>
-    );
+    return <main />;
 };
 
 export default RandomPage;

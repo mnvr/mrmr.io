@@ -1,10 +1,5 @@
 import { DefaultHead } from "components/Head";
-import {
-    colorPalettesForTheme,
-    PageColorStyle,
-    paletteSetOrFallback,
-} from "components/PageColorStyle";
-import { graphql, type HeadFC, type PageProps } from "gatsby";
+import { graphql, type HeadFC } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
@@ -12,23 +7,7 @@ import * as React from "react";
 import type { PageTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
-
-const PageTemplate: React.FC<
-    PageProps<Queries.PageTemplateQuery, PageTemplateContext>
-> = ({ data, children }) => {
-    const page = parsePage(data);
-    const colorPalettes = paletteSetOrFallback(
-        page,
-        colorPalettesForTheme(page.theme),
-    );
-
-    return (
-        <main>
-            <PageColorStyle {...colorPalettes} />
-            <Layout page={page}>{children}</Layout>
-        </main>
-    );
-};
+import { PageTemplate } from "./PageTemplate";
 
 export default PageTemplate;
 
@@ -170,7 +149,7 @@ export interface PageLink {
     title: string;
 }
 
-const parsePage = (data: Queries.PageTemplateQuery): Page => {
+export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const { mdx, images, mp3s, allMdx } = replaceNullsWithUndefineds(data);
 
     const frontmatter = mdx?.frontmatter;
@@ -283,7 +262,7 @@ interface LayoutProps {
 }
 
 /** Wrap the children in a layout if one is specified in the frontmatter */
-const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
+export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
     page,
     children,
 }) => {

@@ -1,10 +1,21 @@
-import {
-    ColorPalette,
-    parseColorPalette,
-    type ColorPaletteSet,
-} from "parsers/colors";
+import { ColorPalette } from "parsers/colors";
 import { createGlobalStyle } from "styled-components";
-import { ensure } from "utils/ensure";
+
+/**
+ * A set of color palettes - one default, and an optional dark one.
+ *
+ * This is a subset of the fields of a {@link Theme} or {@link Page} that we
+ * care about.
+ */
+export interface ColorPaletteSet {
+    colors: ColorPalette;
+    /**
+     * Optional dark mode overrides
+     *
+     * If these are not present, we'll use the light mode `colors` always.
+     */
+    darkColors?: ColorPalette;
+}
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
     body {
@@ -43,8 +54,12 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
 /**
  * A type that might have the shape required by {@link ColorPaletteSet}, but
  * whose `colors` property might not be defined.
+ *
+ * In practice, this refers to a {@link Page}. Thus, this type allows us to pass
+ * either a {@link Page} or a {@link Theme} to {@link paletteSetOrFallback}
+ * function.
  */
-export interface MaybeColorPaletteSet {
+interface MaybeColorPaletteSet {
     colors?: ColorPalette;
     darkColors?: ColorPalette;
 }
@@ -66,93 +81,4 @@ export const paletteSetOrFallback = (
         if (colors) return { colors, darkColors };
     }
     throw new Error("None of the fallbacks defined the color palette");
-};
-
-/**
- * Return one of the {@link MaybeColorPaletteSet} defined below that corresponds
- * to the "theme" string mentioned in page's frontmatter.
- *
- * If no theme is specified, return {@link defaultColorPalettes}.
- */
-export const colorPalettesForTheme = (
-    theme: string | undefined,
-): MaybeColorPaletteSet => {
-    switch (theme) {
-        case "paper":
-            return paperColorPalettes;
-        case "text":
-            return textColorPalettes;
-        default:
-            return defaultColorPalettes;
-    }
-};
-
-/**
- * A default set of color palettes.
- *
- * Be calm, and readable. Supports both light/dark.
- */
-const defaultColorPalettes = {
-    colors: ensure(
-        parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 15%)",
-            "hsl(0, 0%, 40%)",
-            "hsl(0, 0%, 13%)",
-            "hsl(0, 0%, 60%)",
-        ]),
-    ),
-    darkColors: parseColorPalette([
-        "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 90%)",
-        "hsl(0, 0%, 50%)",
-        "hsl(0, 0%, 80%)",
-    ]),
-};
-
-/**
- * A variant of basicColorPalettes for text heavy pages.
- *
- * To use, set "theme: text" in the YAML frontmatter.
- */
-export const textColorPalettes = {
-    colors: ensure(
-        parseColorPalette([
-            "hsl(0, 0%, 100%)",
-            "hsl(0, 0%, 15%)",
-            "hsl(0, 0%, 23%)",
-            "hsl(0, 0%, 30%)",
-            "hsl(0, 0%, 47%)",
-        ]),
-    ),
-    darkColors: parseColorPalette([
-        "hsl(0, 0%, 4%)",
-        "hsl(0, 0%, 94%)",
-        "hsl(0, 0%, 83%)",
-        "hsl(0, 0%, 73%)",
-        "hsl(0, 0%, 60%)",
-    ]),
-};
-
-/**
- * A neutralish color palette for text posts. It differs from the "text" theme
- * in that the background is not pure white / black.
- *
- * To use, set "theme: paper" in the YAML frontmatter.
- */
-export const paperColorPalettes = {
-    colors: ensure(
-        parseColorPalette([
-            "oklch(99.24% 0 0)", // background
-            "oklch(41.28% 0 0)", // text
-            "oklch(24.78% 0 0)", // title
-            "oklch(59.65% 0 0)", // secondary text
-        ]),
-    ),
-    darkColors: parseColorPalette([
-        "oklch(18.67% 0.02 251)",
-        "oklch(86.89% 0 0)",
-        "oklch(95.42% 0 0)",
-        "oklch(75.94% 0 0)",
-    ]),
 };

@@ -1,9 +1,10 @@
 import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
-import { PageColorStyle, paperColorPalettes } from "components/PageColorStyle";
+import { PageColorStyle } from "components/PageColorStyle";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import React from "react";
 import styled from "styled-components";
+import { paperTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -13,7 +14,7 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
 
     return (
         <main>
-            <PageColorStyle {...paperColorPalettes} />
+            <PageColorStyle {...paperTheme} />
             <Column>
                 <Title />
                 <PageListing {...{ pages }} />

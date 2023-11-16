@@ -107,17 +107,6 @@ export interface ColorPalette {
     color1Transparent: string;
 }
 
-/** A set of color palettes - one default, and an optional dark one */
-export interface ColorPaletteSet {
-    colors: ColorPalette;
-    /**
-     * Optional dark mode overrides
-     *
-     * If these are not present, we'll use the light mode `colors` always.
-     */
-    darkColors?: ColorPalette;
-}
-
 /**
  * Parse a array of colors into a {@link ColorPalette}.
  *

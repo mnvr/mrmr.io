@@ -1,0 +1,132 @@
+import { ColorPalette, parseColorPalette } from "parsers/colors";
+import { ensure } from "utils/ensure";
+
+/**
+ * A theme is a named set of color palettes.
+ *
+ * These can be specified by name in the MDX frontmatter by setting the "theme"
+ * field. Or these can be directly imported into the tsx source. For more
+ * details about importing and using these objects, see the documentation in
+ * `PageColorStyle.tsx`.
+ */
+export interface Theme {
+    /**
+     * The name of the theme (this string can then be used to specify the theme
+     * by setting the "theme" in the MDX frontmatter).
+     */
+    name: string;
+    /**
+     * The light set of colors.
+     */
+    colors: ColorPalette;
+    /**
+     * An optional dark variant of colors.
+     *
+     * If these are not specified, then the light colors will be used.
+     */
+    darkColors?: ColorPalette;
+}
+
+/**
+ * The default set of color palettes.
+ *
+ * Neutralish grays, with a pure white background.
+ */
+export const defaultTheme: Theme = {
+    name: "default",
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 40%)",
+            "hsl(0, 0%, 13%)",
+            "hsl(0, 0%, 60%)",
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "hsl(0, 0%, 4%)",
+        "hsl(0, 0%, 90%)",
+        "hsl(0, 0%, 50%)",
+        "hsl(0, 0%, 80%)",
+    ]),
+};
+
+/**
+ * The theme used by the front page.
+ */
+export const frontPageTheme: Theme = {
+    name: "front-page",
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 0%)",
+            "hsl(0, 0%, 33%)",
+            "hsl(0, 0%, 30%)",
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "oklch(31.14% 0.021 285.75)",
+        "oklch(100.0% 0.008 286.75)",
+        "oklch(90.00% 0.008 286.75)",
+        "oklch(78.61% 0.021 285.75)",
+        "oklch(78.17% 0.021 260.75)",
+    ]),
+};
+
+/**
+ * A neutral/gray theme meant for text heavy pages.
+ *
+ * It has a pure white background.
+ */
+export const textTheme: Theme = {
+    name: "text",
+    colors: ensure(
+        parseColorPalette([
+            "hsl(0, 0%, 100%)",
+            "hsl(0, 0%, 15%)",
+            "hsl(0, 0%, 23%)",
+            "hsl(0, 0%, 30%)",
+            "hsl(0, 0%, 47%)",
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "hsl(0, 0%, 4%)",
+        "hsl(0, 0%, 94%)",
+        "hsl(0, 0%, 83%)",
+        "hsl(0, 0%, 73%)",
+        "hsl(0, 0%, 60%)",
+    ]),
+};
+
+/**
+ * A neutralish color palette for text posts. It differs from the "text" theme
+ * in that the background is not pure white / black.
+ */
+export const paperTheme: Theme = {
+    name: "paper",
+    colors: ensure(
+        parseColorPalette([
+            "oklch(99.24% 0 0)", // background
+            "oklch(41.28% 0 0)", // text
+            "oklch(24.78% 0 0)", // title
+            "oklch(59.65% 0 0)", // secondary text
+        ]),
+    ),
+    darkColors: parseColorPalette([
+        "oklch(18.67% 0.02 251)",
+        "oklch(86.89% 0 0)",
+        "oklch(95.42% 0 0)",
+        "oklch(75.94% 0 0)",
+    ]),
+};
+
+/** All themes, indexed by their name */
+export const allThemes = [
+    defaultTheme,
+    frontPageTheme,
+    textTheme,
+    paperTheme,
+].reduce(
+    (map, theme) => ((map[theme.name] = theme), map),
+    {} as Record<string, Theme>,
+);
