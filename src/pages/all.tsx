@@ -5,7 +5,7 @@ import { PageColorStyle } from "components/PageColorStyle";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { paperTheme } from "themes/themes";
+import { paperDarkTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -15,7 +15,7 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
 
     return (
         <main>
-            <PageColorStyle {...paperTheme} />
+            <PageColorStyle {...paperDarkTheme} />
             <Column>
                 <Title />
                 <LinkStyleUnderlined>

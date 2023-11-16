@@ -99,6 +99,29 @@ export const paperTheme: Theme = {
         ]),
     ),
     darkColors: parseColorPalette([
+        "oklch(31.14% 0.021 285.75)",
+        "oklch(90.00% 0.008 286.75)",
+        "oklch(100.0% 0.008 286.75)",
+        "oklch(78.61% 0.021 285.75)",
+    ]),
+};
+
+/**
+ * A variation of "paper" with a darker background in dark mode.
+ *
+ * The light mode is unchanged
+ */
+export const paperDarkTheme: Theme = {
+    name: "paper-dark",
+    colors: ensure(
+        parseColorPalette([
+            "oklch(99.24% 0 0)", // background
+            "oklch(41.28% 0 0)", // text
+            "oklch(24.78% 0 0)", // title
+            "oklch(59.65% 0 0)", // secondary text
+        ]),
+    ),
+    darkColors: parseColorPalette([
         "oklch(18.67% 0.02 251)",
         "oklch(86.89% 0 0)",
         "oklch(95.42% 0 0)",
@@ -107,7 +130,12 @@ export const paperTheme: Theme = {
 };
 
 /** All themes, indexed by their name */
-export const allThemes = [defaultTheme, frontPageTheme, paperTheme].reduce(
+export const allThemes = [
+    defaultTheme,
+    frontPageTheme,
+    paperTheme,
+    paperDarkTheme,
+].reduce(
     (map, theme) => ((map[theme.name] = theme), map),
     {} as Record<string, Theme>,
 );
