@@ -1,4 +1,5 @@
 import { Column } from "components/Column";
+import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -55,26 +56,18 @@ const Caption = styled.small`
 
 export const Footer: React.FC = () => {
     return (
-        <FooterContainer>
-            <small>
+        <Footer_>
+            <LinkStyleUnderlined>
                 <Link to="/">Home</Link>
-            </small>
-        </FooterContainer>
+            </LinkStyleUnderlined>
+        </Footer_>
     );
 };
 
-const FooterContainer = styled.div`
+const Footer_ = styled.div`
     margin-block-start: 7rem;
     margin-block-end: 4rem;
-
-    a {
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    a:hover {
-        color: var(--mrmr-color-2);
-    }
+    font-size: 0.8rem;
 `;
 
 export const HRT = styled.hr`

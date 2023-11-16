@@ -96,7 +96,6 @@ export const paperTheme: Theme = {
             "oklch(41.28% 0 0)", // text
             "oklch(24.78% 0 0)", // title
             "oklch(59.65% 0 0)", // secondary text
-            "oklch(59.65% 0 0)", // links
         ]),
     ),
     darkColors: parseColorPalette([
