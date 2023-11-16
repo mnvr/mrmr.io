@@ -158,5 +158,5 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
 };
 
 const RelatedPostsTitle = styled.div`
-    color: var(--mrmr-color-4);
+    font-size: 0.7rem;
 `;
