@@ -100,9 +100,9 @@ export const paperTheme: Theme = {
     ),
     darkColors: parseColorPalette([
         "oklch(31.14% 0.021 285.75)",
-        "oklch(90.00% 0.008 286.75)",
-        "oklch(100.0% 0.008 286.75)",
-        "oklch(78.61% 0.021 285.75)",
+        "oklch(91.00% 0.008 246.75)",
+        "oklch(97.00% 0.008 206.75)",
+        "oklch(78.00% 0.016 246.75)",
     ]),
 };
 

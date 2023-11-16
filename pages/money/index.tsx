@@ -68,6 +68,7 @@ const Title: React.FC = () => {
 const TitleContainer = styled.div`
     margin-block-start: 4rem;
     line-height: 1.5rem;
+    color: var(--mrmr-color-2);
 `;
 
 const Caption = styled.small`
