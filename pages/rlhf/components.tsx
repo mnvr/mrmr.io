@@ -18,9 +18,9 @@ const ContentContainer = styled.div`
     margin-block: 2rem;
 
     hr {
-        opacity: 0.075;
+        opacity: 0.05;
         @media (prefers-color-scheme: dark) {
-            opacity: 0.15;
+            opacity: 0.1;
         }
     }
 `;

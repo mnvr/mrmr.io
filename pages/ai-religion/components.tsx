@@ -1,48 +1,7 @@
-import { WideColumn } from "components/Column";
-import { Link } from "gatsby";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
-import { ensure } from "utils/ensure";
 import { sketch } from "./sketch";
-
-export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return (
-        <WideColumn>
-            <ContentContainer>{children}</ContentContainer>
-        </WideColumn>
-    );
-};
-
-const ContentContainer = styled.div`
-    margin-block: 4rem;
-
-    h3 {
-        margin-block: 2.8rem;
-        color: var(--mrmr-color-2);
-    }
-
-    hr {
-        margin-block: 2.8rem;
-
-        opacity: 0.075;
-        @media (prefers-color-scheme: dark) {
-            opacity: 0.15;
-        }
-    }
-
-    blockquote {
-        font-family: serif;
-        font-style: italic;
-        margin-block-start: 1.5rem;
-        margin-block-end: 2rem;
-    }
-
-    blockquote p {
-        color: var(--mrmr-color-3);
-    }
-`;
 
 export const Sketch: React.FC = () => {
     return (
@@ -71,53 +30,4 @@ const Sketch_ = styled.div`
     min-height: 300px;
     margin-block-start: 2.9rem;
     margin-block-end: 2.5rem;
-`;
-
-/* TODO - Dedup with attachment-to-words */
-export const Signoff: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedDateMY } = page;
-
-    return (
-        <Signoff_>
-            <small>
-                Manav Rathi
-                <br />
-                {formattedDateMY}
-            </small>
-        </Signoff_>
-    );
-};
-
-const Signoff_ = styled.div`
-    margin-block-start: 2rem;
-
-    line-height: 1.1rem;
-    color: var(--mrmr-color-3);
-`;
-
-export const Footer: React.FC = () => {
-    return (
-        <Footer_>
-            <small>
-                <Link to={"/"}>Home</Link>
-            </small>
-        </Footer_>
-    );
-};
-
-const Footer_ = styled.div`
-    margin-block-start: 2rem;
-    @media (min-width: 600px) {
-        margin-block-start: 3rem;
-    }
-
-    a {
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    a:hover {
-        color: var(--mrmr-color-2);
-    }
 `;

@@ -45,6 +45,15 @@ const Content_ = styled.div`
     blockquote p {
         line-height: 1.2rem;
     }
+
+    hr {
+        margin-block: 2.6rem;
+        opacity: 0.05;
+        @media (prefers-color-scheme: dark) {
+            opacity: 0.1;
+        }
+        width: 50%;
+    }
 `;
 
 /**
@@ -67,6 +76,18 @@ const Title_ = styled.h3`
     line-height: 1.5rem;
     color: var(--mrmr-color-2);
 `;
+
+/**
+ * A simple H3 containing the page description.
+ *
+ * Designed for use at top of the page, in lieu of the page title.
+ */
+export const DescAsTitle: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { description } = page;
+
+    return <Title_>{description}</Title_>;
+};
 
 /**
  * Author and date in subdued, small text.
