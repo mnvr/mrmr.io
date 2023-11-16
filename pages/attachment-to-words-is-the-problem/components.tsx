@@ -1,4 +1,5 @@
 import { WideColumn } from "components/Column";
+import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -100,17 +101,19 @@ export const Footer: React.FC = () => {
 
     return (
         <Footer_>
-            {relatedPageLinks.length > 0 && (
-                <RelatedPosts links={relatedPageLinks} />
-            )}
-            <Link to={"/all"}>All posts</Link>
-            <br />
-            <Link to={"/"}>Home</Link>
+            <LinkStyleUnderlined>
+                {relatedPageLinks.length > 0 && (
+                    <RelatedPosts links={relatedPageLinks} />
+                )}
+                <Link to={"/all"}>All posts</Link>
+                <br />
+                <Link to={"/"}>Home</Link>
+            </LinkStyleUnderlined>
         </Footer_>
     );
 };
 
-const Footer_ = styled.div`
+const Footer_ = styled.footer`
     /* For a perfect vertical cadence, this should be 2 rem. However, the
        line-height for text in the footer is not 1 rem but is instead 2.4 rem,
        and the text is positioned in the center of that 2.2 rem block. So we
@@ -125,23 +128,6 @@ const Footer_ = styled.div`
         margin: 0;
         list-style: circle;
         padding-inline-start: 1.6rem;
-    }
-
-    a {
-        text-decoration: none;
-        font-weight: 500;
-        border-bottom: 1px solid blue;
-    }
-
-    a:visited {
-        border-bottom-color: purple;
-    }
-
-    a:hover {
-        /* color: var(--mrmr-background-color-1); */
-        color: black;
-        background-color: yellow;/*oklch(19.74% 0 0);*/
-        /* border-bottom-color: transparent; */
     }
 `;
 

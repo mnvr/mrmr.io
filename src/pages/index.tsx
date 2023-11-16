@@ -13,7 +13,7 @@ import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette } from "parsers/colors";
 import { parseLinks } from "parsers/links";
-import React from "react";
+import * as React from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";
 import { frontPageTheme } from "themes/themes";

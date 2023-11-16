@@ -1,8 +1,9 @@
 import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
+import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
-import React from "react";
+import * as React from "react";
 import styled from "styled-components";
 import { paperTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
@@ -17,8 +18,10 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
             <PageColorStyle {...paperTheme} />
             <Column>
                 <Title />
-                <PageListing {...{ pages }} />
-                <Footer />
+                <LinkStyleUnderlined>
+                    <PageListing {...{ pages }} />
+                    <Footer />
+                </LinkStyleUnderlined>
             </Column>
         </main>
     );
@@ -157,23 +160,8 @@ const PageListing_ = styled.ul`
     line-height: 1.2rem;
 
     a {
-        text-decoration: none;
-        border-bottom: 2px solid blue;
+        border-bottom-width: 2px;
         font-weight: 600;
-    }
-
-    a:visited {
-        border-bottom-color: purple;
-    }
-
-    a:hover {
-        border-bottom-color: transparent;
-        background-color: hsl(60, 100%, 85%);
-        color: oklch(40% 0 0);
-        @media (prefers-color-scheme: dark) {
-            background-color: yellow;
-            color: oklch(20% 0 0);
-        }
     }
 `;
 
@@ -209,19 +197,8 @@ export const Footer: React.FC = () => {
     );
 };
 
-const Footer_ = styled.div`
+const Footer_ = styled.footer`
     margin-block-start: 6rem;
     margin-block-end: 3rem;
     font-size: 0.8rem;
-
-    a {
-        text-decoration: none;
-        font-weight: 500;
-        opacity: 0.62;
-    }
-
-    a:hover {
-        color: var(--mrmr-color-2);
-        opacity: 1;
-    }
 `;
