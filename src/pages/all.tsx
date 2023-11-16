@@ -168,9 +168,10 @@ const PageListing_ = styled.ul`
 
     a:hover {
         border-bottom-color: transparent;
-        background-color: yellow;
+        background-color: hsl(60, 100%, 85%);
         color: oklch(40% 0 0);
         @media (prefers-color-scheme: dark) {
+            background-color: yellow;
             color: oklch(20% 0 0);
         }
     }
