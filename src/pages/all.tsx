@@ -163,20 +163,15 @@ const PageListing_ = styled.ul`
     }
 
     a:visited {
-        /* What I wanted was this
-        border-bottom-width: 1px
-           but that does not work for the :visited pseudo selector due
-           security / privacy restrictions */
         border-bottom-color: purple;
     }
 
     a:hover {
-        /* Slightly darker (lighter for dark mode) versions of the
-           background color from the color theme used in this page
-           ("paper") */
-        background-color: oklch(96.74% 0 0);
+        border-bottom-color: transparent;
+        background-color: yellow;
+        color: oklch(40% 0 0);
         @media (prefers-color-scheme: dark) {
-            background-color: oklch(21.67% 0.02 251);
+            color: oklch(20% 0 0);
         }
     }
 `;

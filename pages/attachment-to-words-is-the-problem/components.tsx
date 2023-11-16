@@ -118,7 +118,7 @@ const Footer_ = styled.div`
        between the text <--> signoff and signoff <--> footer look rhythmic. */
     margin-block-start: 2.4rem;
 
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     line-height: 2.2rem;
 
     ul {
@@ -130,11 +130,18 @@ const Footer_ = styled.div`
     a {
         text-decoration: none;
         font-weight: 500;
-        color: var(--mrmr-color-1);
+        border-bottom: 1px solid blue;
+    }
+
+    a:visited {
+        border-bottom-color: purple;
     }
 
     a:hover {
-        color: var(--mrmr-color-2);
+        /* color: var(--mrmr-background-color-1); */
+        color: black;
+        background-color: yellow;/*oklch(19.74% 0 0);*/
+        /* border-bottom-color: transparent; */
     }
 `;
 
@@ -145,7 +152,7 @@ interface RelatedPostsProps {
 const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
     return (
         <div>
-            <RelatedPostsTitle>Related posts</RelatedPostsTitle>
+            <div>Related posts</div>
             <ul>
                 {links.map(({ slug, title }) => (
                     <li key={slug}>
@@ -156,7 +163,3 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
         </div>
     );
 };
-
-const RelatedPostsTitle = styled.div`
-    font-size: 0.7rem;
-`;
