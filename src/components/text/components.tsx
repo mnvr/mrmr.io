@@ -3,7 +3,7 @@ import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, PageLink } from "templates/page";
+import { BuildTimePageContext, Page, PageLink } from "templates/page";
 import { ensure } from "utils/ensure";
 
 /**
@@ -127,6 +127,12 @@ export const Footer: React.FC = () => {
                 {relatedPageLinks.length > 0 && (
                     <RelatedPosts links={relatedPageLinks} />
                 )}
+                {showPoemsLink(page) && (
+                    <>
+                        <Link to={"/poems"}>More poems</Link>
+                        <br />
+                    </>
+                )}
                 <Link to={"/all"}>All posts</Link>
                 <br />
                 <Link to={"/"}>Home</Link>
@@ -171,3 +177,11 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
         </div>
     );
 };
+
+/**
+ * Return true if we should include a link to /poems in the footer.
+ *
+ * If the tags for a page include "poem", we want to include a link to all poems
+ * in the footer. This function figures out if that is indeed the case.
+ */
+const showPoemsLink = (page: Page) => page.tags.includes("poem");

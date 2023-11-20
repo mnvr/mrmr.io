@@ -87,6 +87,7 @@ export const query = graphql`
                 colors
                 dark_colors
                 theme
+                tags
                 related
             }
             fields {
@@ -116,6 +117,13 @@ export interface Page {
      * sets instead of specifying the individual colors.
      */
     theme?: string;
+    /**
+     * A list of (possibly empty) tags for the page.
+     *
+     * This list is populated from the "tags" field in the frontmatter. Some of
+     * the tags have special meaning attached to them.
+     */
+    tags: string[];
     /**
      * A list of (links to) related pages.
      *
@@ -190,6 +198,13 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         pageMP3s[node.name] = ensure(node.publicURL);
     });
 
+    let tags: string[] = [];
+    frontmatter?.tags?.forEach((t?: string) => {
+        if (t) {
+            tags.push(t);
+        }
+    });
+
     // To obtain the titles corresponding to related pages, we need to join
     // using the slugs of related pages (if any) specified in the frontmatter of
     // this page. There might be better (but more involved) ways of doing this:
@@ -225,6 +240,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         colors,
         darkColors,
         theme,
+        tags,
         relatedPageLinks,
         images: pageImages,
         mp3s: pageMP3s,
