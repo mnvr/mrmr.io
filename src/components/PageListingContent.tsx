@@ -5,6 +5,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
+import { isHindiContent } from "utils/tags";
 
 interface PageListingContentProps {
     title: string;
@@ -134,11 +135,22 @@ const SectionHeader = styled.h4`
     margin-block-end: 0rem;
 `;
 
-const PageItem: React.FC<PageListingPage> = ({ title, description, slug }) => {
+const PageItem: React.FC<PageListingPage> = (page) => {
+    const { title, description, slug } = page;
+    const isHindi = isHindiContent(page);
+    const separator = isHindi ? "।" : ".";
+
+    // Incerase the line height for Hindi titles  - the default of 1.2rem
+    // (declared in PageListing_) makes the Devanagari alphabet squished.
+    //
+    // This probably shouldn't be done for all fonts, but needs to be done on
+    // macOS at least.
+    const lineHeight = isHindi ? "1.6rem" : "1.2rem";
+
     return (
-        <li>
-            <Link to={slug}>{title}</Link>.{" "}
-            <Description>{description}</Description>
+        <li style={{ lineHeight }}>
+            <Link to={slug}>{title}</Link>
+            {separator} <Description>{description}</Description>
         </li>
     );
 };
