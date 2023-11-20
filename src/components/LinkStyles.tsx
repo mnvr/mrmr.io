@@ -16,6 +16,12 @@ export const LinkStyleUnderlined = styled.div`
         font-weight: 500;
     }
 
+    @media (prefers-color-scheme: dark) {
+        a {
+            border-bottom-color: royalblue;
+        }
+    }
+
     a:visited {
         border-bottom-color: purple;
     }
