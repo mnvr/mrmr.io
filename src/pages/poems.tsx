@@ -1,7 +1,7 @@
 import { DefaultHead } from "components/Head";
-import ListingPageContent, {
-    PageListingPage,
-} from "components/ListingPageContent";
+import PageListingContent, {
+    type PageListingPage,
+} from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import { ensure } from "utils/ensure";
@@ -11,7 +11,7 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
-    return <ListingPageContent title="poems" pages={pages} />;
+    return <PageListingContent title="poems" pages={pages} />;
 };
 
 export default PoemsPage;

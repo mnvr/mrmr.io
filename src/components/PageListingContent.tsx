@@ -6,7 +6,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
 
-interface ListingPageContentProps {
+interface PageListingContentProps {
     title: string;
     /** The ordered list of pages to show */
     pages: PageListingPage[];
@@ -31,7 +31,7 @@ export interface PageListingPage {
  * almost identical looking listings that differ slightly in the types of pages
  * they show etc.
  */
-const ListingPageContent: React.FC<ListingPageContentProps> = ({
+const PageListingContent: React.FC<PageListingContentProps> = ({
     title,
     pages,
 }) => {
@@ -49,7 +49,7 @@ const ListingPageContent: React.FC<ListingPageContentProps> = ({
     );
 };
 
-export default ListingPageContent;
+export default PageListingContent;
 
 const Title: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
