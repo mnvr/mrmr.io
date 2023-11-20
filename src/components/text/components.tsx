@@ -97,7 +97,7 @@ export const Signoff: React.FC = () => {
     return (
         <Signoff_>
             <small>
-                Manav Rathi
+                {isHindiContent(page) ? "मानव राठी" : "Manav Rathi"}
                 <br />
                 {formattedDateMY}
             </small>
@@ -177,6 +177,13 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
         </div>
     );
 };
+
+/**
+ * Return true if the content is in Hindi.
+ *
+ * This looks for the "hindi" tag.
+ */
+const isHindiContent = (page: Page) => page.tags.includes("hindi");
 
 /**
  * Return true if we should include a link to /poems in the footer.
