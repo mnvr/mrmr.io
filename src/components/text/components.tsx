@@ -147,7 +147,7 @@ const Footer_ = styled.footer`
        and the text is positioned in the center of that 2.2 rem block. So we
        need to subtract from the desired margin to visually make the distance
        between the text <--> signoff and signoff <--> footer look rhythmic. */
-    margin-block-start: 2.4rem;
+    margin-block-start: 2.9rem;
 
     font-size: 0.9rem;
     line-height: 2.2rem;
