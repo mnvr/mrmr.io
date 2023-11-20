@@ -7,6 +7,7 @@ import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import TextLayout from "layouts/text";
+import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { parseTags } from "parsers/tags";
 import * as React from "react";
@@ -14,6 +15,7 @@ import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
+import { isHindiContent } from "utils/tags";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -317,7 +319,11 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
         case "basic":
             return <BasicLayout>{children}</BasicLayout>;
         case "text":
-            return <TextLayout>{children}</TextLayout>;
+            return isHindiContent(page) ? (
+                <TextHindiLayout>{children}</TextHindiLayout>
+            ) : (
+                <TextLayout>{children}</TextLayout>
+            );
         default:
             return <>{children}</>;
     }

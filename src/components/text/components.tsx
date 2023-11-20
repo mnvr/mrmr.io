@@ -5,7 +5,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, PageLink } from "templates/page";
 import { ensure } from "utils/ensure";
-import { isHindiContent, isPoem } from "utils/tags";
+import { isPoem } from "utils/tags";
 
 /**
  * Container for a width-limited column.
@@ -14,9 +14,9 @@ import { isHindiContent, isPoem } from "utils/tags";
  * - Initially designed to work with the "paper" theme.
  *
  * The rest of this file contains other components that work well with this
- * Container. They all are used by the "text" layout, but they're all
- * individually exported from here too in case some page wants to piecemeal use
- * these components without using the whole layout.
+ * Container. They all are used by the "text" (and "text-hindi") layout, but
+ * they're all individually exported from here too in case some page wants to
+ * piecemeal use these components without using the whole layout.
  */
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
@@ -98,7 +98,25 @@ export const Signoff: React.FC = () => {
     return (
         <Signoff_>
             <small>
-                {isHindiContent(page) ? "मानव राठी" : "Manav Rathi"}
+                Manav Rathi
+                <br />
+                {formattedSignoffDate}
+            </small>
+        </Signoff_>
+    );
+};
+
+/**
+ * Variant of {@link Signoff} for pages with Hindi content.
+ */
+export const SignoffHindi: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { formattedSignoffDate } = page;
+
+    return (
+        <Signoff_>
+            <small>
+                मानव राठी
                 <br />
                 {formattedSignoffDate}
             </small>
