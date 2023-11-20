@@ -73,11 +73,13 @@ const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
 /**
  * Strip off "A poem" from the end of a the description field.
  *
- * The description field in poems usually ends with ". A poem.". This is fine in
- * the context where such pages are listed otherwise, or shown as a preview
- * off-site, but in this page we already have mentioned that we are just listing
- * poems, so it is just noise (or worse even, the proliferation of the word poem
- * is bordering on an cognital infestation).
+ * The description field in poems usually ends with ". A poem\." (the first dot
+ * stands for any character, the second dot is literal).
+ *
+ * This is fine in the context where such pages are listed otherwise, or shown
+ * as a preview off-site, but in this page we already have mentioned that we are
+ * just listing poems, so it is just noise (or worse even, the proliferation of
+ * the word poem is bordering on an cognital infestation).
  */
 const pruneDescription = (description?: string) =>
-    description?.replace(/\. A poem\.$/, ".");
+    description?.replace(/. A poem\.$/, ".");
