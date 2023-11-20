@@ -198,12 +198,10 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         pageMP3s[node.name] = ensure(node.publicURL);
     });
 
-    let tags: string[] = [];
-    frontmatter?.tags?.forEach((t?: string) => {
-        if (t) {
-            tags.push(t);
-        }
-    });
+    const tags =
+        frontmatter?.tags?.filter(
+            (t): t is Exclude<typeof t, undefined> => t !== undefined,
+        ) ?? [];
 
     // To obtain the titles corresponding to related pages, we need to join
     // using the slugs of related pages (if any) specified in the frontmatter of
