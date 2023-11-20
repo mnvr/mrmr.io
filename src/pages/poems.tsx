@@ -17,11 +17,11 @@ const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
 export default PoemsPage;
 
 export const Head: HeadFC = ({}) => {
-    const titleSuffix = "Poems";
+    const titlePrefix = "Poems";
     const description = "Listing of all poems on mrmr.io";
     const canonicalPath = "/poems";
 
-    return <DefaultHead {...{ titleSuffix, description, canonicalPath }} />;
+    return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
 
 /**

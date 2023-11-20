@@ -30,11 +30,11 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
 export default AllPage;
 
 export const Head: HeadFC = ({}) => {
-    const titleSuffix = "all posts";
+    const titlePrefix = "All posts";
     const description = "Listing of all posts on mrmr.io";
     const canonicalPath = "/all";
 
-    return <DefaultHead {...{ titleSuffix, description, canonicalPath }} />;
+    return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
 
 /**

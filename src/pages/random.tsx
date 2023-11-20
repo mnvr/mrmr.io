@@ -26,7 +26,7 @@ const RandomPage: React.FC<PageProps<Queries.RandomPageQuery>> = ({ data }) => {
 
 export default RandomPage;
 
-export const Head: HeadFC = () => <DefaultHead titleSuffix="Random 🎲" />;
+export const Head: HeadFC = () => <DefaultHead titlePrefix="Random 🎲" />;
 
 /**
  * Fetch slugs for all pages.

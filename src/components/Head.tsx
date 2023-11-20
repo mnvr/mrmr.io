@@ -10,20 +10,20 @@ interface HeadProps {
     /**
      * Title of the page
      *
-     * Alternatively, @see {@link titleSuffix} which uses the default site
-     * title as the prefix.
+     * Alternatively, @see {@link titlePrefix} to use the default site title but
+     * with an additional prefix.
      *
      * If neither of them are specified, then the default site title is used.
      */
     title?: string;
 
     /**
-     * A suffix that is appended to the site title (separated by "|") to
+     * A prefix that is prepended to the default site title (separated by "•") to
      * generate the title of the page.
      *
      * @see {@link title} for providing a full string instead.
      */
-    titleSuffix?: string;
+    titlePrefix?: string;
 
     /**
      * Page description (optional)
@@ -73,7 +73,7 @@ interface HeadProps {
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     title,
-    titleSuffix,
+    titlePrefix,
     description,
     canonicalPath,
     previewImagePath,
@@ -95,7 +95,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
 
     const siteTitle = site?.siteMetadata?.title;
     const pageTitle =
-        title ?? [siteTitle, titleSuffix].filter(isDefined).join(" | ");
+        title ?? [titlePrefix, siteTitle].filter(isDefined).join(" • ");
 
     let canonicalURL: string | undefined;
     if (canonicalPath === "") {
