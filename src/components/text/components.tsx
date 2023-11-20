@@ -93,14 +93,14 @@ export const DescAsTitle: React.FC = () => {
  */
 export const Signoff: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedDateMY } = page;
+    const { formattedSignoffDate } = page;
 
     return (
         <Signoff_>
             <small>
                 {isHindiContent(page) ? "मानव राठी" : "Manav Rathi"}
                 <br />
-                {formattedDateMY}
+                {formattedSignoffDate}
             </small>
         </Signoff_>
     );

@@ -106,6 +106,7 @@ export const query = graphql`
                 description
                 formattedDateMY: date(formatString: "MMM YYYY")
                 formattedDateDMY: date(formatString: "DD MMMM YYYY")
+                formatted_signoff_date
                 layout
                 colors
                 dark_colors
@@ -132,6 +133,14 @@ export interface Page {
     formattedDateMY?: string;
     /** The date from the frontmatter, formatted as "17 February 2023" */
     formattedDateDMY?: string;
+    /**
+     * The date string to show in the signoff section.
+     *
+     * By default, this is the same as {@link formattedDateMY}. However, a page
+     * can choose to override and directly specify this if it wishes by setting
+     * the "signoff-date" field in the frontmatter.
+     */
+    formattedSignoffDate?: string;
     layout?: string;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
@@ -195,6 +204,9 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const tags = parseTags(frontmatter?.tags);
     const related = frontmatter?.related;
 
+    const formattedSignoffDate =
+        frontmatter?.formatted_signoff_date ?? formattedDateMY;
+
     const slug = ensure(mdx?.fields?.slug);
 
     const description = descriptionOrFallback(frontmatter?.description);
@@ -254,6 +266,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         layout,
         formattedDateMY,
         formattedDateDMY,
+        formattedSignoffDate,
         colors,
         darkColors,
         theme,
