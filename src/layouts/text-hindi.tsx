@@ -9,7 +9,7 @@ export const TextHindiLayout: React.FC<React.PropsWithChildren> = ({
             <C.Title />
             {children}
             <C.SignoffHindi />
-            <C.Footer />
+            <C.FooterHindi />
         </C.Container>
     );
 };

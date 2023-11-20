@@ -160,6 +160,33 @@ export const Footer: React.FC = () => {
     );
 };
 
+/**
+ * A variant of {@link Footer} for pages with Hindi content.
+ */
+export const FooterHindi: React.FC = () => {
+    const page = ensure(React.useContext(BuildTimePageContext));
+    const { relatedPageLinks } = page;
+
+    return (
+        <Footer_>
+            <LinkStyleUnderlined>
+                {relatedPageLinks.length > 0 && (
+                    <RelatedPosts links={relatedPageLinks} />
+                )}
+                {isPoem(page) && (
+                    <>
+                        <Link to={"/poems"}>और कविताएँ</Link>
+                        <br />
+                    </>
+                )}
+                <Link to={"/all"}>सारी रचनाएँ</Link>
+                <br />
+                <Link to={"/"}>प्रारंभ</Link>
+            </LinkStyleUnderlined>
+        </Footer_>
+    );
+};
+
 const Footer_ = styled.footer`
     /* For a perfect vertical cadence, this should be 2 rem. However, the
        line-height for text in the footer is not 1 rem but is instead 2.4 rem,
@@ -182,17 +209,32 @@ interface RelatedPostsProps {
     links: PageLink[];
 }
 
-const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
+const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
             <div>Related posts</div>
-            <ul>
-                {links.map(({ slug, title }) => (
-                    <li key={slug}>
-                        <Link to={slug}>{title}</Link>
-                    </li>
-                ))}
-            </ul>
+            <RelatedPostsList {...props} />
         </div>
+    );
+};
+
+const RelatedPostsHindi: React.FC<RelatedPostsProps> = (props) => {
+    return (
+        <div>
+            <div>सम्बन्धित रचनाएँ</div>
+            <RelatedPostsList {...props} />
+        </div>
+    );
+};
+
+const RelatedPostsList: React.FC<RelatedPostsProps> = ({ links }) => {
+    return (
+        <ul>
+            {links.map(({ slug, title }) => (
+                <li key={slug}>
+                    <Link to={slug}>{title}</Link>
+                </li>
+            ))}
+        </ul>
     );
 };

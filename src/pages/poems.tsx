@@ -73,7 +73,7 @@ const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
             ? pruneHindiDescription(desc)
             : pruneDescription(desc);
 
-            return { slug, title, description, formattedDateMY, tags };
+        return { slug, title, description, formattedDateMY, tags };
     });
 };
 
