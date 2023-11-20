@@ -1,14 +1,36 @@
 import { DefaultHead } from "components/Head";
-import { graphql, type HeadFC } from "gatsby";
+import {
+    PageColorStyle,
+    paletteSetOrFallback,
+} from "components/PageColorStyle";
+import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import TextLayout from "layouts/text";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
+import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
-import { PageTemplate } from "./PageTemplate";
+
+const PageTemplate: React.FC<
+    PageProps<Queries.PageTemplateQuery, PageTemplateContext>
+> = ({ data, children }) => {
+    const page = parsePage(data);
+    const colorPalettes = paletteSetOrFallback(
+        page,
+        page.theme ? allThemes[page.theme] : undefined,
+        defaultTheme,
+    );
+
+    return (
+        <main>
+            <PageColorStyle {...colorPalettes} />
+            <Layout page={page}>{children}</Layout>
+        </main>
+    );
+};
 
 export default PageTemplate;
 
