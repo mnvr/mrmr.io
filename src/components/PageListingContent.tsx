@@ -136,21 +136,36 @@ const SectionHeader = styled.h4`
 `;
 
 const PageItem: React.FC<PageListingPage> = (page) => {
+    if (isHindiContent(page)) return HindiPageItem(page);
+
     const { title, description, slug } = page;
-    const isHindi = isHindiContent(page);
-    const separator = isHindi ? "।" : ".";
+    return (
+        <li>
+            <Link to={slug}>{title}</Link>
+            {". "}
+            <Description>{description}</Description>
+        </li>
+    );
+};
+
+const HindiPageItem: React.FC<PageListingPage> = (page) => {
+    const { title, description, slug } = page;
 
     // Incerase the line height for Hindi titles  - the default of 1.2rem
     // (declared in PageListing_) makes the Devanagari alphabet squished.
     //
     // This probably shouldn't be done for all fonts, but needs to be done on
     // macOS at least.
-    const lineHeight = isHindi ? "1.6rem" : "1.2rem";
+    const lineHeight = "1.6rem";
+
+    // Also override the font size 1.05rem in the `Description` element.
+    const fontSize = "1rem";
 
     return (
         <li style={{ lineHeight }}>
             <Link to={slug}>{title}</Link>
-            {separator} <Description>{description}</Description>
+            {"। "}
+            <Description style={{ fontSize }}>{description}</Description>
         </li>
     );
 };

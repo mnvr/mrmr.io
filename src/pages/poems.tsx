@@ -3,6 +3,7 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
+import { parseTags } from "parsers/tags";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -45,6 +46,7 @@ export const query = graphql`
                     title
                     description
                     formattedDateMY: date(formatString: "MMM YYYY")
+                    tags
                 }
                 fields {
                     slug
@@ -63,10 +65,15 @@ const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
         const slug = ensure(fields?.slug);
 
         const title = ensure(frontmatter?.title);
-        const description = pruneDescription(frontmatter?.description);
         const formattedDateMY = ensure(frontmatter?.formattedDateMY);
+        const tags = parseTags(frontmatter?.tags);
 
-        return { slug, title, description, formattedDateMY };
+        const desc = frontmatter?.description;
+        const description = tags.includes("hindi")
+            ? pruneHindiDescription(desc)
+            : pruneDescription(desc);
+
+            return { slug, title, description, formattedDateMY, tags };
     });
 };
 
@@ -83,3 +90,7 @@ const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
  */
 const pruneDescription = (description?: string) =>
     description?.replace(/. A poem\.$/, ".");
+
+/** Variant of {@link pruneDescription} but for hindi poems */
+const pruneHindiDescription = (description?: string) =>
+    description?.replace(/एक कविता।$/, "");
