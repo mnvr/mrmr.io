@@ -3,6 +3,7 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
+import { parseTags } from "parsers/tags";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -46,6 +47,7 @@ export const query = graphql`
                     title
                     description
                     formattedDateMY: date(formatString: "MMM YYYY")
+                    tags
                 }
                 fields {
                     slug
@@ -66,7 +68,8 @@ const parsePages = (data: Queries.AllPageQuery): PageListingPage[] => {
         const title = ensure(frontmatter?.title);
         const description = frontmatter?.description;
         const formattedDateMY = ensure(frontmatter?.formattedDateMY);
+        const tags = parseTags(frontmatter?.tags);
 
-        return { slug, title, description, formattedDateMY };
+        return { slug, title, description, formattedDateMY, tags };
     });
 };

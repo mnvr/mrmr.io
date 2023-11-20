@@ -3,8 +3,9 @@ import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, Page, PageLink } from "templates/page";
+import { BuildTimePageContext, PageLink } from "templates/page";
 import { ensure } from "utils/ensure";
+import { isHindiContent, isPoem } from "utils/tags";
 
 /**
  * Container for a width-limited column.
@@ -127,7 +128,7 @@ export const Footer: React.FC = () => {
                 {relatedPageLinks.length > 0 && (
                     <RelatedPosts links={relatedPageLinks} />
                 )}
-                {showPoemsLink(page) && (
+                {isPoem(page) && (
                     <>
                         <Link to={"/poems"}>More poems</Link>
                         <br />
@@ -177,18 +178,3 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ links }) => {
         </div>
     );
 };
-
-/**
- * Return true if the content is in Hindi.
- *
- * This looks for the "hindi" tag.
- */
-const isHindiContent = (page: Page) => page.tags.includes("hindi");
-
-/**
- * Return true if we should include a link to /poems in the footer.
- *
- * If the tags for a page include "poem", we want to include a link to all poems
- * in the footer. This function figures out if that is indeed the case.
- */
-const showPoemsLink = (page: Page) => page.tags.includes("poem");

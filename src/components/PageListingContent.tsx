@@ -18,6 +18,7 @@ export interface PageListingPage {
     slug: string;
     description?: string;
     formattedDateMY: string;
+    tags: string[];
 }
 
 /**

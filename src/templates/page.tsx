@@ -8,6 +8,7 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import BasicLayout from "layouts/basic";
 import TextLayout from "layouts/text";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import { parseTags } from "parsers/tags";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
@@ -191,6 +192,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
+    const tags = parseTags(frontmatter?.tags);
     const related = frontmatter?.related;
 
     const slug = ensure(mdx?.fields?.slug);
@@ -219,11 +221,6 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     mp3s.nodes.forEach((node) => {
         pageMP3s[node.name] = ensure(node.publicURL);
     });
-
-    const tags =
-        frontmatter?.tags?.filter(
-            (t): t is Exclude<typeof t, undefined> => t !== undefined,
-        ) ?? [];
 
     // To obtain the titles corresponding to related pages, we need to join
     // using the slugs of related pages (if any) specified in the frontmatter of
