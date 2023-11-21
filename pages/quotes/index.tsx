@@ -20,7 +20,22 @@ const Quotes: React.FC = () => {
     const parsedQuotes = parseQuotes(quotes);
     const randomQuote = ensure(randomItem(parsedQuotes.quotes));
 
-    return <Quote quote={randomQuote} parsedQuotes={parsedQuotes} />;
+    const [quote, setQuote] = React.useState(randomQuote);
+
+    // Follow the hyperlink from the given word (in the current quote) to some
+    // other (randomly selected) quote. Update the display by using setQuote to
+    // update the current quote.
+    const traverse = (word: string) => {
+        const { quotesForWord } = parsedQuotes;
+        const otherQuotes = ensure(quotesForWord.get(word)).filter(
+            (q) => q !== quote,
+        );
+        setQuote(ensure(randomItem(otherQuotes)));
+    };
+
+    return (
+        <Quote quote={quote} parsedQuotes={parsedQuotes} traverse={traverse} />
+    );
 };
 
 interface ParsedQuotes {
@@ -42,7 +57,7 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
             .forEach((word) => {
                 quotesForWord.set(
                     word,
-                    (quotesForWord.get(word) ?? []).concat([word]),
+                    (quotesForWord.get(word) ?? []).concat([quote]),
                 );
             });
     });
@@ -70,22 +85,32 @@ const words = (s: string) => s.split(/\s+/).filter((s) => s);
 const ignoredWords = new Set<string>(["the", "is", "a"]);
 
 interface QuoteProps {
+    /** The quote text to show */
     quote: string;
+    /** The parsed quote database */
     parsedQuotes: ParsedQuotes;
+    /**
+     * A function to call when the user clicks on the given word (that we know
+     * also exists in other quotes).
+     */
+    traverse: (word: string) => void;
 }
 
-const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
+const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes, traverse }) => {
     const { quotesForWord } = parsedQuotes;
 
-    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        console.log(typeof e, e);
-        e.preventDefault();
+    const makeHandleClick = (word: string) => {
+        return (e: React.MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            traverse(word);
+        };
     };
 
     const spans = words(quote).map((word) => {
-        if (quotesForWord.has(word.toLowerCase())) {
+        const key = word.toLowerCase();
+        if (quotesForWord.has(key)) {
             return (
-                <a href="#" onClick={handleClick}>
+                <a href="#" onClick={makeHandleClick(key)}>
                     {word}
                 </a>
             );
@@ -94,7 +119,8 @@ const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
         }
     });
 
-    // Intersperse the words with spaces
+    // Intersperse the words with spaces (this'll result in an extra space at
+    // the end, but that should be fine).
     const sentence = spans.reduce(
         (xs, span) => {
             return xs.concat([span, <span> </span>]);
