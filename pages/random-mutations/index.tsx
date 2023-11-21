@@ -1,54 +1,23 @@
+import * as T from "components/text/components";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext } from "templates/page";
-import { ensure } from "utils/ensure";
 
 export const Content: React.FC = () => {
     return (
-        <div>
-            {/* <Title /> */}
+        <Main>
+            <T.Title />
             <CodeBlocks />
             <About />
-        </div>
+            <T.Signoff />
+            <T.Footer />
+        </Main>
     );
 };
 
-const Title2: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    const { title } = page;
-
-    return (
-        <div>
-            <h2>{title}</h2>
-            <Signoff>
-                <small>
-                    Manav Rathi
-                    <br />
-                    Summer, 2019
-                </small>
-            </Signoff>
-        </div>
-    );
-};
-
-const Signoff = styled.p`
-    margin-top: -0.5rem;
-    color: var(--mrmr-color-3);
-    margin-bottom: 2rem;
-`;
-
-const Content_ = styled.div`
-    @media (min-width: 40em) {
-        body {
-            /* margin: 4em; */
-        }
-    }
-
-    header p {
-        margin-top: -0.5rem;
-        opacity: 0.8;
-        font-style: italic;
-        margin-bottom: 2rem;
+const Main = styled.main`
+    margin: 1rem;
+    @media (min-width: 30rem) {
+        margin: 2rem;
     }
 `;
 
@@ -106,17 +75,51 @@ const CodeBlocks_ = styled.div`
 export const About: React.FC = () => {
     return (
         <About_>
-            Tiny, single letter <b>random mutations</b> are enough for evolution
-            to explore vast landscapes. A demonstration using code, but the same
-            principle applies to single letter changes in DNA.
+            <p>
+                Tiny, single letter <b>random mutations</b> are enough for
+                evolution to explore vast landscapes. A demonstration using
+                code, but the same principle applies to single letter changes in
+                DNA.
+            </p>
+
+            <p>
+                The code on the left (
+                <code>
+                    <b>dfs</b>
+                </code>
+                ) does a depth first search, the code on the right (
+                <code>
+                    <b>bfs</b>
+                </code>
+                ) does a breath first search. These are two entirely different
+                algorithms, with entirely different outcomes. Yet the difference
+                in the code between the two is just a single letter (The extra{" "}
+                <code>
+                    <b>0</b>
+                </code>{" "}
+                in the{" "}
+                <code>
+                    <b>bfs</b>
+                </code>{" "}
+                version).
+            </p>
+
+            <p>
+                It is totally conceivable to imagine a mindless evolutionary
+                process that makes this single letter "mistake" when copying
+                over the code (or DNA), and ends up with an entirely different
+                organism than its peers. Thereafter, it is just lather, rinse
+                and repeat.
+            </p>
         </About_>
     );
 };
 
 const About_ = styled.p`
     font-size: 0.9rem;
+    max-width: 36rem;
 
-    b {
+    p:first-child b {
         color: red;
     }
 `;
