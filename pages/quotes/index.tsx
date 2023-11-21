@@ -77,9 +77,18 @@ interface QuoteProps {
 const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
     const { quotesForWord } = parsedQuotes;
 
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        console.log(typeof e, e);
+        e.preventDefault();
+    };
+
     const spans = words(quote).map((word) => {
         if (quotesForWord.has(word.toLowerCase())) {
-            return <a href="#">{word}</a>;
+            return (
+                <a href="#" onClick={handleClick}>
+                    {word}
+                </a>
+            );
         } else {
             return <span>{word}</span>;
         }
