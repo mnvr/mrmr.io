@@ -8,7 +8,7 @@ import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** Show a listing of all pages tagged "poem" */
+/** A listing of all pages tagged "poem" */
 const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
@@ -17,7 +17,7 @@ const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
 
 export default PoemsPage;
 
-export const Head: HeadFC = ({}) => {
+export const Head: HeadFC = () => {
     const titlePrefix = "Poems";
     const description = "Listing of all poems on mrmr.io";
     const canonicalPath = "/poems";

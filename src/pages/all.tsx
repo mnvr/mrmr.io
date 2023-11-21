@@ -8,7 +8,7 @@ import * as React from "react";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** Show a listing of all posts */
+/** A listing of all posts */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
     const title = "all posts";
@@ -18,7 +18,7 @@ const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
 
 export default AllPage;
 
-export const Head: HeadFC = ({}) => {
+export const Head: HeadFC = () => {
     const titlePrefix = "All posts";
     const description = "Listing of all posts on mrmr.io";
     const canonicalPath = "/all";
