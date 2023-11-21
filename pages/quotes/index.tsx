@@ -46,6 +46,13 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
             });
     });
 
+    // Remove words that only link to one quote (which will just be itself).
+    for (const word of quotesForWord.keys()) {
+        if (quotesForWord.get(word)?.length ?? 1 === 1) {
+            quotesForWord.delete(word);
+        }
+    }
+
     return {
         quotes,
         quotesForWord,
@@ -69,9 +76,7 @@ interface QuoteProps {
 const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
     const { quotesForWord } = parsedQuotes;
     const spans = words(quote).map((word) => {
-        // If the only link from a word is a single quote, it just points to
-        // itself, so we can ignore it.
-        if ((quotesForWord.get(word)?.length ?? 1) !== 1) {
+        if (quotesForWord.has(word)) {
             return <a href="#">{word}</a>;
         } else {
             return <span>{word}</span>;
