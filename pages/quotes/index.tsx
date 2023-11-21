@@ -1,6 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
+import { quotes } from "./quotes";
 
 export const Content: React.FC = () => {
     return (
@@ -15,7 +16,6 @@ const Main = styled.main`
 `;
 
 const Quotes: React.FC = () => {
-    const quotes = ["Chaos is a ladder"];
     const text = ensure(quotes[0]);
 
     return <Quote text={text} />;
