@@ -38,6 +38,7 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
     quotes.forEach((quote) => {
         words(quote)
             .filter((w) => !ignoredWords.has(w))
+            .map((w) => w.toLowerCase())
             .forEach((word) => {
                 quotesForWord.set(
                     word,
@@ -48,7 +49,7 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
 
     // Remove words that only link to one quote (which will just be itself).
     for (const word of quotesForWord.keys()) {
-        if (quotesForWord.get(word)?.length ?? 1 === 1) {
+        if (ensure(quotesForWord.get(word)).length === 1) {
             quotesForWord.delete(word);
         }
     }
@@ -75,13 +76,15 @@ interface QuoteProps {
 
 const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
     const { quotesForWord } = parsedQuotes;
+
     const spans = words(quote).map((word) => {
-        if (quotesForWord.has(word)) {
+        if (quotesForWord.has(word.toLowerCase())) {
             return <a href="#">{word}</a>;
         } else {
             return <span>{word}</span>;
         }
     });
+
     // Intersperse the words with spaces
     const sentence = spans.reduce(
         (xs, span) => {
