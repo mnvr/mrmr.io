@@ -129,10 +129,23 @@ const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes, traverse }) => {
     );
 
     return (
-        <div>
+        <Quote_>
             {sentence.map((e, i) => (
                 <React.Fragment key={i}>{e}</React.Fragment>
             ))}
-        </div>
+        </Quote_>
     );
 };
+
+const Quote_ = styled.div`
+    line-height: 1.6rem;
+
+    a {
+        background-color: lightyellow;
+        text-decoration: none;
+    }
+
+    a:hover {
+        background-color: greenyellow;
+    }
+`;
