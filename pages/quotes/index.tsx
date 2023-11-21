@@ -93,7 +93,7 @@ const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes }) => {
     return (
         <div>
             {sentence.map((e, i) => (
-                <span key={i}>{e}</span>
+                <React.Fragment key={i}>{e}</React.Fragment>
             ))}
         </div>
     );
