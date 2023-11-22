@@ -66,7 +66,7 @@ const QuoteContainer: React.FC<
 > = ({ quoteIndex, children }) => {
     return (
         <QuoteContainer_>
-            <TransitionGroup appear={true}>
+            <TransitionGroup>
                 <CSSTransition
                     key={quoteIndex.toString()}
                     classNames="fade"
@@ -82,12 +82,22 @@ const QuoteContainer: React.FC<
 const QuoteContainer_ = styled.div`
     background-color: red;
 
+    position: relative;
+
+    div {
+        border: 1px solid green;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
     .fade-enter {
         opacity: 0;
+        z-index: 1;
     }
     .fade-enter-active {
         opacity: 1;
-        transition: opacity 1000ms 1000ms;
+        transition: opacity 1000ms;
     }
     .fade-exit {
         opacity: 1;
