@@ -18,9 +18,12 @@ const Main = styled.main`
 
 const Quotes: React.FC = () => {
     const parsedQuotes = parseQuotes(quotes);
-    const randomQuote = ensure(randomItem(parsedQuotes.quotes));
 
-    const [quote, setQuote] = React.useState(randomQuote);
+    const [quote, setQuote] = React.useState("");
+
+    React.useEffect(() => {
+        if (!quote) setQuote(ensure(randomItem(parsedQuotes.quotes)));
+    }, []);
 
     // Follow the hyperlink from the given word (in the current quote) to some
     // other (randomly selected) quote. Update the display by using setQuote to
@@ -33,8 +36,10 @@ const Quotes: React.FC = () => {
         setQuote(ensure(randomItem(otherQuotes)));
     };
 
-    return (
-        <Quote quote={quote} parsedQuotes={parsedQuotes} traverse={traverse} />
+    return quote ? (
+        <Quote {...{ quote, parsedQuotes, traverse }} />
+    ) : (
+        <Loading />
     );
 };
 
@@ -147,5 +152,31 @@ const Quote_ = styled.div`
 
     a:hover {
         background-color: greenyellow;
+    }
+`;
+
+const Loading: React.FC = () => {
+    return (
+        <div>
+            <Blinking>_</Blinking>
+        </div>
+    );
+};
+
+const Blinking = styled.span`
+    animation: blink 700ms linear infinite alternate;
+
+    @keyframes blink {
+        0% {
+            opacity: 0;
+        }
+
+        20% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
     }
 `;
