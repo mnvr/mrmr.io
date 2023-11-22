@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import ReactCSSTransitionReplace from "react-css-transition-replace";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
@@ -50,31 +50,24 @@ const Quotes: React.FC = () => {
 interface QuoteContainerProps {
     quoteIndex: number;
 }
+
 /**
  * A container for a quote that animates the transition between them.
  *
- * The QuoteContainer is a {@link TransitionGroup} that has a single child - a
- * {@link CSSTransition} that wraps the children of the QuoteContainer (which'll
- * be a {@link Quote}).
- *
- * @param quoteIndex A unique index for each quote. This is set as the key of
- * the CSSTransition child, thus causing the TransitionGroup to transition the
- * child out and back in.
+ * @param quoteIndex A unique index for each quote.
  */
 const QuoteContainer: React.FC<
     React.PropsWithChildren<QuoteContainerProps>
 > = ({ quoteIndex, children }) => {
     return (
         <QuoteContainer_>
-            <TransitionGroup>
-                <CSSTransition
-                    key={quoteIndex.toString()}
-                    classNames="fade"
-                    timeout={2000}
-                >
-                    {children}
-                </CSSTransition>
-            </TransitionGroup>
+            <ReactCSSTransitionReplace
+                transitionName={"fade"}
+                transitionEnterTimeout={1000}
+                transitionLeaveTimeout={1000}
+            >
+                <div key={quoteIndex.toString()}>{children}</div>
+            </ReactCSSTransitionReplace>
         </QuoteContainer_>
     );
 };
@@ -82,29 +75,26 @@ const QuoteContainer: React.FC<
 const QuoteContainer_ = styled.div`
     background-color: red;
 
-    position: relative;
-
     div {
         border: 1px solid green;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
     }
+
     .fade-enter {
         opacity: 0;
-        z-index: 1;
     }
     .fade-enter-active {
         opacity: 1;
         transition: opacity 1000ms;
     }
-    .fade-exit {
+    .fade-leave {
         opacity: 1;
     }
-    .fade-exit-active {
+    .fade-leave-active {
         opacity: 0;
         transition: opacity 1000ms;
+    }
+    .fade-height {
+        transition: height 500ms;
     }
 `;
 
