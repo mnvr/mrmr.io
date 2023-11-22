@@ -40,7 +40,7 @@ export default PageTemplate;
 export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     data,
 }) => {
-    const { title, description, slug, images } = parsePage(data);
+    const { title, description, slug, noIndex, images } = parsePage(data);
     const canonicalPath = slug;
 
     const defaultFile = replaceNullsWithUndefineds(data.defaultPreviewFile);
@@ -48,7 +48,7 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
 
     return (
         <DefaultHead
-            {...{ title, description, canonicalPath, previewImagePath }}
+            {...{ title, description, canonicalPath, previewImagePath, noIndex }}
         />
     );
 };
@@ -109,6 +109,7 @@ export const query = graphql`
                 formattedDateMY: date(formatString: "MMM YYYY")
                 formattedDateDMY: date(formatString: "DD MMMM YYYY")
                 formatted_signoff_date
+                noindex
                 layout
                 colors
                 dark_colors
@@ -143,6 +144,14 @@ export interface Page {
      * the "signoff-date" field in the frontmatter.
      */
     formattedSignoffDate?: string;
+    /**
+     * If true, then we add the "noindex" meta tag to the head of the page to
+     * prevent search engines from indexing the page.
+     *
+     * See the documentation of the {@link noIndex} field in the props for
+     * {@link DefaultHead} for more discussion about what that does.
+     */
+    noIndex: boolean;
     layout?: string;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
@@ -200,6 +209,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const layout = frontmatter?.layout;
     const formattedDateMY = frontmatter?.formattedDateMY;
     const formattedDateDMY = frontmatter?.formattedDateDMY;
+    const noIndex = frontmatter?.noindex ?? false;
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
@@ -269,6 +279,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         formattedDateMY,
         formattedDateDMY,
         formattedSignoffDate,
+        noIndex,
         colors,
         darkColors,
         theme,
