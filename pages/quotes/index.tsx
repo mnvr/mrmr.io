@@ -89,12 +89,6 @@ const QuoteContainer: React.FC<
 };
 
 const QuoteContainer_ = styled.div`
-    background-color: red;
-
-    div {
-        border: 1px solid green;
-    }
-
     .fade-enter {
         opacity: 0;
     }
@@ -394,11 +388,17 @@ const Quote_ = styled.div`
 
     a {
         background-color: lightyellow;
+        @media (prefers-color-scheme: dark) {
+            background-color: midnightblue;
+        }
         text-decoration: none;
     }
 
     a:hover {
         background-color: greenyellow;
+        @media (prefers-color-scheme: dark) {
+            background-color: blue;
+        }
     }
 `;
 
