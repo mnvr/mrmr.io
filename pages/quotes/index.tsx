@@ -1,4 +1,5 @@
 import * as React from "react";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
@@ -38,11 +39,64 @@ const Quotes: React.FC = () => {
     };
 
     return quoteIndex !== undefined ? (
-        <Quote {...{ parsedQuotes, quoteIndex, traverse }} />
+        <QuoteContainer {...{ quoteIndex }}>
+            <Quote {...{ parsedQuotes, quoteIndex, traverse }} />
+        </QuoteContainer>
     ) : (
         <Loading />
     );
 };
+
+interface QuoteContainerProps {
+    quoteIndex: number;
+}
+/**
+ * A container for a quote that animates the transition between them.
+ *
+ * The QuoteContainer is a {@link TransitionGroup} that has a single child - a
+ * {@link CSSTransition} that wraps the children of the QuoteContainer (which'll
+ * be a {@link Quote}).
+ *
+ * @param quoteIndex A unique index for each quote. This is set as the key of
+ * the CSSTransition child, thus causing the TransitionGroup to transition the
+ * child out and back in.
+ */
+const QuoteContainer: React.FC<
+    React.PropsWithChildren<QuoteContainerProps>
+> = ({ quoteIndex, children }) => {
+    return (
+        <QuoteContainer_>
+            <TransitionGroup appear={true}>
+                <CSSTransition
+                    key={quoteIndex.toString()}
+                    classNames="fade"
+                    timeout={2000}
+                >
+                    {children}
+                </CSSTransition>
+            </TransitionGroup>
+        </QuoteContainer_>
+    );
+};
+
+const QuoteContainer_ = styled.div`
+    background-color: red;
+
+    .fade-enter {
+        opacity: 0;
+    }
+    .fade-enter-active {
+        opacity: 1;
+        transition: opacity 1000ms 1000ms;
+    }
+    .fade-exit {
+        opacity: 1;
+    }
+    .fade-exit-active {
+        opacity: 0;
+        transition: opacity 1000ms;
+    }
+`;
 
 interface ParsedQuotes {
     /** An array of {@link ParsedQuote}s. */
