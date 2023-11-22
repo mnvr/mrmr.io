@@ -36,7 +36,23 @@ const Quotes: React.FC = () => {
             (qi) => qi !== quoteIndex,
         );
         setQuoteIndex(ensure(randomItem(otherQuotes)));
+
+        window.history.pushState({ quoteIndex }, "");
     };
+
+    const handlePopState = (event: PopStateEvent) => {
+        const { state } = event;
+        if (state && typeof state.quoteIndex === "number") {
+            setQuoteIndex(state.quoteIndex);
+        }
+    };
+
+    React.useEffect(() => {
+        window.addEventListener("popstate", handlePopState);
+        return () => {
+            window.removeEventListener("popstate", handlePopState);
+        };
+    }, []);
 
     return quoteIndex !== undefined ? (
         <QuoteContainer {...{ quoteIndex }}>
