@@ -157,7 +157,7 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
     const parsedQuotes = quotes.map((quote) =>
         parseQuote(quote, quoteIndicesForWord),
     );
-
+    ensureNoDeadEnds(parsedQuotes);
     return {
         quotes: parsedQuotes,
         quoteIndicesForWord,
@@ -274,7 +274,7 @@ const potentialWords = (s: string): string[] =>
  * A set of common / filler words like "is", "the" etc that we ignore when
  * considering what words to hyperlink.
  */
-const ignoredWords = new Set<string>(["the", "is", "a"]);
+const ignoredWords = new Set<string>(["the", "is", "a", "this", "that"]);
 
 /**
  * Break a quote string down into segments (normal text or links to words).
@@ -323,6 +323,25 @@ const consolidateSegments = (segments: ParsedQuote): ParsedQuote =>
         },
         [] as typeof segments,
     );
+
+/**
+ * Throw an exception if any of the quotes are dead ends (i.e. there is even
+ * one quote that does not have links to others).
+ *
+ * This is primarily meant to be a compile time sanity check. To rectify this,
+ * we need to change the quote database to add more quotes, or create an alias.
+ */
+const ensureNoDeadEnds = (quotes: ParsedQuote[]) =>
+    quotes.forEach((q, i) => {
+        if (!hasAtLeastOneLink(q))
+            throw new Error(
+                `A quote should have at least one outgoing link from it. But the quote at index ${i} doesn't; the quote is: ${q}`,
+            );
+    });
+
+/** Return true if the given {@link ParsedQuote} has at least one link */
+const hasAtLeastOneLink = (quote: ParsedQuote) =>
+    !quote.every((sg) => typeof sg === "string");
 
 interface QuoteProps {
     /** The parsed quote database */
