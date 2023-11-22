@@ -62,9 +62,9 @@ interface ParsedQuotes {
  *
  * Each segment is either:
  *
- * - a normal text span, represented by a string,
+ * - a normal text span, represented by a string;
  *
- * - or a work link, which is represented by a singleton list containing the
+ * - or a word link, which is represented by a singleton list containing the
  *   link word.
  */
 type ParsedQuote = (string | string[])[];
@@ -217,22 +217,42 @@ const parseQuote = (
     quote: string,
     quoteIndicesForWord: Map<string, number[]>,
 ): ParsedQuote =>
-    potentialSegments(quote).map((sg) => {
-        if (typeof sg === "string") {
-            // Return non-word segments as it is.
-            return sg;
-        } else {
-            // Keep words that are linkable, otherwise convert them to non-word
-            // segments.
-            const word = ensure(sg[0]);
-            const key = word.toLowerCase();
-            if (quoteIndicesForWord.get(key)) {
+    consolidateSegments(
+        potentialSegments(quote).map((sg) => {
+            if (typeof sg === "string") {
+                // Return non-word segments as it is.
                 return sg;
             } else {
-                return word;
+                // Keep words that are linkable, otherwise convert them to non-word
+                // segments (later on we'll consolidate them too when possible).
+                const word = ensure(sg[0]);
+                const key = word.toLowerCase();
+                if (quoteIndicesForWord.get(key)) {
+                    return sg;
+                } else {
+                    return word;
+                }
             }
-        }
-    });
+        }),
+    );
+
+/**
+ * Combine consecutive non-word segments into a single one.
+ *
+ * This reduces the number of `<span/>`s that are created in the DOM.
+ */
+const consolidateSegments = (segments: ParsedQuote): ParsedQuote =>
+    segments.reduce(
+        (res, sg) => {
+            const n = res.length;
+            if (typeof sg === "string" && n && typeof res[n - 1] === "string") {
+                const combined = [res[n - 1], sg].join("");
+                return res.slice(0, n - 1).concat([combined]);
+            }
+            return res.concat([sg]);
+        },
+        [] as typeof segments,
+    );
 
 interface QuoteProps {
     /** The parsed quote database */
