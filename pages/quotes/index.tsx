@@ -171,20 +171,20 @@ const potentialSegments = (s: string) => {
             // c is an alphanumeric word character from the basic Latin alphabet
             // (including the underscore).
             currentWord.push(c);
-            if (currentNonWord) {
+            if (currentNonWord.length) {
                 segments.push(currentNonWord.join(""));
                 currentNonWord = [];
             }
         } else {
             currentNonWord.push(c);
-            if (currentWord) {
+            if (currentWord.length) {
                 segments.push([currentWord.join("")]);
                 currentWord = [];
             }
         }
     }
-    if (currentNonWord) segments.push(currentNonWord.join(""));
-    if (currentWord) segments.push([currentWord.join("")]);
+    if (currentNonWord.length) segments.push(currentNonWord.join(""));
+    if (currentWord.length) segments.push([currentWord.join("")]);
     return segments;
 };
 
