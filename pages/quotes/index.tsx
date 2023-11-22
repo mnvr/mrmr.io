@@ -1,7 +1,7 @@
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
-import { randomItem } from "utils/random";
+import { randomInt, randomItem } from "utils/random";
 import { quotes } from "./quotes";
 
 export const Content: React.FC = () => {
@@ -19,69 +19,186 @@ const Main = styled.main`
 const Quotes: React.FC = () => {
     const parsedQuotes = parseQuotes(quotes);
 
-    const [quote, setQuote] = React.useState("");
+    const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
 
     React.useEffect(() => {
-        if (!quote) setQuote(ensure(randomItem(parsedQuotes.quotes)));
+        if (!quoteIndex) setQuoteIndex(randomInt(parsedQuotes.quotes.length));
     }, []);
 
     // Follow the hyperlink from the given word (in the current quote) to some
     // other (randomly selected) quote. Update the display by using setQuote to
     // update the current quote.
     const traverse = (word: string) => {
-        const { quotesForWord } = parsedQuotes;
-        const otherQuotes = ensure(quotesForWord.get(word)).filter(
-            (q) => q !== quote,
+        const { quoteIndicesForWord } = parsedQuotes;
+        const key = word.toLowerCase();
+        const otherQuotes = ensure(quoteIndicesForWord.get(key)).filter(
+            (qi) => qi !== quoteIndex,
         );
-        setQuote(ensure(randomItem(otherQuotes)));
+        setQuoteIndex(ensure(randomItem(otherQuotes)));
     };
 
-    return quote ? (
-        <Quote {...{ quote, parsedQuotes, traverse }} />
+    return quoteIndex !== undefined ? (
+        <Quote {...{ parsedQuotes, quoteIndex, traverse }} />
     ) : (
         <Loading />
     );
 };
 
 interface ParsedQuotes {
-    quotes: string[];
-    quotesForWord: Map<string, string[]>;
+    /** An array of {@link ParsedQuote}s. */
+    quotes: ParsedQuote[];
+    /**
+     * A map from words to the quotes that the word occurs in.
+     *
+     * The key is the (lowercased) word. The value is an conceptually an array
+     * of quotes, which are represented by an array of indices into the
+     * {@link quotes} array.
+     */
+    quoteIndicesForWord: Map<string, number[]>;
 }
+
+/**
+ * A quote parsed into segments.
+ *
+ * Each segment is either:
+ *
+ * - a normal text span, represented by a string,
+ *
+ * - or a work link, which is represented by a singleton list containing the
+ *   link word.
+ */
+type ParsedQuote = (string | string[])[];
 
 /**
  * Parse the array of quotes into the {@link ParsedQuotes} data structure which
  * is amenable to hyperlinking of the form that we want to do here.
  */
 const parseQuotes = (quotes: string[]): ParsedQuotes => {
-    const quotesForWord = new Map<string, string[]>();
+    /*
+     The parsing works in two passes.
 
-    quotes.forEach((quote) => {
-        words(quote)
-            .filter((w) => !ignoredWords.has(w))
+     1. First we find all linkable words (and the indicies of the quotes that
+        they link to).
+
+     2. Then we go through each quote character by character, splitting it
+        into segments of normal text, and links.
+     */
+    const quoteIndicesForWord = parseQuoteIndicesForWord(quotes);
+    const parsedQuotes = quotes.map((quote) =>
+        parseQuote(quote, quoteIndicesForWord),
+    );
+
+    return {
+        quotes: parsedQuotes,
+        quoteIndicesForWord,
+    };
+};
+
+/**
+ * Return a set of words that occur in more than one quote.
+ *
+ * For each such word, also return the indices of the quotes in which it occurs.
+ */
+const parseQuoteIndicesForWord = (quotes: string[]) => {
+    const quoteIndicesForWord = new Map<string, number[]>();
+
+    quotes.forEach((quote, i) => {
+        potentialWords(quote)
             .map((w) => w.toLowerCase())
             .forEach((word) => {
-                quotesForWord.set(
+                quoteIndicesForWord.set(
                     word,
-                    (quotesForWord.get(word) ?? []).concat([quote]),
+                    (quoteIndicesForWord.get(word) ?? []).concat([i]),
                 );
             });
     });
 
     // Remove words that only link to one quote (which will just be itself).
-    for (const word of quotesForWord.keys()) {
-        if (ensure(quotesForWord.get(word)).length === 1) {
-            quotesForWord.delete(word);
+    for (const word of quoteIndicesForWord.keys()) {
+        if (ensure(quoteIndicesForWord.get(word)).length === 1) {
+            quoteIndicesForWord.delete(word);
         }
     }
 
-    return {
-        quotes,
-        quotesForWord,
-    };
+    return quoteIndicesForWord;
 };
 
-/** Break a string down into its component words */
-const words = (s: string) => s.split(/\s+/).filter((s) => s);
+/**
+ * Break a string down into its component segments
+ *
+ * This split is considered "potential" because consists of potential words, vs
+ * everything else. Some of these words might not turn out to be links (e.g. if
+ * they don't occur elsewhere, or are an ignored word).
+ */
+const potentialSegments = (s: string) => {
+    // Note: [Iterating over Strings]
+    //
+    // Iterating strings by what we think of as a "character" is disjointed from
+    // the JavaScript string reality in two levels:
+    //
+    // Firstly, JavaScript strings are sequences of UTF-16 code points, not
+    // Unicode code points. If we think of them as arrays, then they're arrays
+    // of UTF-16 code points, and array indexing (or the almost equivalent
+    // `charAt` method) returns UTF-16 code points, not Unicode code points.
+    //
+    // From the MDN docs of charAt:
+    //
+    // > charAt returns a new string consiting of the single UTF-16 code unit at
+    //   the given index. charAt always indexes the string as a sequence of
+    //   UTF-16 code units, so it may return lone surrogates.
+    //
+    // We can solve this problem by using the string iterator though, which
+    // yields the Unicode code points of the string as individual strings. The
+    // string iterator is what gets used if we use the spread syntax or
+    // `for...of` loops, so if we use either of those, we're good.
+    //
+    // Secondly, a single "character" (technically a grapheme) can be composed
+    // of multiple Unicode code points. A common example is a thumbs up emoji,
+    // which can be composed of a base emoji plus a skin tone. From MDN:
+    //
+    // > Strings are iterated by Unicode code points. This means grapheme
+    //   clusters will be split, but surrogate pairs will be preserved.
+    //
+    // Luckily for our quotes dataset, we don't (yet) have any such characters
+    // so we don't need to solve this problem.
+
+    const segments: ParsedQuote = [];
+    let currentWord: string[] = [];
+    let currentNonWord: string[] = [];
+    s = s.trim();
+    for (const c of s) {
+        if (/\w/.test(c)) {
+            // c is an alphanumeric word character from the basic Latin alphabet
+            // (including the underscore).
+            currentWord.push(c);
+            if (currentNonWord) {
+                segments.push(currentNonWord.join(""));
+                currentNonWord = [];
+            }
+        } else {
+            currentNonWord.push(c);
+            if (currentWord) {
+                segments.push([currentWord.join("")]);
+                currentWord = [];
+            }
+        }
+    }
+    if (currentNonWord) segments.push(currentNonWord.join(""));
+    if (currentWord) segments.push([currentWord.join("")]);
+    return segments;
+};
+
+/**
+ * Return an array of potential words from the given string.
+ *
+ * This is a specialization of {@link potentialSegments} that discards
+ * non-words, and flattens the nested arrays into an array of words whilst also
+ * discarding ignored words.
+ */
+const potentialWords = (s: string): string[] =>
+    potentialSegments(s)
+        .flatMap((sg) => (typeof sg === "string" ? [] : sg))
+        .filter((w) => !ignoredWords.has(w));
 
 /**
  * A set of common / filler words like "is", "the" etc that we ignore when
@@ -89,20 +206,49 @@ const words = (s: string) => s.split(/\s+/).filter((s) => s);
  */
 const ignoredWords = new Set<string>(["the", "is", "a"]);
 
+/**
+ * Break a quote string down into segments (normal text or links to words).
+ *
+ * @param quote The quote string to parse.
+ * @param quoteIndicesForWord A map keyed by (lowercased) words, to the indices
+ * of the quotes in which that word occurs.
+ */
+const parseQuote = (
+    quote: string,
+    quoteIndicesForWord: Map<string, number[]>,
+): ParsedQuote =>
+    potentialSegments(quote).map((sg) => {
+        if (typeof sg === "string") {
+            // Return non-word segments as it is.
+            return sg;
+        } else {
+            // Keep words that are linkable, otherwise convert them to non-word
+            // segments.
+            const word = ensure(sg[0]);
+            const key = word.toLowerCase();
+            if (quoteIndicesForWord.get(key)) {
+                return sg;
+            } else {
+                return word;
+            }
+        }
+    });
+
 interface QuoteProps {
-    /** The quote text to show */
-    quote: string;
     /** The parsed quote database */
     parsedQuotes: ParsedQuotes;
-    /**
-     * A function to call when the user clicks on the given word (that we know
-     * also exists in other quotes).
-     */
+    /** The index of the parsed quote to show */
+    quoteIndex: number;
+    /** The function to call when the user clicks on the given word */
     traverse: (word: string) => void;
 }
 
-const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes, traverse }) => {
-    const { quotesForWord } = parsedQuotes;
+const Quote: React.FC<QuoteProps> = ({
+    parsedQuotes,
+    quoteIndex,
+    traverse,
+}) => {
+    const parsedQuote = ensure(parsedQuotes.quotes[quoteIndex]);
 
     const makeHandleClick = (word: string) => {
         return (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -111,31 +257,23 @@ const Quote: React.FC<QuoteProps> = ({ quote, parsedQuotes, traverse }) => {
         };
     };
 
-    const spans = words(quote).map((word) => {
-        const key = word.toLowerCase();
-        if (quotesForWord.has(key)) {
+    const segments = parsedQuote.map((item) => {
+        if (typeof item === "string") {
+            return <span>{item}</span>;
+        } else {
+            const word = ensure(item[0]);
+            const key = word.toLowerCase();
             return (
                 <a href="#" onClick={makeHandleClick(key)}>
                     {word}
                 </a>
             );
-        } else {
-            return <span>{word}</span>;
         }
     });
 
-    // Intersperse the words with spaces (this'll result in an extra space at
-    // the end, but that should be fine).
-    const sentence = spans.reduce(
-        (xs, span) => {
-            return xs.concat([span, <span> </span>]);
-        },
-        [<span />],
-    );
-
     return (
         <Quote_>
-            {sentence.map((e, i) => (
+            {segments.map((e, i) => (
                 <React.Fragment key={i}>{e}</React.Fragment>
             ))}
         </Quote_>

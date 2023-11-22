@@ -48,7 +48,13 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
 
     return (
         <DefaultHead
-            {...{ title, description, canonicalPath, previewImagePath, noIndex }}
+            {...{
+                title,
+                description,
+                canonicalPath,
+                previewImagePath,
+                noIndex,
+            }}
         />
     );
 };
