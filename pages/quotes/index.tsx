@@ -257,7 +257,6 @@ const Quote_ = styled.div`
             color: oklch(30% 0 0);
         }
         a:hover {
-            background-color: white;
             color: black;
         }
     }
