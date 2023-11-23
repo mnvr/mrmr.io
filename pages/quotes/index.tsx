@@ -9,13 +9,22 @@ import { quotes } from "./quotes";
 export const Content: React.FC = () => {
     return (
         <Main>
-            <Quotes />
+            <QuotesContainer>
+                <Quotes />
+            </QuotesContainer>
         </Main>
     );
 };
 
 const Main = styled.main`
     margin: 1rem;
+`;
+
+const QuotesContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60svh;
 `;
 
 const Quotes: React.FC = () => {
