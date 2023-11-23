@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactCSSTransitionReplace from "react-css-transition-replace";
+import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
@@ -87,13 +87,15 @@ const QuoteContainer: React.FC<
 > = ({ quoteIndex, children }) => {
     return (
         <QuoteContainer_>
-            <ReactCSSTransitionReplace
-                transitionName={"fade"}
-                transitionEnterTimeout={1000}
-                transitionLeaveTimeout={1000}
-            >
-                <div key={quoteIndex.toString()}>{children}</div>
-            </ReactCSSTransitionReplace>
+            <SwitchTransition>
+                <CSSTransition
+                    key={quoteIndex.toString()}
+                    timeout={1000}
+                    classNames={"fade"}
+                >
+                    <div>{children}</div>
+                </CSSTransition>
+            </SwitchTransition>
         </QuoteContainer_>
     );
 };
@@ -106,15 +108,12 @@ const QuoteContainer_ = styled.div`
         opacity: 1;
         transition: opacity 1000ms;
     }
-    .fade-leave {
+    .fade-exit {
         opacity: 1;
     }
-    .fade-leave-active {
+    .fade-exit-active {
         opacity: 0;
         transition: opacity 1000ms;
-    }
-    .fade-height {
-        transition: height 500ms;
     }
 `;
 

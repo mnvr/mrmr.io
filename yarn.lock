@@ -1113,7 +1113,7 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.8.7":
+"@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.23.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.23.4.tgz#36fa1d2b36db873d25ec631dcc4923fdc1cf2e2e"
   integrity sha512-2Yv65nlWnWlSpe3fXEyX5i7fx5kIKo4Qbcj+hMO0odwaneFjfXw5fdum+4yL20O0QiaHpia0cYQ9xpNMqrBwHg==
@@ -2422,33 +2422,17 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-addons-css-transition-group@*":
-  version "15.0.10"
-  resolved "https://registry.yarnpkg.com/@types/react-addons-css-transition-group/-/react-addons-css-transition-group-15.0.10.tgz#3c18f8fe7789de78b2dfde13ad724104584ba644"
-  integrity sha512-AYYMb4+jsgHPsxst7e8WuWVp8qAwp9YV16FJdEXILAsp7SFKIRln1hlrw9fRKUJYte3SKqiNZ8riRXvP2WtLlA==
-  dependencies:
-    "@types/react" "^15"
-    "@types/react-addons-transition-group" "*"
-
-"@types/react-addons-transition-group@*":
-  version "15.0.10"
-  resolved "https://registry.yarnpkg.com/@types/react-addons-transition-group/-/react-addons-transition-group-15.0.10.tgz#eeaff46b9a6d318a3337fc43dd789e2c817db485"
-  integrity sha512-nV0vlq1ClUicGuDP5ocAHxsqWxjlxB+sBTF/+UMrafIJ/whkvmDrDGq/i0IcbnwptEXXmZKEQDYJ1F+0Vuao+A==
-  dependencies:
-    "@types/react" "^15"
-
-"@types/react-css-transition-replace@^2.1.7":
-  version "2.1.7"
-  resolved "https://registry.yarnpkg.com/@types/react-css-transition-replace/-/react-css-transition-replace-2.1.7.tgz#6ab710946d3d5c7379787c0ec6bfe32b7b019911"
-  integrity sha512-SFbjNtKXWjkiRC7jl5vaMFJORf6qsPS+2M1B1oOTVKs2NT88YycGjbS6eXrtYnqBy8z+o5Ays0t4lIx11Kq2TQ==
-  dependencies:
-    "@types/react" "^15"
-    "@types/react-addons-css-transition-group" "*"
-
 "@types/react-dom@^18.2.6":
   version "18.2.6"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.2.6.tgz#ad621fa71a8db29af7c31b41b2ea3d8a6f4144d1"
   integrity sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-transition-group@^4.4.9":
+  version "4.4.9"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.4.9.tgz#12a1a1b5b8791067198149867b0823fbace31579"
+  integrity sha512-ZVNmWumUIh5NhH8aMD9CR2hdW0fNuYInlocZHaZ+dgk/1K49j1w/HoAuK1ki+pgscQrOFRTlXeoURtuzEkV3dg==
   dependencies:
     "@types/react" "*"
 
@@ -2460,11 +2444,6 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
-
-"@types/react@^15":
-  version "15.7.27"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-15.7.27.tgz#6ca13051229bc83901317c44e1a1ed86edc8ee1a"
-  integrity sha512-jLB0GLKJXo9uDjsucKzO32lMENh4fnE2tp8lWp6VfLshKoCeJt+GNERuSlucwY8zIlkqS5CA53IyeHwCaY+p3w==
 
 "@types/responselike@^1.0.0":
   version "1.0.0"
@@ -4371,7 +4350,7 @@ dom-converter@^0.2.0:
   dependencies:
     utila "~0.4"
 
-dom-helpers@^5.2.1:
+dom-helpers@^5.0.1:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/dom-helpers/-/dom-helpers-5.2.1.tgz#d9400536b2bf8225ad98fe052e029451ac40e902"
   integrity sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==
@@ -8997,7 +8976,7 @@ prompts@^2.4.2:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.8.1:
+prop-types@^15.6.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -9150,14 +9129,6 @@ rc@1.2.8, rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-css-transition-replace@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/react-css-transition-replace/-/react-css-transition-replace-5.0.1.tgz#15f19ce06ffa4f86fd97633cee42025fe40b07f4"
-  integrity sha512-Pi5hk/FXZJ1eVkUgI8lTbGrlOz5fSe7GkSkzG1JCsL6+c7hT62Tw+dv3Wbo5nKL25QQB+iS4GdRYf051RwERqg==
-  dependencies:
-    dom-helpers "^5.2.1"
-    prop-types "^15.8.1"
-
 react-dev-utils@^12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
@@ -9231,6 +9202,16 @@ react-server-dom-webpack@0.0.0-experimental-c8b778b7f-20220825:
     acorn "^6.2.1"
     loose-envify "^1.1.0"
     neo-async "^2.6.1"
+
+react-transition-group@^4.4.5:
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
+  integrity sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    dom-helpers "^5.0.1"
+    loose-envify "^1.4.0"
+    prop-types "^15.6.2"
 
 react@^18.2.0:
   version "18.2.0"
