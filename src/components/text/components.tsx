@@ -26,7 +26,7 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     );
 };
 
-const Content_ = styled.div`
+const Content_ = styled(LinkStyleUnderlined)`
     margin-block: 2rem;
     @media (min-width: 600px) {
         margin-block: 4rem;
@@ -142,20 +142,18 @@ export const Footer: React.FC = () => {
 
     return (
         <Footer_>
-            <LinkStyleUnderlined>
-                {relatedPageLinks.length > 0 && (
-                    <RelatedPosts links={relatedPageLinks} />
-                )}
-                {isPoem(page) && (
-                    <>
-                        <Link to={"/poems"}>More poems</Link>
-                        <br />
-                    </>
-                )}
-                <Link to={"/all"}>All posts</Link>
-                <br />
-                <Link to={"/"}>Home</Link>
-            </LinkStyleUnderlined>
+            {relatedPageLinks.length > 0 && (
+                <RelatedPosts links={relatedPageLinks} />
+            )}
+            {isPoem(page) && (
+                <>
+                    <Link to={"/poems"}>More poems</Link>
+                    <br />
+                </>
+            )}
+            <Link to={"/all"}>All posts</Link>
+            <br />
+            <Link to={"/"}>Home</Link>
         </Footer_>
     );
 };
@@ -169,20 +167,18 @@ export const FooterHindi: React.FC = () => {
 
     return (
         <Footer_>
-            <LinkStyleUnderlined>
-                {relatedPageLinks.length > 0 && (
-                    <RelatedPostsHindi links={relatedPageLinks} />
-                )}
-                {isPoem(page) && (
-                    <>
-                        <Link to={"/poems"}>और कविताएँ</Link>
-                        <br />
-                    </>
-                )}
-                <Link to={"/all"}>सारी रचनाएँ</Link>
-                <br />
-                <Link to={"/"}>प्रारंभ</Link>
-            </LinkStyleUnderlined>
+            {relatedPageLinks.length > 0 && (
+                <RelatedPostsHindi links={relatedPageLinks} />
+            )}
+            {isPoem(page) && (
+                <>
+                    <Link to={"/poems"}>और कविताएँ</Link>
+                    <br />
+                </>
+            )}
+            <Link to={"/all"}>सारी रचनाएँ</Link>
+            <br />
+            <Link to={"/"}>प्रारंभ</Link>
         </Footer_>
     );
 };

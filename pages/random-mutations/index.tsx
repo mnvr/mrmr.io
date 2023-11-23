@@ -1,3 +1,4 @@
+import { LinkStyleUnderlined } from "components/LinkStyles";
 import * as T from "components/text/components";
 import * as React from "react";
 import styled from "styled-components";
@@ -9,7 +10,9 @@ export const Content: React.FC = () => {
             <CodeBlocks />
             <About />
             <T.Signoff />
-            <T.Footer />
+            <LinkStyleUnderlined>
+                <T.Footer />
+            </LinkStyleUnderlined>
         </Main>
     );
 };
