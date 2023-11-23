@@ -49,12 +49,13 @@ const Quotes: React.FC = () => {
     const traverse = (word: string) => {
         const { quoteIndicesForWord } = parsedQuotes;
         const key = word.toLowerCase();
-        const otherQuotes = ensure(quoteIndicesForWord.get(key)).filter(
+        const linkedQuoteIndices = ensure(quoteIndicesForWord.get(key)).filter(
             (qi) => qi !== quoteIndex,
         );
-        setQuoteIndex(ensure(randomItem(otherQuotes)));
 
-        window.history.pushState({ quoteIndex }, "");
+        const newQuoteIndex = ensure(randomItem(linkedQuoteIndices));
+        setQuoteIndex(newQuoteIndex);
+        window.history.pushState({ quoteIndex: newQuoteIndex }, "");
     };
 
     const handlePopState = (event: PopStateEvent) => {
