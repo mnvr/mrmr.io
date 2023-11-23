@@ -80,13 +80,10 @@ const Quotes: React.FC = () => {
         const poppedQuoteIndex = ensureNumber(state.quoteIndex);
         const poppedHistoryIndex = ensureNumber(state.historyIndex);
 
-        let newIsReverse = true;
         // If the new history index we're get from the state is more than the
         // current history index, that means we're going forward (e.g. the user
         // pressed the forward button).
-        if (poppedHistoryIndex > historyIndex) {
-            newIsReverse = false;
-        }
+        const newIsReverse = poppedHistoryIndex <= historyIndex;
 
         setQuoteIndex(poppedQuoteIndex);
         setHistoryIndex(poppedHistoryIndex);
