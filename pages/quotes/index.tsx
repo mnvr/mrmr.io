@@ -184,6 +184,8 @@ const Quote_ = styled.div`
     font-size: 2em;
     font-style: italic;
 
+    max-width: 30em;
+
     a {
         text-decoration: none;
     }
