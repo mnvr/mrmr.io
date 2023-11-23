@@ -324,8 +324,8 @@ const Info_ = styled.div`
     bottom: 0;
     right: 0;
 
-    color: oklch(84% 0 0);
+    color: var(--mrmr-color-4);
     a:hover {
-        color: oklch(32% 0 0);
+        color: var(--mrmr-color-1);
     }
 `;
