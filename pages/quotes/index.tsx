@@ -1,6 +1,7 @@
 import * as React from "react";
 import ReactCSSTransitionReplace from "react-css-transition-replace";
 import styled from "styled-components";
+import { unique } from "utils/array";
 import { ensure } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
 import { quotes } from "./quotes";
@@ -256,13 +257,15 @@ const potentialSegments = (s: string) => {
  * Return an array of potential words from the given string.
  *
  * This is a specialization of {@link potentialSegments} that discards
- * non-words, and flattens the nested arrays into an array of words whilst also
- * discarding ignored words.
+ * non-words, and flattens the nested arrays into an array of unique words
+ * whilst also discarding ignored words.
  */
 const potentialWords = (s: string): string[] =>
-    potentialSegments(s)
-        .flatMap((sg) => (typeof sg === "string" ? [] : sg))
-        .filter((w) => !ignoredWords.has(w));
+    unique(
+        potentialSegments(s).flatMap((sg) =>
+            typeof sg === "string" ? [] : sg,
+        ),
+    ).filter((w) => !ignoredWords.has(w));
 
 /**
  * A set of common / filler words like "is", "the" etc that we ignore when

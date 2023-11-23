@@ -8,3 +8,10 @@
 export const isDefined = <T>(x: T | undefined): x is T => {
     return x !== undefined;
 };
+
+/**
+ * Return all the unique values in the array.
+ *
+ * This converts the array into a set, and back again.
+ */
+export const unique = <T>(xs: Array<T>): Array<T> => [...new Set(xs)];
