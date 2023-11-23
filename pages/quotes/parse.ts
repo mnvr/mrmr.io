@@ -6,6 +6,11 @@ export interface ParsedQuotes {
     /** An array of {@link ParsedQuote}s. */
     quotes: ParsedQuote[];
     /**
+     * The lengths of the underlying text for each (correspondingly indexed)
+     * {@link quote}.
+     */
+    quoteLengths: number[];
+    /**
      * A map from words to the quotes that the word occurs in.
      *
      * The key is the (lowercased) word. The value is an conceptually an array
@@ -45,9 +50,11 @@ export const parseQuotes = (quotes: string[]): ParsedQuotes => {
     const parsedQuotes = quotes.map((quote) =>
         parseQuote(quote, quoteIndicesForWord),
     );
+    const quoteLengths = quotes.map((quote) => quote.length);
     ensureNoDeadEnds(parsedQuotes);
     return {
         quotes: parsedQuotes,
+        quoteLengths,
         quoteIndicesForWord,
     };
 };

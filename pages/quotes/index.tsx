@@ -199,6 +199,7 @@ const Quote: React.FC<QuoteProps> = ({
     traverse,
 }) => {
     const parsedQuote = ensure(parsedQuotes.quotes[quoteIndex]);
+    const quoteLength = ensure(parsedQuotes.quoteLengths[quoteIndex]);
 
     const makeHandleClick = (word: string) => {
         return (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -221,8 +222,11 @@ const Quote: React.FC<QuoteProps> = ({
         }
     });
 
+    const fontSize =
+        quoteLength > 80 ? (quoteLength > 200 ? "1.6rem" : "1.8rem") : "2rem";
+
     return (
-        <Quote_>
+        <Quote_ {...{ fontSize }}>
             {segments.map((e, i) => (
                 <React.Fragment key={i}>{e}</React.Fragment>
             ))}
@@ -230,9 +234,13 @@ const Quote: React.FC<QuoteProps> = ({
     );
 };
 
-const Quote_ = styled.div`
+interface QuoteProps_ {
+    fontSize: string;
+}
+
+const Quote_ = styled.div<QuoteProps_>`
     line-height: 1.3em;
-    font-size: 2em;
+    font-size: ${(props) => props.fontSize};
     font-style: italic;
 
     max-width: 30em;
