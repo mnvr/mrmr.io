@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import * as React from "react";
 import { RiInformationLine } from "react-icons/ri";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -309,9 +310,9 @@ const Blinking = styled.span`
 const Info: React.FC = () => {
     return (
         <Info_>
-            <a target="_blank" href="/quotes/about">
+            <Link to="/quotes/about">
                 <RiInformationLine size="2rem" title="About" />
-            </a>
+            </Link>
         </Info_>
     );
 };
