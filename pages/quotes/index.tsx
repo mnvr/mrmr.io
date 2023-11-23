@@ -31,6 +31,9 @@ const Quotes: React.FC = () => {
     const parsedQuotes = parseQuotes(quotes);
 
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
+    // True if we are going back in history. This allows us to reverse the
+    // direction of the animation.
+    const [isReverse, setIsReverse] = React.useState(false);
 
     React.useEffect(() => {
         if (!quoteIndex) {
@@ -40,6 +43,7 @@ const Quotes: React.FC = () => {
             // first quote to work.
             window.history.replaceState({ quoteIndex }, "");
             setQuoteIndex(quoteIndex);
+            setIsReverse(false);
         }
     }, []);
 
@@ -56,12 +60,15 @@ const Quotes: React.FC = () => {
         const newQuoteIndex = ensure(randomItem(linkedQuoteIndices));
         setQuoteIndex(newQuoteIndex);
         window.history.pushState({ quoteIndex: newQuoteIndex }, "");
+
+        setIsReverse(false);
     };
 
     const handlePopState = (event: PopStateEvent) => {
         const { state } = event;
         if (state && typeof state.quoteIndex === "number") {
             setQuoteIndex(state.quoteIndex);
+            setIsReverse(true);
         }
     };
 
@@ -73,7 +80,7 @@ const Quotes: React.FC = () => {
     }, []);
 
     return quoteIndex !== undefined ? (
-        <QuoteContainer {...{ quoteIndex }}>
+        <QuoteContainer {...{ quoteIndex, isReverse }}>
             <Quote {...{ parsedQuotes, quoteIndex, traverse }} />
         </QuoteContainer>
     ) : (
@@ -83,6 +90,7 @@ const Quotes: React.FC = () => {
 
 interface QuoteContainerProps {
     quoteIndex: number;
+    isReverse: boolean;
 }
 
 /**
@@ -92,14 +100,14 @@ interface QuoteContainerProps {
  */
 const QuoteContainer: React.FC<
     React.PropsWithChildren<QuoteContainerProps>
-> = ({ quoteIndex, children }) => {
+> = ({ quoteIndex, isReverse, children }) => {
     return (
         <QuoteContainer_>
             <SwitchTransition>
                 <CSSTransition
                     key={quoteIndex.toString()}
                     timeout={300}
-                    classNames={"fade"}
+                    classNames={isReverse ? "fade-reverse" : "fade"}
                 >
                     <div>{children}</div>
                 </CSSTransition>
@@ -116,9 +124,7 @@ const QuoteContainer_ = styled.div`
     .fade-enter-active {
         opacity: 1;
         transform: scale3d(1, 1, 1);
-        transition:
-            opacity 300ms ease-out,
-            transform 300ms ease-out;
+        transition: 300ms ease-out;
     }
     .fade-exit {
         opacity: 1;
@@ -127,9 +133,26 @@ const QuoteContainer_ = styled.div`
     .fade-exit-active {
         opacity: 0;
         transform: scale3d(10, 10, 10);
-        transition:
-            opacity 300ms ease-in,
-            transform 300ms ease-in;
+        transition: 300ms ease-in;
+    }
+
+    .fade-reverse-enter {
+        opacity: 0;
+        transform: scale3d(10, 10, 10);
+    }
+    .fade-reverse-enter-active {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+        transition: 300ms ease-out;
+    }
+    .fade-reverse-exit {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+    .fade-reverse-exit-active {
+        opacity: 0;
+        transform: scale3d(0.5, 0.5, 0.5);
+        transition: 300ms ease-in;
     }
 `;
 
