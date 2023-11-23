@@ -384,7 +384,10 @@ const Quote: React.FC<QuoteProps> = ({
 };
 
 const Quote_ = styled.div`
-    line-height: 1.6rem;
+    line-height: 1.6em;
+    font-size: 2em;
+    font-family: serif;
+    font-style: italic;
 
     a {
         background-color: lightyellow;
