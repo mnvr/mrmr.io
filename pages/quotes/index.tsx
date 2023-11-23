@@ -1,4 +1,6 @@
+import { IconButton } from "components/Buttons";
 import * as React from "react";
+import { RiInformationLine } from "react-icons/ri";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
 import { ensure, ensureNumber } from "utils/ensure";
@@ -14,12 +16,34 @@ export const Content: React.FC = () => {
             <QuotesContainer>
                 <Quotes {...{ parsedQuotes }} />
             </QuotesContainer>
+            <InfoButton />
         </Main>
     );
 };
 
 const Main = styled.main`
     margin: 1rem;
+`;
+
+const InfoButton: React.FC = () => {
+    return (
+        <InfoButton_>
+            <IconButton>
+                <RiInformationLine size="2rem" title="About" />
+            </IconButton>
+        </InfoButton_>
+    );
+};
+const InfoButton_ = styled.div`
+    position: absolute;
+    margin: 1rem;
+    bottom: 0;
+    right: 0;
+
+    color: oklch(80% 0 0);
+    svg:hover {
+        color: oklch(30% 0 0);
+    }
 `;
 
 const QuotesContainer = styled.div`
