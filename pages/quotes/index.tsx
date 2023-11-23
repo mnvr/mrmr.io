@@ -34,11 +34,17 @@ interface QuotesProps {
 }
 
 const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
+    // The index of the quote that we are currently showing. It indexes into the
+    // `quotes` property of the `parsedQuotes` prop.
+    //
+    // This will be undefined initially, when we haven't yet shown the initial
+    // quote. The initial quote is randomly selected, which happens on the
+    // client, so this loading state cannot be optimized away by SSG.
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
-    // Our history index. This allows us to determine if we are going back or
-    // forward. We increment this each time we do a `traverse`. We handling the
-    // "pophistory", we can compare this to the popped value to determine the
-    // direction of travel.
+    // A history state counter that allows us to determine if we are going back
+    // or forward. We increment this each time we do a `traverse`. Then, when
+    // handling a "pophistory" event, we can compare this to the popped value to
+    // determine the direction of travel.
     const [historyIndex, setHistoryIndex] = React.useState(0);
     // True if we are going back in history. This allows us to reverse the
     // direction of the animation.
