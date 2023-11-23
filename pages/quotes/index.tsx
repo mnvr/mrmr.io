@@ -90,7 +90,7 @@ const QuoteContainer: React.FC<
             <SwitchTransition>
                 <CSSTransition
                     key={quoteIndex.toString()}
-                    timeout={500}
+                    timeout={300}
                     classNames={"fade"}
                 >
                     <div>{children}</div>
@@ -103,14 +103,14 @@ const QuoteContainer: React.FC<
 const QuoteContainer_ = styled.div`
     .fade-enter {
         opacity: 0;
-        transform: scale3d(0.3, 0.3, 0.3);
+        transform: scale3d(0.5, 0.5, 0.5);
     }
     .fade-enter-active {
         opacity: 1;
         transform: scale3d(1, 1, 1);
         transition:
-            opacity 500ms,
-            transform 500ms;
+            opacity 300ms ease-out,
+            transform 300ms ease-out;
     }
     .fade-exit {
         opacity: 1;
@@ -120,8 +120,8 @@ const QuoteContainer_ = styled.div`
         opacity: 0;
         transform: scale3d(10, 10, 10);
         transition:
-            opacity 500ms ease-in,
-            transform 500ms ease-in;
+            opacity 300ms ease-in,
+            transform 300ms ease-in;
     }
 `;
 
