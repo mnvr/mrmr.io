@@ -1,4 +1,3 @@
-import { IconButton } from "components/Buttons";
 import * as React from "react";
 import { RiInformationLine } from "react-icons/ri";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
@@ -16,34 +15,13 @@ export const Content: React.FC = () => {
             <QuotesContainer>
                 <Quotes {...{ parsedQuotes }} />
             </QuotesContainer>
-            <InfoButton />
+            <Info />
         </Main>
     );
 };
 
 const Main = styled.main`
     margin: 1rem;
-`;
-
-const InfoButton: React.FC = () => {
-    return (
-        <InfoButton_>
-            <IconButton>
-                <RiInformationLine size="2rem" title="About" />
-            </IconButton>
-        </InfoButton_>
-    );
-};
-const InfoButton_ = styled.div`
-    position: absolute;
-    margin: 1rem;
-    bottom: 0;
-    right: 0;
-
-    color: oklch(80% 0 0);
-    svg:hover {
-        color: oklch(30% 0 0);
-    }
 `;
 
 const QuotesContainer = styled.div`
@@ -317,5 +295,28 @@ const Blinking = styled.span`
         100% {
             opacity: 1;
         }
+    }
+`;
+
+const Info: React.FC = () => {
+    return (
+        <Info_>
+            <a target="_blank" href="/">
+                <RiInformationLine size="2rem" title="About" />
+            </a>
+        </Info_>
+    );
+};
+
+const Info_ = styled.div`
+    position: absolute;
+    /* Same as the margin on Main */
+    margin: 1rem;
+    bottom: 0;
+    right: 0;
+
+    color: oklch(84% 0 0);
+    a:hover {
+        color: oklch(32% 0 0);
     }
 `;
