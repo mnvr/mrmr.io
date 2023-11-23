@@ -103,17 +103,25 @@ const QuoteContainer: React.FC<
 const QuoteContainer_ = styled.div`
     .fade-enter {
         opacity: 0;
+        transform: scale(0.3);
     }
     .fade-enter-active {
         opacity: 1;
-        transition: opacity 1000ms;
+        transform: scale(1);
+        transition:
+            opacity 1000ms,
+            transform 1000ms;
     }
     .fade-exit {
         opacity: 1;
+        transform: scale(1);
     }
     .fade-exit-active {
         opacity: 0;
-        transition: opacity 1000ms;
+        transform: scale(2);
+        transition:
+            opacity 1000ms,
+            transform 1000ms;
     }
 `;
 
