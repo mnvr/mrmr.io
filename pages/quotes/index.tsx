@@ -33,7 +33,14 @@ const Quotes: React.FC = () => {
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
 
     React.useEffect(() => {
-        if (!quoteIndex) setQuoteIndex(randomInt(parsedQuotes.quotes.length));
+        if (!quoteIndex) {
+            const quoteIndex = randomInt(parsedQuotes.quotes.length);
+            // Modify the current history entry to keep track of the quote that
+            // we are initially showing. This is needed for the back to the
+            // first quote to work.
+            window.history.replaceState({ quoteIndex }, "");
+            setQuoteIndex(quoteIndex);
+        }
     }, []);
 
     // Follow the hyperlink from the given word (in the current quote) to some
