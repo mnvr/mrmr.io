@@ -1,10 +1,11 @@
-import { ExpandButton, PlayButton } from "components/Buttons";
+import { IconButton, PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
 import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
 import type p5 from "p5";
 import * as React from "react";
 import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
+import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
 import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
@@ -244,3 +245,11 @@ const ExpandButtonContainer = styled.div`
     padding: 1rem;
     z-index: 2;
 `;
+
+const ExpandButton: React.FC = () => {
+    return (
+        <IconButton>
+            <FaExpandAlt title="Expand" />
+        </IconButton>
+    );
+};

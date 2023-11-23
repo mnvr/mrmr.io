@@ -1,6 +1,5 @@
 import * as React from "react";
 import { BsPlayFill } from "react-icons/bs";
-import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
 
 export const IconButton = styled.button`
@@ -10,10 +9,6 @@ export const IconButton = styled.button`
     border: none;
     background: transparent;
     color: inherit;
-
-    :hover {
-        color: var(--mrmr-color-3);
-    }
 `;
 
 export const PlayButton: React.FC = () => {
@@ -29,24 +24,18 @@ export const PlayButton: React.FC = () => {
 
     return (
         <IconButton>
-            <IconWrapper2rem>
+            <PlayIconWrapper>
                 <BsPlayFill title="Play" />
-            </IconWrapper2rem>
+            </PlayIconWrapper>
         </IconButton>
     );
 };
 
-const IconWrapper2rem = styled.div`
+const PlayIconWrapper = styled.div`
     /* Workaround - Safari doesn't support rem units on SVG elements */
     font-size: 2rem;
-`;
 
-export const ExpandButton: React.FC<
-    React.PropsWithChildren<React.ButtonHTMLAttributes<HTMLButtonElement>>
-> = ({ ...props }) => {
-    return (
-        <IconButton {...props}>
-            <FaExpandAlt title="Expand" />
-        </IconButton>
-    );
-};
+    :hover {
+        color: var(--mrmr-color-3);
+    }
+`;
