@@ -389,23 +389,32 @@ const Quote: React.FC<QuoteProps> = ({
 };
 
 const Quote_ = styled.div`
-    line-height: 1.6em;
+    line-height: 1.3em;
     font-size: 2em;
-    font-family: serif;
     font-style: italic;
 
     a {
-        background-color: lightyellow;
-        @media (prefers-color-scheme: dark) {
-            background-color: midnightblue;
-        }
         text-decoration: none;
     }
 
+    color: oklch(37% 0 0);
+    a {
+        background-color: lightyellow;
+    }
     a:hover {
-        background-color: greenyellow;
-        @media (prefers-color-scheme: dark) {
-            background-color: blue;
+        background-color: lime;
+        color: white;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        color: oklch(90% 0 0);
+        a {
+            background-color: ivory;
+            color: oklch(30% 0 0);
+        }
+        a:hover {
+            background-color: white;
+            color: black;
         }
     }
 `;
