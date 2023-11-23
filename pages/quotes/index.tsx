@@ -7,10 +7,12 @@ import { ParsedQuotes, parseQuotes } from "./parse";
 import { quotes } from "./quotes";
 
 export const Content: React.FC = () => {
+    const parsedQuotes = parseQuotes(quotes);
+
     return (
         <Main>
             <QuotesContainer>
-                <Quotes />
+                <Quotes {...{ parsedQuotes }} />
             </QuotesContainer>
         </Main>
     );
@@ -27,9 +29,11 @@ const QuotesContainer = styled.div`
     min-height: 60svh;
 `;
 
-const Quotes: React.FC = () => {
-    const parsedQuotes = parseQuotes(quotes);
+interface QuotesProps {
+    parsedQuotes: ParsedQuotes;
+}
 
+const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
     // Our history index. This allows us to determine if we are going back or
     // forward. We increment this each time we do a `traverse`. We handling the
