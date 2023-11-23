@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { unique } from "utils/array";
 import { ensure } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
-import { quotes } from "./quotes";
+import { ignoredWords, quotes } from "./quotes";
 
 export const Content: React.FC = () => {
     return (
@@ -267,13 +267,13 @@ const potentialWords = (s: string): string[] =>
         potentialSegments(s)
             .flatMap((sg) => (typeof sg === "string" ? [] : sg))
             .map((w) => w.toLowerCase()),
-    ).filter((w) => !ignoredWords.has(w));
+    ).filter((w) => !ignoredWordSet.has(w));
 
 /**
  * A set of common / filler words like "is", "the" etc that we ignore when
  * considering what words to hyperlink.
  */
-const ignoredWords = new Set<string>(["the", "is", "a", "this", "that"]);
+const ignoredWordSet = new Set<string>(ignoredWords);
 
 /**
  * Break a quote string down into segments (normal text or links to words).
