@@ -160,22 +160,24 @@ const parseQuotes = (quotes: string[]): ParsedQuotes => {
 };
 
 /**
- * Return a set of words that occur in more than one quote.
+ * Return a set of words (as keys) that occur in more than one quote.
  *
  * For each such word, also return the indices of the quotes in which it occurs.
+ *
+ * Word "key" here means that all words are lowercased first so that they can be
+ * deterministically used as a key irrespective of the case in which they occur
+ * in the sentence.
  */
 const parseQuoteIndicesForWord = (quotes: string[]) => {
     const quoteIndicesForWord = new Map<string, number[]>();
 
     quotes.forEach((quote, i) => {
-        potentialWords(quote)
-            .map((w) => w.toLowerCase())
-            .forEach((word) => {
-                quoteIndicesForWord.set(
-                    word,
-                    (quoteIndicesForWord.get(word) ?? []).concat([i]),
-                );
-            });
+        potentialWords(quote).forEach((word) => {
+            quoteIndicesForWord.set(
+                word,
+                (quoteIndicesForWord.get(word) ?? []).concat([i]),
+            );
+        });
     });
 
     // Remove words that only link to one quote (which will just be itself).
@@ -262,9 +264,9 @@ const potentialSegments = (s: string) => {
  */
 const potentialWords = (s: string): string[] =>
     unique(
-        potentialSegments(s).flatMap((sg) =>
-            typeof sg === "string" ? [] : sg,
-        ),
+        potentialSegments(s)
+            .flatMap((sg) => (typeof sg === "string" ? [] : sg))
+            .map((w) => w.toLowerCase()),
     ).filter((w) => !ignoredWords.has(w));
 
 /**
