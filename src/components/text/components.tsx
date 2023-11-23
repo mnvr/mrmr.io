@@ -171,7 +171,7 @@ export const FooterHindi: React.FC = () => {
         <Footer_>
             <LinkStyleUnderlined>
                 {relatedPageLinks.length > 0 && (
-                    <RelatedPosts links={relatedPageLinks} />
+                    <RelatedPostsHindi links={relatedPageLinks} />
                 )}
                 {isPoem(page) && (
                     <>
@@ -200,6 +200,9 @@ const Footer_ = styled.footer`
 
     ul {
         margin: 0;
+        /* Add an itsy bitsy extra padding at the bottom to make the list items
+         * fit better in the context of the links that follow */
+        padding-block-end: 0.16rem;
         list-style: circle;
         padding-inline-start: 1.6rem;
     }
