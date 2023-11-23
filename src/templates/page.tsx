@@ -111,6 +111,7 @@ export const query = graphql`
         mdx(id: { eq: $pageID }) {
             frontmatter {
                 title
+                subtitle
                 description
                 formattedDateMY: date(formatString: "MMM YYYY")
                 formattedDateDMY: date(formatString: "DD MMMM YYYY")
@@ -136,6 +137,8 @@ export interface Page {
     slug: string;
     /** Title of the page */
     title: string;
+    /** An (optional) subtitle for the page */
+    subtitle?: string;
     /** A description (explicitly specified, or auto-generated) for the page */
     description: string;
     /** The date from the frontmatter, formatted as "Feb 2023" */
@@ -212,6 +215,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
+    const subtitle = frontmatter?.subtitle;
     const layout = frontmatter?.layout;
     const formattedDateMY = frontmatter?.formattedDateMY;
     const formattedDateDMY = frontmatter?.formattedDateDMY;
@@ -280,6 +284,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     return {
         slug,
         title,
+        subtitle,
         description,
         layout,
         formattedDateMY,

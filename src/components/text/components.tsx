@@ -54,15 +54,29 @@ const Content_ = styled(LinkStyleUnderlined)`
 `;
 
 /**
- * A simple H3 containing the page title.
+ * An adaptive page title component that switches between either:
  *
- * Designed for use at top of the page.
+ * 1. a simple H3 containing the page title,
+ *
+ * 2. or a larger H2 title accompanied by a smaller subtitle.
+ *
+ * The second alternative is used if the frontmatter of the page contains a
+ * "subtitle" field.
+ *
+ * This component was originally designed for use at top of the page.
  */
 export const Title: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { title } = page;
+    const { title, subtitle } = page;
 
-    return <Title_>{title}</Title_>;
+    return subtitle === undefined ? (
+        <Title_>{title}</Title_>
+    ) : (
+        <TitleAndSubtitle_>
+            <h2>{title}</h2>
+            <p>{subtitle}</p>
+        </TitleAndSubtitle_>
+    );
 };
 
 const Title_ = styled.h3`
@@ -72,6 +86,21 @@ const Title_ = styled.h3`
 
     line-height: 1.5rem;
     color: var(--mrmr-color-2);
+`;
+
+const TitleAndSubtitle_ = styled.div`
+    margin-block-end: 3rem;
+
+    h2 {
+        margin-block-end: 0;
+        color: var(--mrmr-color-2);
+    }
+
+    p {
+        margin-block-start: 0.3rem;
+        line-height: 1.5rem;
+        color: var(--mrmr-color-3);
+    }
 `;
 
 /**
