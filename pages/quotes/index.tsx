@@ -1,7 +1,7 @@
 import * as React from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
-import { ensure } from "utils/ensure";
+import { ensure, ensureNumber } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
 import { ParsedQuotes, parseQuotes } from "./parse";
 import { quotes } from "./quotes";
@@ -31,6 +31,11 @@ const Quotes: React.FC = () => {
     const parsedQuotes = parseQuotes(quotes);
 
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
+    // Our history index. This allows us to determine if we are going back or
+    // forward. We increment this each time we do a `traverse`. We handling the
+    // "pophistory", we can compare this to the popped value to determine the
+    // direction of travel.
+    const [historyIndex, setHistoryIndex] = React.useState(0);
     // True if we are going back in history. This allows us to reverse the
     // direction of the animation.
     const [isReverse, setIsReverse] = React.useState(false);
@@ -41,7 +46,7 @@ const Quotes: React.FC = () => {
             // Modify the current history entry to keep track of the quote that
             // we are initially showing. This is needed for the back to the
             // first quote to work.
-            window.history.replaceState({ quoteIndex }, "");
+            window.history.replaceState({ quoteIndex, historyIndex }, "");
             setQuoteIndex(quoteIndex);
             setIsReverse(false);
         }
@@ -58,18 +63,34 @@ const Quotes: React.FC = () => {
         );
 
         const newQuoteIndex = ensure(randomItem(linkedQuoteIndices));
-        setQuoteIndex(newQuoteIndex);
-        window.history.pushState({ quoteIndex: newQuoteIndex }, "");
+        const newHistoryIndex = historyIndex + 1;
 
+        setQuoteIndex(newQuoteIndex);
+        setHistoryIndex(newHistoryIndex);
         setIsReverse(false);
+
+        window.history.pushState(
+            { quoteIndex: newQuoteIndex, historyIndex: newHistoryIndex },
+            "",
+        );
     };
 
     const handlePopState = (event: PopStateEvent) => {
         const { state } = event;
-        if (state && typeof state.quoteIndex === "number") {
-            setQuoteIndex(state.quoteIndex);
-            setIsReverse(true);
+        const poppedQuoteIndex = ensureNumber(state.quoteIndex);
+        const poppedHistoryIndex = ensureNumber(state.historyIndex);
+
+        let newIsReverse = true;
+        // If the new history index we're get from the state is more than the
+        // current history index, that means we're going forward (e.g. the user
+        // pressed the forward button).
+        if (poppedHistoryIndex > historyIndex) {
+            newIsReverse = false;
         }
+
+        setQuoteIndex(poppedQuoteIndex);
+        setHistoryIndex(poppedHistoryIndex);
+        setIsReverse(newIsReverse);
     };
 
     React.useEffect(() => {
@@ -77,7 +98,7 @@ const Quotes: React.FC = () => {
         return () => {
             window.removeEventListener("popstate", handlePopState);
         };
-    }, []);
+    }, [historyIndex]);
 
     return quoteIndex !== undefined ? (
         <QuoteContainer {...{ quoteIndex, isReverse }}>
