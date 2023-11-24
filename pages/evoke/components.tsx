@@ -18,7 +18,7 @@ export const Title: React.FC = ({}) => {
 };
 
 const Title_ = styled.div`
-    background-color: var(--mrmr-color-1);
+    /* background-color: var(--mrmr-color-1); */
     padding: 1rem;
     min-height: 60svh;
     font-size: 2rem;
@@ -26,12 +26,12 @@ const Title_ = styled.div`
     display: grid;
     place-items: center;
 
-    * {
-        grid-area: 1 / 1;
+    h1 {
+        color: white;
     }
 
     .circle {
-        background-color: var(--mrmr-background-color-1);
+        background-color: pink;
         width: 16rem;
         height: 16rem;
         border-radius: 50%;
@@ -48,7 +48,7 @@ export const Text = styled.div`
         font-size: 1.5rem;
     }
 
-    p:nth-child(odd) {
+    p:nth-child(even) {
         color: var(--mrmr-color-2);
     }
 `;
