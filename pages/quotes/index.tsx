@@ -233,8 +233,7 @@ const Quote: React.FC<QuoteProps> = ({
         }
     });
 
-    const fontSize =
-        quoteLength > 80 ? (quoteLength > 200 ? "1.6rem" : "1.8rem") : "2rem";
+    const fontSize = fontSizeForQuoteLength(quoteLength);
 
     return (
         <Quote_ {...{ fontSize }}>
@@ -280,6 +279,13 @@ const Quote_ = styled.div<QuoteProps_>`
         }
     }
 `;
+
+const fontSizeForQuoteLength = (len: number) => {
+    if (len > 300) return "1.4rem";
+    if (len > 200) return "1.6rem";
+    if (len > 80) return "1.8rem";
+    return "2rem";
+};
 
 const Loading: React.FC = () => {
     return (
