@@ -271,8 +271,9 @@ const Quote_ = styled.div<QuoteProps_>`
     @media (prefers-color-scheme: dark) {
         color: oklch(90% 0 0);
         a {
-            background-color: ivory;
-            color: oklch(30% 0 0);
+            /* a transparent "darkslategray" */
+            background-color: oklch(40.3% 0.038 195.76 / 42%);
+            color: oklch(92% 0 0);
         }
         a:hover {
             color: black;
