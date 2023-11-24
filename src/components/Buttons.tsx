@@ -12,15 +12,19 @@ export const IconButton = styled.button`
 `;
 
 export const PlayButton: React.FC = () => {
-    // Safari doesn't support rem units on SVG elements
-    // So this could've just been
+    // Note: [Workaround - Safari doesn't support rem units on SVG elements]
+    //
+    // Tis could've just been
     //
     //     <IconButton>
     //         <BsPlayFill size="2rem" title="Play" />
     //     </IconButton>
     //
-    // Except that causes Safari to log errors to the console. So we instead
-    // wrap the icon in a container that sets the font size to 2rem;
+    // However, Safari (as of 17) doesn't support rem units on SVG elements. So
+    // setting the size="2rem" causes Safari to log errors to the console.
+    //
+    // As a workaround, we instead wrap the icon in a container that sets the
+    // font-size to 2rem.
 
     return (
         <IconButton>
@@ -32,7 +36,7 @@ export const PlayButton: React.FC = () => {
 };
 
 const PlayIconWrapper = styled.div`
-    /* Workaround - Safari doesn't support rem units on SVG elements */
+    /* See Note: [Workaround - Safari doesn't support rem units on SVG elements] */
     font-size: 2rem;
 
     :hover {

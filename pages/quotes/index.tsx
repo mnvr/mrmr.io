@@ -7,10 +7,9 @@ import { ensure, ensureNumber } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
 import { ParsedQuotes, parseQuotes } from "./parse";
 import { quotes } from "./quotes";
-import { timed } from "utils/debug";
 
 export const Content: React.FC = () => {
-    const parsedQuotes = timed(() => parseQuotes(quotes));
+    const parsedQuotes = parseQuotes(quotes);
 
     return (
         <Main>
@@ -319,7 +318,7 @@ const Info: React.FC = () => {
     return (
         <Info_>
             <Link to="/quotes/about">
-                <RiInformationLine size="2rem" title="About" />
+                <RiInformationLine title="About" />
             </Link>
         </Info_>
     );
@@ -331,6 +330,9 @@ const Info_ = styled.div`
     margin: 1rem;
     bottom: 0;
     right: 0;
+
+    /* See Note: [Workaround - Safari doesn't support rem units on SVG elements] */
+    font-size: 2rem;
 
     color: var(--mrmr-color-4);
     a:hover {
