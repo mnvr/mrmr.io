@@ -98,7 +98,7 @@ export const query = graphql`
                 publicURL
             }
         }
-        allMdx(filter: { frontmatter: { unlisted: { ne: true } } }) {
+        allMdx {
             nodes {
                 frontmatter {
                     title
