@@ -64,15 +64,7 @@ export const Text = styled.div`
     }
 `;
 
-export const Signoff: React.FC = () => {
-    return (
-        <Signoff_>
-            <SignoffContents />
-        </Signoff_>
-    );
-};
-
-const Signoff_ = styled.div`
+export const Signoff = styled(SignoffContents)`
     background-color: var(--mrmr-color-1);
     color: var(--mrmr-background-color-1);
     padding: 1rem;
