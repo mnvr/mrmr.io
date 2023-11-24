@@ -23,25 +23,18 @@ const Title_ = styled.div`
     min-height: 60svh;
     font-size: 2rem;
 
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    place-items: center;
+
+    * {
+        grid-area: 1 / 1;
+    }
 
     .circle {
         background-color: var(--mrmr-background-color-1);
-
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -48%);
         width: 16rem;
         height: 16rem;
         border-radius: 50%;
-    }
-
-    h1 {
-        z-index: 1;
     }
 `;
 
