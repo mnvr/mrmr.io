@@ -7,9 +7,10 @@ import { ensure, ensureNumber } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
 import { ParsedQuotes, parseQuotes } from "./parse";
 import { quotes } from "./quotes";
+import { timed } from "utils/debug";
 
 export const Content: React.FC = () => {
-    const parsedQuotes = parseQuotes(quotes);
+    const parsedQuotes = timed(() => parseQuotes(quotes));
 
     return (
         <Main>
