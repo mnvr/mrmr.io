@@ -1,5 +1,6 @@
 import { WideColumn } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
+import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -121,16 +122,9 @@ export const DescAsTitle: React.FC = () => {
  * Designed for use at bottom of the page, after the text content.
  */
 export const Signoff: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedSignoffDate } = page;
-
     return (
         <Signoff_>
-            <small>
-                Manav Rathi
-                <br />
-                {formattedSignoffDate}
-            </small>
+            <SignoffContents />
         </Signoff_>
     );
 };

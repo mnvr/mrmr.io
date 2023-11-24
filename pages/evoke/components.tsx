@@ -1,3 +1,5 @@
+import { SignoffContents } from "components/Signoff";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -44,7 +46,8 @@ const Title_ = styled.div`
 `;
 
 export const Text = styled.div`
-    margin: 1rem;
+    margin-inline: 1rem;
+    margin-block: 3rem;
 
     p {
         max-width: 30rem;
@@ -54,5 +57,50 @@ export const Text = styled.div`
 
     p:nth-child(odd) {
         color: var(--mrmr-color-2);
+    }
+`;
+
+export const Signoff: React.FC = () => {
+    return (
+        <Signoff_>
+            <SignoffContents />
+        </Signoff_>
+    );
+};
+
+const Signoff_ = styled.div`
+    background-color: var(--mrmr-color-1);
+    color: var(--mrmr-background-color-1);
+    padding: 1rem;
+    min-height: 20svh;
+`;
+
+export const Footer: React.FC = () => {
+    return (
+        <Footer_>
+            <div>
+                <Link to={"/all"}>All posts</Link>
+                <br />
+                <Link to={"/"}>Home</Link>
+            </div>
+        </Footer_>
+    );
+};
+
+const Footer_ = styled.div`
+    background-color: var(--mrmr-color-2);
+    color: var(--mrmr-background-color-1);
+    padding: 1rem;
+    min-height: 60svh;
+    line-height: 2rem;
+
+    a {
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: bold;
+    }
+
+    a:hover {
+        border-bottom: 2px solid currentColor;
     }
 `;
