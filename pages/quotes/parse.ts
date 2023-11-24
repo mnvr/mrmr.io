@@ -134,9 +134,11 @@ const potentialSegments = (s: string) => {
     let currentNonWord: string[] = [];
     s = s.trim();
     for (const c of s) {
-        if (/\w/.test(c)) {
-            // c is an alphanumeric word character from the basic Latin alphabet
-            // (including the underscore).
+        if (/[\w'’]/.test(c)) {
+            // - c is an alphanumeric word character from the basic Latin alphabet
+            //  (including the underscore),
+            // - or c is one of ’ or '. While these can be punctuation marks, in
+            //   our quotes DB we only have them in words like "don't", "won't".
             currentWord.push(c);
             if (currentNonWord.length) {
                 segments.push(currentNonWord.join(""));
