@@ -16,7 +16,7 @@ export const Title: React.FC = ({}) => {
 };
 
 const Title_ = styled.div`
-    background-color: var(--mrmr-color-1);
+    background-color: #3df9e4;
     padding: 1rem;
     min-height: 60svh;
     font-size: 2rem;
@@ -39,11 +39,23 @@ const Title_ = styled.div`
 
     h1 {
         z-index: 1;
-        color: oklch(82.42% 0.251 145.5);
-        color: white;
+        color: #3df9e4;
+        /* color: white; */
     }
 `;
 
 export const Text = styled.div`
     margin: 1rem;
+
+    p {
+        /* color: #; */
+        max-width: 30rem;
+        margin-inline: auto;
+        /* font-weight: 700; */
+        font-size: 1.5rem;
+    }
+
+    p:nth-child(even) {
+        color: #3df9e4;
+    }
 `;
