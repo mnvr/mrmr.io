@@ -1,4 +1,12 @@
-export const ignoredWords: string[] = ["the", "it", "a", "an", "this", "that", "and"];
+export const ignoredWords: string[] = [
+    "the",
+    "it",
+    "a",
+    "an",
+    "this",
+    "that",
+    "and",
+];
 
 export const quotes: string[] = [
     "Chaos is a ladder",
