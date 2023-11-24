@@ -94,9 +94,14 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
         // When the user presses back from this page itself the
         // `removeEventListener` below runs after the page is destroyed. But
         // before that can happen, we end up here because of a spurious (not
-        // meant for us) "popstate". This event will not have any state, and
-        // this early return is to ignore it.
+        // meant for us) "popstate".
+        //
+        // Such a spurious event might not have any state, or might not have
+        // state of the form that we expect. So only proceed if we recognize the
+        // shape of the state.
         if (!state) return;
+        if (typeof state.quoteIndex !== "number") return;
+        if (typeof state.historyIndex !== "number") return;
 
         const poppedQuoteIndex = ensureNumber(state.quoteIndex);
         const poppedHistoryIndex = ensureNumber(state.historyIndex);
