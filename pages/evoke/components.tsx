@@ -11,30 +11,41 @@ export const Title: React.FC = ({}) => {
 
     return (
         <Title_>
-            <div className="circle" />
-            <h1>{title}</h1>
+            <div className="container">
+                <div className="figure" />
+                <h3>{title}</h3>
+            </div>
         </Title_>
     );
 };
 
 const Title_ = styled.div`
-    /* background-color: var(--mrmr-color-1); */
-    padding: 1rem;
-    min-height: 60svh;
+    background-color: var(--mrmr-color-1);
+    padding-inline: 1rem;
+    padding-block: 3rem;
     font-size: 2rem;
 
-    display: grid;
-    place-items: center;
+    .container {
+        max-width: 30rem;
+        margin-inline: auto;
+        min-height: 55svh;
 
-    h1 {
-        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
-    .circle {
-        background-color: pink;
-        width: 16rem;
-        height: 16rem;
-        border-radius: 50%;
+    h3 {
+        color: var(--mrmr-background-color-1);
+        margin: 0;
+    }
+
+    .figure {
+        margin-inline-start: 2px;
+        box-sizing: border-box;
+        width: 4rem;
+        height: 4rem;
+        border: 2px solid var(--mrmr-background-color-1);
     }
 `;
 
