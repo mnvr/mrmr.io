@@ -123,6 +123,11 @@ export const query = graphql`
                 theme
                 tags
                 related
+                previewImage {
+                    childImageSharp {
+                        gatsbyImageData
+                    }
+                }
             }
             fields {
                 slug
@@ -183,6 +188,7 @@ export interface Page {
      * from the frontmatter.
      */
     relatedPageLinks: PageLink[];
+    previewImage?: ImageDataLike;
     /**
      * ImageSharp nodes for images stored in the same directory as the page
      *
@@ -210,7 +216,7 @@ export interface PageLink {
     title: string;
 }
 
-export const parsePage = (data: Queries.PageTemplateQuery): Page => {
+export const parsePage = (data: Queries.PageTemplateQuery) => {
     const { mdx, images, mp3s, allMdx } = replaceNullsWithUndefineds(data);
 
     const frontmatter = mdx?.frontmatter;
@@ -247,6 +253,8 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     images.nodes.forEach((node) => {
         pageImages[node.name] = node;
     });
+
+    const previewImage = frontmatter?.previewImage?.childImageSharp;
 
     // Get at the publicURLs for all the MP3 files that are stored in the same
     // directory as the page that we're rendering. Put them in a map, indexed by
@@ -296,9 +304,10 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         theme,
         tags,
         relatedPageLinks,
+        previewImage,
         images: pageImages,
         mp3s: pageMP3s,
-    };
+    } satisfies Page;
 };
 
 /**

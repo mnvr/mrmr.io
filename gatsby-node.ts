@@ -30,6 +30,14 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
                 value,
             });
         });
+
+        // if (slug === "/evoke") {
+        //     createNodeField({
+        //         node,
+        //         name: "previewImage",
+        //         value: "assets/default/preview.png",
+        //     });
+        // }
     }
 };
 
