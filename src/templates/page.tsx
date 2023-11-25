@@ -125,7 +125,9 @@ export const query = graphql`
                 related
                 previewImage {
                     childImageSharp {
-                        gatsbyImageData
+                        gatsbyImageData(
+                            transformOptions: {duotone: {highlight: "#00ff00", shadow: "#0000ff"}}
+                          )
                     }
                 }
             }
