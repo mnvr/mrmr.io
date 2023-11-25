@@ -7,6 +7,22 @@ import path from "path";
 import { PageTemplateContext } from "types/gatsby";
 import { ensure, ensureString } from "./src/utils/ensure";
 
+export const createResolvers: GatsbyNode["createResolvers"] = ({
+    createResolvers,
+}) => {
+    createResolvers({
+        Mdx: {
+            author: {
+                type: ["String!"],
+                resolve: (source, args, context, info) => {
+                    console.log(source, args, context, info);
+                    return ["Manav"];
+                },
+            },
+        },
+    });
+};
+
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
     getNode,
