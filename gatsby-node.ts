@@ -33,6 +33,30 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     }
 };
 
+export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
+    reporter,
+    getNodesByType,
+}) => {
+    // Create source nodes for all MDX nodes which don't have an associated
+    // preview image, but have a color explicitly listed in their frontmatter.
+    //
+    // We will create new images using the default preview image as the
+    // template, but using the page specific colors to tint it using the
+    // "duotone" transform option provided by ImageSharp nodes.
+    //
+    // This is complicated by the fact that we cannot run Gatsby graphql queries
+    // in sourceNodes because the graphql schema doesn't exist yet.
+    //
+    // > Note that we cannot call createNode during createPages, which is why we
+    //   need to split this logic across multiple stages.
+    //
+    // Luckily, even if a bit more involved, it is possible to access existing
+    // nodes through functions passed by Gatsby to the node APIs.
+
+    const files = getNodesByType("File");
+    reporter.info(`XXX #${files.length} files`);
+};
+
 export const createPages: GatsbyNode<
     any,
     PageTemplateContext
