@@ -68,8 +68,8 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
             }
         }
     */
-    const files = getNodesByType("File");
-    const pagePreviewFiles = files.filter(
+    const allFile = getNodesByType("File");
+    const pagePreviewFiles = allFile.filter(
         (node) =>
             node["sourceInstanceName"] === "pages" &&
             node["name"] === "preview" &&
@@ -85,8 +85,41 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
             ].join(""),
         ),
     );
-    reporter.info(`XXX #${pagesWithPreviews.size} pages have previews`);
-    console.log(pagesWithPreviews);
+
+    /* This is the GraphQL query that we're trying to emulate
+
+        allMdx(filter: {frontmatter: {colors: {ne: null}}}) {
+            nodes {
+                 id
+                 frontmatter {
+                     colors
+                 }
+                 fields {
+                     slug
+                 }
+            }
+        }
+    */
+
+    const allMdx = getNodesByType("Mdx");
+    const mdxWithoutPreviews = allMdx.flatMap((node) => {
+        const id = ensureString(node?.id);
+        const slug = ensureString(
+            (node?.fields as { slug: unknown } | undefined | null)?.slug,
+        );
+        if (pagesWithPreviews.has(slug)) return [];
+
+        const colors = (
+            node?.frontmatter as { colors: unknown } | undefined | null
+        )?.colors;
+        if (!Array.isArray(colors)) return [];
+
+        return [{ id, slug, colors }];
+    });
+    reporter.info(
+        `XXX #${mdxWithoutPreviews.length} pages have no preview but have explicit colors`,
+    );
+    console.log(mdxWithoutPreviews);
 };
 
 export const createPages: GatsbyNode<
