@@ -31,13 +31,13 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
             });
         });
 
-        // if (slug === "/evoke") {
-        //     createNodeField({
-        //         node,
-        //         name: "previewImage",
-        //         value: "assets/default/preview.png",
-        //     });
-        // }
+        if (slug === "/evoke") {
+            createNodeField({
+                node,
+                name: "previewImage",
+                value: "../../src/assets/default/preview.png",
+            });
+        }
     }
 };
 

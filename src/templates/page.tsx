@@ -123,6 +123,10 @@ export const query = graphql`
                 theme
                 tags
                 related
+
+            }
+            fields {
+                slug
                 previewImage {
                     childImageSharp {
                         gatsbyImageData(
@@ -130,9 +134,6 @@ export const query = graphql`
                           )
                     }
                 }
-            }
-            fields {
-                slug
             }
         }
     }
@@ -256,7 +257,7 @@ export const parsePage = (data: Queries.PageTemplateQuery) => {
         pageImages[node.name] = node;
     });
 
-    const previewImage = frontmatter?.previewImage?.childImageSharp;
+    const previewImage = mdx?.fields?.previewImage?.childImageSharp;
 
     // Get at the publicURLs for all the MP3 files that are stored in the same
     // directory as the page that we're rendering. Put them in a map, indexed by
