@@ -5,7 +5,7 @@ import path from "path";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import { PageTemplateContext } from "types/gatsby";
-import { ensure } from "./src/utils/ensure";
+import { ensure, ensureString } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -53,8 +53,40 @@ export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
     // Luckily, even if a bit more involved, it is possible to access existing
     // nodes through functions passed by Gatsby to the node APIs.
 
+    /* This is the GraphQL query that we're trying to emulate
+
+        allFile(
+            filter: {
+                sourceInstanceName: { eq: "pages" },
+                name: { eq: "preview" }
+                ext: { regex: "/\\.(jpg|png)/" }
+            }
+        ) {
+            nodes {
+                root
+                relativeDirectory
+            }
+        }
+    */
     const files = getNodesByType("File");
-    reporter.info(`XXX #${files.length} files`);
+    const pagePreviewFiles = files.filter(
+        (node) =>
+            node["sourceInstanceName"] === "pages" &&
+            node["name"] === "preview" &&
+            (node["ext"] === ".png" || node["ext"] === ".jpg"),
+    );
+    // A set of page slugs corresponding to which there already exists a custom
+    // preview image.
+    const pagesWithPreviews = new Set(
+        pagePreviewFiles.map((node) =>
+            [
+                ensureString(node.root),
+                ensureString(node.relativeDirectory),
+            ].join(""),
+        ),
+    );
+    reporter.info(`XXX #${pagesWithPreviews.size} pages have previews`);
+    console.log(pagesWithPreviews);
 };
 
 export const createPages: GatsbyNode<
