@@ -10,13 +10,34 @@ import { ensure, ensureString } from "./src/utils/ensure";
 export const createResolvers: GatsbyNode["createResolvers"] = ({
     createResolvers,
 }) => {
+    /*
+    Create a resolver that handles the following query
+
+        mdx(fields: {slug: {eq: "/evoke"}}) {
+          id
+          generatedPreviewImage
+        }
+    */
     createResolvers({
         Mdx: {
-            author: {
-                type: ["String!"],
-                resolve: (source, args, context, info) => {
-                    console.log(source, args, context, info);
-                    return ["Manav"];
+            generatedPreviewImage: {
+                // type: "ImageSharp",
+                type: "String",
+                resolve: async (source, args, context, info) => {
+                    console.log(source, args, context);
+                    console.log("info", info);
+                    const node = await context.nodeModel.findOne({
+                        query: {
+                            filter: {
+                                relativePath: { eq: "default/preview.png" },
+                                sourceInstanceName: { eq: "assets" },
+                            },
+                        },
+                        type: "File",
+                    });
+                    console.log(node);
+                    return node.id;
+                    // return node.childImageSharp.gatsbyImageData;
                 },
             },
         },
