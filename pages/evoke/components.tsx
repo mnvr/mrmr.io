@@ -14,7 +14,7 @@ export const Test: React.FC = ({}) => {
 };
 
 const TestImage: React.FC<{ page: Page }> = ({ page }) => {
-    const image = ensure(getImage(ensure(page.previewImage)));
+    const image = ensure(getImage(ensure(page.generatedPreviewImage)));
 
     return <GatsbyImage image={image} alt={""} />;
 };

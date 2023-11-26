@@ -123,7 +123,6 @@ export const query = graphql`
                 theme
                 tags
                 related
-
             }
             fields {
                 slug
@@ -134,6 +133,11 @@ export const query = graphql`
                           )
                     }
                 }
+            }
+            generatedPreviewImage {
+                gatsbyImageData(
+                    transformOptions: {duotone: {highlight: "#ababff", shadow: "#0000ff"}}
+                  )
             }
         }
     }
@@ -192,6 +196,7 @@ export interface Page {
      */
     relatedPageLinks: PageLink[];
     previewImage?: ImageDataLike;
+    generatedPreviewImage?: ImageDataLike;
     /**
      * ImageSharp nodes for images stored in the same directory as the page
      *
@@ -258,6 +263,7 @@ export const parsePage = (data: Queries.PageTemplateQuery) => {
     });
 
     const previewImage = mdx?.fields?.previewImage?.childImageSharp;
+    const generatedPreviewImage = mdx?.generatedPreviewImage;
 
     // Get at the publicURLs for all the MP3 files that are stored in the same
     // directory as the page that we're rendering. Put them in a map, indexed by
@@ -308,6 +314,7 @@ export const parsePage = (data: Queries.PageTemplateQuery) => {
         tags,
         relatedPageLinks,
         previewImage,
+        generatedPreviewImage,
         images: pageImages,
         mp3s: pageMP3s,
     } satisfies Page;
