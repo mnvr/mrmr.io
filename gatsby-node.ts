@@ -149,10 +149,10 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         nodeModel: {
                             findOne: (
                                 object: unknown,
-                            ) => Queries.Node | undefined;
+                            ) => Promise<Queries.Node | undefined>;
                             getNodeById: (
                                 object: unknown,
-                            ) => Queries.Node | undefined;
+                            ) => Queries.Node | undefined | null;
                         };
                     },
                     info: unknown,
@@ -181,8 +181,6 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                     });
                     if (previewFileNode) return;
 
-                    // console.log(source, args, context);
-                    // console.log("info", info);
                     const templateFileNode = await context.nodeModel.findOne({
                         query: {
                             filter: {
@@ -205,11 +203,20 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                     // particular File node, the ImageSharp node is the first
                     // child, and so `fileNode.children[0]` will have the ID of
                     // the ImageSharp node we want.
-                    const imageSharpNode = await context.nodeModel.getNodeById({
+                    const imageSharpNode = context.nodeModel.getNodeById({
                         id: templateFileNode.children[0],
                         type: "ImageSharp",
                     });
                     console.log({ fileNode: templateFileNode, imageSharpNode });
+
+                    // console.log(source, args, context);
+                    // console.log("info", info);
+                    const foo = await context.nodeModel.getFieldValue(
+                        imageSharpNode,
+                        "gatsbyImageData",
+                    );
+                    console.log(foo);
+
                     return imageSharpNode;
                 },
             },
