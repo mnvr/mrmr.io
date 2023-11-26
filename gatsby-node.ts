@@ -24,8 +24,8 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                 // type: "ImageSharp",
                 type: "String",
                 resolve: async (source, args, context, info) => {
-                    console.log(source, args, context);
-                    console.log("info", info);
+                    // console.log(source, args, context);
+                    // console.log("info", info);
                     const node = await context.nodeModel.findOne({
                         query: {
                             filter: {
@@ -35,7 +35,18 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         },
                         type: "File",
                     });
-                    console.log(node);
+                    // console.log(node);
+                    const imageSharp = context.nodeModel.getFieldValue(
+                        node,
+                        "childImageSharp",
+                    );
+                    console.log("imageSharp", imageSharp);
+                    const gatsbyImageData = context.nodeModel.getFieldValue(
+                        node,
+                        "childImageSharp.gatsbyImageData",
+                    );
+                    console.log("gatsbyImageData", gatsbyImageData);
+
                     return node.id;
                     // return node.childImageSharp.gatsbyImageData;
                 },
