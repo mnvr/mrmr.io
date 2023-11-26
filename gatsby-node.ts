@@ -4,7 +4,8 @@ import path from "path";
 
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
-import { PageTemplateContext } from "types/gatsby";
+import { PageTemplateContext } from "./src/types/gatsby";
+// import { color, hex } from "./src/utils/colorsjs";
 import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
@@ -79,14 +80,13 @@ export const createPages: GatsbyNode<
             const id = node.id;
             const slug = ensure(node.fields?.slug);
             const contentFilePath = ensure(node.internal?.contentFilePath);
-            const colors = node.frontmatter?.colors;
 
             const templatePath = path.resolve("src/templates/page.tsx");
 
             const context = {
                 pageID: id,
                 relativeDirectory: relativeDirectory(slug),
-                ...previewImageColorContext(colors),
+                ...previewImageColorContext(node),
             };
 
             createPage<PageTemplateContext>({
@@ -108,21 +108,32 @@ export const createPages: GatsbyNode<
 const relativeDirectory = (slug: string) => slug.substring(1);
 
 /**
- * Parse the color fields (if any) specified in the MDX frontmatter and convert
- * them into variables suitable to be passed to the page query context.
- *
- * Note that this query doesn't run for all pages, but the GraphQL variables are
- * mandatory strings, so we can just return an empty string for cases where we
- * know that the custom `generatedPreviewImage` field where these values will
- * end up being used will never actually be resolved.
+ * Parse the color fields (if any) specified in the MDX frontmatter of the given
+ * (page) node, and convert them into variables suitable to be passed to the
+ * page query context.
  *
  * For more details, see Note: [Generating preview images].
  */
-const previewImageColorContext = (
-    colors: Queries.Maybe<Queries.Scalars["String"]>,
-) => {
-    const highlight = "";
-    const shadow = "";
+const previewImageColorContext = (node: Queries.Mdx) => {
+    // Note that the code that resolves the `generatedPreviewImage` field below
+    // ensures that we only run if there are two color strings, and
+    // parseColorPalette would succeed.
+    //
+    // So we can return invalid values (empty strings) for these variables by
+    // default when parsing fails, because we know that they'll never end up
+    // getting passed to sharp (the image library) in such cases anyways.
+    let highlight = "#ff0000";
+    let shadow = "#0000ff";
+
+    const colors = node.frontmatter?.colors;
+    if (!Array.isArray(colors)) return;
+
+    // const palette = parseColorPalette(colors);
+    // if (palette) {
+    //     highlight = palette.backgroundColor1;
+    //     shadow = palette.color1;
+    // }
+
     return { previewImageHighlight: highlight, previewImageShadow: shadow };
 };
 
@@ -194,13 +205,19 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                     // More information about the GraphQL query
                     _info: unknown,
                 ) => {
-                    // Ignore pages that don't have any colors explicitly
-                    // listed.
+                    const slug = ensure(source.fields?.slug);
+
+                    // Ignore pages that don't have colors explicitly listed.
                     const colors = source.frontmatter?.colors;
                     if (!Array.isArray(colors)) return;
-                    if (colors.length < 2) return;
 
-                    const slug = ensure(source.fields?.slug);
+                    // const colors =
+                    // source.frontmatter?.colors?.filter(isDefined);
+                    // try {
+                    // parseColorPalette(colors);
+                    // } catch {
+                    // return;
+                    // }
 
                     // Ignore pages that have an associated preview image.
                     const previewFileNode = await context.nodeModel.findOne({

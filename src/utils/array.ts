@@ -5,7 +5,7 @@
  *
  *     xs?.filter(isDefined)
  */
-export const isDefined = <T>(x: T | undefined): x is T => {
+export const isDefined = <T>(x: T | undefined | null): x is T => {
     return x !== undefined;
 };
 
