@@ -5,75 +5,7 @@ import path from "path";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import { PageTemplateContext } from "types/gatsby";
-import { ensure, ensureString } from "./src/utils/ensure";
-
-export const createResolvers: GatsbyNode["createResolvers"] = ({
-    createResolvers,
-}) => {
-    /*
-      Create a resolver that handles the following query
-
-         mdx(fields: {slug: {eq: "/evoke"}}) {
-           id
-           generatedPreviewImage {
-             gatsbyImageData
-           }
-         }
-    */
-    createResolvers({
-        Mdx: {
-            generatedPreviewImage: {
-                type: "ImageSharp",
-                // type: "String",
-                resolve: async (source, args, context, info) => {
-                    // console.log(source, args, context);
-                    // console.log("info", info);
-                    const node = await context.nodeModel.findOne({
-                        query: {
-                            filter: {
-                                relativePath: { eq: "default/preview.png" },
-                                sourceInstanceName: { eq: "assets" },
-                            },
-                        },
-                        type: "File",
-                    });
-                    // The data we obtain from `findOne` is Gatsby's internal
-                    // node data structures directly. In particular, foreign key
-                    // relationships don't get resolved. To do that, we need to
-                    // go through the GraphQL resolver, which we do here by
-                    // using `getNodeById`.
-                    //
-                    // We need the ID of the ImageSharp child node. Whilst not
-                    // guaranteed, we rely on the fact that for our particular
-                    // File node, the ImageSharp node is the first child and
-                    // `fileNode.children[0]` will have the ID of the
-                    // ImageSharp node we want.
-                    const n2 = await context.nodeModel.getNodeById({
-                        id: node.children[0], //"169343ee-8557-5420-8026-2c99069313c6", //node.id,
-                        type: `ImageSharp`,
-                    });
-                    console.log("----");
-                    console.log(node);
-                    console.log(n2);
-                    // const imageSharp = await context.nodeModel.getFieldValue(
-                    //     node,
-                    //     "childImageSharp",
-                    // );
-                    // console.log("imageSharp", imageSharp);
-                    // const gatsbyImageData = await context.nodeModel.getFieldValue(
-                    //     node,
-                    //     "childImageSharp.gatsbyImageData",
-                    // );
-                    // console.log("gatsbyImageData", gatsbyImageData);
-
-                    // return node.id;
-                    // return node.childImageSharp.gatsbyImageData;
-                    return n2;
-                },
-            },
-        },
-    });
-};
+import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -98,104 +30,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
                 value,
             });
         });
-
-        if (slug === "/evoke") {
-            createNodeField({
-                node,
-                name: "previewImage",
-                value: "../../src/assets/default/preview.png",
-            });
-        }
     }
-};
-
-export const sourceNodes: GatsbyNode["sourceNodes"] = async ({
-    reporter,
-    getNodesByType,
-}) => {
-    // Create source nodes for all MDX nodes which don't have an associated
-    // preview image, but have a color explicitly listed in their frontmatter.
-    //
-    // We will create new images using the default preview image as the
-    // template, but using the page specific colors to tint it using the
-    // "duotone" transform option provided by ImageSharp nodes.
-    //
-    // This is complicated by the fact that we cannot run Gatsby graphql queries
-    // in sourceNodes because the graphql schema doesn't exist yet.
-    //
-    // > Note that we cannot call createNode during createPages, which is why we
-    //   need to split this logic across multiple stages.
-    //
-    // Luckily, even if a bit more involved, it is possible to access existing
-    // nodes through functions passed by Gatsby to the node APIs.
-
-    /* This is the GraphQL query that we're trying to emulate
-
-        allFile(
-            filter: {
-                sourceInstanceName: { eq: "pages" },
-                name: { eq: "preview" }
-                ext: { regex: "/\\.(jpg|png)/" }
-            }
-        ) {
-            nodes {
-                root
-                relativeDirectory
-            }
-        }
-    */
-    const allFile = getNodesByType("File");
-    const pagePreviewFiles = allFile.filter(
-        (node) =>
-            node["sourceInstanceName"] === "pages" &&
-            node["name"] === "preview" &&
-            (node["ext"] === ".png" || node["ext"] === ".jpg"),
-    );
-    // A set of page slugs corresponding to which there already exists a custom
-    // preview image.
-    const pagesWithPreviews = new Set(
-        pagePreviewFiles.map((node) =>
-            [
-                ensureString(node.root),
-                ensureString(node.relativeDirectory),
-            ].join(""),
-        ),
-    );
-
-    /* This is the GraphQL query that we're trying to emulate
-
-        allMdx(filter: {frontmatter: {colors: {ne: null}}}) {
-            nodes {
-                 id
-                 frontmatter {
-                     colors
-                 }
-                 fields {
-                     slug
-                 }
-            }
-        }
-    */
-
-    const allMdx = getNodesByType("Mdx");
-    const mdxWithoutPreviews = allMdx.flatMap((node) => {
-        const id = ensureString(node?.id);
-        const slug = ensureString(
-            (node?.fields as { slug: unknown } | undefined | null)?.slug,
-        );
-        if (pagesWithPreviews.has(slug)) return [];
-
-        const colors = (
-            node?.frontmatter as { colors: unknown } | undefined | null
-        )?.colors;
-        if (!Array.isArray(colors)) return [];
-
-        return [{ id, slug, colors }];
-    });
-    reporter.info(
-        `XXX #${mdxWithoutPreviews.length} pages have no preview but have explicit colors`,
-    );
-    console.log(mdxWithoutPreviews);
 };
 
 export const createPages: GatsbyNode<
@@ -268,3 +103,86 @@ export const createPages: GatsbyNode<
 
 // Remove the leading slash from the slug to obtain the relative path
 const relativeDirectory = (slug: string) => slug.substring(1);
+
+export const createResolvers: GatsbyNode["createResolvers"] = ({
+    createResolvers,
+}) => {
+    /*
+      Note: [Generating preview images]
+
+      Create a resolver that handles the following query
+
+         mdx(fields: {slug: {eq: "/evoke"}}) {
+           generatedPreviewImage {
+             gatsbyImageData
+           }
+         }
+
+      What we wish to do is to automatically generate preview images (for use as
+      the "og:image" meta tag) for pages that don't have an associated preview
+      image, but have a color explicitly listed in their frontmatter.
+
+      The actual mechanics are easy - We query the ImageSharp node of the
+      default preview image to use it as a template , but use the page specific
+      colors to tint it using the "duotone" transform option.
+
+      If we do that directly in the default (template) page query, it'll
+      unnecessarily run for all pages, even those without colors (there is no
+      way to conditionally turn off parts of a GraphQL query). Further, we'd
+      have to extract and pass the colors in the page context: all this can be
+      done, but starts getting messy.
+
+      So what we instead do is create a custom GraphQL field which resolves to
+      the function below, i.e. when that field is used in the GraphQL query, our
+      custom function below runs, where we can use all sorts of shenanigans to
+      conditionally return the ImageSharp node.
+    */
+    createResolvers({
+        Mdx: {
+            generatedPreviewImage: {
+                type: "ImageSharp",
+                resolve: async (
+                    source: Queries.Mdx,
+                    args: unknown,
+                    context: {
+                        // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/node-model
+                        nodeModel: {
+                            findOne: (object: unknown) => Queries.Node;
+                            getNodeById: (object: unknown) => Queries.Node;
+                        };
+                    },
+                    info: unknown,
+                ) => {
+                    // console.log(source, args, context);
+                    // console.log("info", info);
+                    const fileNode = await context.nodeModel.findOne({
+                        query: {
+                            filter: {
+                                relativePath: { eq: "default/preview.png" },
+                                sourceInstanceName: { eq: "assets" },
+                            },
+                        },
+                        type: "File",
+                    });
+                    // The node we obtain from `findOne` is from Gatsby's
+                    // internal node data structures. In particular, foreign key
+                    // relationships don't get resolved. For that we need to go
+                    // through the GraphQL resolver, which we do here by using
+                    // `getNodeById`.
+                    //
+                    // We need the ID of the ImageSharp child node. Whilst not
+                    // guaranteed (?), we rely on the fact that for our
+                    // particular File node, the ImageSharp node is the first
+                    // child, and so `fileNode.children[0]` will have the ID of
+                    // the ImageSharp node we want.
+                    const imageSharpNode = await context.nodeModel.getNodeById({
+                        id: fileNode.children[0],
+                        type: "ImageSharp",
+                    });
+                    console.log({ fileNode, imageSharpNode });
+                    return imageSharpNode;
+                },
+            },
+        },
+    });
+};

@@ -7,21 +7,12 @@ colors:
     - "#ff0000"
     - "#3df9e4"
     - white
-# Gatsby will convert strings that look like relative paths to File (and
-# ImageSharp) nodes automatically. However, since our image is not relative,
-# but instead stored in the assets directory, we need to give the relative
-# path to it (instead of a path from the root, i.e. "/default/preview.png"
-# doesn't work here).
-#
-# A way to check if the path here is good is to cd into the directory that
-# contains this file and then ls for this exact string.
-# https://github.com/gatsbyjs/gatsby/issues/21426
-previewImage: ../../src/assets/default/preview.png
 ---
 
+import { GeneratedPreviewImage } from "components/page/debug"
 import * as C from "./components.tsx";
 
-{/* <C.Test /> */}
+{/* <GeneratedPreviewImage /> */}
 
 <C.Title />
 

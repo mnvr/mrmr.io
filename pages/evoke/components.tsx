@@ -2,22 +2,8 @@ import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, Page } from "templates/page";
+import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
-
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
-
-export const Test: React.FC = ({}) => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
-    return <TestImage page={page} />;
-};
-
-const TestImage: React.FC<{ page: Page }> = ({ page }) => {
-    const image = ensure(getImage(ensure(page.generatedPreviewImage)));
-
-    return <GatsbyImage image={image} alt={""} />;
-};
 
 export const Title: React.FC = ({}) => {
     const page = ensure(React.useContext(BuildTimePageContext));
