@@ -11,18 +11,20 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
     createResolvers,
 }) => {
     /*
-    Create a resolver that handles the following query
+      Create a resolver that handles the following query
 
-        mdx(fields: {slug: {eq: "/evoke"}}) {
-          id
-          generatedPreviewImage
-        }
+         mdx(fields: {slug: {eq: "/evoke"}}) {
+           id
+           generatedPreviewImage {
+             gatsbyImageData
+           }
+         }
     */
     createResolvers({
         Mdx: {
             generatedPreviewImage: {
-                // type: "ImageSharp",
-                type: "String",
+                type: "ImageSharp",
+                // type: "String",
                 resolve: async (source, args, context, info) => {
                     // console.log(source, args, context);
                     // console.log("info", info);
@@ -35,20 +37,38 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         },
                         type: "File",
                     });
-                    // console.log(node);
-                    const imageSharp = context.nodeModel.getFieldValue(
-                        node,
-                        "childImageSharp",
-                    );
-                    console.log("imageSharp", imageSharp);
-                    const gatsbyImageData = context.nodeModel.getFieldValue(
-                        node,
-                        "childImageSharp.gatsbyImageData",
-                    );
-                    console.log("gatsbyImageData", gatsbyImageData);
+                    // The data we obtain from `findOne` is Gatsby's internal
+                    // node data structures directly. In particular, foreign key
+                    // relationships don't get resolved. To do that, we need to
+                    // go through the GraphQL resolver, which we do here by
+                    // using `getNodeById`.
+                    //
+                    // We need the ID of the ImageSharp child node. Whilst not
+                    // guaranteed, we rely on the fact that for our particular
+                    // File node, the ImageSharp node is the first child and
+                    // `fileNode.children[0]` will have the ID of the
+                    // ImageSharp node we want.
+                    const n2 = await context.nodeModel.getNodeById({
+                        id: node.children[0], //"169343ee-8557-5420-8026-2c99069313c6", //node.id,
+                        type: `ImageSharp`,
+                    });
+                    console.log("----");
+                    console.log(node);
+                    console.log(n2);
+                    // const imageSharp = await context.nodeModel.getFieldValue(
+                    //     node,
+                    //     "childImageSharp",
+                    // );
+                    // console.log("imageSharp", imageSharp);
+                    // const gatsbyImageData = await context.nodeModel.getFieldValue(
+                    //     node,
+                    //     "childImageSharp.gatsbyImageData",
+                    // );
+                    // console.log("gatsbyImageData", gatsbyImageData);
 
-                    return node.id;
+                    // return node.id;
                     // return node.childImageSharp.gatsbyImageData;
+                    return n2;
                 },
             },
         },
