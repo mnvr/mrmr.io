@@ -50,6 +50,7 @@ export const createPages: GatsbyNode<
                     }
                     frontmatter {
                         layout
+                        colors
                     }
                     internal {
                         contentFilePath
@@ -78,12 +79,14 @@ export const createPages: GatsbyNode<
             const id = node.id;
             const slug = ensure(node.fields?.slug);
             const contentFilePath = ensure(node.internal?.contentFilePath);
+            const colors = node.frontmatter?.colors;
 
             const templatePath = path.resolve("src/templates/page.tsx");
 
             const context = {
                 pageID: id,
                 relativeDirectory: relativeDirectory(slug),
+                ...previewImageColorContext(colors),
             };
 
             createPage<PageTemplateContext>({
@@ -104,6 +107,25 @@ export const createPages: GatsbyNode<
 // Remove the leading slash from the slug to obtain the relative path
 const relativeDirectory = (slug: string) => slug.substring(1);
 
+/**
+ * Parse the color fields (if any) specified in the MDX frontmatter and convert
+ * them into variables suitable to be passed to the page query context.
+ *
+ * Note that this query doesn't run for all pages, but the GraphQL variables are
+ * mandatory strings, so we can just return an empty string for cases where we
+ * know that the custom `generatedPreviewImage` field where these values will
+ * end up being used will never actually be resolved.
+ *
+ * For more details, see Note: [Generating preview images].
+ */
+const previewImageColorContext = (
+    colors: Queries.Maybe<Queries.Scalars["String"]>,
+) => {
+    const highlight = "";
+    const shadow = "";
+    return { previewImageHighlight: highlight, previewImageShadow: shadow };
+};
+
 export const createResolvers: GatsbyNode["createResolvers"] = ({
     createResolvers,
 }) => {
@@ -113,9 +135,9 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
       Create a resolver that handles the following query
 
          mdx(fields: {slug: {eq: "/evoke"}}) {
-           generatedPreviewImage {
-             gatsbyImageData
-           }
+            generatedPreviewImage {
+                gatsbyImageData
+            }
          }
 
       What we wish to do is to automatically generate preview images (for use as
@@ -128,22 +150,36 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
 
       If we do that directly in the default (template) page query, it'll
       unnecessarily run for all pages, even those without colors (there is no
-      way to conditionally turn off parts of a GraphQL query). Further, we'd
-      have to extract and pass the colors in the page context: all this can be
-      done, but starts getting messy.
+      way to conditionally turn off parts of a GraphQL query).
 
-      So what we instead do is create a custom GraphQL field which resolves to
-      the function below, i.e. when that field is used in the GraphQL query, our
-      custom function below runs, where we can use all sorts of shenanigans to
-      conditionally return the ImageSharp node.
+      So we create a custom GraphQL field which resolves to the function below,
+      i.e. when that field is used in the GraphQL query, our custom function
+      below runs, where we can use all sorts of shenanigans to conditionally
+      return the ImageSharp node.
+
+      What would've been swell if we could return the actual transformed image
+      from here, say with something like
+
+          await context.nodeModel.getFieldValue(
+            imageSharpNode,
+            `gatsbyImageData(transformOptions: {duotone: {highlight: "#00ff00", shadow: "#0000ff"}})`,
+          );
+
+      However, this doesn't work - `getFieldValue` doesn't support passing
+      arguments when getting fields. So we have to keep that logic in our page
+      template instead of encapsulating it here.
     */
     createResolvers({
         Mdx: {
             generatedPreviewImage: {
                 type: "ImageSharp",
                 resolve: async (
+                    // The current node
                     source: Queries.Mdx,
-                    args: unknown,
+                    // The arguments passed to the field in the GraphQL query
+                    _args: unknown,
+                    // Shared context across all resolvers. In particular, it
+                    // provides us access to the NodeModel.
                     context: {
                         // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/node-model
                         nodeModel: {
@@ -155,7 +191,8 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                             ) => Queries.Node | undefined | null;
                         };
                     },
-                    info: unknown,
+                    // More information about the GraphQL query
+                    _info: unknown,
                 ) => {
                     // Ignore pages that don't have any colors explicitly
                     // listed.
@@ -207,15 +244,8 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         id: templateFileNode.children[0],
                         type: "ImageSharp",
                     });
-                    console.log({ fileNode: templateFileNode, imageSharpNode });
 
-                    // console.log(source, args, context);
-                    // console.log("info", info);
-                    const foo = await context.nodeModel.getFieldValue(
-                        imageSharpNode,
-                        "gatsbyImageData",
-                    );
-                    console.log(foo);
+                    console.log(imageSharpNode);
 
                     return imageSharpNode;
                 },

@@ -63,6 +63,8 @@ export const query = graphql`
     query PageTemplate(
         $pageID: String!
         $relativeDirectory: String!
+        $previewImageHighlight: String!
+        $previewImageShadow: String!
     ) {
         defaultPreviewFile: file(
             sourceInstanceName: { eq: "assets" }
@@ -129,7 +131,7 @@ export const query = graphql`
             }
             generatedPreviewImage {
                 gatsbyImageData(
-                    transformOptions: {duotone: {highlight: "#00ff00", shadow: "#0000ff"}}
+                    transformOptions: {duotone: {highlight: $previewImageHighlight, shadow: $previewImageShadow}}
                   )
             }
         }
