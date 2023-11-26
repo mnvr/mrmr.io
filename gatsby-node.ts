@@ -4,8 +4,7 @@ import path from "path";
 
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
-import { PageTemplateContext } from "./src/types/gatsby";
-// import { color, hex } from "./src/utils/colorsjs";
+import { PageTemplateContext } from "types/gatsby";
 import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
@@ -51,7 +50,8 @@ export const createPages: GatsbyNode<
                     }
                     frontmatter {
                         layout
-                        colors
+                        preview_image_highlight
+                        preview_image_shadow
                     }
                     internal {
                         contentFilePath
@@ -108,33 +108,29 @@ export const createPages: GatsbyNode<
 const relativeDirectory = (slug: string) => slug.substring(1);
 
 /**
- * Parse the color fields (if any) specified in the MDX frontmatter of the given
- * (page) node, and convert them into variables suitable to be passed to the
- * page query context.
+ * Convert color fields (if any) specified in the MDX frontmatter into variables
+ * suitable to be passed to the page query context.
  *
  * For more details, see Note: [Generating preview images].
  */
-const previewImageColorContext = (node: Queries.Mdx) => {
-    // Note that the code that resolves the `generatedPreviewImage` field below
-    // ensures that we only run if there are two color strings, and
-    // parseColorPalette would succeed.
+const previewImageColorContext = (node: {
+    frontmatter: {
+        readonly preview_image_highlight: string | null;
+        readonly preview_image_shadow: string | null;
+    } | null;
+}) => {
+    // These two page context variables are declared as "String!" in the page
+    // query, and need to be defined. However, they are only accessed by the
+    // page query when the custom `previewImageTemplate` field is defined, which
+    // only happens when these two frontmatter fields actually are present.
     //
-    // So we can return invalid values (empty strings) for these variables by
-    // default when parsing fails, because we know that they'll never end up
-    // getting passed to sharp (the image library) in such cases anyways.
-    let highlight = "#ff0000";
-    let shadow = "#0000ff";
+    // Thus it is safe to return blank strings to satisify the GraphQL type
+    // checker – these blank string will not end up being used anyways.
 
-    const colors = node.frontmatter?.colors;
-    if (!Array.isArray(colors)) return;
-
-    // const palette = parseColorPalette(colors);
-    // if (palette) {
-    //     highlight = palette.backgroundColor1;
-    //     shadow = palette.color1;
-    // }
-
-    return { previewImageHighlight: highlight, previewImageShadow: shadow };
+    return {
+        previewImageHighlight: node?.frontmatter?.preview_image_highlight ?? "",
+        previewImageShadow: node?.frontmatter?.preview_image_shadow ?? "",
+    };
 };
 
 export const createResolvers: GatsbyNode["createResolvers"] = ({
@@ -146,48 +142,41 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
       Create a resolver that handles the following query
 
          mdx(fields: {slug: {eq: "/evoke"}}) {
-            generatedPreviewImage {
+            previewImageTemplate {
                 gatsbyImageData
             }
          }
 
-      What we wish to do is to automatically generate preview images (for use as
-      the "og:image" meta tag) for pages that don't have an associated preview
-      image, but have a color explicitly listed in their frontmatter.
+      To overarching goal is to automatically generate preview images (for use
+      as the "og:image" meta tag) for pages that have a some preview image tint
+      colors explicitly listed in their frontmatter.
 
-      The actual mechanics are easy - We query the ImageSharp node of the
-      default preview image to use it as a template , but use the page specific
-      colors to tint it using the "duotone" transform option.
+      To do this, we can query the ImageSharp node of the default preview image
+      to use it as a template , but use the page specific colors to tint it
+      using the "duotone" transform option.
 
       If we do that directly in the default (template) page query, it'll
       unnecessarily run for all pages, even those without colors (there is no
       way to conditionally turn off parts of a GraphQL query).
 
-      So we create a custom GraphQL field which resolves to the function below,
-      i.e. when that field is used in the GraphQL query, our custom function
-      below runs, where we can use all sorts of shenanigans to conditionally
-      return the ImageSharp node.
-
-      What would've been swell if we could return the actual transformed image
-      from here, say with something like
-
-          await context.nodeModel.getFieldValue(
-            imageSharpNode,
-            `gatsbyImageData(transformOptions: {duotone: {highlight: "#00ff00", shadow: "#0000ff"}})`,
-          );
-
-      However, this doesn't work - `getFieldValue` doesn't support passing
-      arguments when getting fields. So we have to keep that logic in our page
-      template instead of encapsulating it here.
+      So we create a custom GraphQL field which only resolves in case these
+      preview-image-* colors are actually present in the frontmatter.
     */
     createResolvers({
         Mdx: {
-            generatedPreviewImage: {
+            previewImageTemplate: {
                 type: "ImageSharp",
                 resolve: async (
                     // The current node
-                    source: Queries.Mdx,
-                    // The arguments passed to the field in the GraphQL query
+                    source: {
+                        frontmatter: {
+                            // Note that at this stage the source object has
+                            // these unnormalized names (same as they occur in
+                            // the MDX), not the ones in `Queries.Mdx`.
+                            "preview-image-highlight": string | undefined;
+                            "preview-image-shadow": string | undefined;
+                        };
+                    },
                     _args: unknown,
                     // Shared context across all resolvers. In particular, it
                     // provides us access to the NodeModel.
@@ -202,38 +191,14 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                             ) => Queries.Node | undefined | null;
                         };
                     },
-                    // More information about the GraphQL query
-                    _info: unknown,
                 ) => {
-                    const slug = ensure(source.fields?.slug);
-
                     // Ignore pages that don't have colors explicitly listed.
-                    const colors = source.frontmatter?.colors;
-                    if (!Array.isArray(colors)) return;
-
-                    // const colors =
-                    // source.frontmatter?.colors?.filter(isDefined);
-                    // try {
-                    // parseColorPalette(colors);
-                    // } catch {
-                    // return;
-                    // }
-
-                    // Ignore pages that have an associated preview image.
-                    const previewFileNode = await context.nodeModel.findOne({
-                        query: {
-                            filter: {
-                                sourceInstanceName: { eq: "pages" },
-                                relativeDirectory: {
-                                    eq: relativeDirectory(slug),
-                                },
-                                name: { eq: "preview" },
-                                ext: { regex: "/\\.(jpg|png)/" },
-                            },
-                        },
-                        type: "File",
-                    });
-                    if (previewFileNode) return;
+                    if (
+                        !source.frontmatter["preview-image-highlight"] ||
+                        !source.frontmatter["preview-image-shadow"]
+                    ) {
+                        return;
+                    }
 
                     const templateFileNode = await context.nodeModel.findOne({
                         query: {
@@ -261,8 +226,6 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         id: templateFileNode.children[0],
                         type: "ImageSharp",
                     });
-
-                    console.log(imageSharpNode);
 
                     return imageSharpNode;
                 },

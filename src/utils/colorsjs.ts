@@ -63,12 +63,6 @@ export const lighten = (c: Color, amount: number) => {
  * (it works fine even with the fourth alpha component).
  */
 export const p5c = (c: Color) => c.to("srgb").toString({ format: "hex" });
-/**
- * Return the hex representation of the given color.
- *
- * This is an alias for {@link p5c}.
- */
-export const hex = p5c;
 
 /**
  * Create a grayscale color from a value 0-255

@@ -77,6 +77,22 @@ dark-colors:
     - purple
     - white
 
+# The colors to use for tinting the default preview template image when
+# generating a preview image for this page.
+#
+# The preview image will only be generated if (a) these values are specified,
+# and (b) the page doesn't already have an associated preview image (i.e. there
+# is no "preview.png" or "preview.jpg" in the same directory as the page).
+#
+# These colors should be given as plain RGB hex strings, e.g. "#ff0000" – these
+# will passed to the sharp image library's duotone filter, so that's the format
+# that they need to adhere to.
+#
+# Datatype is string, default is undefined.
+#preview-image-highlight:
+#preview-image-shadow:
+#
+
 # Specify the color palette to use.
 #
 # This is an alternative way to specify colors by mentioning a named palette

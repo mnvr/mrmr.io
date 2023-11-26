@@ -7,12 +7,16 @@ colors:
     - "#ff0000"
     - "#3df9e4"
     - white
+preview-image-highlight: "#ff0000"
+preview-image-shadow: "#3df9e4"
 ---
 
-import { GeneratedPreviewImage } from "components/page/debug"
+import { GeneratedPreviewImage } from "components/page/debug";
 import * as C from "./components.tsx";
 
+<div style={{backgroundColor: 'black'}}>
 <GeneratedPreviewImage />
+</div>
 
 <C.Title />
 
