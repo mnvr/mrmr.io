@@ -63,4 +63,5 @@ export const quotes: string[] = [
     `Some artists simply surrender to the unconscious.`,
     `In this distorted view, there's still belief in the dichotomy of self and others (and therefore the lack of others is experienced as loneliness), and the passing of time (and therefore the loneliness lasting forever). Both time and self are still division, while the truth is more fundamental than any division. I think the recognition of this truth is hellish to the extent that you still cling to division, and blissful to the extent that you can let go of it. To interpret an infinite consciousness as lonely is still to project your separateness from everything else.`,
     `...he says to me, "Are you ready to be yourself again?" I said, "Which one?"`,
+    "I dream in yellow",
 ];
