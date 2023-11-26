@@ -40,11 +40,17 @@ export default PageTemplate;
 export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     data,
 }) => {
-    const { title, description, slug, noIndex, images } = parsePage(data);
+    const { title, description, slug, noIndex, images, generatedPreviewImage } =
+        parsePage(data);
     const canonicalPath = slug;
 
-    const defaultFile = replaceNullsWithUndefineds(data.defaultPreviewFile);
-    const previewImagePath = getSrc(ensure(images["preview"] ?? defaultFile));
+    const previewImagePath = getSrc(
+        ensure(
+            images["preview"] ??
+                generatedPreviewImage ??
+                replaceNullsWithUndefineds(data.defaultPreviewImage),
+        ),
+    );
 
     return (
         <DefaultHead
@@ -66,7 +72,7 @@ export const query = graphql`
         $previewImageHighlight: String!
         $previewImageShadow: String!
     ) {
-        defaultPreviewFile: file(
+        defaultPreviewImage: file(
             sourceInstanceName: { eq: "assets" }
             relativePath: { eq: "default/preview.png" }
         ) {
