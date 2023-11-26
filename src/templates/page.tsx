@@ -234,7 +234,7 @@ export interface PageLink {
     title: string;
 }
 
-export const parsePage = (data: Queries.PageTemplateQuery) => {
+export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const { mdx, images, mp3s, allMdx } = replaceNullsWithUndefineds(data);
 
     const frontmatter = mdx?.frontmatter;
@@ -325,7 +325,7 @@ export const parsePage = (data: Queries.PageTemplateQuery) => {
         generatedPreviewImage,
         images: pageImages,
         mp3s: pageMP3s,
-    } satisfies Page;
+    };
 };
 
 /**
