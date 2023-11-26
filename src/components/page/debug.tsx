@@ -13,7 +13,9 @@ export const GeneratedPreviewImage: React.FC = ({}) => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { generatedPreviewImage } = page;
 
-    const image = ensure(getImage(ensure(generatedPreviewImage)));
+    if (!generatedPreviewImage) return <div />;
+
+    const image = ensure(getImage(generatedPreviewImage));
 
     return <GatsbyImage image={image} alt={""} />;
 };

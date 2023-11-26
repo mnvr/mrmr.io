@@ -147,15 +147,43 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                     context: {
                         // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/node-model
                         nodeModel: {
-                            findOne: (object: unknown) => Queries.Node;
-                            getNodeById: (object: unknown) => Queries.Node;
+                            findOne: (
+                                object: unknown,
+                            ) => Queries.Node | undefined;
+                            getNodeById: (
+                                object: unknown,
+                            ) => Queries.Node | undefined;
                         };
                     },
                     info: unknown,
                 ) => {
+                    // Ignore pages that don't have any colors explicitly
+                    // listed.
+                    const colors = source.frontmatter?.colors;
+                    if (!Array.isArray(colors)) return;
+                    if (colors.length < 2) return;
+
+                    const slug = ensure(source.fields?.slug);
+
+                    // Ignore pages that have an associated preview image.
+                    const previewFileNode = await context.nodeModel.findOne({
+                        query: {
+                            filter: {
+                                sourceInstanceName: { eq: "pages" },
+                                relativeDirectory: {
+                                    eq: relativeDirectory(slug),
+                                },
+                                name: { eq: "preview" },
+                                ext: { regex: "/\\.(jpg|png)/" },
+                            },
+                        },
+                        type: "File",
+                    });
+                    if (previewFileNode) return;
+
                     // console.log(source, args, context);
                     // console.log("info", info);
-                    const fileNode = await context.nodeModel.findOne({
+                    const templateFileNode = await context.nodeModel.findOne({
                         query: {
                             filter: {
                                 relativePath: { eq: "default/preview.png" },
@@ -164,6 +192,8 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                         },
                         type: "File",
                     });
+                    if (!templateFileNode) return;
+
                     // The node we obtain from `findOne` is from Gatsby's
                     // internal node data structures. In particular, foreign key
                     // relationships don't get resolved. For that we need to go
@@ -176,10 +206,10 @@ export const createResolvers: GatsbyNode["createResolvers"] = ({
                     // child, and so `fileNode.children[0]` will have the ID of
                     // the ImageSharp node we want.
                     const imageSharpNode = await context.nodeModel.getNodeById({
-                        id: fileNode.children[0],
+                        id: templateFileNode.children[0],
                         type: "ImageSharp",
                     });
-                    console.log({ fileNode, imageSharpNode });
+                    console.log({ fileNode: templateFileNode, imageSharpNode });
                     return imageSharpNode;
                 },
             },
