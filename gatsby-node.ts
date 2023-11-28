@@ -5,6 +5,7 @@ import path from "path";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import { PageTemplateContext } from "types/gatsby";
+import { typeDefs } from "./src/graphql-schema";
 import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
@@ -132,6 +133,13 @@ const previewImageColorContext = (node: {
         previewImageShadow: node?.frontmatter?.preview_image_shadow ?? "",
     };
 };
+
+export const createSchemaCustomization: GatsbyNode["createSchemaCustomization"] =
+    ({ actions }) => {
+        const { createTypes } = actions;
+        // See: Note: [GraphQL schema definition]
+        createTypes(typeDefs);
+    };
 
 export const createResolvers: GatsbyNode["createResolvers"] = ({
     createResolvers,
