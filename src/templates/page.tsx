@@ -5,7 +5,6 @@ import {
 } from "components/PageColorStyle";
 import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
-import BasicLayout from "layouts/basic";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
@@ -370,8 +369,6 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
     children,
 }) => {
     switch (page.layout) {
-        case "basic":
-            return <BasicLayout>{children}</BasicLayout>;
         case "text":
             return isHindiContent(page) ? (
                 <TextHindiLayout>{children}</TextHindiLayout>

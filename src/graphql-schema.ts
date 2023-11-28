@@ -145,7 +145,6 @@ type MdxFrontmatter implements Node @dontInfer {
     # conventional outside-in customization using a layout.
     #
     # See 'src/layouts/' for supported layouts. Currently, the following exist:
-    # - basic
     # - text
     layout: String
 
