@@ -161,6 +161,9 @@ type MdxFrontmatter implements Node @dontInfer {
     # - "poem"
     #   This page will be shown in the /poems listing
     #
+    # - "hindi"
+    #   This page contents are in Hindi.
+    #
     tags: [String]
 
     # Specify the slugs of related pages.
