@@ -8,13 +8,13 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { parseTags } from "parsers/tags";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
+import { filterDefined } from "utils/array";
+import { isHindiContent } from "utils/attributes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
-import { isHindiContent } from "utils/tags";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -128,6 +128,7 @@ export const query = graphql`
                 colors
                 dark_colors
                 theme
+                attributes
                 tags
                 related
             }
@@ -187,10 +188,16 @@ export interface Page {
      */
     theme?: string;
     /**
+     * A list of (possibly empty) attributes for the page.
+     *
+     * This list is populated from the "attributes" field in the frontmatter.
+     * See: Note: [List of supported page attributes].
+     */
+    attributes: string[];
+    /**
      * A list of (possibly empty) tags for the page.
      *
-     * This list is populated from the "tags" field in the frontmatter. Some of
-     * the tags have special meaning attached to them.
+     * This list is populated from the "tags" field in the frontmatter.
      */
     tags: string[];
     /**
@@ -251,7 +258,8 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
-    const tags = parseTags(frontmatter?.tags);
+    const attributes = filterDefined(frontmatter?.attributes);
+    const tags = filterDefined(frontmatter?.tags);
     const related = frontmatter?.related;
 
     const formattedSignoffDate =
@@ -324,6 +332,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         colors,
         darkColors,
         theme,
+        attributes,
         tags,
         relatedPageLinks,
         generatedPreviewImage,

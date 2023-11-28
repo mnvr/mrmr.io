@@ -3,12 +3,12 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
-import { parseTags } from "parsers/tags";
 import * as React from "react";
+import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** A listing of all pages tagged "poem" */
+/** A listing of all pages with the attribute "poem" */
 const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
@@ -26,7 +26,7 @@ export const Head: HeadFC = () => {
 };
 
 /**
- * Fetch all pages tagged "poem", sorted by recency.
+ * Fetch all pages with the "poem" attribute, sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted`.
  */
@@ -34,7 +34,10 @@ export const query = graphql`
     query PoemsPage {
         allMdx(
             filter: {
-                frontmatter: { tags: { in: "poem" }, unlisted: { ne: true } }
+                frontmatter: {
+                    attributes: { in: "poem" }
+                    unlisted: { ne: true }
+                }
             }
             sort: [
                 { frontmatter: { date: DESC } }
@@ -46,7 +49,7 @@ export const query = graphql`
                     title
                     description
                     formattedDateMY: date(formatString: "MMM YYYY")
-                    tags
+                    attributes
                 }
                 fields {
                     slug
@@ -66,14 +69,14 @@ const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
 
         const title = ensure(frontmatter?.title);
         const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const tags = parseTags(frontmatter?.tags);
+        const attributes = filterDefined(frontmatter?.attributes);
 
         const desc = frontmatter?.description;
-        const description = tags.includes("hindi")
+        const description = attributes.includes("hindi")
             ? pruneHindiDescription(desc)
             : pruneDescription(desc);
 
-        return { slug, title, description, formattedDateMY, tags };
+        return { slug, title, description, formattedDateMY, attributes };
     });
 };
 

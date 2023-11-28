@@ -6,7 +6,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, PageLink } from "templates/page";
 import { ensure } from "utils/ensure";
-import { isPoem } from "utils/tags";
+import { isPoem } from "utils/attributes";
 
 /**
  * Container for a width-limited column.

@@ -119,7 +119,7 @@ export const query = graphql`
         featuredPages: allMdx(
             filter: {
                 frontmatter: {
-                    tags: { in: "front-page" }
+                    attributes: { in: "front-page" }
                     unlisted: { ne: true }
                 }
             }

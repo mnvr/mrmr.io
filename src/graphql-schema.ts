@@ -150,10 +150,7 @@ type MdxFrontmatter implements Node @dontInfer {
 
     # Specify one or more attributes of the page.
     #
-    # These tags are arbitrary labels for posts, but some of these labels are
-    # treated specially and have a functional impact.
-    #
-    # Known tags with special meanings:
+    # Note: [List of supported page attributes]
     #
     # - "front-page"
     #   This page will be shown in the home (front page) listing.
@@ -164,6 +161,9 @@ type MdxFrontmatter implements Node @dontInfer {
     # - "hindi"
     #   This page contents are in Hindi.
     #
+    attributes: [String]
+
+    # Specify one or more arbitrary labels to group posts.
     tags: [String]
 
     # Specify the slugs of related pages.

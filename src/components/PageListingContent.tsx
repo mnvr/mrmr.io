@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
-import { isHindiContent } from "utils/tags";
+import { isHindiContent } from "utils/attributes";
 
 interface PageListingContentProps {
     title: string;
@@ -19,7 +19,7 @@ export interface PageListingPage {
     slug: string;
     description?: string;
     formattedDateMY: string;
-    tags: string[];
+    attributes: string[];
 }
 
 /**
