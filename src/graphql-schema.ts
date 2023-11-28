@@ -12,7 +12,9 @@
  content. This also provides us a great place to put the related documentation.
 
  Note that we can do this in tandem with the automatic type inference too.
- Anything that is not explicitly listed here can be auto-deduced.
+ Anything that is not explicitly listed here can be auto-deduced. However, there
+ can be performance benefits to turning that off, so we've added the @dontInfer
+ attribute to the MdxFrontmatter below.
 
  References:
  https://www.gatsbyjs.com/docs/reference/graphql-data-layer/schema-customization/
@@ -23,7 +25,7 @@ type Mdx implements Node {
     frontmatter: MdxFrontmatter
 }
 
-type MdxFrontmatter implements Node {
+type MdxFrontmatter implements Node @dontInfer {
     # Title of the page
     #
     # Required
@@ -110,7 +112,7 @@ type MdxFrontmatter implements Node {
     #
     # MDX field: preview-image-highlight
     # MDX field: preview-image-shadow
-    preview_image_shadow: String
+    preview_image_highlight: String
     preview_image_shadow: String
 
     # Specify the color palette to use.
