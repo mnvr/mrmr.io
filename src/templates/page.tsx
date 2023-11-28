@@ -144,7 +144,12 @@ export const query = graphql`
     }
 `;
 
-/** A type describing the page data that the page template passes to layouts */
+/**
+ * A type describing the page data that the page template passes to layouts.
+ *
+ * For more detailed description of the corresponding fields (if any) in the MDX
+ * frontmatter, See: Note: [GraphQL schema definition].
+ */
 export interface Page {
     /** The page's slug */
     slug: string;
