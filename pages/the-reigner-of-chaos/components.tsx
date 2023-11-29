@@ -30,7 +30,13 @@ export const Sketch: React.FC = () => {
 
 const Sketch_ = styled.div`
     display: grid;
-    grid-template-columns: repeat(40, 1fr);
+    grid-template-columns: repeat(30, 1fr);
+    gap: 2px;
+            /* background-color: red; */
+
+    div {
+        /* background-color: navy; */
+    }
 `;
 
 interface CellProps {
