@@ -81,9 +81,7 @@ export const Title: React.FC = () => {
 };
 
 const Title_ = styled.h3`
-    @media (min-width: 600px) {
-        margin-block-end: 1.8rem;
-    }
+    margin-block-end: 1.8rem;
 
     line-height: 1.5rem;
     color: var(--mrmr-color-2);
