@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
-import { isHindiContent } from "utils/attributes";
+import { isBumped, isHindiContent } from "utils/attributes";
 
 interface PageListingContentProps {
     /** The ordered list of pages to show */
@@ -98,15 +98,26 @@ type PageOrDate = PageListingPage | string;
  * within the same calendar month are grouped. This grouping is done by
  * interspersing the original list of pages with strings representing the
  * section titles (the month + year).
+ *
+ * Within each grouping, move pages that have been "bumped" to the top of the
+ * listing for that month.
  */
 const sectionByMonth = (pages: PageListingPage[]): PageOrDate[] => {
     let currentDate: string | undefined;
     let result: PageOrDate[] = [];
+    let bumpSlot = 0;
     pages.forEach((page) => {
-        if (page.formattedDateMY !== currentDate)
+        if (page.formattedDateMY !== currentDate) {
+            bumpSlot = result.length;
             result.push((currentDate = page.formattedDateMY));
-        result.push(page);
+        }
+        if (isBumped(page)) {
+            result.splice(++bumpSlot, 0, page);
+        } else {
+            result.push(page);
+        }
     });
+
     return result;
 };
 

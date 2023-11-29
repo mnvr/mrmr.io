@@ -18,3 +18,11 @@ export const isHindiContent = ({ attributes }: PageLike) =>
  * This looks to see if the page has the "poem" attribute.
  */
 export const isPoem = ({ attributes }: PageLike) => attributes.includes("poem");
+
+/**
+ * Return true if this page should be kept at the top of groupings in listings.
+ *
+ * This looks to see if the page has the "bumped" attribute.
+ */
+export const isBumped = ({ attributes }: PageLike) =>
+    attributes.includes("bumped");

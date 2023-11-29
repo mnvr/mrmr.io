@@ -161,6 +161,9 @@ type MdxFrontmatter implements Node @dontInfer {
     # - "hindi"
     #   This page contents are in Hindi.
     #
+    # - "bumped"
+    #   Move this page to the top of the listing for that month.
+    #
     attributes: [String]
 
     # Specify one or more arbitrary labels to group posts.
