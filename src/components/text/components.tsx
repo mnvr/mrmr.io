@@ -5,8 +5,8 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, PageLink } from "templates/page";
-import { ensure } from "utils/ensure";
 import { isPoem } from "utils/attributes";
+import { ensure } from "utils/ensure";
 
 /**
  * Container for a width-limited column.
@@ -161,10 +161,11 @@ const Signoff_ = styled.div`
  */
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { relatedPageLinks } = page;
+    const { tags, relatedPageLinks } = page;
 
     return (
         <Footer_>
+            {tags.length > 0 && <Tags tags={tags} />}
             {relatedPageLinks.length > 0 && (
                 <RelatedPosts links={relatedPageLinks} />
             )}
@@ -227,6 +228,43 @@ const Footer_ = styled.footer`
     }
 `;
 
+interface TagsProps {
+    tags: string[];
+}
+
+const Tags: React.FC<TagsProps> = (props) => {
+    return (
+        <Tags_>
+            <RPTitle>Tagged: </RPTitle>
+            <TagsList {...props} />
+        </Tags_>
+    );
+};
+
+const Tags_ = styled.div`
+    margin-block-end: 2px;
+`;
+
+const TagsList: React.FC<TagsProps> = ({ tags }) => {
+    return (
+        <span>
+            {tags.map((tag, i) => (
+                <span key={tag}>
+                    {tag}
+                    {i < tags.length - 1 && <TagSeparator />}
+                </span>
+            ))}
+        </span>
+    );
+};
+
+const TagSeparator: React.FC = () => {
+    return <TagSeparator_>{", "}</TagSeparator_>;
+};
+const TagSeparator_ = styled.span`
+    color: var(--mrmr-color-3);
+`;
+
 interface RelatedPostsProps {
     links: PageLink[];
 }
@@ -234,16 +272,20 @@ interface RelatedPostsProps {
 const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
-            <div>Related posts</div>
+            <RPTitle>Related posts</RPTitle>
             <RelatedPostsList {...props} />
         </div>
     );
 };
 
+const RPTitle = styled.span`
+    color: var(--mrmr-color-3);
+`;
+
 const RelatedPostsHindi: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
-            <div>सम्बन्धित रचनाएँ</div>
+            <RPTitle>सम्बन्धित रचनाएँ</RPTitle>
             <RelatedPostsList {...props} />
         </div>
     );
