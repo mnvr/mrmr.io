@@ -146,7 +146,7 @@ export const SignoffHindi: React.FC = () => {
 };
 
 const Signoff_ = styled.div`
-    margin-block-start: 2rem;
+    margin-block-start: 4.5rem;
 
     line-height: 1.1rem;
     color: var(--mrmr-color-3);
@@ -206,11 +206,6 @@ export const FooterHindi: React.FC = () => {
 };
 
 const Footer_ = styled.footer`
-    /* For a perfect vertical cadence, this should be 2 rem. However, the
-       line-height for text in the footer is not 1 rem but is instead 2.4 rem,
-       and the text is positioned in the center of that 2.2 rem block. So we
-       need to subtract from the desired margin to visually make the distance
-       between the text <--> signoff and signoff <--> footer look rhythmic. */
     margin-block-start: 2.9rem;
 
     font-size: 0.9rem;
