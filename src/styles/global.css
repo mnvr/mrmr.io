@@ -1,9 +1,14 @@
+/* The html element is the root of our document. Inherited styles start at the
+   root of our document (i.e. the html element). In particular, the unit `rem`
+   stands for "Root EM" and is equal to the font size at the root of our
+   document. */
 html {
     /* Increase the root font size size a bit from the browser default of 16px
        to improve legibility. */
     font-size: 18px;
 }
 
+/* The body is also a special element that holds the content to be rendered */
 body {
     /* Reset the margin */
     margin: 0;
