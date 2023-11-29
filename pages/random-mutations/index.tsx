@@ -63,6 +63,7 @@ def <b>bfs</b>(s, adj):<br/>
 
 const CodeBlocks_ = styled.div`
     font-size: 13px;
+    line-height: 1.4;
 
     display: flex;
     flex-direction: row;
@@ -121,6 +122,7 @@ export const About: React.FC = () => {
 const About_ = styled.p`
     font-size: 0.9rem;
     max-width: 36rem;
+    line-height: 1.4;
 
     p:first-child b {
         color: red;

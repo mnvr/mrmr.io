@@ -39,7 +39,11 @@ const Content_ = styled(LinkStyleUnderlined)`
         font-family: serif;
         font-style: italic;
         color: var(--mrmr-color-3);
-        margin-inline-start: 1rem;
+        margin-inline: 1.3rem;
+    }
+
+    ul {
+        padding-inline-start: 2rem;
     }
 
     hr {
@@ -216,7 +220,11 @@ const Footer_ = styled.footer`
          * fit better in the context of the links that follow */
         padding-block-end: 0.16rem;
         list-style: circle;
-        padding-inline-start: 1.6rem;
+        padding-inline-start: 1.8rem;
+    }
+    li {
+        padding-inline-start: 2px;
+        list-style-position: outside;
     }
 `;
 

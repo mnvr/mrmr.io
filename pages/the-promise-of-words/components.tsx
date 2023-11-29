@@ -72,6 +72,7 @@ const EssayContainer_ = styled.div`
     font-family: monospace;
     font-size: 0.75rem;
     font-weight: 800;
+    line-height: 1.5;
 
     /* Style all the canvas elements in the EssayContainer_ */
     canvas {

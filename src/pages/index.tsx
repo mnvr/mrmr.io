@@ -256,7 +256,7 @@ const RecentPageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.2rem;
+    line-height: 1.2;
 
     a {
         text-decoration: none;
@@ -310,6 +310,7 @@ const Poem: React.FC = () => {
 const Poem_ = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
+    line-height: 1.2;
     color: var(--mrmr-color-3);
 `;
 

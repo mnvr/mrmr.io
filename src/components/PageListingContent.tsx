@@ -127,7 +127,7 @@ const PageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.2rem;
+    line-height: 1.25;
 
     a {
         border-bottom-width: 2px;
@@ -139,6 +139,7 @@ const SectionHeader = styled.h4`
     font-style: italic;
     font-weight: 300;
     font-size: 0.7rem;
+    line-height: 1.9;
     opacity: 0.33;
     margin-block-end: 0rem;
 `;
