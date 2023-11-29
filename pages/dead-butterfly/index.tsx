@@ -68,7 +68,7 @@ const Song2: React.FC = () => {
 const SongContainer = styled.div`
     font-family: serif;
     font-size: 1.5rem;
-    line-height: 2rem;
+    line-height: 1.33;
 `;
 
 const Title: React.FC<{ page: Page }> = ({ page }) => {

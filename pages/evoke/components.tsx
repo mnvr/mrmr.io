@@ -68,6 +68,8 @@ export const Signoff = styled(SignoffContents)`
     background-color: var(--mrmr-color-1);
     color: var(--mrmr-background-color-1);
     padding: 1rem;
+    padding-block-start: 1.3rem;
+    line-height: 1.4;
     min-height: 20svh;
 `;
 
@@ -87,8 +89,9 @@ const Footer_ = styled.div`
     background-color: var(--mrmr-color-2);
     color: var(--mrmr-background-color-1);
     padding: 1rem;
+    padding-block-start: 1.4rem;
     min-height: 60svh;
-    line-height: 2rem;
+    line-height: 2.4;
 
     a {
         text-decoration: none;

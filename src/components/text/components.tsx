@@ -34,7 +34,7 @@ const Content_ = styled(LinkStyleUnderlined)`
     }
 
     p {
-        line-height: 1.3rem;
+        line-height: 1.3;
     }
 
     blockquote {
@@ -45,7 +45,7 @@ const Content_ = styled(LinkStyleUnderlined)`
     }
 
     blockquote p {
-        line-height: 1.2rem;
+        line-height: 1.2;
     }
 
     hr {
@@ -83,7 +83,7 @@ export const Title: React.FC = () => {
 const Title_ = styled.h3`
     margin-block-end: 1.8rem;
 
-    line-height: 1.5rem;
+    line-height: 1.5;
     color: var(--mrmr-color-2);
 `;
 
@@ -97,7 +97,7 @@ const TitleAndSubtitle_ = styled.div`
 
     p {
         margin-block-start: 0.3rem;
-        line-height: 1.5rem;
+        line-height: 1.5;
         color: var(--mrmr-color-3);
     }
 `;
@@ -148,7 +148,7 @@ export const SignoffHindi: React.FC = () => {
 const Signoff_ = styled.div`
     margin-block-start: 4.5rem;
 
-    line-height: 1.1rem;
+    line-height: 1.2;
     color: var(--mrmr-color-3);
 `;
 
@@ -212,7 +212,7 @@ const Footer_ = styled.footer`
     margin-block-start: 2.9rem;
 
     font-size: 0.9rem;
-    line-height: 2.2rem;
+    line-height: 2.45;
 
     ul {
         margin: 0;

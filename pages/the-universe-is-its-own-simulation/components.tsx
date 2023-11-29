@@ -129,7 +129,7 @@ export const EssayContainer = styled.div`
     padding-block: 12px;
     border-radius: 12px;
 
-    line-height: 1.3rem;
+    line-height: 1.3;
 
     hr {
         width: 30%;

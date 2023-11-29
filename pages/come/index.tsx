@@ -71,7 +71,7 @@ const Text: React.FC = () => {
 
 const P = styled.p`
     margin: 1.8rem;
-    line-height: 1.7rem;
+    line-height: 1.42;
     font-size: 1.2rem;
     font-style: italic;
     font-weight: 300;

@@ -59,7 +59,7 @@ const PoemContainer = styled.div`
     min-height: 100svh;
     padding: 1.3rem;
 
-    line-height: 1.5rem;
+    line-height: 1.5;
 `;
 
 const Footer: React.FC = () => {
