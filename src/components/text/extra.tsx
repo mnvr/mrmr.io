@@ -24,6 +24,9 @@ export const AttributedQuote: React.FC<
 
 const AttributedQuote_ = styled.blockquote`
     margin-block: 1.5rem;
+    p {
+        margin-block-end: 0.9rem;
+    }
 `;
 
 const Attribution_ = styled.small`

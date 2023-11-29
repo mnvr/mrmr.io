@@ -6,9 +6,9 @@ import styled from "styled-components";
 export const FooterHomePageLink: React.FC = ({}) => {
     return (
         <LinkContainer>
-            <Link to={"/"} title={"More by me"}>
+            <Link to={"/"} title={"More posts"}>
                 <LinkContents>
-                    <CaptionContainer>more</CaptionContainer>
+                    <CaptionContainer>Home</CaptionContainer>
                     <FooterHomePageLogo />
                 </LinkContents>
             </Link>

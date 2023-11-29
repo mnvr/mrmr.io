@@ -159,7 +159,7 @@ export const Info: React.FC = () => {
             </div>
 
             <NavContainer>
-                <Link to={"/"}>More</Link>
+                <Link to={"/"}>Home</Link>
             </NavContainer>
         </InfoContainer>
     );

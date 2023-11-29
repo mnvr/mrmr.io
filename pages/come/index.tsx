@@ -90,7 +90,7 @@ const Footer: React.FC = () => {
                 </DetailsContainer>
                 <HomeLinkContainer>
                     <Link to="/">
-                        <RxSlash title="More" />
+                        <RxSlash title="Home" />
                     </Link>
                 </HomeLinkContainer>
             </FooterContents>
