@@ -107,7 +107,7 @@ const TitleAndSubtitle_ = styled.div`
 /**
  * A simple H3 containing the page description.
  *
- * Designed for use at top of the page, in lieu of the page title.
+ * Designed for use at or near the top of the page, in lieu of the page title.
  */
 export const DescAsTitle: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
@@ -261,6 +261,7 @@ const TagsList: React.FC<TagsProps> = ({ tags }) => {
 const TagSeparator: React.FC = () => {
     return <TagSeparator_>{", "}</TagSeparator_>;
 };
+
 const TagSeparator_ = styled.span`
     color: var(--mrmr-color-3);
 `;
