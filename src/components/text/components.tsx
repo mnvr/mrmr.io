@@ -159,13 +159,16 @@ const Signoff_ = styled.div`
  */
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { tags, relatedPageLinks } = page;
+    const { tags, relatedPageLinks, linkedFromPageLinks } = page;
 
     return (
         <Footer_>
             {tags.length > 0 && <Tags tags={tags} />}
             {relatedPageLinks.length > 0 && (
                 <RelatedPosts links={relatedPageLinks} />
+            )}
+            {linkedFromPageLinks.length > 0 && (
+                <LinkedFromPosts links={linkedFromPageLinks} />
             )}
             {isPoem(page) && (
                 <>
@@ -294,5 +297,14 @@ const RelatedPostsList: React.FC<RelatedPostsProps> = ({ links }) => {
                 </li>
             ))}
         </ul>
+    );
+};
+
+const LinkedFromPosts: React.FC<RelatedPostsProps> = (props) => {
+    return (
+        <div>
+            <RPTitle>Linked from</RPTitle>
+            <RelatedPostsList {...props} />
+        </div>
     );
 };

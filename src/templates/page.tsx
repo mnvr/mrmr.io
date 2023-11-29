@@ -368,10 +368,17 @@ const parsePageLinks = (
     // just iterate over these O(n^2) lists instead of indexing them into a maps
     // first.
 
+    const mySlug = ensure(mdx?.fields?.slug);
+
     mdx?.frontmatter?.related?.forEach((relatedSlug) => {
         relatedSlug &&
             allMdx.nodes?.forEach((n) => {
                 if (n.fields?.slug === relatedSlug) {
+                    if (n.frontmatter?.related?.includes(mySlug))
+                        throw new Error(
+                            `Bidirectional links are not allowed: The page ${relatedSlug} links to ${mySlug} and vice versa.`,
+                        );
+
                     relatedPageLinks.push({
                         slug: relatedSlug,
                         title: ensure(n.frontmatter?.title),
@@ -379,8 +386,6 @@ const parsePageLinks = (
                 }
             });
     });
-
-    const mySlug = ensure(mdx?.fields?.slug);
 
     allMdx.nodes?.forEach((node) => {
         const nodeSlug = ensure(node.fields?.slug);
