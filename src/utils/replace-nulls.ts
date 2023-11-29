@@ -4,7 +4,7 @@
 // Source:
 // https://github.com/apollographql/apollo-client/issues/2412#issuecomment-755449680
 
-type RecursivelyReplaceNullWithUndefined<T> = T extends null
+export type RecursivelyReplaceNullWithUndefined<T> = T extends null
     ? undefined
     : T extends Date
     ? T

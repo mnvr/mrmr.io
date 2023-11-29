@@ -14,7 +14,10 @@ import type { PageTemplateContext } from "types/gatsby";
 import { filterDefined } from "utils/array";
 import { isHindiContent } from "utils/attributes";
 import { ensure } from "utils/ensure";
-import { replaceNullsWithUndefineds } from "utils/replace-nulls";
+import {
+    RecursivelyReplaceNullWithUndefined,
+    replaceNullsWithUndefineds,
+} from "utils/replace-nulls";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -109,6 +112,7 @@ export const query = graphql`
             nodes {
                 frontmatter {
                     title
+                    related
                 }
                 fields {
                     slug
@@ -208,6 +212,12 @@ export interface Page {
      */
     relatedPageLinks: PageLink[];
     /**
+     * A list of backlinks to pages that link here via the related field.
+     *
+     * i.e. these are the pages whose {@link relatedPageLinks} link here.
+     */
+    linkedFromPageLinks: PageLink[];
+    /**
      * A preview image generated from a template using tint colors
      *
      * This will be generated if the "preview-image-highlight" and
@@ -245,8 +255,9 @@ export interface PageLink {
     title: string;
 }
 
-export const parsePage = (data: Queries.PageTemplateQuery): Page => {
-    const { mdx, images, mp3s, allMdx } = replaceNullsWithUndefineds(data);
+export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
+    const data = replaceNullsWithUndefineds(data_);
+    const { mdx, images, mp3s } = data;
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
@@ -260,7 +271,6 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const theme = frontmatter?.theme;
     const attributes = filterDefined(frontmatter?.attributes);
     const tags = filterDefined(frontmatter?.tags);
-    const related = frontmatter?.related;
 
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
@@ -270,6 +280,8 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
     const description = descriptionOrFallback(frontmatter?.description);
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
+
+    const { relatedPageLinks, linkedFromPageLinks } = parsePageLinks(data);
 
     // Gatsby's `StaticImage` component currently doesn't support paths that are
     // outside the `src` directory. Our user pages live in the top-level `pages`
@@ -294,31 +306,6 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         pageMP3s[node.name] = ensure(node.publicURL);
     });
 
-    // To obtain the titles corresponding to related pages, we need to join
-    // using the slugs of related pages (if any) specified in the frontmatter of
-    // this page. There might be better (but more involved) ways of doing this:
-    // for now we just fetch the list of all pages and do the join here in code.
-    //
-    // In a very crude benchmark (`time yarn build`), this doesn't seem to have
-    // made any noticeable difference. But if we run into performance issues
-    // when the number of pages grows, this might be a possible thing to
-    // consider optimizing (e.g. using the @link Gatsby extension for
-    // foreign-key fields in GraphQL).
-    const relatedPageLinks: PageLink[] = [];
-    // The number of related links is expected to be small (a few at max), so we
-    // just iterate over the O(n^2) lists instead of indexing into a map first.
-    related?.forEach((relatedSlug) => {
-        relatedSlug &&
-            allMdx.nodes?.forEach((n) => {
-                if (n.fields?.slug === relatedSlug) {
-                    relatedPageLinks.push({
-                        slug: relatedSlug,
-                        title: ensure(n.frontmatter?.title),
-                    });
-                }
-            });
-    });
-
     return {
         slug,
         title,
@@ -335,6 +322,7 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
         attributes,
         tags,
         relatedPageLinks,
+        linkedFromPageLinks,
         generatedPreviewImage,
         images: pageImages,
         mp3s: pageMP3s,
@@ -348,6 +336,66 @@ export const parsePage = (data: Queries.PageTemplateQuery): Page => {
 const descriptionOrFallback = (description?: string) => {
     if (description) return description;
     return `Music, words and art by Manav`;
+};
+
+/**
+ * Return two sets of links - pages that are related to us, and the pages that
+ * link to us.
+ */
+const parsePageLinks = (
+    data: RecursivelyReplaceNullWithUndefined<Queries.PageTemplateQuery>,
+) => {
+    // This really only needs the mdx and allMdx fields, but there doesn't seem
+    // to be a way to get at the TypeScript types of the named nested parts of
+    // the PageTemplateQuery, so we just pass the entire thing over to us.
+    const { mdx, allMdx } = data;
+
+    // To obtain the titles corresponding to related pages, we need to join
+    // using the slugs of related pages (if any) specified in the frontmatter of
+    // this page. There might be better (but more involved) ways of doing this:
+    // for now we just fetch the list of all pages and do the join here in code.
+    //
+    // In a very crude benchmark (`time yarn build`) done after the initial
+    // implementation,  this doesn't seem to have made any noticeable
+    // difference. But if we run into performance issues when the number of
+    // pages grows, this might be a possible thing to consider optimizing (e.g.
+    // using the @link Gatsby extension for foreign-key fields in GraphQL).
+
+    const relatedPageLinks: PageLink[] = [];
+    const linkedFromPageLinks: PageLink[] = [];
+
+    // The number of related links is expected to be small (a few at max), so we
+    // just iterate over these O(n^2) lists instead of indexing them into a maps
+    // first.
+
+    mdx?.frontmatter?.related?.forEach((relatedSlug) => {
+        relatedSlug &&
+            allMdx.nodes?.forEach((n) => {
+                if (n.fields?.slug === relatedSlug) {
+                    relatedPageLinks.push({
+                        slug: relatedSlug,
+                        title: ensure(n.frontmatter?.title),
+                    });
+                }
+            });
+    });
+
+    const mySlug = ensure(mdx?.fields?.slug);
+
+    allMdx.nodes?.forEach((node) => {
+        const nodeSlug = ensure(node.fields?.slug);
+        nodeSlug !== mySlug &&
+            node.frontmatter?.related?.forEach((relatedSlug) => {
+                if (relatedSlug === mySlug) {
+                    linkedFromPageLinks.push({
+                        slug: nodeSlug,
+                        title: ensure(node.frontmatter?.title),
+                    });
+                }
+            });
+    });
+
+    return { relatedPageLinks, linkedFromPageLinks };
 };
 
 /**
