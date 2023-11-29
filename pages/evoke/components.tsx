@@ -25,6 +25,8 @@ const Title_ = styled.div`
     padding-block: 3rem;
     font-size: 2rem;
 
+    line-height: 1.5;
+
     .container {
         max-width: 30rem;
         margin-inline: auto;
@@ -53,6 +55,8 @@ export const Text = styled.div`
     margin-inline: 1rem;
     margin-block: 3rem;
 
+    line-height: 1.5;
+
     p {
         max-width: 30rem;
         margin-inline: auto;
@@ -69,7 +73,7 @@ export const Signoff = styled(SignoffContents)`
     color: var(--mrmr-background-color-1);
     padding: 1rem;
     padding-block-start: 1.3rem;
-    line-height: 1.4;
+    line-height: 1.45;
     min-height: 20svh;
 `;
 
@@ -91,11 +95,10 @@ const Footer_ = styled.div`
     padding: 1rem;
     padding-block-start: 1.4rem;
     min-height: 60svh;
-    line-height: 2.4;
+    line-height: 2.5;
 
     a {
         text-decoration: none;
-        font-size: 0.9rem;
         font-weight: bold;
     }
 

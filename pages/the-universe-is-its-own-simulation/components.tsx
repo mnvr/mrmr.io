@@ -68,29 +68,32 @@ export const Title: React.FC = () => {
     const { formattedDateMY } = page;
 
     return (
-        <TitleContainer>
+        <Title_>
             <h1>
                 The Universe Is
                 <br />
                 Its Own Simulation
             </h1>
-            <div>
-                <Caption>
+            <Caption>
+                <small>
                     Manav Rathi
                     <br />
                     {formattedDateMY}
-                </Caption>
-            </div>
-        </TitleContainer>
+                </small>
+            </Caption>
+        </Title_>
     );
 };
 
-const TitleContainer = styled.div`
+const Title_ = styled.div`
     margin-inline: auto;
+    line-height: 1.5;
+
     text-align: center;
 `;
 
-const Caption = styled.small`
+const Caption = styled.div`
+    line-height: 1.3;
     color: var(--mrmr-color-2);
 `;
 
@@ -116,26 +119,26 @@ const PoemP = styled.p`
     font-family: serif;
     font-style: italic;
     font-size: 1.03rem;
+    line-height: 1.3;
+
     color: white;
 `;
 
 export const EssayContainer = styled.div`
     margin-block-start: 3rem;
     margin-inline: auto;
-    max-width: 24rem;
+    max-width: 27rem;
     background-color: oklch(90% 0.1 148 / 0.5);
     color: darkgreen;
     padding-inline: 1.5rem;
     padding-block: 12px;
     border-radius: 12px;
 
-    line-height: 1.3;
+    line-height: 1.5;
 
     hr {
-        width: 30%;
-        margin-block: 3rem;
-        height: 2px;
-        color: var(--mrmr-background-color-1);
+        width: 50%;
+        margin-block: 2.6rem;
     }
 
     blockquote {
