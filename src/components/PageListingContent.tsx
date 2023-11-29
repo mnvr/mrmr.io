@@ -8,7 +8,6 @@ import { paperDarkTheme } from "themes/themes";
 import { isHindiContent } from "utils/attributes";
 
 interface PageListingContentProps {
-    title: string;
     /** The ordered list of pages to show */
     pages: PageListingPage[];
 }
@@ -27,21 +26,20 @@ export interface PageListingPage {
  *
  * This provides the main content body of a page that shows a listing of some
  * links to some pages. It takes as input the list of parsed pages to show in
- * the listing.
+ * the listing. The children are shown in the title spot.
  *
  * This is somewhere between a full blown template and a bunch of components for
  * almost identical looking listings that differ slightly in the types of pages
  * they show etc.
  */
-const PageListingContent: React.FC<PageListingContentProps> = ({
-    title,
-    pages,
-}) => {
+const PageListingContent: React.FC<
+    React.PropsWithChildren<PageListingContentProps>
+> = ({ pages, children }) => {
     return (
         <main>
             <PageColorStyle {...paperDarkTheme} />
             <Column>
-                <Title>{title}</Title>
+                <Title>{children}</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
                     <Footer />
@@ -70,7 +68,6 @@ const Title_ = styled.div`
     h1 {
         font-family: serif;
         font-style: italic;
-        opacity: 0.5;
     }
 `;
 

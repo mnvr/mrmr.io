@@ -4,6 +4,7 @@ import PageListingContent, {
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
+import styled from "styled-components";
 import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -12,10 +13,18 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 const PoemsPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
-    return <PageListingContent title="poems" pages={pages} />;
+    return (
+        <PageListingContent pages={pages}>
+            <Title_>poems</Title_>
+        </PageListingContent>
+    );
 };
 
 export default PoemsPage;
+
+const Title_ = styled.div`
+    color: oklch(56.28% 0.246 286.9);
+`;
 
 export const Head: HeadFC = () => {
     const titlePrefix = "Poems";

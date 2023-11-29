@@ -4,6 +4,7 @@ import PageListingContent, {
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
+import styled from "styled-components";
 import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -11,12 +12,19 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 /** A listing of all posts */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
-    const title = "all posts";
 
-    return <PageListingContent {...{ title, pages }} />;
+    return (
+        <PageListingContent pages={pages}>
+            <Title_>all posts</Title_>
+        </PageListingContent>
+    );
 };
 
 export default AllPage;
+
+const Title_ = styled.div`
+    opacity: 0.5;
+`;
 
 export const Head: HeadFC = () => {
     const titlePrefix = "All posts";
