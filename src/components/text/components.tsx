@@ -246,7 +246,7 @@ interface TagsProps {
 const Tags: React.FC<TagsProps> = (props) => {
     return (
         <Tags_>
-            <TagsTitle>Tagged: </TagsTitle>
+            <TagsTitle>Tags: </TagsTitle>
             <TagsList {...props} />
         </Tags_>
     );
