@@ -1,20 +1,24 @@
 ---
 title: TypeScript vs Haskell
-date: 2023-03-15
-unlisted: true
-description: Structural vs Nominal Type Systems.
+subtitle: Structural vs Nominal Type Systems. I love them both.
+date: 2023-11-30
+description: And the difference between structural vs nominal type systems.
 theme: paper
 layout: text
 tags:
     - "Programming"
 ---
 
-TypeScript provides **structural typing**. If it walks like a duck, and quacks
-like a duck, for TypeScript, it is a duck. TypeScript does not care at all what
-name you give to the type.
+import * as E from "components/text/extra"
 
-Haskell provides **nominal typing**. It must be called a duck for it to be
-considered a duck. A rose by any other name won’t do.
+TypeScript provides <E.InvertedColorStrong>structural
+typing</E.InvertedColorStrong>. If it walks like a duck, and quacks like a duck,
+for TypeScript, it is a duck. TypeScript does not care at all what name you give
+to the type.
+
+Haskell provides <E.InvertedColorStrong>nominal typing</E.InvertedColorStrong>.
+It must be called a duck for it to be considered a duck. A rose by any other
+name won’t do.
 
 Which of these two approaches are better? I think it too early, and too
 sweeping, a comparison to be valid.
@@ -47,6 +51,8 @@ But the surprising thing is, after a while you’ll _want to_ write the types.
 Programming in these languages then becomes the game of describing the types and
 how they transform into each other (as opposed to more direct approach of
 describing values and how they transform into each other).
+
+---
 
 Type systems nowadays are awesome! If you’re a programmer who thinks types are a
 pain, that “public static void main” ridiculousness, as I once was, I have hope

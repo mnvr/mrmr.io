@@ -31,3 +31,20 @@ const AttributedQuote_ = styled.blockquote`
 const Attribution_ = styled.small`
     margin-inline-start: 2rem;
 `;
+
+/**
+ * A strong element that uses inverted colors to further highlight its content.
+ *
+ * Lore: The strong element is the semantic counterpart to the bold element, b,
+ * and it is used to markup important parts of the content. Similarly, the em
+ * (emphasis) element is the semantic counterpart to the italicized element i,
+ * and in markup it indicates content that should be emphasized. The visual
+ * representantion of strong and emphasis is usually bold and italics, but it's
+ * not necessary (as we see here), but there are larger deviations. e.g. screen
+ * readers might pronounce them differently.
+ */
+export const InvertedColorStrong = styled.strong`
+    background-color: var(--mrmr-color-1);
+    color: var(--mrmr-background-color-1);
+    font-weight: normal;
+`;
