@@ -1,0 +1,53 @@
+---
+title: TypeScript vs Haskell
+date: 2023-03-15
+unlisted: true
+description: Structural vs Nominal Type Systems.
+theme: paper
+layout: text
+tags:
+    - "Programming"
+---
+
+TypeScript provides **structural typing**. If it walks like a duck, and quacks
+like a duck, for TypeScript, it is a duck. TypeScript does not care at all what
+name you give to the type.
+
+Haskell provides **nominal typing**. It must be called a duck for it to be
+considered a duck. A rose by any other name won’t do.
+
+Which of these two approaches are better? I think it too early, and too
+sweeping, a comparison to be valid.
+
+TypeScript provides a gradual path to adding types to arguably the world’s most
+used and least learnt language: JavaScript. JavaScript is used by people from
+all sorts of backgrounds and motivations and programming experience level;
+perhaps the only thing they have in common is that _noboby_ learns JavaScript,
+it is just hacked together until it works, with accompanying surprised Pikachu
+faces thrown around when the poor thing doesn’t work. This is the ecosystem
+TypeScript exists in.
+
+Haskell users, as the old joke goes, all 10 of them, or 11 if I may immodestly
+count myself in, on the other hand are usually experienced programmers. They
+might not know the ancient scrolls of Hindley Milner by heart, but that’s not
+for lack of trying. The goal of Haskell is to provide a laboratory for
+mathematics - it is the place where we can apply the abstract abstractions of
+category theory to find elegant primitives for domain specific data manipulation
+(aka, programming).
+
+Both TypeScript and Haskell are based on solid, grounded, mathematics that goes
+back a century at least. It is not programmers hacking these languages together
+on whim and fashion (though that plays a part) - it is more of people trying to
+transmute the hard nuggets of type theory into practical programming languages.
+
+Both TypeScript and Haskell provide type inference. Which means that you won’t
+_need to_ tell the compiler the type of a duck or a rose, it’ll just know.
+
+But the surprising thing is, after a while you’ll _want to_ write the types.
+Programming in these languages then becomes the game of describing the types and
+how they transform into each other (as opposed to more direct approach of
+describing values and how they transform into each other).
+
+Type systems nowadays are awesome! If you’re a programmer who thinks types are a
+pain, that “public static void main” ridiculousness, as I once was, I have hope
+for you – not only can things be much better, they’re also so much more fun.
