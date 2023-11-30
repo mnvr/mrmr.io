@@ -17,6 +17,14 @@ export const Sketch: React.FC = () => {
         setDigits(newDigits);
     }, []);
 
+    React.useEffect(() => {
+        const handleScroll = (event) => {
+            console.log(event);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     if (!digits) return <div />;
 
     return (
@@ -32,7 +40,7 @@ const Sketch_ = styled.div`
     display: grid;
     grid-template-columns: repeat(30, 1fr);
     gap: 2px;
-            /* background-color: red; */
+    /* background-color: red; */
 
     div {
         /* background-color: navy; */
