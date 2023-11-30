@@ -1,3 +1,4 @@
+import { useScrollPosition } from "hooks/use-scroll-percentage";
 import * as React from "react";
 import styled from "styled-components";
 
@@ -47,19 +48,11 @@ const makeGridData = (cellCount: number): GridData => {
 
 const Sketch: React.FC = () => {
     const [gridData, setGridData] = React.useState<GridData | undefined>();
-    const [percentage, setPercentage] = React.useState(0);
+    const scrollPosition = useScrollPosition();
 
     React.useEffect(() => {
         const count = 100;
         setGridData(makeGridData(count));
-    }, []);
-
-    React.useEffect(() => {
-        const handleScroll = () => {
-            setPercentage(window.scrollY / (document.body.scrollHeight - window.innerHeight));
-        };
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
     if (!gridData) return <div />;
@@ -71,7 +64,7 @@ const Sketch: React.FC = () => {
                     return <Cell key={i}>{s}</Cell>;
                 })}
             </Sketch_>
-            <Percentage {...{ percentage }} />
+            <ScrollPercentage {...{ scrollPosition }} />
         </>
     );
 };
@@ -80,26 +73,25 @@ const Sketch_ = styled.div`
     display: grid;
     grid-template-columns: repeat(30, 1fr);
     gap: 2px;
-    background-color: green;
-    /* position: fixed; */
+    position: fixed;
     width: 100%;
-    height: 90svh;
-
-    div {
-        /* background-color: navy; */
-    }
+    height: 100svh;
 `;
 
-interface PercentageProps {
-    percentage: number;
+interface ScrollPercentageProps {
+    scrollPosition: number;
 }
-const Percentage: React.FC<PercentageProps> = ({ percentage }) => {
-    return <Percentage_>{Math.round(percentage * 100)}%</Percentage_>;
+
+const ScrollPercentage: React.FC<ScrollPercentageProps> = ({
+    scrollPosition,
+}) => {
+    const percentage = Math.round(scrollPosition * 100);
+    return <ScrollPercentage_>{percentage}%</ScrollPercentage_>;
 };
 
-const Percentage_ = styled.div`
+const ScrollPercentage_ = styled.div`
     background-color: navy;
-    color: red;
+    color: aliceblue;
 
     position: fixed;
     inset-block-end: 0;
