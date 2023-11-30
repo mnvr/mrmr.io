@@ -1,9 +1,11 @@
+import { ExternalLink } from "components/ExternalLink";
 import * as React from "react";
 import styled from "styled-components";
 
 export const Content: React.FC = () => {
     return (
         <Content_>
+            <E0 />
             <E1 />
             <E2 />
             <E3 />
@@ -13,6 +15,9 @@ export const Content: React.FC = () => {
             <E7 />
             <E8 />
             <E9 />
+            <E10 />
+            <E11 />
+            <E12 />
         </Content_>
     );
 };
@@ -62,6 +67,20 @@ const C6: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
             <div>Six</div>
             <div>Seven</div>
         </div>
+    );
+};
+
+const E0: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                <b>CSS grid playground.</b> Based on the excellent{" "}
+                <ExternalLink href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids">
+                    MDN intro to grids
+                </ExternalLink>
+                .
+            </p>
+        </Bordered>
     );
 };
 
@@ -236,5 +255,82 @@ const Implicit3 = styled(C6)`
     div:nth-child(-n + 6) {
         padding: 0;
         font-size: 60%;
+    }
+`;
+
+const E10: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                We can generate as many columns as will fit by passing{" "}
+                <b>auto-fit</b> to repeat.
+            </p>
+            <AutoFit />
+        </Bordered>
+    );
+};
+
+const AutoFit = styled(C6)`
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+`;
+
+const E11: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                It would be nice to combine this with content aware track size,
+                say minmax(70px, auto), or minmax(70px, <b>max-content</b>). But
+                that doesn't work (try squishing the grid down).
+            </p>
+            <MaxContent />
+            <p>
+                This is because "automatic repetitions (auto-fill or auto-fit)
+                cannot be combined with intrinsic or flexible sizes
+                (min-content, max-content, auto, fit-content())".
+                <sup>
+                    <ExternalLink href="https://stackoverflow.com/questions/52764726/css-grid-auto-fit-with-max-content">
+                        †
+                    </ExternalLink>
+                </sup>
+            </p>
+        </Bordered>
+    );
+};
+
+const MaxContent = styled(C6)`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
+    div:nth-child(3) {
+        background-color: var(--mrmr-highlight-color);
+        font-size: 3rem;
+    }
+`;
+
+const E12: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                This illustrates how grid is not a replacement for flexbox, but
+                is more complementary. The content-aware overflow of cells can
+                achieved using flexbox, but notice how the tracks are not the
+                same size. flex and grid just simply have different primitives
+                and cover different design spaces.
+            </p>
+            <MaxContentFlex />
+        </Bordered>
+    );
+};
+
+const MaxContentFlex = styled(C6)`
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
+    div:nth-child(3) {
+        background-color: var(--mrmr-highlight-color);
+        font-size: 3rem;
+    }
+    div {
+        flex-grow: 1;
     }
 `;
