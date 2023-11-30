@@ -1,36 +1,60 @@
 import * as React from "react";
 import styled from "styled-components";
 
+/** Data for each entry in the grid */
+interface CellData {
+    /** A Uint8 value, randomly assigned on page load. */
+    n: number;
+    /**
+     * An arbitrarily interpreteable internal state associated with this cell.
+     * e.g. we use it decide when to switch colors of the cell as the user
+     * scrolls.
+     *
+     * Randomly assigned on page load.
+     */
+    h: number;
+    /**
+     * The string to outwardly represent this cell in the grid. e.g. the last
+     * digit of the gene.
+     */
+    s: string;
+}
+
+type GridData = CellData[];
+
+const makeGridData = (cellCount: number): GridData => {
+    const numbers = new Uint8Array(cellCount);
+    crypto.getRandomValues(numbers);
+
+    return [...numbers].map((n) => {
+        const s = (n % 10).toString();
+        const h = n / 256;
+        return { n, h, s };
+    });
+};
+
 export const Sketch: React.FC = () => {
-    const [digits, setDigits] = React.useState<string[] | undefined>();
+    const [gridData, setGridData] = React.useState<GridData | undefined>();
 
     React.useEffect(() => {
         const count = 1000;
-        const numbers = new Uint8Array(count);
-        crypto.getRandomValues(numbers);
-
-        const newDigits = new Array(count);
-        numbers.forEach((n, i) => {
-            newDigits[i] = (n % 10).toString();
-        });
-
-        setDigits(newDigits);
+        setGridData(makeGridData(count));
     }, []);
 
     React.useEffect(() => {
-        const handleScroll = (event) => {
-            console.log(event);
+        const handleScroll = () => {
+            console.log("scroll");
         };
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    if (!digits) return <div />;
+    if (!gridData) return <div />;
 
     return (
         <Sketch_>
-            {digits.map((d, i) => {
-                return <Cell key={i}>{d}</Cell>;
+            {gridData.map(({ s }, i) => {
+                return <Cell key={i}>{s}</Cell>;
             })}
         </Sketch_>
     );
