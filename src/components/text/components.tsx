@@ -171,17 +171,24 @@ export const Footer: React.FC = () => {
                 <LinkedFromPosts links={linkedFromPageLinks} />
             )}
             {isPoem(page) && (
-                <>
+                <LinkContainer>
                     <Link to={"/poems"}>More poems</Link>
-                    <br />
-                </>
+                </LinkContainer>
             )}
-            <Link to={"/all"}>All posts</Link>
-            <br />
-            <Link to={"/"}>Home</Link>
+            <LinkContainer>
+                <Link to={"/all"}>All posts</Link>
+            </LinkContainer>
+            <LinkContainer>
+                <Link to={"/"}>Home</Link>
+            </LinkContainer>
         </Footer_>
     );
 };
+
+const LinkContainer = styled.div`
+    /** Add a bit of extra margin to account for the underline under links */
+    margin-block-end: 5px;
+`;
 
 /**
  * A variant of {@link Footer} for pages with Hindi content.
@@ -196,14 +203,16 @@ export const FooterHindi: React.FC = () => {
                 <RelatedPostsHindi links={relatedPageLinks} />
             )}
             {isPoem(page) && (
-                <>
+                <LinkContainer>
                     <Link to={"/poems"}>और कविताएँ</Link>
-                    <br />
-                </>
+                </LinkContainer>
             )}
-            <Link to={"/all"}>सारी रचनाएँ</Link>
-            <br />
-            <Link to={"/"}>प्रारंभ</Link>
+            <LinkContainer>
+                <Link to={"/all"}>सारी रचनाएँ</Link>
+            </LinkContainer>
+            <LinkContainer>
+                <Link to={"/"}>प्रारंभ</Link>
+            </LinkContainer>
         </Footer_>
     );
 };
@@ -216,12 +225,14 @@ const Footer_ = styled.footer`
 
     ul {
         margin: 0;
-        /* Add an itsy bitsy extra padding at the bottom to make the list items
-         * fit better in the context of the links that follow */
-        padding-block-end: 0.16rem;
         list-style: circle;
         padding-inline-start: 1.8rem;
+
+        /* Similar to the extra margin under LinkContainers, to account for the
+           underline underneath links */
+        padding-block-end: 5px;
     }
+
     li {
         padding-inline-start: 2px;
         list-style-position: outside;
@@ -235,14 +246,18 @@ interface TagsProps {
 const Tags: React.FC<TagsProps> = (props) => {
     return (
         <Tags_>
-            <RPTitle>Tagged: </RPTitle>
+            <TagsTitle>Tagged: </TagsTitle>
             <TagsList {...props} />
         </Tags_>
     );
 };
 
 const Tags_ = styled.div`
-    margin-block-end: 2px;
+    margin-block-end: 3px;
+`;
+
+const TagsTitle = styled.span`
+    color: var(--mrmr-color-3);
 `;
 
 const TagsList: React.FC<TagsProps> = ({ tags }) => {
@@ -273,20 +288,22 @@ interface RelatedPostsProps {
 const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
-            <RPTitle>Related posts</RPTitle>
+            <FooterListTitle>Related posts</FooterListTitle>
             <RelatedPostsList {...props} />
         </div>
     );
 };
 
-const RPTitle = styled.span`
+const FooterListTitle = styled.div`
+    /* Snuggle just a bit with the list items to provide a sectioning effect */
+    margin-block-end: -1px;
     color: var(--mrmr-color-3);
 `;
 
 const RelatedPostsHindi: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
-            <RPTitle>सम्बन्धित रचनाएँ</RPTitle>
+            <FooterListTitle>सम्बन्धित रचनाएँ</FooterListTitle>
             <RelatedPostsList {...props} />
         </div>
     );
@@ -307,7 +324,7 @@ const RelatedPostsList: React.FC<RelatedPostsProps> = ({ links }) => {
 const LinkedFromPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
         <div>
-            <RPTitle>Linked from</RPTitle>
+            <FooterListTitle>Linked from</FooterListTitle>
             <RelatedPostsList {...props} />
         </div>
     );
