@@ -56,17 +56,24 @@ const Content_ = styled(LinkStyleUnderlined)`
     }
 
     code {
+        background-color: oklch(97.82% 0.003 247.86);
+        @media (prefers-color-scheme: dark) {
+            background-color: oklch(22.02% 0.016 256.82);
+        }
+
+        padding-block: 0.2rem;
+        padding-inline: 0.4rem;
+
         /* The monospace font looks too big sitting next to the other fonts */
         font-size: 90%;
     }
 
     pre {
         /* These rules are primarily aimed at backtick terminated "code blocks"
-           in markdown. We give them a their own "area" by adding a background
-           and padding. */
-        background-color: aliceblue;
+           in Markdown. */
+        background-color: oklch(97.82% 0.003 247.86);
         @media (prefers-color-scheme: dark) {
-            background-color: black;
+            background-color: oklch(22.02% 0.016 256.82);
         }
 
         padding: 1rem;
