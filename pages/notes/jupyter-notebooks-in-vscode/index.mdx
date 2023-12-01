@@ -70,17 +70,17 @@ does <E.RefLink
 href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments"
 />
 
-```sh
-# create a new virtual environment
-python3 -m venv .venv
-
-# optional step - upgrade pip if needed
-# pip is the python package manager
-python3 -m pip install --upgrade pip
-
-# activate it
-source ./.venv/bin/activate
-```
+<pre className="language-sh">
+<code className="mrmr-code-comment"># create a new virtual environment</code><br/>
+<code>python3 -m venv .venv</code><br/>
+<br/>
+<code className="mrmr-code-comment"># optional step - upgrade pip if needed</code><br/>
+<code className="mrmr-code-comment"># pip is the python package manager</code><br/>
+<code>python3 -m pip install --upgrade pip</code><br/>
+<br/>
+<code className="mrmr-code-comment"># activate it</code><br/>
+<code>source ./.venv/bin/activate</code>
+</pre>
 
 We could run these commands ourselves, the end result will be the same.
 
@@ -99,8 +99,8 @@ good way to check that we're indeed in an active venv (although the shell prompt
 should also have updated):
 
 ```
-(.venv) Python$ which python
-../Python/.venv/bin/python
+(.venv) $ which python
+ .../.venv/bin/python
 ```
 
 #### 4. Install any notebook related packages in this venv

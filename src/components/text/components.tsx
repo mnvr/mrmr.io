@@ -85,6 +85,24 @@ const Content_ = styled(LinkStyleUnderlined)`
            pre element instead of increasing the width of the page contents. */
         overflow-x: scroll;
     }
+
+    /* [Note: Syntax highlighting in MDX code blocks]
+     *
+     * We wish to do some minimal syntax highlighting, but handrolled (because
+     * (a) integrating existing MDX syntax highlighting plugins is a bit too
+     * heavy, and (b) The syntax coloring theme might too a bit too much).
+     *
+     * As an alternative, we break down the code blocks wherein we want to do
+     * syntax highlighting into their pre parent and code children, and
+     * individually assign custom classes to the code children to get them to
+     * look the way we want.
+     *
+     * This works great and provides us full control, but it is very cumbersome
+     * (not to speak of how it makes the MDX file look ugly). So at some point,
+     * we should consider extracting this into some lightweight plugin. */
+    code.mrmr-code-comment {
+        opacity: 0.7;
+    }
 `;
 
 /**
