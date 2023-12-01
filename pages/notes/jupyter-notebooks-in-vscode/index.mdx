@@ -1,0 +1,82 @@
+---
+title: Using Jupyter notebooks inside VS Code
+date: 2023-12-01
+unlisted: true
+description: Quick how-to for creating a local environment for running Python code in Jupyter notebooks inside VS Code.
+theme: paper
+layout: text
+tags:
+    - Python
+    - ML
+---
+
+brew install python3
+
+https://docs.brew.sh/Homebrew-and-Python
+
+There is an existing python3 in /usr/local installed as part of macOS Command
+Line tools, you can ignore that. The shell also ignores it because /opt/homebrew
+appears earlier in the PATH.
+
+https://code.visualstudio.com/docs/datascience/jupyter-notebooks
+
+To work with Jupyter (formerly IPython Notebook) Notebooks in VS Code, we need
+to activate a Python environment in which we've installed the Jupyter package.
+
+https://code.visualstudio.com/docs/datascience/data-science-tutorial
+
+> if you'd prefer not to use Anaconda or Miniconda, you can create a Python
+> virtual environment and install the packages needed for the tutorial using
+> pip. If you go this route, you will need to install the following packages:
+> pandas, jupyter, seaborn, scikit-learn, keras, and tensorflow.
+
+(Optional) Create a new profile in VS Code to isolate the extensions to the
+current workspace.
+
+Workspace to profile association is automatic?
+https://stackoverflow.com/questions/75340086/binding-vscode-profiles-to-a-workspace
+
+Install the Python and Jupyter VSCode extensions (both from Microsoft)
+
+https://docs.python.org/3/library/venv.html
+
+A Python venv is a virtual environment that allows us to install packages
+without installing them globally.
+
+Create a new venv
+
+    python3 -m venv .venv                   # create a new virtual environment
+    python3 -m pip install --upgrade pip    # optional step - upgrade pip if needed
+                                            # pip is the python package manager
+    source ./.venv/bin/activate             # activate it
+
+    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment
+
+We could run these commands ourselves, the end result will be the same.
+
+Any extensions we install now will live in teh local .venv folder. Now open a
+new integrated terminal to install the (Python) packages we need. We can even do
+it in a terminal outside of VS Code, just activate the environment first (source
+./.venv/bin/activate) - the integrated terminal just does that automatically at
+startup if it notices a virtual env lying around.
+
+https://code.visualstudio.com/docs/python/environments#_how-the-extension-chooses-an-environment-automatically
+
+When in the venv we'll be able to use the python command instead of the python3
+command.
+
+Running cells with '.venv' requires the ipykernel package.
+Run the following command to install 'ipykernel' into the Python environment.
+Command: '/Users/m/Desktop/p/Python/.venv/bin/python -m pip install ipykernel -U --force-reinstall'
+
+https://github.com/microsoft/vscode-jupyter/wiki/Jupyter-Kernels-and-the-Jupyter-Extension#python-extension-and-ipykernel
+
+
+
+pip install ipython ipykernel
+
+In particular, we don't need to install the Jupyter package itself
+
+Create New Jupyter Notebook
+
+
