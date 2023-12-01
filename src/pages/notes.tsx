@@ -10,18 +10,21 @@ import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
- * A listing of "notes".
+ * A listing of "notes and playgrounds".
  *
- * Notes are pages under the `/notes` path, or pages with the "note" attribute.
- * They are of a more quick and dirty quality than regular posts, or are gists /
- * playgrounds demoing some particular aspect.
+ * Notes are pages under the `/notes` path, or unlisted pages outside of /notes
+ * with the "playground" attribute. They are of a more quick and dirty quality
+ * than regular posts (the former), or are gists / playgrounds demoing some
+ * particular aspect (the latter).
  */
-const NotesPage: React.FC<PageProps<Queries.PoemsPageQuery>> = ({ data }) => {
+const NotesPage: React.FC<PageProps<Queries.NotesPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
 
     return (
         <PageListingContent pages={pages}>
-            <Title_>notes</Title_>
+            <Title_>
+                notes <span>& playgrounds</span>
+            </Title_>
         </PageListingContent>
     );
 };
@@ -30,25 +33,32 @@ export default NotesPage;
 
 const Title_ = styled.div`
     color: slategray;
+    span {
+        opacity: 0.5;
+        font-size: 80%;
+    }
 `;
 
 export const Head: HeadFC = () => {
     const titlePrefix = "Notes";
     const description =
-        "Listing of notes at mrmr.io. " +
-        "Notes are of more quick and dirty quality than regular posts, or they are gists / playgrounds demoing some particular aspect of some task, usually programming related.";
+        "Listing of notes and playgrounds at mrmr.io. " +
+        "Notes are of more quick and dirty quality than regular posts. Playgrounds are gists that demo an aspect of some task. These are usually programming related.";
     const canonicalPath = "/notes";
 
     return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
 
 /**
- * Fetch all pages with the "note" attribute or under /notes, sorted by recency.
+ * Fetch all pages under /notes or with the "playground" attribute, sorted by
+ * recency.
  *
- * - INCLUDE pages with the "note" attribute that are marked `unlisted`. This is
- *   in contrast to all other listings. To unlist a note, either keep it under
- *   the notes/ path but mark it unlisted, or keep it outside the notes/ path
- *   but don't add the "note" attribute to it (while marking it unlisted).
+ * For pages with the "playground" attribute, INCLUDE pages that are marked
+ * unlisted`. This is in contrast to all other listings. To unlist a note,
+ * either
+ * 1. keep it under the notes/ director but mark it unlisted, or
+ * 2. keep it outside the /notes/ directory but don't add the "note" attribute
+ *    to it (while marking it unlisted).
  */
 export const query = graphql`
     fragment NotesPageData on Mdx {
