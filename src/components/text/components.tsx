@@ -55,27 +55,29 @@ const Content_ = styled(LinkStyleUnderlined)`
         font-weight: normal;
     }
 
+    /* These colors were picked to work with the "paper" theme. Currently all
+       "text" layout pages that use code elements use the paper theme, so we're
+       hardcoding them in. If they don't work well with other themes, we can
+       move these declarations to themes.ts, and allow customizing them per
+       theme */
+    --mrmr-code-background-color: oklch(97.82% 0.003 247.86);
+    @media (prefers-color-scheme: dark) {
+        --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
+    }
+
     code {
-        background-color: oklch(97.82% 0.003 247.86);
-        @media (prefers-color-scheme: dark) {
-            background-color: oklch(22.02% 0.016 256.82);
-        }
-
-        padding-block: 0.2rem;
-        padding-inline: 0.4rem;
-
         /* The monospace font looks too big sitting next to the other fonts */
         font-size: 90%;
+
+        background-color: var(--mrmr-code-background-color);
+        padding-block: 0.2rem;
+        padding-inline: 0.4rem;
     }
 
     pre {
         /* These rules are primarily aimed at backtick terminated "code blocks"
            in Markdown. */
-        background-color: oklch(97.82% 0.003 247.86);
-        @media (prefers-color-scheme: dark) {
-            background-color: oklch(22.02% 0.016 256.82);
-        }
-
+        background-color: var(--mrmr-code-background-color);
         padding: 1rem;
         border-radius: 4px;
 
