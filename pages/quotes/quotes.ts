@@ -65,5 +65,6 @@ export const quotes: string[] = [
     `...he says to me, "Are you ready to be yourself again?" I said, "Which one?"`,
     "I dream in yellow",
     "I do not know what I may appear to the world, but to myself I seem to have been only like a boy playing on the sea-shore, and diverting myself in now and then finding a smoother pebble or a prettier shell than ordinary, whilst the great ocean of truth lay all undiscovered before me",
-    "Perhaps someone is amazed when he has read these books, but no one more than I when I turn around now (after having been an author for seven years and just as if in one breath) and look at what has been accomplished and with almost a shiver of amazement see that the whole thing is actually only one thought."
+    "Perhaps someone is amazed when he has read these books, but no one more than I when I turn around now (after having been an author for seven years and just as if in one breath) and look at what has been accomplished and with almost a shiver of amazement see that the whole thing is actually only one thought.",
+    "Here I stand, I can do no other, so help me God",
 ];
