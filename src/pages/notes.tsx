@@ -92,7 +92,7 @@ export const query = graphql`
         }
 
         notesMdx: allMdx(
-            filter: { fields: { slug: { glob: "/notes/*" } } }
+            filter: { fields: { slug: { glob: "/notes/**" } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }
