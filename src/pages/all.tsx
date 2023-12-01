@@ -2,7 +2,7 @@ import { DefaultHead } from "components/Head";
 import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
-import { PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { filterDefined } from "utils/array";
@@ -12,9 +12,10 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 /** A listing of all posts */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
+    const extraLink = <Link to={"/notes"}>Notes</Link>;
 
     return (
-        <PageListingContent pages={pages}>
+        <PageListingContent {...{ pages, extraLink }}>
             <Title_>all posts</Title_>
         </PageListingContent>
     );

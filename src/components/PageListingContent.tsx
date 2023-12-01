@@ -10,6 +10,8 @@ import { isBumped, isHindiContent } from "utils/attributes";
 interface PageListingContentProps {
     /** The ordered list of pages to show */
     pages: PageListingPage[];
+    /** An optional extra link to show in the footer, in addition to "Home" */
+    extraLink?: React.ReactNode;
 }
 
 /** The parsed data for each page item that we show in the listing */
@@ -34,7 +36,7 @@ export interface PageListingPage {
  */
 const PageListingContent: React.FC<
     React.PropsWithChildren<PageListingContentProps>
-> = ({ pages, children }) => {
+> = ({ pages, extraLink, children }) => {
     return (
         <main>
             <PageColorStyle {...paperDarkTheme} />
@@ -42,7 +44,7 @@ const PageListingContent: React.FC<
                 <Title>{children}</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
-                    <Footer />
+                    <Footer>{extraLink}</Footer>
                 </LinkStyleUnderlined>
             </Column>
         </main>
@@ -186,10 +188,13 @@ const Description = styled.span`
     color: var(--mrmr-color-3);
 `;
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Footer_>
-            <Link to={"/"}>Home</Link>
+            <div>{children}</div>
+            <div>
+                <Link to={"/"}>Home</Link>
+            </div>
         </Footer_>
     );
 };
@@ -198,4 +203,7 @@ const Footer_ = styled.footer`
     margin-block-start: 6rem;
     margin-block-end: 3rem;
     font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
