@@ -44,7 +44,10 @@ export const Head: HeadFC = () => {
 export const query = graphql`
     query AllPage {
         allMdx(
-            filter: { frontmatter: { unlisted: { ne: true } } }
+            filter: {
+                fields: { slug: { glob: "!/notes/**" } }
+                frontmatter: { unlisted: { ne: true } }
+            }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

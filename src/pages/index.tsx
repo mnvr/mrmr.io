@@ -102,7 +102,8 @@ export const query = graphql`
             limit: 7
             filter: {
                 fields: { slug: { glob: "!/notes/**" } }
-            frontmatter: { unlisted: { ne: true } } }
+                frontmatter: { unlisted: { ne: true } }
+            }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

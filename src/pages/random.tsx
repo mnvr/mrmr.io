@@ -35,7 +35,12 @@ export const Head: HeadFC = () => <DefaultHead titlePrefix="Random 🎲" />;
  */
 export const query = graphql`
     query RandomPage {
-        allMdx(filter: { frontmatter: { unlisted: { ne: true } } }) {
+        allMdx(
+            filter: {
+                fields: { slug: { glob: "!/notes/**" } }
+                frontmatter: { unlisted: { ne: true } }
+            }
+        ) {
             nodes {
                 fields {
                     slug

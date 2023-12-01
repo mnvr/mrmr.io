@@ -34,6 +34,7 @@ export default NotesPage;
 const Title_ = styled.div`
     color: slategray;
     span {
+        margin-inline-start: -0.5px;
         opacity: 0.5;
         font-size: 80%;
     }
@@ -76,10 +77,8 @@ export const query = graphql`
     query NotesPage {
         allMdx(
             filter: {
-                frontmatter: {
-                    attributes: { in: "note" }
-                    unlisted: { ne: true }
-                }
+                fields: { slug: { glob: "/notes/**" } }
+                frontmatter: { unlisted: { ne: true } }
             }
             sort: [
                 { frontmatter: { date: DESC } }
@@ -91,8 +90,8 @@ export const query = graphql`
             }
         }
 
-        notesMdx: allMdx(
-            filter: { fields: { slug: { glob: "/notes/**" } } }
+        playgroundsMdx: allMdx(
+            filter: { frontmatter: { attributes: { in: "playground" } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }
@@ -107,8 +106,8 @@ export const query = graphql`
 
 const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const notesMdx = replaceNullsWithUndefineds(data.notesMdx);
-    const nodes = [...allMdx.nodes, ...notesMdx.nodes];
+    const playgroundsMdx = replaceNullsWithUndefineds(data.playgroundsMdx);
+    const nodes = [...allMdx.nodes, ...playgroundsMdx.nodes];
 
     return nodes.map((node) => {
         const { frontmatter, fields } = node;
@@ -118,14 +117,8 @@ const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] => {
         const formattedDateMY = ensure(frontmatter?.formattedDateMY);
         const attributes = filterDefined(frontmatter?.attributes);
 
-        const desc = frontmatter?.description;
-        const description = pruneDescription(desc);
+        const description = frontmatter?.description;
 
         return { slug, title, description, formattedDateMY, attributes };
     });
 };
-/**
- * TODO
- */
-const pruneDescription = (description?: string) =>
-    description?.replace(/. A note\.$/, ".");
