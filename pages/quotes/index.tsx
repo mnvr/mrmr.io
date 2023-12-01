@@ -49,9 +49,6 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
     // handling a "pophistory" event, we can compare this to the popped value to
     // determine the direction of travel.
     const [historyIndex, setHistoryIndex] = React.useState(0);
-    // True if we are going back in history. This allows us to reverse the
-    // direction of the animation.
-    const [isReverse, setIsReverse] = React.useState(false);
 
     React.useEffect(() => {
         if (!quoteIndex) {
@@ -61,7 +58,6 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
             // first quote to work.
             window.history.replaceState({ quoteIndex, historyIndex }, "");
             setQuoteIndex(quoteIndex);
-            setIsReverse(false);
         }
     }, []);
 
@@ -80,7 +76,6 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
 
         setQuoteIndex(newQuoteIndex);
         setHistoryIndex(newHistoryIndex);
-        setIsReverse(false);
 
         window.history.pushState(
             { quoteIndex: newQuoteIndex, historyIndex: newHistoryIndex },
@@ -106,14 +101,8 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
         const poppedQuoteIndex = ensureNumber(state.quoteIndex);
         const poppedHistoryIndex = ensureNumber(state.historyIndex);
 
-        // If the new history index we're get from the state is more than the
-        // current history index, that means we're going forward (e.g. the user
-        // pressed the forward button).
-        const newIsReverse = poppedHistoryIndex <= historyIndex;
-
         setQuoteIndex(poppedQuoteIndex);
         setHistoryIndex(poppedHistoryIndex);
-        setIsReverse(newIsReverse);
     };
 
     React.useEffect(() => {
@@ -124,7 +113,7 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
     }, [historyIndex]);
 
     return quoteIndex !== undefined ? (
-        <QuoteContainer {...{ quoteIndex, isReverse }}>
+        <QuoteContainer {...{ quoteIndex }}>
             <Quote {...{ parsedQuotes, quoteIndex, traverse }} />
         </QuoteContainer>
     ) : (
@@ -134,7 +123,6 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
 
 interface QuoteContainerProps {
     quoteIndex: number;
-    isReverse: boolean;
 }
 
 /**
@@ -144,14 +132,14 @@ interface QuoteContainerProps {
  */
 const QuoteContainer: React.FC<
     React.PropsWithChildren<QuoteContainerProps>
-> = ({ quoteIndex, isReverse, children }) => {
+> = ({ quoteIndex, children }) => {
     return (
         <QuoteContainer_>
             <SwitchTransition>
                 <CSSTransition
                     key={quoteIndex.toString()}
                     timeout={300}
-                    classNames={isReverse ? "fade-reverse" : "fade"}
+                    classNames={"fade"}
                 >
                     <div>{children}</div>
                 </CSSTransition>
@@ -163,40 +151,17 @@ const QuoteContainer: React.FC<
 const QuoteContainer_ = styled.div`
     .fade-enter {
         opacity: 0;
-        transform: scale3d(0.5, 0.5, 0.5);
     }
     .fade-enter-active {
         opacity: 1;
-        transform: scale3d(1, 1, 1);
         transition: 300ms ease-out;
     }
     .fade-exit {
         opacity: 1;
-        transform: scale3d(1, 1, 1);
     }
     .fade-exit-active {
         opacity: 0;
-        transform: scale3d(10, 10, 10);
-        transition: 300ms ease-in;
-    }
-
-    .fade-reverse-enter {
-        opacity: 0;
-        transform: scale3d(10, 10, 10);
-    }
-    .fade-reverse-enter-active {
-        opacity: 1;
-        transform: scale3d(1, 1, 1);
-        transition: 300ms ease-out;
-    }
-    .fade-reverse-exit {
-        opacity: 1;
-        transform: scale3d(1, 1, 1);
-    }
-    .fade-reverse-exit-active {
-        opacity: 0;
-        transform: scale3d(0.5, 0.5, 0.5);
-        transition: 300ms ease-in;
+        transition: 300ms;
     }
 `;
 
