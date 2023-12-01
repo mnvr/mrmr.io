@@ -1,9 +1,11 @@
+import { ExternalLink } from "components/ExternalLink";
 import * as React from "react";
 import styled from "styled-components";
 
 interface AttributedQuoteProps {
     attribution: string;
 }
+
 /**
  * A blockquote suitable for displaying attributed quotes.
  *
@@ -48,3 +50,16 @@ export const InvertedColorStrong = styled.strong`
     color: var(--mrmr-background-color-1);
     font-weight: normal;
 `;
+
+/** A reference link to some external content that opens in an new tab */
+export const RefLink: React.FC<
+    React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
+> = ({ ...props }) => {
+    return (
+        <sup>
+            <ExternalLink className="mrmr-ref-link" {...props}>
+                †
+            </ExternalLink>
+        </sup>
+    );
+};

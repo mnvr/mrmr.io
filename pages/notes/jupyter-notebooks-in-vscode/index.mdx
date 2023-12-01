@@ -9,69 +9,147 @@ tags:
     - ML
 ---
 
+import * as E from "components/text/extra";
+
+VS Code has native integration with Jupyter notebooks. That means we can run
+Jupyter notebooks inside of VS Code without running the Jupyter server.
+
+Steps:
+
+1. Install Python
+2. Install the Python and Jupyter VS Code extensions
+3. Create a venv
+4. Install any notebook related packages in this venv
+5. Start your notebook
+
+#### 1. Install Python
+
+On macOS <E.RefLink href="https://docs.brew.sh/Homebrew-and-Python" />
+
+```
 brew install python3
+```
 
-https://docs.brew.sh/Homebrew-and-Python
+There is an existing `python3` in `/usr/local` installed as part of macOS
+Command Line tools, we can ignore that. The shell also ignores it because
+`/opt/homebrew` appears earlier in the `PATH`.
 
-There is an existing python3 in /usr/local installed as part of macOS Command
-Line tools, you can ignore that. The shell also ignores it because /opt/homebrew
-appears earlier in the PATH.
+After this, Python will be available to us under the name "python3", not
+"python". This is fine, we'll fix this below when we create a <i>venv</i>.
 
-https://code.visualstudio.com/docs/datascience/jupyter-notebooks
 
-To work with Jupyter (formerly IPython Notebook) Notebooks in VS Code, we need
-to activate a Python environment in which we've installed the Jupyter package.
+#### 2. Install the Python and Jupyter VS Code extensions
 
-https://code.visualstudio.com/docs/datascience/data-science-tutorial
+##### (Optional) Create a new profile
 
-> if you'd prefer not to use Anaconda or Miniconda, you can create a Python
-> virtual environment and install the packages needed for the tutorial using
-> pip. If you go this route, you will need to install the following packages:
-> pandas, jupyter, seaborn, scikit-learn, keras, and tensorflow.
+We can create a new profile in VS Code to isolate the extensions to the current
+workspace. Create a new folder somewhere, I called it "Python", and open it in
+VS Code. This folder will serve as our workspace.
 
-(Optional) Create a new profile in VS Code to isolate the extensions to the
-current workspace.
+Now run the "Profiles: Create Profile..." command in VS Code. Use the default
+profile as the basis.
 
-Workspace to profile association is automatic?
-https://stackoverflow.com/questions/75340086/binding-vscode-profiles-to-a-workspace
+The workspace to profile association is automatic <E.RefLink
+href="https://stackoverflow.com/questions/75340086/binding-vscode-profiles-to-a-workspace"
+/>, so anytime we open this folder, this profile will get activated, and any
+extensions we install when in this profile will be activated too.
 
-Install the Python and Jupyter VSCode extensions (both from Microsoft)
+##### (Then) Install VS Code extensions
 
-https://docs.python.org/3/library/venv.html
+Install the Python and Jupyter VS Code extensions – both are from Microsoft.
 
-A Python venv is a virtual environment that allows us to install packages
-without installing them globally.
+#### 3. Create a venv
 
-Create a new venv
+A Python *venv* is a virtual environment that allows us to install packages
+without installing them globally <E.RefLink
+href="https://docs.python.org/3/library/venv.html" />.
 
-    python3 -m venv .venv                   # create a new virtual environment
-    python3 -m pip install --upgrade pip    # optional step - upgrade pip if needed
-                                            # pip is the python package manager
-    source ./.venv/bin/activate             # activate it
+In VS Code we can do that by running the "Python: Create Environment" command.
 
-    https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/#creating-a-virtual-environment
+Under the hood, or if we want to manually create a new venv, this is what it
+does <E.RefLink
+href="https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments"
+/>
+
+```sh
+# create a new virtual environment
+python3 -m venv .venv
+
+# optional step - upgrade pip if needed
+# pip is the python package manager
+python3 -m pip install --upgrade pip
+
+# activate it
+source ./.venv/bin/activate
+```
 
 We could run these commands ourselves, the end result will be the same.
 
-Any extensions we install now will live in teh local .venv folder. Now open a
-new integrated terminal to install the (Python) packages we need. We can even do
-it in a terminal outside of VS Code, just activate the environment first (source
-./.venv/bin/activate) - the integrated terminal just does that automatically at
-startup if it notices a virtual env lying around.
+VS Code will also helpfully activate the venv (the last command above) whenever
+we open this workspace again, or open a new integrated terminal inside
+it <E.RefLink href="https://code.visualstudio.com/docs/python/environments"/>. If
+we want to activate the venv manually, say if we open an external Terminal to
+this folder, we can run `source ./.venv/bin/activate`.
 
-https://code.visualstudio.com/docs/python/environments#_how-the-extension-chooses-an-environment-automatically
+Any packages we install now will live in the local .venv directory in our
+workspace.
 
-When in the venv we'll be able to use the python command instead of the python3
-command.
+Nicely, when we're, in the venv we'll be able to use the `python` command instead
+of the `python3` command since the venv creates a symlink for it. This is also a
+good way to check that we're indeed in an active venv (although the shell prompt
+should also have updated):
 
-Running cells with '.venv' requires the ipykernel package.
-Run the following command to install 'ipykernel' into the Python environment.
-Command: '/Users/m/Desktop/p/Python/.venv/bin/python -m pip install ipykernel -U --force-reinstall'
+```
+(.venv) Python$ which python
+../Python/.venv/bin/python
+```
 
-https://github.com/microsoft/vscode-jupyter/wiki/Jupyter-Kernels-and-the-Jupyter-Extension#python-extension-and-ipykernel
+#### 4. Install any notebook related packages in this venv
 
+This step is optional, because when we create a new notebook later on and try to
+run a code block in it, VS Code will ask us to select a "kernel" (think of them
+as supported language packs) to run the code, and when we'll select our Python
+venv, it'll helpfully also ask us if we want to install the Python packages that
+provide the kernel.
+
+But if we want to, we can install these packages manually beforehand <E.RefLink
+  href="https://code.visualstudio.com/docs/datascience/data-science-tutorial" />
+
+> “To work with Jupyter (formerly IPython Notebook) Notebooks in VS Code, we
+  need to activate a Python environment in which we've installed the Jupyter
+  package.”
+
+by running the following command:
+
+```sh
 pip install ipython ipykernel
+```
 
-In particular, we don't need to install the Jupyter package itself
+Note in particular that we didn't need to install the Jupyter (Python) package
+itself <E.RefLink href="https://github.com/microsoft/vscode-jupyter/wiki/Jupyter-Kernels-and-the-Jupyter-Extension#python-extension-and-ipykernel" />.
 
-Create New Jupyter Notebook
+
+The VS Code data science tutorial<E.RefLink
+  href="https://code.visualstudio.com/docs/datascience/data-science-tutorial"
+/> also mention other packages that we might want to pip install in the future:
+
+> “if you'd prefer not to use Anaconda or Miniconda, you can create a Python
+> virtual environment and install the packages needed for the tutorial using
+> pip. If you go this route, you will need to install the following packages:
+> pandas, jupyter, seaborn, scikit-learn, keras, and tensorflow.”
+
+### 5. Create New Jupyter Notebook
+
+Use the "Create: New Jupyter Notebook" command to create a new `.ipynb` file.
+The first and only cell in the blank notebook should be selected, as indicated
+by the highlight in its left gutter. Press <key>Enter</key> to run the
+"Notebook: Edit Cell" command.
+
+The cursor will be inside the cell now. Type "hello". Press <key>Ctrl -
+Enter</key> to run the "Notebook: Execute Cell" command.
+
+VS Code will ask you to select the kernel. Select the venv we created
+previously.
+
+That's it. We can now interactively type and run Python code in this REPL / file
+mixture.

@@ -50,6 +50,32 @@ const Content_ = styled(LinkStyleUnderlined)`
         margin-block: 2.6rem;
         width: 50%;
     }
+
+    .mrmr-ref-link {
+        font-weight: normal;
+    }
+
+    code {
+        /* The monospace font looks too big sitting next to the other fonts */
+        font-size: 90%;
+    }
+
+    pre {
+        /* These rules are primarily aimed at backtick terminated "code blocks"
+           in markdown. We give them a their own "area" by adding a background
+           and padding. */
+        background-color: aliceblue;
+        @media (prefers-color-scheme: dark) {
+            background-color: black;
+        }
+
+        padding: 1rem;
+        border-radius: 4px;
+
+        /* If the lines in code block do not fit, add a horizontal scroll to the
+           pre element instead of increasing the width of the page contents. */
+        overflow-x: scroll;
+    }
 `;
 
 /**
