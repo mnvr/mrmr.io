@@ -60,7 +60,7 @@ const Content_ = styled(LinkStyleUnderlined)`
        hardcoding them in. If they don't work well with other themes, we can
        move these declarations to themes.ts, and allow customizing them per
        theme */
-    --mrmr-code-background-color: oklch(97.82% 0.003 247.86);
+    --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
     @media (prefers-color-scheme: dark) {
         --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
     }
