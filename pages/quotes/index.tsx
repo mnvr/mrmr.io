@@ -44,11 +44,6 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
     // quote. The initial quote is randomly selected, which happens on the
     // client, so this loading state cannot be optimized away by SSG.
     const [quoteIndex, setQuoteIndex] = React.useState<number | undefined>();
-    // A history state counter that allows us to determine if we are going back
-    // or forward. We increment this each time we do a `traverse`. Then, when
-    // handling a "pophistory" event, we can compare this to the popped value to
-    // determine the direction of travel.
-    const [historyIndex, setHistoryIndex] = React.useState(0);
 
     React.useEffect(() => {
         if (!quoteIndex) {
@@ -56,7 +51,7 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
             // Modify the current history entry to keep track of the quote that
             // we are initially showing. This is needed for the back to the
             // first quote to work.
-            window.history.replaceState({ quoteIndex, historyIndex }, "");
+            window.history.replaceState({ quoteIndex }, "");
             setQuoteIndex(quoteIndex);
         }
     }, []);
@@ -72,15 +67,8 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
         );
 
         const newQuoteIndex = ensure(randomItem(linkedQuoteIndices));
-        const newHistoryIndex = historyIndex + 1;
-
+        window.history.pushState({ quoteIndex: newQuoteIndex }, "");
         setQuoteIndex(newQuoteIndex);
-        setHistoryIndex(newHistoryIndex);
-
-        window.history.pushState(
-            { quoteIndex: newQuoteIndex, historyIndex: newHistoryIndex },
-            "",
-        );
     };
 
     const handlePopState = (event: PopStateEvent) => {
@@ -96,13 +84,9 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
         // shape of the state.
         if (!state) return;
         if (typeof state.quoteIndex !== "number") return;
-        if (typeof state.historyIndex !== "number") return;
 
         const poppedQuoteIndex = ensureNumber(state.quoteIndex);
-        const poppedHistoryIndex = ensureNumber(state.historyIndex);
-
         setQuoteIndex(poppedQuoteIndex);
-        setHistoryIndex(poppedHistoryIndex);
     };
 
     React.useEffect(() => {
@@ -110,7 +94,7 @@ const Quotes: React.FC<QuotesProps> = ({ parsedQuotes }) => {
         return () => {
             window.removeEventListener("popstate", handlePopState);
         };
-    }, [historyIndex]);
+    }, []);
 
     return quoteIndex !== undefined ? (
         <QuoteContainer {...{ quoteIndex }}>
@@ -161,7 +145,7 @@ const QuoteContainer_ = styled.div`
     }
     .fade-exit-active {
         opacity: 0;
-        transition: 300ms;
+        transition: 300ms ease-out;
     }
 `;
 
