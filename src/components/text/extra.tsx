@@ -1,6 +1,6 @@
 import { ExternalLink } from "components/ExternalLink";
 import * as React from "react";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 interface AttributedQuoteProps {
     attribution: string;
@@ -63,3 +63,16 @@ export const RefLink: React.FC<
         </sup>
     );
 };
+
+/**
+ * Reduce the font size for the entire page.
+ *
+ * This is a CSS style element that can be included anywhere in the page to
+ * reduce the font size globally. It overrides the font size that we made in
+ * global.css.
+ * */
+export const ReducedFontSizeStyle = createGlobalStyle`
+    :root {
+        font-size: 16px;
+    }
+`;
