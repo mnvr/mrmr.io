@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, PageLink } from "templates/page";
-import { isPoem } from "utils/attributes";
+import { isNote, isPoem } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
 /**
@@ -175,9 +175,21 @@ export const Footer: React.FC = () => {
                     <Link to={"/poems"}>More poems</Link>
                 </LinkContainer>
             )}
-            <LinkContainer>
-                <Link to={"/all"}>All posts</Link>
-            </LinkContainer>
+            {isNote(page) ? (
+                <>
+                    <LinkContainer>
+                        <Link to={"/notes"}>All notes</Link>
+                    </LinkContainer>
+                    <LinkContainer>
+                        <Link to={"/all"}>Other posts</Link>
+                    </LinkContainer>
+                </>
+            ) : (
+                <LinkContainer>
+                    <Link to={"/all"}>All posts</Link>
+                </LinkContainer>
+            )}
+
             <LinkContainer>
                 <Link to={"/"}>Home</Link>
             </LinkContainer>
@@ -197,6 +209,9 @@ export const FooterHindi: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
     const { relatedPageLinks } = page;
 
+    // Note: this footer is not kept in sync with all the possible content that
+    // can be in the default (English) footer. Only what is used in Hindi pages
+    // has been added so far.
     return (
         <Footer_>
             {relatedPageLinks.length > 0 && (
@@ -253,7 +268,7 @@ const Tags: React.FC<TagsProps> = (props) => {
 };
 
 const Tags_ = styled.div`
-    margin-block-end: 3px;
+    margin-block-end: 4px;
 `;
 
 const TagsTitle = styled.span`

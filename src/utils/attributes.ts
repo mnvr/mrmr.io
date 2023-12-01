@@ -1,6 +1,7 @@
 /* Convenience matchers for some attributes */
 
 interface PageLike {
+    slug: string;
     attributes: string[];
 }
 
@@ -18,6 +19,15 @@ export const isHindiContent = ({ attributes }: PageLike) =>
  * This looks to see if the page has the "poem" attribute.
  */
 export const isPoem = ({ attributes }: PageLike) => attributes.includes("poem");
+
+/**
+ * Return true if this is a note.
+ *
+ * A note is something that either exists under "/notes" or has the "playground"
+ * attribute.
+ */
+export const isNote = ({ slug, attributes }: PageLike) =>
+    slug.startsWith("/notes/") || attributes.includes("playground");
 
 /**
  * Return true if this page should be kept at the top of groupings in listings.
