@@ -357,3 +357,230 @@ giving.
 
 Let's continue.
 
+The other pattern that monads support is combining two values. Do something,
+take its output, and then something 2 with it. Like a factory line:
+<em>something → something 2</em>. Cheeky as Haskellers are, they even created an
+arrow like symbol for this: `>>=`. It is called "bind". What it does is, take
+the output of the first monad, and feeds it to a function that then something
+else with this value to modify it.
+
+> Again, my purpose here is not to explain monads. The monad tutorial fallacy is
+> real. You might already have a basic understanding of monads, in which case
+> this post should help you understand and use the state monad. The above
+> explanations are for people who don't have the basic understanding of monads.
+>
+> To such people, I'd say - just keep using them. It'll click. Reading about
+> them doesn't help beyond a certain point.
+
+So let use this bind `>>=` operator to chain together our steps:
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = StateT $ \s ->
+    case lookup n s of
+      Just v -> Identity (v, s)
+      Nothing -> runStateT (fib (n - 1)) s >>= \(r1, s1) ->
+                   runStateT (fib (n - 2)) s1 >>= \(r2, s2) ->
+                     let r = r1 + r2
+                     in Identity (r, (n, r) : s2)
+```
+
+I also had to replace `runState` with `runStateT`. Again, don't be bothered
+about all these infelicities, or why we're doing them (unless you're curious of
+course), because in our final version we'll not be using any of them.
+
+We can run our code again, and see that it still works the same way. To simplify
+further, we'll need to start getting into the specific tools provided by the
+state monad itself (above and beyond generic monads).
+
+### The State monad
+
+The first thing to notice is at the top of `fib`
+
+```haskell
+fib n = StateT $ \s ->
+    case lookup n s of
+    ...
+```
+
+As you can imagine, this'll be a common requirement for functions that deal with
+state – read the current value of the state. Of course, the value of the state
+is getting passed to us right there, as an input to our function. But we want to
+"hide" it away so that it is not always in our face, and somehow access that
+value when we need it.
+
+The State monad library provides a function for this task. It is called `get`.
+When we call `get`, we don't actually get back a value, we get back a state
+monad. However, we already know how to extract values from a monad – by using
+the bind operator `>>=`. Let's change our function to use `get`.
+
+```haskell
+fib n = get >>= \s ->
+    case lookup n s of
+```
+
+If we make this change, I'll code will stop compiling though. This is because we
+no longer have a regular function that was wrapped in a `StateT`, instead the
+code we're writing (`case lookup ...`) now has to return another state monad to
+satisfy the type of `>>=`.
+
+To get the compiler to be happy, the code needs to be changed to:
+
+1. Remove `Identity`, and also the tuples with s, and just return the value
+   directly wrapped in a `pure`.
+2. Remove the `runStateT` and stop passing the state to fib, instead just return
+   the fib values themselves (Reminder that `fib x` is a value of type `State
+   Cache Int`, which is a state monad, which is what we should be passing into
+   and returning from `>>=`).
+
+> I'm not sure how helpful this is being – for people who don't have the
+> necessary background these might be arbitrary changes. I'll think of better
+> ways of conveying this in the future, but hopefully some of this is sticking.
+
+With these changes, our code becomes:
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = get >>= \s ->
+    case lookup n s of
+      Just v -> pure v
+      Nothing -> fib (n - 1) >>= \r1 ->
+                   fib (n - 2) >>= \r2 ->
+                     let r = r1 + r2
+                     in pure r
+```
+
+This runs, and produces the correct answer, but our memoization is gone. Of
+course. We're only reading the state s, but we're never updating it. The code
+looks cleaner, there is no s moving around, but how do we update it now if we
+don't have access to it as the input and are not returning it as the output.
+
+For this purpose, `Control.Monad.State` provides another function that returns a
+new state monad, but with an updated state. This function is called `put`. Let
+us use it to update our state before we return the final result r of our
+expression.
+
+> I think keeping in mind that these are just ordinary expressions, and the
+> result of an of the expression is result of the branch that we ended up on,
+> helps demystify Haskell in general, and monads in particular.
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = get >>= \s ->
+    case lookup n s of
+      Just v -> pure v
+      Nothing -> fib (n - 1) >>= \r1 ->
+                   fib (n - 2) >>= \r2 ->
+                     let r = r1 + r2
+                     in put ((n, r) : s) >>= \_ ->
+                          pure r
+```
+
+In the final result, we're not actually using the value chained from the put,
+which is why we ignore it using the underscore wildcard. This is actually a
+common thing - sometimes we just want two things to happen one after the other,
+but the second thing doesn't use the result of the first. It is so common, that
+the Haskell standard library provides a sequence operator `>>` to shorten this
+`>>= \_ ->` pattern.
+
+So after changing the last two lines to
+
+```haskell
+in put ((n, r) : s) >>
+     pure r
+```
+
+if we run the code again,
+
+```sh
+$ runghc fib.hs
+(13,[(7,13)])
+```
+
+this time we see that while the state was used, it only contains the table of
+the last value, not the intermediate ones.
+
+Perhaps you've already guessed the issue. When we're updating the state using
+`put`, we're using the value `s` that we got from the initial `get`. But
+rememeber, Haskell is a pure functional language. There is no mutation, in fact,
+there are no variables - the only things we have are bindings. These are not
+variables, because they never change, they are just names for things that were
+on the call stack.
+
+In our case, when we recursively call fib, the recursive calls will update the
+state using `put`. They'll use the correct state to `put` into, because we've
+been chaining these state monads together using `>>=` and the library is taking
+care that state that was set by the latest `put` is the one that is carried
+along the chain.
+
+However, when we get back to the original function (that called the recursive
+invocations), we overwrite the state using an old `s` value that doesn't include
+the latest changes made by the `put`s in the recursive calls.
+
+The fix is simple. We need to `get` again when `put`ting, so that we update the
+latest value.
+
+```haskell
+fib n = get >>= \s ->
+    case lookup n s of
+      Just v -> pure v
+      Nothing -> fib (n - 1) >>= \r1 ->
+                   fib (n - 2) >>= \r2 ->
+                     let r = r1 + r2
+                     in get >>= \s2 ->
+                       put ((n, r) : s) >>
+                         pure r
+```
+
+After this change, if we run again, we'll notice all the intermediate values
+showing up in our cache (memo) table.
+
+```sh
+$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+```
+
+As you might imagine, this is a very common requirement - `get`ting the latest
+state and modifying it in some way and then `put`ting it back - so
+`Control.Monad.State` provides a convenience function for this combination. It
+is called, hold your breath, `modify`. Using it, our code becomes:
+
+```haskell
+fib n = get >>= \s ->
+    case lookup n s of
+      Just v -> pure v
+      Nothing -> fib (n - 1) >>= \r1 ->
+                   fib (n - 2) >>= \r2 ->
+                     let r = r1 + r2
+                     in modify ((n, r) :) >>
+                          pure r
+```
+
+Similarly, but in the other direction, at the start of our function we got the
+state, but we weren't really interested in the full state, we wanted some
+particular part of it. So there is a function called `gets` to query the state
+using the provided query function, and only give us the result. We can use it to
+directly perform our lookup this way:
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = gets (lookup n) >>= \s -> case s of
+    Just v -> pure v
+    Nothing -> fib (n - 1) >>= \r1 ->
+                 fib (n - 2) >>= \r2 ->
+                   let r = r1 + r2
+                   in modify ((n, r) :) >>
+                        pure r
+```
+
+Alright! Let's move on to the next stage of our simplification.
+
+
