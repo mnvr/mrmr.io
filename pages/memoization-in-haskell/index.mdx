@@ -621,22 +621,9 @@ to get them to act on `State Cache Int` values. How Haskell does that is not
 essential to know for our purposes here, just that Haskell can automatically do
 it for us.
 
-So using `liftM2`, our code becomes (we also had to add an import):
+So using `liftM2`, our code becomes:
 
 ```haskell
-import Control.Monad.State
-
-main :: IO ()
-main = print $ runFib 7
-
-runFib :: Int -> (Int, Cache)
-runFib n = runState (fib n) []
-
-type Cache = [(Int, Int)]
-
-fib :: Int -> State Cache Int
-fib 0 = pure 0
-fib 1 = pure 1
 fib n = gets (lookup n) >>= \s -> case s of
     Just v -> pure v
     Nothing -> liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
@@ -651,9 +638,6 @@ already have that cached result. We can make this distinction more apparent by
 rewriting the fib function this way:
 
 ```haskell
-fib :: Int -> State Cache Int
-fib 0 = pure 0
-fib 1 = pure 1
 fib n = gets (lookup n) >>= \s -> case s of
     Just v -> pure v
     Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
