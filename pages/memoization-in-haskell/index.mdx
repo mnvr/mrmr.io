@@ -1,0 +1,53 @@
+---
+title: Memoization of recursive functions in Haskell
+subtitle: A requirement driven tutorial for the State monad
+date: 2023-12-04
+description: A from-scratch introduction to use the State monad for almost transparently memoizing functions in Haskell, even those that call themselves recursively.
+unlisted: true
+attributes:
+    - playground
+theme: paper
+layout: text
+tags:
+    - Haskell
+---
+
+Haskell provides a State monad, but it seems a bit too magical at times. There
+are many good introductions out there that try to derive the State monad from
+first principles, but they tend to focus on the "monad" part of it. Here I
+approach things from a different direction: as a solution to a practical
+problem.
+
+i.e. this is the tutorial I wish I'd seen when I wanted to quickly learn how to
+use state monads.
+
+#### The problem
+
+We want to compute Fibonacci numbers. Before you start groaning, consider that
+this is a great example. We already know what the function should do, so we can
+focus on how to non-invasively memoizing functions that recursively call
+themselves. The approach we figure out will work for many recursive functions.
+
+Let's start with a plain version
+
+```
+main :: IO ()
+main = print $ fib 7
+
+fib :: Integer -> Integer
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n - 1) + fib (n - 2)
+```
+
+If you want to follow along hands on, copy paste this into a file, say fib.hs,
+and run it:
+
+```
+$ runghc fib.hs
+13
+```
+
+From now I'll only mention the parts of the file that change, so you can keep
+modifying the same file and re-running the `runghc fib.hs` command to see
+everything play out in action.

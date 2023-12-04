@@ -71,6 +71,9 @@ const Content_ = styled(LinkStyleUnderlined)`
 
         background-color: var(--mrmr-code-background-color);
         padding-block: 0.2rem;
+    }
+
+    p code {
         padding-inline: 0.4rem;
     }
 
@@ -79,6 +82,7 @@ const Content_ = styled(LinkStyleUnderlined)`
            in Markdown. */
         background-color: var(--mrmr-code-background-color);
         padding: 1rem;
+        padding-inline: 1.4rem;
         border-radius: 4px;
 
         /* If the lines in code block do not fit, add a horizontal scroll to the
