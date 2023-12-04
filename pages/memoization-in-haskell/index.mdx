@@ -102,7 +102,7 @@ enlightenment, carry wood chop water.
 
 So we'll just (for now) get rid of our concept of a separate "pure" fibonacci
 and a "memoized" layer on top - our implementation will have to mix these two
-concers together. Here is a version that works:
+concerns together. Here is a version that works:
 
 ```haskell
 main :: IO ()
@@ -225,7 +225,7 @@ you'll see soon, that if we follow this convention – that any function that w
 want to memoize should return another function `s -> (a, s)` – then it will
 become easy to compose them.
 
-So that everyone doesn't go around definining their own typedefs and helper
+So that everyone doesn't go around defining their own typedefs and helper
 functions around this, the Haskell standard installation ships with this
 predefined. It is called a `State` and is defined in the `Control.Monad.State`
 module.
@@ -283,7 +283,7 @@ have to make a few changes:
    require adding an `import Control.Monad.Identity` at the top).
 3. Wrap all calls to these functions in `runState`.
 
-> Don't despair if this is not making sense. It won't necessarily. Rememeber,
+> Don't despair if this is not making sense. It won't necessarily. Remember,
 > it'll get complicated before it gets simple again. The reason it is getting so
 > complicated in the middle is that this is not the way the state monad is used
 > in practice, but to get to the simple way we'll need to wait till the end of
@@ -508,7 +508,7 @@ the last value, not the intermediate ones.
 
 Perhaps you've already guessed the issue. When we're updating the state using
 `put`, we're using the value `s` that we got from the initial `get`. But
-rememeber, Haskell is a pure functional language. There is no mutation, in fact,
+remember, Haskell is a pure functional language. There is no mutation, in fact,
 there are no variables - the only things we have are bindings. These are not
 variables, because they never change, they are just names for things that were
 on the call stack.
@@ -762,7 +762,7 @@ calls under the hood, and for problems where memoization is of essence, this is
 an okay price to pay for the functionality we get. Indeed, even for the simple
 case of our `fib` function, and for (relatively) small values of n - the
 difference in time is functionally (pun!) important (try running `fib 700` in
-both cases - the first one goes nowhere while the second is intant).
+both cases - the first one goes nowhere while the second is instant).
 
 This post is already very long, and we've reached a _not too bad_ point, so I'll
 stop here. But be aware that simplifying the memoization can further be improved
