@@ -104,3 +104,55 @@ So we'll just (for now) get rid of our concept of a separate "pure" fibonacci
 and a "memoized" layer on top - our implementation will have to mix these two
 concers together. Here is a version that works:
 
+```haskell
+runFib :: Int -> (Int, State)
+runFib n = fib n []
+
+type State = [(Int, Int)]
+
+fib :: Int -> State -> (Int, State)
+fib 0 s = (0, s)
+fib 1 s = (1, s)
+fib n s = case lookup n s of
+    Just v -> (v, s)
+    Nothing -> let (r1, s1) = fib (n - 1) s
+                   (r2, s2) = fib (n - 2) s1
+                   r = r1 + r2
+               in (r, (n, r) : s)
+```
+
+Notice that we also return the State (which is our memo / lookup table) from the
+`runFib` function. We'll eventually stop doing that and only return the result,
+but it is instructive to do that for now so that we can see both the result and
+the memoized values printed as we go about developing our solution.
+
+```sh
+$ runghc fib.hs
+(13,[(7,13)])
+```
+
+Oh no! Our memo table is empty - it should have all the intermediate values, but
+it only has the last value – `(7,13)`. Is our memoization still not working?
+
+Turns out there is a small typo in the last line. `(r, (n, r) : s)` should be
+`(r, (n, r) : s2)`. Here is the fixed version of `fib`:
+
+```haskell
+fib :: Int -> State -> (Int, State)
+fib 0 s = (0, s)
+fib 1 s = (1, s)
+fib n s = case lookup n s of
+    Just v -> (v, s)
+    Nothing -> let (r1, s1) = fib (n - 1) s
+                   (r2, s2) = fib (n - 2) s1
+                   r = r1 + r2
+               in (r, (n, r) : s2)
+```
+
+And if we run this again, we'll see that all intermediate entries are also
+present in our memoized table:
+
+```sh
+$ runghc fib.hs
+(13,[(7,13)])
+```
