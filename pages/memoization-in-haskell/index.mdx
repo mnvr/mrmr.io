@@ -2,10 +2,8 @@
 title: Memoization of recursive functions in Haskell
 subtitle: A requirement driven tutorial for the State monad
 date: 2023-12-04
-description: A from-scratch introduction to use the State monad for almost transparently memoizing functions in Haskell, even those that call themselves recursively.
+description: State monad 101
 unlisted: true
-attributes:
-    - playground
 theme: paper
 layout: text
 tags:
@@ -21,7 +19,7 @@ problem.
 i.e. this is the tutorial I wish I'd seen when I wanted to quickly learn how to
 use state monads.
 
-#### The problem
+### The problem
 
 We want to compute Fibonacci numbers. Before you start groaning, consider that
 this is a great example. We already know what the function should do, so we can
@@ -30,11 +28,11 @@ themselves. The approach we figure out will work for many recursive functions.
 
 Let's start with a plain version
 
-```
+```haskell
 main :: IO ()
 main = print $ fib 7
 
-fib :: Integer -> Integer
+fib :: Int -> Int
 fib 0 = 0
 fib 1 = 1
 fib n = fib (n - 1) + fib (n - 2)
@@ -43,7 +41,7 @@ fib n = fib (n - 1) + fib (n - 2)
 If you want to follow along hands on, copy paste this into a file, say fib.hs,
 and run it:
 
-```
+```sh
 $ runghc fib.hs
 13
 ```
@@ -51,3 +49,58 @@ $ runghc fib.hs
 From now I'll only mention the parts of the file that change, so you can keep
 modifying the same file and re-running the `runghc fib.hs` command to see
 everything play out in action.
+
+Let us memoize this. We want to create a table where we'll store the results of
+computing `fib` for a particular number, so that when we're asked to compute the
+same `fib` again, we don't do all that work again.
+
+A more realistic way of doing this would use an array or a map to store the
+previous results, but I didn't want to distract from the essence of what we're
+discussing here, so let us just use a normal list. Each entry in the list will
+be a pair `(n, fib n)`.
+
+Such lists are quite common indeed, they turn out to be useful in all sorts of
+places, so much so that there is a name for them - they are called _associative
+lists_ – and Haskell provides a function to quickly lookup a value in an
+associative list. That function is already part of prelude, and guess what, it's
+called `lookup`. Here is an example of it in action (this is a `ghci` prompt):
+
+```haskell
+> lookup 7 [(1, "One"), (7, "Seven")]
+Just "Seven"
+```
+
+Using this, we can create our memoized Fibonacci function:
+
+```haskell
+fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = let (r, _) = fibmemo n [] in r
+
+type State = [(Int, Int)]
+
+fibmemo :: Int -> State -> (Int, State)
+fibmemo n s = case lookup n s of
+    Just v -> (v, s)
+    Nothing -> let r = fib (n - 1) + fib (n - 2)
+               in (r, (n, r) : s)
+```
+
+If you compile and run this, it'll still produce the correct result, but this
+version is completely buggy - there is no memoization happening!
+
+Let's take a step back at this point. In almost all other languages, adding
+memoization is easy, we just plonk a global state somewhere, and we keep
+updating it as our function is called. This doesn't fly in Haskell, for very
+good reasons, but still it makes one wistful.
+
+Already the memoized version in Haskell is starting to look messy, and it
+doesn't even work yet! But don't despair, we'll complicate this before we're
+able to make it simple again. Before enlightenment, carry wood chop water, after
+enlightenment, carry wood chop water.
+
+So we'll just (for now) get rid of our concept of a separate "pure" fibonacci
+and a "memoized" layer on top - our implementation will have to mix these two
+concers together. Here is a version that works:
+
