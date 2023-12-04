@@ -244,4 +244,116 @@ module.
 
 So let us modify our code to use the standard library types:
 
+```haskell
+import Control.Monad.State
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = \s -> (0, s)
+fib 1 = \s -> (1, s)
+fib n = \s ->
+    case lookup n s of
+      Just v -> (v, s)
+      Nothing -> let (r1, s1) = (fib (n - 1)) s
+                     (r2, s2) = (fib (n - 2)) s1
+                     r = r1 + r2
+                 in (r, (n, r) : s2)
+```
+
+Remember, `State s a` (essentially) means `s -> (a, s)`. So we've changed the
+type of `fib` from `Int -> Cache -> (Int, Cache)` to `Int -> State Cache Int`.
+And it's implementation is changed from, say, `fib 0 s = (0, s)` to
+`fib 0 = \s -> (0, s)` to highlight that it is actually returning a function.
+
+This doesn't actually compile though. When I said that `State s a` essentially
+means `s -> (a, s)`, I didn't lie, but there is a stress on _essentially_.
+Because the actual type of `State` is a bit more complicated (for reasons that
+have nothing to do with what we're discussing here). To get this to compile, we
+have to make a few changes:
+
+1. Wrap the returned functions in a `StateT`.
+2. Wrap the returned values from these functions in an `Identity` (this'll also
+   require adding an `import Control.Monad.Identity` at the top).
+3. Wrap all calls to these functions in `runState`.
+
+> Don't despair if this is not making sense. It won't necessarily. Rememeber,
+> it'll get complicated before it gets simple again. The reason it is getting so
+> complicated in the middle is that this is not the way the state monad is used
+> in practice, but to get to the simple way we'll need to wait till the end of
+> this post.
+
+Here is the fixed up code:
+
+```haskell
+import Control.Monad.State
+import Control.Monad.Identity
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = runState (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = StateT $ \s -> Identity (0, s)
+fib 1 = StateT $ \s -> Identity (1, s)
+fib n = StateT $ \s ->
+    case lookup n s of
+      Just v -> Identity (v, s)
+      Nothing -> let (r1, s1) = runState (fib (n - 1)) s
+                     (r2, s2) = runState (fib (n - 2)) s1
+                     r = r1 + r2
+                 in Identity (r, (n, r) : s2)
+```
+
+We can now run this, and it'll give the result we expect.
+
+```sh
+$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+```
+
+Alright, let us start simplifying this!
+
+### Monads!
+
+Remember, "State" is a "monad". You don't need to really understand monads to
+follow along what's going to happen next - the tl;dr; you can keep in mind is
+that if something is a monad, then there are special functions that we can use
+to compose values of such types.
+
+The first such function is `pure`. It represents the "simplest" version of a
+particular value. In our case, what is the simplest value of type `s -> (a, s)`.
+Well, it just needs to return the `a` and not twiddle with the state. But how do
+we get an `a`? We pass it to `pure`!
+
+```haskell
+-- Snipped for illustrative purposes
+pure x = \s -> (x, s)
+```
+
+We can use `pure` to simplify the first two clauses of our function definition.
+
+```haskell
+fib 0 = pure 0
+fib 1 = pure 1
+```
+
+If we run the code again after making that change, it'll still give the same
+result. That's weird, where did all the surrounding junk go!
+
+It might seem like magic, or something that has a special case in the compiler,
+but no, this is all a library level abstraction. Haskell is a gift that'll keep
+giving.
+
+Let's continue.
 
