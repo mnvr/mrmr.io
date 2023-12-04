@@ -78,9 +78,9 @@ fib 0 = 0
 fib 1 = 1
 fib n = let (r, _) = fibmemo n [] in r
 
-type State = [(Int, Int)]
+type Cache = [(Int, Int)]
 
-fibmemo :: Int -> State -> (Int, State)
+fibmemo :: Int -> Cache -> (Int, Cache)
 fibmemo n s = case lookup n s of
     Just v -> (v, s)
     Nothing -> let r = fib (n - 1) + fib (n - 2)
@@ -105,12 +105,15 @@ and a "memoized" layer on top - our implementation will have to mix these two
 concers together. Here is a version that works:
 
 ```haskell
-runFib :: Int -> (Int, State)
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
 runFib n = fib n []
 
-type State = [(Int, Int)]
+type Cache = [(Int, Int)]
 
-fib :: Int -> State -> (Int, State)
+fib :: Int -> Cache -> (Int, Cache)
 fib 0 s = (0, s)
 fib 1 s = (1, s)
 fib n s = case lookup n s of
@@ -121,7 +124,7 @@ fib n s = case lookup n s of
                in (r, (n, r) : s)
 ```
 
-Notice that we also return the State (which is our memo / lookup table) from the
+Notice that we also return the Cache (which is our memo / lookup table) from the
 `runFib` function. We'll eventually stop doing that and only return the result,
 but it is instructive to do that for now so that we can see both the result and
 the memoized values printed as we go about developing our solution.
@@ -138,7 +141,7 @@ Turns out there is a small typo in the last line. `(r, (n, r) : s)` should be
 `(r, (n, r) : s2)`. Here is the fixed version of `fib`:
 
 ```haskell
-fib :: Int -> State -> (Int, State)
+fib :: Int -> Cache -> (Int, Cache)
 fib 0 s = (0, s)
 fib 1 s = (1, s)
 fib n s = case lookup n s of
@@ -154,5 +157,91 @@ present in our memoized table:
 
 ```sh
 $ runghc fib.hs
-(13,[(7,13)])
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
 ```
+
+This typo demonstrates how finicky and error prone it is to manually pass this
+state around. It gets worse with recursive functions, because we might not
+thread the state along one of the code paths accidentally, and everything will
+still work, just be dog slow.
+
+Back to work. So what we've done here that instead of letting `fib` be a
+function that takes an `Int` and returns an `Int`, we have made it into a
+function that takes an `Int` and a `Cache`, and returns an both the result `Int`
+and (possibly) modified `Cache` so that we can pass that along. Written as
+types, we have:
+
+```haskell
+fib :: Int -> Cache -> (Int, Cache)
+```
+
+But the beauty of Haskell is that this same function signature can be
+interpreted in another way – `fib` is a function that takes an `Int`, and it
+returns a new function `Cache -> (Int, Cache)`.
+
+One thing that you might think here is that - shouldn't the arguments be the
+other way around? As in, how about if we'd written `fib` this way:
+
+```haskell
+fib :: Cache -> Int -> (Int, Cache)
+```
+
+We can even argue that this would make more logical sense. However, notice what
+happens if we want to memoize some two argument function, say `plus`, in the
+future. If we'd done it in that hypothetically flipped way, it's type would look
+like:
+
+```haskell
+plus :: Cache -> Int -> Int -> (Int, Cache)
+```
+
+In the way we're following, it's type would be
+
+```haskell
+plus :: Int -> Int -> Cache -> (Int, Cache)
+```
+
+Notice how the trailing part of the type is the same! As in, keeping the state
+last means that we always return a `Cache -> (Int, Cache)`, no matter how many
+arguments the original function that we're memoizing takes.
+
+You might say that what if we want to memoize a function that returns something
+other than a `Int`, or whose memo table has a different type like a `Map`? Easy
+peasy, we can actually just parameterize these two types:
+
+-  Let us call the type of the state as `s`.
+
+-  Let us call the result type as `a`.
+
+So we end up with this pattern - any function that we want to memoize will take
+as many arguments, and of varying types, as it needs. The only requirement we
+place is that it should return a function of type `s -> (a, s)`.
+
+Such functions `s -> (a, s)` are called the **State monad**. But we're getting
+ahead of ourselves with the "monad" part, forget that I said the m-word.
+
+Let us just talk about values of type `s -> (a, s)`. Trust me with this, and
+you'll see soon, that if we follow this convention – that any function that we
+want to memoize should return another function `s -> (a, s)` – then it will
+become easy to compose them.
+
+So that everyone doesn't go around definining their own typedefs and helper
+functions around this, the Haskell standard installation ships with this
+predefined. It is called a `State` and is defined in the `Control.Monad.State`
+module.
+
+> Note that the word "state" here refers to two different things. In general,
+> state refers to anything that we want to automatically thread along our normal
+> functions. The type `State` (capitalized one) is actually a shorthand for the
+> "State monad".
+>
+> That is, the type `s -> (a, s)` is the "State monad" (and the Haskell type
+> that refers to a "State monad" is called `State`). This type itself has two
+> parameters - `s` and `a`. It is this lowercase `s` which is the actual state.
+>
+> Don't worry if this is confusing, that's why I kept this difference as an
+> aside. It'll become clear once we complete our example.
+
+So let us modify our code to use the standard library types:
+
+
