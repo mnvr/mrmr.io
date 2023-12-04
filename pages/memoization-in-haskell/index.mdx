@@ -583,4 +583,189 @@ fib n = gets (lookup n) >>= \s -> case s of
 
 Alright! Let's move on to the next stage of our simplification.
 
+### Abstracting memoize
 
+At this point (or even before this), the other tutorials I've seen move on to
+using the `do` notation to further simplify things. I feel that is a misstep,
+because the `do` notation obscures the fact that everything in Haskell is just
+an expression. If we stay in expression-land, things might get nested and hairy,
+but it also becomes easier to visually see and then extract common patterns into
+reusable abstractions.
+
+> This is not to say one should never use `do`. Sometimes it is fine, and it is
+> perhaps even a personal preference.
+
+Instead of `do`, I'm going to go off in the weeds in the other direction, and
+start lifting stuff. The word "lift" in Haskell comes from category theory,
+specifically functors, and it means that a normal function `a -> b` is "lifted"
+into another universe `f a -> f b`.
+
+Apologies for the hand wavey explanation here, but trying to explain lifting in
+more detail would sidetrack too much from the focus here. For our specific use
+case, the thing I want you to be aware of is that this code:
+
+```haskell
+fib (n - 1) >>= \r1 ->
+  fib (n - 2) >>= \r2 ->
+    let r = r1 + r2
+```
+
+is the same as this code:
+
+```haskell
+liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
+```
+
+That is, we're "lifting" the normal plus operator (+) from acting on `Int` values,
+to get them to act on `State Cache Int` values. How Haskell does that is not
+essential to know for our purposes here, just that Haskell can automatically do
+it for us.
+
+So using `liftM2`, our code becomes (we also had to add an import):
+
+```haskell
+import Control.Monad.State
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = runState (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = gets (lookup n) >>= \s -> case s of
+    Just v -> pure v
+    Nothing -> liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
+                 modify ((n, r) :) >> pure r
+```
+
+It still runs, and produces the same output as before.
+
+Now comes the great jump. We notice that only some part of our `fib` function
+deals with the actual computation, while the rest of it is checking to see if we
+already have that cached result. We can make this distinction more apparent by
+rewriting the fib function this way:
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = gets (lookup n) >>= \s -> case s of
+    Just v -> pure v
+    Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+  where compute = liftM2 (+) (fib (n - 1)) (fib (n - 2))
+```
+
+In fact, we can just pass `compute` as a parameter!
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = memo n compute
+  where compute = liftM2 (+) (fib (n - 1)) (fib (n - 2))
+
+memo :: Int -> State Cache Int -> State Cache Int
+memo n compute = gets (lookup n) >>= \s -> case s of
+  Just v -> pure v
+  Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+```
+
+In fact, this same memo will work with all other types of state monads, not just
+the `State Cache Int`. The requirement is that the state should be such that we
+can `lookup n` and `(n, r) :` on it, but otherwise we can generalize the type
+signature. We can also enable the `LambdaCase` extension to clean up its
+implementation. With these changes, our code looks like this:
+
+```haskell
+{-# LANGUAGE LambdaCase #-}
+
+import Control.Monad.State
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = runState (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = memo n $ liftM2 (+) (fib (n - 1)) (fib (n - 2))
+
+memo :: (MonadState [(a, b)] m, Eq a) => a -> m b -> m b
+memo n compute = gets (lookup n) >>= \case
+  Just v -> pure v
+  Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+```
+
+We can run it again to ensure that everything looks good:
+
+```haskell
+$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+```
+
+Finally, since now that we know that the memoization is working, we don't need
+to see those intermediate values. We can modify our `runFib` method to return
+only the first element of the tuple, say:
+
+```haskell
+runFib n = fst $ runState (fib n) []
+```
+
+But there is a helper function for doing this too - `evalState`. It is like
+`runState`, except it throws away the state and only returns the final result.
+
+```haskell
+runFib :: Int -> Int
+runFib n = evalState (fib n) []
+```
+
+Let's see it in action.
+
+```sh
+$ runghc fib.hs
+13
+```
+
+Yay.
+
+### More to memoization
+
+We've reached quite an okay point. We started with this beauty:
+
+```haskell
+fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n - 1) + fib (n - 2)
+```
+
+and have ended up with
+
+```haskell
+fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = memo n $ liftM2 (+) (fib (n - 1)) (fib (n - 2))
+```
+
+Not great, but not too bad. The second version implicitly memoizes all function
+calls under the hood, and for problems where memoization is of essence, this is
+an okay price to pay for the functionality we get. Indeed, even for the simple
+case of our `fib` function, and for (relatively) small values of n - the
+difference in time is functionally (pun!) important (try running `fib 700` in
+both cases - the first one goes nowhere while the second is intant).
+
+This post is already very long, and we've reached a _not too bad_ point, so I'll
+stop here. But be aware that simplifying the memoization can further be improved
+though.
+
+Hope you found this useful.
