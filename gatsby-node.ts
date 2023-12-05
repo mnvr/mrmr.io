@@ -24,10 +24,9 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
+        const feed = feedForMdxNode(node);
 
-        console.log(slug, feedForMdxNode(node));
-
-        const newFields = { slug };
+        const newFields = { slug, feed };
 
         Object.entries(newFields).forEach(([name, value]) => {
             createNodeField({
@@ -42,17 +41,17 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 const feedForMdxNode = (node: Record<string, unknown>) => {
     const { unlisted, attributes } = parseOnCreateNodeMdxNode(node);
 
-    // By default, all MDX pages are shown in /all (and similar listings).
-    let feed: string | undefined = "all";
-
-    // Unlisted pages are not shown in the /all feed.
+    // Unlisted pages are not shown in any feed.
     if (unlisted) {
-        feed = undefined;
+        return undefined;
     }
 
-    // Pages with the playground attribute go to the notes feed.
-    if (attributes?.includes("playground")) {
-        feed = "notes";
+    // By default, all MDX pages are shown in /all (and similar listings).
+    let feed: string | undefined = "/all";
+
+    // Pages with the "note" or "playground" attribute go to the /notes feed.
+    if (attributes?.includes("note") || attributes?.includes("playground")) {
+        feed = "/notes";
     }
 
     return feed;
