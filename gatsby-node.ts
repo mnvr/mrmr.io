@@ -25,7 +25,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
 
-        console.log(feedForMdxNode(node));
+        console.log(slug, feedForMdxNode(node));
 
         const newFields = { slug };
 
@@ -40,9 +40,22 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 };
 
 const feedForMdxNode = (node: Record<string, unknown>) => {
-    let { unlisted, attributes } = parseOnCreateNodeMdxNode(node);
+    const { unlisted, attributes } = parseOnCreateNodeMdxNode(node);
 
-    return { unlisted, attributes };
+    // By default, all MDX pages are shown in /all (and similar listings).
+    let feed: string | undefined = "all";
+
+    // Unlisted pages are not shown in the /all feed.
+    if (unlisted) {
+        feed = undefined;
+    }
+
+    // Pages with the playground attribute go to the notes feed.
+    if (attributes?.includes("playground")) {
+        feed = "notes";
+    }
+
+    return feed;
 };
 
 const parseOnCreateNodeMdxNode = (node: Record<string, unknown>) => {
