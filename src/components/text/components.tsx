@@ -298,7 +298,7 @@ export const FooterHindi: React.FC = () => {
 };
 
 const Footer_ = styled.footer`
-    margin-block-start: 2.9rem;
+    margin-block-start: 3.9rem;
 
     font-size: 0.9rem;
     line-height: 2.5;
