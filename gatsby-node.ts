@@ -7,7 +7,7 @@ import { PageTemplateContext } from "types/gatsby";
 // prefixing doesn't work in gatsby-node.ts.
 import { typeDefs } from "./src/graphql-schema";
 import { ensure, ensureString } from "./src/utils/ensure";
-import { hasKey } from "./src/utils/object";
+import { hasArrayKey, hasBooleanKey } from "./src/utils/object";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -45,29 +45,22 @@ const feedForMdxNode = (node: Record<string, unknown>) => {
     return { unlisted, attributes };
 };
 
-
 const parseOnCreateNodeMdxNode = (node: Record<string, unknown>) => {
-    let _unlisted = false;
-    let _attributes: string[] = [];
+    let unlisted: boolean | undefined;
+    let attributes: string[] | undefined;
 
     const frontmatter = node.frontmatter;
     if (frontmatter && typeof frontmatter === "object") {
-        if (hasKey(frontmatter, "unlisted")) {
-            const unlisted = frontmatter.unlisted;
-            if (typeof unlisted === "boolean" && unlisted) {
-                _unlisted = unlisted;
-            }
+        if (hasBooleanKey(frontmatter, "unlisted")) {
+            unlisted = frontmatter.unlisted;
         }
 
-        if (hasKey(frontmatter, "attributes")) {
-            const attributes = frontmatter.attributes;
-            if (Array.isArray(attributes)) {
-                _attributes = attributes.map((s) => ensureString(s));
-            }
+        if (hasArrayKey(frontmatter, "attributes")) {
+            attributes = frontmatter.attributes?.map((s) => ensureString(s));
         }
     }
 
-    return { unlisted: _unlisted, attributes: _attributes };
+    return { unlisted, attributes };
 };
 
 export const createPages: GatsbyNode<

@@ -47,7 +47,7 @@ export const hasBooleanKey = <T extends string | number | symbol>(
 export const hasArrayKey = <T extends string | number | symbol>(
     obj: unknown,
     key: string,
-): obj is { [key in T]: boolean } => {
+): obj is { [key in T]: unknown[] } => {
     if (!hasKey(obj, key)) return false;
     return Array.isArray(obj[key]);
 };
