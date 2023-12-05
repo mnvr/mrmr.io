@@ -1,12 +1,13 @@
 import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
+import { PageTemplateContext } from "types/gatsby";
 
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
-import { PageTemplateContext } from "types/gatsby";
 import { typeDefs } from "./src/graphql-schema";
 import { ensure } from "./src/utils/ensure";
+import { hasKey } from "./src/utils/object";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -15,12 +16,16 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
     const { createNodeField } = actions;
 
-    // Create and attach a "slug" field to all MDX nodes.
+    // - Create and attach a "slug" field to all MDX nodes.
+    // - Also attach a "feed" field that indicates which all listings should
+    //   this page be surfaced in.
     if (node.internal.type == "Mdx") {
         // Do not add a trailing slash to the generated paths.
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
+
+        console.log(feedForMdxNode(node));
 
         const newFields = { slug };
 
@@ -32,6 +37,22 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
             });
         });
     }
+};
+
+const feedForMdxNode = (node: Record<string, unknown>) => {
+    let _unlisted = false;
+
+    const frontmatter = node.frontmatter;
+    if (frontmatter && typeof frontmatter === "object") {
+        if (hasKey(frontmatter, "unlisted")) {
+            const unlisted = frontmatter.unlisted;
+            if (typeof unlisted === "boolean" && unlisted) {
+                _unlisted = unlisted;
+            }
+        }
+    }
+
+    return _unlisted;
 };
 
 export const createPages: GatsbyNode<
