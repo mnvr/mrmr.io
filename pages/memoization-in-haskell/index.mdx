@@ -388,9 +388,9 @@ fib n = StateT $ \s ->
                      in Identity (r, (n, r) : s2)
 ```
 
-I also had to replace `runState` with `runStateT`. Again, don't be bothered
-about all these infelicities, or why we're doing them (unless you're curious of
-course), because in our final version we'll not be using any of them.
+I also had to replace `runState` with `runStateT` (Don't fixate too much on the
+meaning behind these details and infelicities – in our final version we'll not
+be using any of them).
 
 We can run our code again, and see that it still works the same way. To simplify
 further, we'll need to start getting into the specific tools provided by the
