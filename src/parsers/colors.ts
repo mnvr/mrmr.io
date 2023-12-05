@@ -108,7 +108,7 @@ export interface ColorPalette {
 }
 
 /**
- * Parse a array of colors into a {@link ColorPalette}.
+ * Parse an array of colors into a {@link ColorPalette}.
  *
  * The first two values are the only required ones, and they're used as the
  * primary background (`backgroundColor1`) and foreground (`color1`) colors.

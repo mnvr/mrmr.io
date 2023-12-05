@@ -153,7 +153,7 @@ const gridCirclesAndStars = (p5: p5, o = {} as CirclesAndStarsDrawOpts) => {
             lineCount++;
         }
         // If this line ended with an even number of items, increment the count
-        // by 1 so that the next line starts with a a piece that retains the
+        // by 1 so that the next line starts with a piece that retains the
         // alignment.
         if (lineCount % 2 === 0) c++;
     }

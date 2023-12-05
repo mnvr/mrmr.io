@@ -40,6 +40,13 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 };
 
 const feedForMdxNode = (node: Record<string, unknown>) => {
+    let { unlisted, attributes } = parseOnCreateNodeMdxNode(node);
+
+    return { unlisted, attributes };
+};
+
+
+const parseOnCreateNodeMdxNode = (node: Record<string, unknown>) => {
     let _unlisted = false;
     let _attributes: string[] = [];
 
@@ -51,15 +58,16 @@ const feedForMdxNode = (node: Record<string, unknown>) => {
                 _unlisted = unlisted;
             }
         }
+
         if (hasKey(frontmatter, "attributes")) {
             const attributes = frontmatter.attributes;
             if (Array.isArray(attributes)) {
-                _attributes = attributes.map(s => ensureString(s));
+                _attributes = attributes.map((s) => ensureString(s));
             }
         }
     }
 
-    return _unlisted;
+    return { unlisted: _unlisted, attributes: _attributes };
 };
 
 export const createPages: GatsbyNode<

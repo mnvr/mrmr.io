@@ -50,11 +50,11 @@ export interface P5DrawEnv {
     /**
      * Return the time (in seconds) since the page was loaded.
      *
-     * This is useful as a an alternative for {@link audioTime} in sketches
-     * which were designed with some (external) audio in mind. Since the audio
-     * is not being played currently, there won't be an audioContext, nor an
-     * audioTime. So to instead drive the animation forward, we can use this
-     * replacement timestamp that counts the number of seconds since page load.
+     * This is useful as an alternative for {@link audioTime} in sketches which
+     * were designed with some (external) audio in mind. Since the audio is not
+     * being played currently, there won't be an audioContext, nor an audioTime.
+     * So to instead drive the animation forward, we can use this replacement
+     * timestamp that counts the number of seconds since page load.
      */
     pageTime: () => number;
 }

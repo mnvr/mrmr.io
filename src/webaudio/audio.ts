@@ -93,7 +93,7 @@ export const createHelpers = (
 };
 
 /**
- * Load (Fetch and decode) an audio file into a AudioBuffer
+ * Load (Fetch and decode) an audio file into an AudioBuffer
  *
  * @param audioContext The AudioContext` to use for decoding
  * @param URL The (absolute or relative) URL to the audio file. To reduce
