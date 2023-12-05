@@ -24,8 +24,7 @@ export const isPoem = ({ attributes }: PageLike) => attributes.includes("poem");
 /**
  * Return true if this is a note.
  *
- * A note is something that either exists under "/notes" or has the "playground"
- * attribute.
+ * A note is something that appears in the "/notes" feed.
  */
 export const isNote = ({ feed }: PageLike) => feed === "/notes";
 
