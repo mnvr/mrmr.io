@@ -51,10 +51,6 @@ const Content_ = styled(LinkStyleUnderlined)`
         width: 50%;
     }
 
-    .mrmr-ref-link {
-        font-weight: normal;
-    }
-
     /* These colors were picked to work with the "paper" theme. Currently all
        "text" layout pages that use code elements use the paper theme, so we're
        hardcoding them in. If they don't work well with other themes, we can

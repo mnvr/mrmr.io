@@ -56,10 +56,17 @@ export const RefLink: React.FC<
     React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
 > = ({ ...props }) => {
     return (
-        <sup>
-            <ExternalLink className="mrmr-ref-link" {...props}>
-                †
-            </ExternalLink>
-        </sup>
+        <RefLinkSuperscript_>
+            <ExternalLink {...props}>†</ExternalLink>
+        </RefLinkSuperscript_>
     );
 };
+
+const RefLinkSuperscript_ = styled.sup`
+    a {
+        font-weight: normal;
+        /* Otherwise it causes the lines with these links to be taller than
+           normal lines */
+        line-height: 100%;
+    }
+`;
