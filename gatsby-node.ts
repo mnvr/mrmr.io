@@ -6,7 +6,7 @@ import { PageTemplateContext } from "types/gatsby";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import { typeDefs } from "./src/graphql-schema";
-import { ensure } from "./src/utils/ensure";
+import { ensure, ensureString } from "./src/utils/ensure";
 import { hasKey } from "./src/utils/object";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
@@ -41,6 +41,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 
 const feedForMdxNode = (node: Record<string, unknown>) => {
     let _unlisted = false;
+    let _attributes: string[] = [];
 
     const frontmatter = node.frontmatter;
     if (frontmatter && typeof frontmatter === "object") {
@@ -48,6 +49,12 @@ const feedForMdxNode = (node: Record<string, unknown>) => {
             const unlisted = frontmatter.unlisted;
             if (typeof unlisted === "boolean" && unlisted) {
                 _unlisted = unlisted;
+            }
+        }
+        if (hasKey(frontmatter, "attributes")) {
+            const attributes = frontmatter.attributes;
+            if (Array.isArray(attributes)) {
+                _attributes = attributes.map(s => ensureString(s));
             }
         }
     }
