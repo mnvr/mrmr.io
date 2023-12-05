@@ -744,7 +744,7 @@ and have ended up with
 fib :: Int -> State Cache Int
 fib 0 = pure 0
 fib 1 = pure 1
-fib n = memo n $ liftM2 (+) (fib (n - 1)) (fib (n - 2))
+fib n = memo n $ (+) <$> fib (n - 1) <*> fib (n - 2)
 ```
 
 Not great, but not too bad. The second version implicitly memoizes all function
