@@ -28,19 +28,10 @@ export default RandomPage;
 
 export const Head: HeadFC = () => <DefaultHead titlePrefix="Random 🎲" />;
 
-/**
- * Fetch slugs for all pages.
- *
- * - Exclude the pages which are marked `unlisted`.
- */
+/** Fetch slugs for pages in the "/all" feed. */
 export const query = graphql`
     query RandomPage {
-        allMdx(
-            filter: {
-                fields: { slug: { glob: "!/notes/**" } }
-                frontmatter: { unlisted: { ne: true } }
-            }
-        ) {
+        allMdx(filter: { fields: { feed: { eq: "/all" } } }) {
             nodes {
                 fields {
                     slug

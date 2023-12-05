@@ -121,7 +121,7 @@ type MdxFrontmatter implements Node @dontInfer {
     theme: String
 
     # Set this to true to prevent this page from showing up in the site wide
-    # listings, e.g. '/all'.
+    # listings, e.g. '/all' or '/notes'.
     unlisted: Boolean
 
     # Set this to true to prevent search engines from indexing the page.

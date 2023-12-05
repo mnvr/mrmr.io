@@ -68,15 +68,9 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *
  * - In particular, fetch the preview (meta/og:image) image.
  *
- * Fetch a few recent from all pages, sorted by recency.
- *
- * - Exclude the pages which are marked `unlisted`.
+ * Fetch a few recent of pages in the '/all' feed, sorted by recency.
  *
  * Fetch all pages tagged "front-page", sorted by recency.
- *
- * - Exclude the pages which are marked `unlisted`.
- * - Right now this returns all pages; if this list grows too big then we can
- *   add a limit here.
  *
  * Fetch all page preview images ("preview.png/jpg").
  *
@@ -100,10 +94,7 @@ export const query = graphql`
         }
         recentPages: allMdx(
             limit: 7
-            filter: {
-                fields: { slug: { glob: "!/notes/**" } }
-                frontmatter: { unlisted: { ne: true } }
-            }
+            filter: { fields: { feed: { eq: "/all" } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }
@@ -123,7 +114,6 @@ export const query = graphql`
             filter: {
                 frontmatter: {
                     attributes: { in: "front-page" }
-                    unlisted: { ne: true }
                 }
             }
             sort: [

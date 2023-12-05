@@ -9,7 +9,7 @@ import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** A listing of all posts */
+/** A listing of posts in the "/all" feed */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
     const extraLink = <Link to={"/notes"}>Notes</Link>;
@@ -29,26 +29,23 @@ const Title_ = styled.div`
 
 export const Head: HeadFC = () => {
     const titlePrefix = "All posts";
-    const description = "Listing of all posts on mrmr.io";
+    const description = "Listing of posts on mrmr.io";
     const canonicalPath = "/all";
 
     return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
 
 /**
- * Fetch all pages, sorted by recency.
+ * Fetch pages in the "/all" feed, sorted by recency.
  *
- * - Exclude the pages which are marked `unlisted` (e.g. the "_example" page).
- * - Right now this returns all pages; if this list grows too big then we can
- *   add a limit here.
+ * Right now this returns all pages; if this list grows too big then we can add
+ * a limit here.
  */
 export const query = graphql`
     query AllPage {
         allMdx(
-            filter: {
-                fields: { slug: { glob: "!/notes/**" } }
-                frontmatter: { unlisted: { ne: true } }
-            }
+            filter: { fields: { feed: { eq: "/all" } } }
+
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

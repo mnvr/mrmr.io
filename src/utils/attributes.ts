@@ -2,6 +2,7 @@
 
 interface PageLike {
     slug: string;
+    feed?: string;
     attributes: string[];
 }
 
@@ -26,8 +27,7 @@ export const isPoem = ({ attributes }: PageLike) => attributes.includes("poem");
  * A note is something that either exists under "/notes" or has the "playground"
  * attribute.
  */
-export const isNote = ({ slug, attributes }: PageLike) =>
-    slug.startsWith("/notes/") || attributes.includes("playground");
+export const isNote = ({ feed }: PageLike) => feed === "/notes";
 
 /**
  * Return true if this page should be kept at the top of groupings in listings.

@@ -138,6 +138,7 @@ export const query = graphql`
             }
             fields {
                 slug
+                feed
             }
             generatedPreviewImage: previewImageTemplate {
                 gatsbyImageData(
@@ -148,6 +149,15 @@ export const query = graphql`
     }
 `;
 
+export type FeedType = "/all" | "/notes";
+
+const isFeedType = (s: string): s is FeedType => {
+    return s === "/all" || s === "/notes";
+};
+
+const parseFeedType = (s: string | undefined) =>
+    s && isFeedType(s) ? s : undefined;
+
 /**
  * A type describing the page data that the page template passes to layouts.
  *
@@ -157,6 +167,8 @@ export const query = graphql`
 export interface Page {
     /** The page's slug */
     slug: string;
+    /** The feed that this page is classified under */
+    feed?: FeedType;
     /** Title of the page */
     title: string;
     /** An (optional) subtitle for the page */
@@ -276,6 +288,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
 
     const slug = ensure(mdx?.fields?.slug);
+    const feed = parseFeedType(mdx?.fields?.feed);
 
     const description = descriptionOrFallback(frontmatter?.description);
 
@@ -308,6 +321,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 
     return {
         slug,
+        feed,
         title,
         subtitle,
         description,
