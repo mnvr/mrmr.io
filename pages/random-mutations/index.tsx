@@ -119,7 +119,7 @@ export const About: React.FC = () => {
     );
 };
 
-const About_ = styled.p`
+const About_ = styled.div`
     font-size: 0.9rem;
     max-width: 36rem;
     line-height: 1.4;

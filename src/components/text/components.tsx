@@ -61,6 +61,18 @@ const Content_ = styled(LinkStyleUnderlined)`
         --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
     }
 
+    kbd {
+        /* By default, the browsers I've checked in (Safari and Chrome, both on
+           macOS) the kbd elements is styled to use the monospace font.
+
+           Here we tweak this a bit */
+
+        font-size: 90%;
+        padding-block: 0.1rem;
+        padding-inline: 0.3rem;
+        border: 1px solid var(--mrmr-color-3);
+    }
+
     code {
         /* The monospace font looks too big sitting next to the other fonts */
         font-size: 90%;
