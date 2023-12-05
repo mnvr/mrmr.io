@@ -666,10 +666,20 @@ the `State Cache Int`. The requirement is that the state should be such that we
 can `lookup n` and `(n, r) :` on it, but otherwise we can generalize the type
 signature.
 
-We can also enable the `LambdaCase` extension to clean up its implementation.
-And we can replace the `liftM2` by the more standard, so called, applicative
-style `(+) <$> fib (n - 1) <*> fib (n - 2)`. With all these changes, our code
-looks like this:
+We can replace the `liftM2` by the more standard, so called, applicative
+style `(+) <$> fib (n - 1) <*> fib (n - 2)`. We can also move the memo upwards
+so that it also covers the base cases:
+
+```haskell
+fib :: Int -> State Cache Int
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) <$> fib (n - 1) <*> fib (n - 2)
+```
+
+We can also use the `LambdaCase` language extension to remove the noise in the
+implementation of memo. With all these changes, our code looks like this:
 
 ```haskell
 {-# LANGUAGE LambdaCase #-}
@@ -685,9 +695,10 @@ runFib n = runState (fib n) []
 type Cache = [(Int, Int)]
 
 fib :: Int -> State Cache Int
-fib 0 = pure 0
-fib 1 = pure 1
-fib n = memo n $ (+) <$> fib (n - 1) <*> fib (n - 2)
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) <$> fib (n - 1) <*> fib (n - 2)
 
 memo :: (MonadState [(a, b)] m, Eq a) => a -> m b -> m b
 memo n compute = gets (lookup n) >>= \case
@@ -738,13 +749,14 @@ fib 1 = 1
 fib n = fib (n - 1) + fib (n - 2)
 ```
 
-and have ended up with
+and have ended up with:
 
 ```haskell
 fib :: Int -> State Cache Int
-fib 0 = pure 0
-fib 1 = pure 1
-fib n = memo n $ (+) <$> fib (n - 1) <*> fib (n - 2)
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) <$> fib (n - 1) <*> fib (n - 2)
 ```
 
 Not great, but not too bad. The second version implicitly memoizes all function
@@ -753,9 +765,5 @@ an okay price to pay for the functionality we get. Indeed, even for the simple
 case of our `fib` function, and for (relatively) small values of n - the
 difference in time is functionally (pun!) important (try running `fib 700` in
 both cases - the first one goes nowhere while the second is instant).
-
-This post is already very long, and we've reached a _not too bad_ point, so I'll
-stop here. But be aware that simplifying the memoization can further be improved
-though.
 
 Hope you found this useful.
