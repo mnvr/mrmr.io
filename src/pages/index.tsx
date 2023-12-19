@@ -52,7 +52,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
 export default IndexPage;
 
 export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
-    const description = "music •◦◎◉⦿ words | colors / code";
+    const description = "words | colors / music •◦◎◉⦿ code";
     const canonicalPath = "";
 
     const file = replaceNullsWithUndefineds(data.file);
