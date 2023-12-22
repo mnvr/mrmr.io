@@ -129,7 +129,7 @@ const PageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.25;
+    line-height: 1.3;
 
     a {
         border-bottom-width: 2px;

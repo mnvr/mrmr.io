@@ -249,7 +249,7 @@ const RecentPageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.2;
+    line-height: 1.3;
 
     a {
         text-decoration: none;
