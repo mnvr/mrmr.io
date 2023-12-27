@@ -7,12 +7,12 @@
 export type RecursivelyReplaceNullWithUndefined<T> = T extends null
     ? undefined
     : T extends Date
-    ? T
-    : {
-          [K in keyof T]: T[K] extends (infer U)[]
-              ? RecursivelyReplaceNullWithUndefined<U>[]
-              : RecursivelyReplaceNullWithUndefined<T[K]>;
-      };
+      ? T
+      : {
+            [K in keyof T]: T[K] extends (infer U)[]
+                ? RecursivelyReplaceNullWithUndefined<U>[]
+                : RecursivelyReplaceNullWithUndefined<T[K]>;
+        };
 
 /**
  * Recursively replaces all `null`s with `undefined`s.
@@ -31,10 +31,10 @@ export const replaceNullsWithUndefineds = <T>(
             v === null
                 ? undefined
                 : v &&
-                  typeof v === "object" &&
-                  v.__proto__.constructor === Object
-                ? replaceNullsWithUndefineds(v)
-                : v;
+                    typeof v === "object" &&
+                    v.__proto__.constructor === Object
+                  ? replaceNullsWithUndefineds(v)
+                  : v;
     });
     return newObj;
 };
