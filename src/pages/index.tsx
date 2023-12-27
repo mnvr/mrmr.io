@@ -289,7 +289,10 @@ const RecentPageDescription = styled.span`
 const Poem: React.FC = () => {
     return (
         <Poem_>
-            <i><b>murmur</b></i> to me softly
+            <i>
+                <b>murmur</b>
+            </i>{" "}
+            to me softly
             <br />
             &nbsp;&nbsp;they tell me <i>it’s all right</i>
             <br />
