@@ -6,7 +6,7 @@ import styled from "styled-components";
 export const Content: React.FC = () => {
     return (
         <Content_>
-            <h3>GEN24</h3>
+            <h3>GEN 24</h3>
             <Sketch />
         </Content_>
     );
@@ -14,6 +14,10 @@ export const Content: React.FC = () => {
 
 const Content_ = styled.div`
     margin: 1rem;
+    h3 {
+        color: var(--mrmr-color-3);
+        font-weight: 200;
+    }
 `;
 
 const Sketch: React.FC = () => {
