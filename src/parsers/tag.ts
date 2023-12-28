@@ -66,7 +66,10 @@ export const parseTagData = (
 ): Tag => {
     const tag = ensure(tagsYaml.tag);
     const slug = ensure(tagsYaml.fields?.slug);
-    const color = parseColor(tagsYaml.color);
+    const color = parseColor(
+        // TODO: Fix RecursivelyReplaceNullWithUndefined to handle Arrays
+        tagsYaml.color === null ? undefined : tagsYaml.color,
+    );
 
     return { tag, slug, color };
 };

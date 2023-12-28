@@ -3,7 +3,7 @@ import PageListingContent, {
     parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
-import { PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import { parseTagData, type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
@@ -22,9 +22,10 @@ const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
 }) => {
     const pages = parsePages(data);
     const tag = parseTag(data);
+    const extraLink = <Link to={"/t"}>Tags</Link>;
 
     return (
-        <PageListingContent pages={pages}>
+        <PageListingContent {...{ pages, extraLink }}>
             <Title_ {...tag}>{tag.tag}</Title_>
         </PageListingContent>
     );
