@@ -1,12 +1,11 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
+    parsePageListingPage,
     type PageListingPage,
 } from "components/PageListingContent";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { filterDefined } from "utils/array";
-import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** A listing of posts in the "/all" feed */
@@ -52,33 +51,11 @@ export const query = graphql`
             ]
         ) {
             nodes {
-                frontmatter {
-                    title
-                    description
-                    formattedDateMY: date(formatString: "MMM YYYY")
-                    attributes
-                }
-                fields {
-                    slug
-                }
+                ...PageListingPageData
             }
         }
     }
 `;
 
-const parsePages = (data: Queries.AllPageQuery): PageListingPage[] => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
-
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const slug = ensure(fields?.slug);
-
-        const title = ensure(frontmatter?.title);
-        const description = frontmatter?.description;
-        const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const attributes = filterDefined(frontmatter?.attributes);
-
-        return { slug, title, description, formattedDateMY, attributes };
-    });
-};
+const parsePages = (data: Queries.AllPageQuery): PageListingPage[] =>
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPage);

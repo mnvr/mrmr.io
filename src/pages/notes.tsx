@@ -1,12 +1,11 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
+    parsePageListingPage,
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { filterDefined } from "utils/array";
-import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
@@ -63,34 +62,11 @@ export const query = graphql`
             ]
         ) {
             nodes {
-                frontmatter {
-                    title
-                    description
-                    formattedDateMY: date(formatString: "MMM YYYY")
-                    attributes
-                }
-                fields {
-                    slug
-                }
+                ...PageListingPageData
             }
         }
     }
 `;
 
-const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
-
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const slug = ensure(fields?.slug);
-
-        const title = ensure(frontmatter?.title);
-        const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const attributes = filterDefined(frontmatter?.attributes);
-
-        const description = frontmatter?.description;
-
-        return { slug, title, description, formattedDateMY, attributes };
-    });
-};
+const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] =>
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPage);

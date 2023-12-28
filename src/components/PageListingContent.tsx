@@ -240,9 +240,9 @@ export const parsePageListingPage = (
     const slug = ensure(fields?.slug);
 
     const title = ensure(frontmatter?.title);
+    const description = frontmatter?.description;
     const formattedDateMY = ensure(frontmatter?.formattedDateMY);
     const attributes = filterDefined(frontmatter?.attributes);
-    const description = frontmatter?.description;
 
     return { slug, title, description, formattedDateMY, attributes };
 };

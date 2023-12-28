@@ -1,12 +1,11 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
+    parsePageListingPage,
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { filterDefined } from "utils/array";
-import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** A listing of all pages with the attribute "poem" */
@@ -54,39 +53,24 @@ export const query = graphql`
             ]
         ) {
             nodes {
-                frontmatter {
-                    title
-                    description
-                    formattedDateMY: date(formatString: "MMM YYYY")
-                    attributes
-                }
-                fields {
-                    slug
-                }
+                ...PageListingPageData
             }
         }
     }
 `;
 
-const parsePages = (data: Queries.PoemsPageQuery): PageListingPage[] => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
+const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] =>
+    replaceNullsWithUndefineds(data.allMdx)
+        .nodes.map(parsePageListingPage)
+        .map(modifyDescription);
 
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const slug = ensure(fields?.slug);
+const modifyDescription = (page: PageListingPage): PageListingPage => {
+    const { description, attributes } = page;
+    const newDescription = attributes.includes("hindi")
+        ? pruneHindiDescription(description)
+        : pruneDescription(description);
 
-        const title = ensure(frontmatter?.title);
-        const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const attributes = filterDefined(frontmatter?.attributes);
-
-        const desc = frontmatter?.description;
-        const description = attributes.includes("hindi")
-            ? pruneHindiDescription(desc)
-            : pruneDescription(desc);
-
-        return { slug, title, description, formattedDateMY, attributes };
-    });
+    return { ...page, description: newDescription };
 };
 
 /**
