@@ -166,7 +166,19 @@ type MdxFrontmatter implements Node @dontInfer {
     #
     attributes: [String]
 
-    # Specify one or more arbitrary labels to group posts.
+    # Specify one or more tags to group posts.
+    #
+    # A tag is specified in the MDX frontmatter as structured string. See the
+    # documentation of the FrontmatterTag type in 'parsers/tag.ts' for full
+    # details about the expected structure. As a short tldr, here are some
+    # examples of how tags can be specified:
+    #
+    #     - tags:
+    #           - programming "This is a test"
+    #           - programming This is a test
+    #           - programming
+    #
+    # The list of tag slugs can be found in 'data/tags.yaml'.
     tags: [String]
 
     # Specify the slugs of related pages.

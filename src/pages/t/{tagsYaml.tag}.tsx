@@ -3,7 +3,7 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
-import { parseTag, type Tag } from "parsers/tag";
+import { parseTagYaml, type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
 import { filterDefined } from "utils/array";
@@ -14,18 +14,18 @@ import { capitalize } from "utils/string";
 /**
  * A template page for showing the list of pages with the given tag.
  *
- * At build time, Gatsby will build one of these at "/t/{tag.slug}", one for
- * each of the tags defined in `data/tags.yaml`.
+ * At build time, Gatsby will build one of these at "/t/{tag.tag}" for each of
+ * the tags defined in `data/tags.yaml`.
  */
 const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
     data,
 }) => {
     const pages = parsePages(data);
-    const tag = parseTags(data);
+    const tag = parseTag(data);
 
     return (
         <PageListingContent pages={pages}>
-            <Title_ {...tag}>{tag.slug}</Title_>
+            <Title_ {...tag}>{tag.tag}</Title_>
         </PageListingContent>
     );
 };
@@ -37,15 +37,15 @@ const Title_ = styled.div<Tag>`
 `;
 
 export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {
-    const tag = parseTags(data);
+    const tag = parseTag(data);
 
-    // All the slugs so far are single words, and so here we can use it as a
+    // All the tags that link here single words, and so here we can use it as a
     // the "name" of the tag.
-    const slug = tag.slug;
+    const name = tag.tag;
 
-    const titlePrefix = capitalize(slug);
-    const description = `Listing of all pages tagged ${slug} on mrmr.io`;
-    const canonicalPath = `/t/${slug}`;
+    const titlePrefix = capitalize(name);
+    const description = `Listing of all pages tagged ${name} on mrmr.io`;
+    const canonicalPath = tag.slug;
 
     return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
@@ -56,10 +56,10 @@ export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {
  * - Exclude the pages which are marked `unlisted`.
  */
 export const query = graphql`
-    query TagListingPage($slug: String!) {
+    query TagListingPage($tag: String!) {
         allMdx(
             filter: {
-                frontmatter: { tags: { eq: $slug }, unlisted: { ne: true } }
+                frontmatter: { tags: { eq: $tag }, unlisted: { ne: true } }
             }
             sort: [
                 { frontmatter: { date: DESC } }
@@ -78,8 +78,8 @@ export const query = graphql`
                 }
             }
         }
-        tagsYaml(slug: { eq: $slug }) {
-            slug
+        tagsYaml(tag: { eq: $tag }) {
+            tag
             color
         }
     }
@@ -102,7 +102,5 @@ const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] => {
     });
 };
 
-const parseTags = (data: Queries.TagListingPageQuery) => {
-    const tagsYaml = replaceNullsWithUndefineds(data.tagsYaml);
-    return parseTag(ensure(tagsYaml));
-};
+const parseTag = (data: Queries.TagListingPageQuery) =>
+    parseTagYaml(data.tagsYaml);

@@ -2,6 +2,7 @@ import { WideColumn } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
+import { FrontmatterTag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext, PageLink } from "templates/page";
@@ -320,7 +321,7 @@ const Footer_ = styled.footer`
 `;
 
 interface TagsProps {
-    tags: string[];
+    tags: FrontmatterTag[];
 }
 
 const Tags: React.FC<TagsProps> = (props) => {
@@ -344,13 +345,18 @@ const TagsList: React.FC<TagsProps> = ({ tags }) => {
     return (
         <span>
             {tags.map((tag, i) => (
-                <span key={tag}>
-                    {tag}
+                <span key={i}>
+                    <TagItem tag={tag} />
                     {i < tags.length - 1 && <TagSeparator />}
                 </span>
             ))}
         </span>
     );
+};
+
+const TagItem: React.FC<{ tag: FrontmatterTag }> = ({ tag }) => {
+    const { slug, label } = tag;
+    return slug ? <Link to={slug}>{label}</Link> : <span>{label}</span>;
 };
 
 const TagSeparator: React.FC = () => {

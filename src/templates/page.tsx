@@ -8,6 +8,7 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import { FrontmatterTag, parseFrontmatterTag } from "parsers/tag";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
@@ -106,6 +107,11 @@ export const query = graphql`
             nodes {
                 name
                 publicURL
+            }
+        }
+        allTagsYaml {
+            nodes {
+                tag
             }
         }
         allMdx {
@@ -215,7 +221,7 @@ export interface Page {
      *
      * This list is populated from the "tags" field in the frontmatter.
      */
-    tags: string[];
+    tags: FrontmatterTag[];
     /**
      * A list of (links to) related pages.
      *
@@ -269,7 +275,7 @@ export interface PageLink {
 
 export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const data = replaceNullsWithUndefineds(data_);
-    const { mdx, images, mp3s } = data;
+    const { mdx, images, mp3s, allTagsYaml } = data;
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
@@ -282,7 +288,10 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
     const attributes = filterDefined(frontmatter?.attributes);
-    const tags = filterDefined(frontmatter?.tags);
+    const tags = filterDefined(frontmatter?.tags).map((s) => {
+        const t = parseFrontmatterTag(s)
+        return t;
+    });
 
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
