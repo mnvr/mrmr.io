@@ -16,9 +16,10 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
     const { createNodeField } = actions;
 
-    // - Create and attach a "slug" field to all MDX nodes.
-    // - Also attach a "feed" field that indicates which all listings should
-    //   this page be surfaced in.
+    // To all MDX nodes:
+    // - Attach a "slug" field.
+    // - Attach a "feed" field that indicates which all listings should this
+    //   page be surfaced in.
     if (node.internal.type == "Mdx") {
         // Do not add a trailing slash to the generated paths.
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
@@ -35,6 +36,14 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
                 value,
             });
         });
+    }
+
+    // Attach a slug field to all TagsYaml nodes.
+    if (node.internal.type == "TagsYaml") {
+        const tag = ensureString(node["tag"]);
+        const name = "slug";
+        const value = `/t/${tag}`;
+        createNodeField({ node, name, value });
     }
 };
 

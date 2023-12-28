@@ -2,10 +2,13 @@ import { WideColumn } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
-import { FrontmatterTag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, PageLink } from "templates/page";
+import {
+    BuildTimePageContext,
+    type FrontmatterTag,
+    type PageLink,
+} from "templates/page";
 import { isNote, isPoem } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
@@ -355,7 +358,7 @@ const TagsList: React.FC<TagsProps> = ({ tags }) => {
 };
 
 const TagItem: React.FC<{ tag: FrontmatterTag }> = ({ tag }) => {
-    const { slug, label } = tag;
+    const { label, slug } = tag;
     return slug ? <Link to={slug}>{label}</Link> : <span>{label}</span>;
 };
 

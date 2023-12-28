@@ -3,7 +3,8 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
-import { parseTagYaml, type Tag } from "parsers/tag";
+import { parseColor } from "parsers/colors";
+import { type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
 import { filterDefined } from "utils/array";
@@ -37,15 +38,13 @@ const Title_ = styled.div<Tag>`
 `;
 
 export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {
-    const tag = parseTag(data);
+    const { tag, slug } = parseTag(data);
 
     // All the tag values are single words, and so here we can use it as a the
-    // "name" for the tag.
-    const name = tag.tag;
-
-    const titlePrefix = capitalize(name);
-    const description = `Listing of all pages tagged ${name} on mrmr.io`;
-    const canonicalPath = tag.slug;
+    // "name" for the tag, and also show it in the description.
+    const titlePrefix = capitalize(tag);
+    const description = `Listing of all pages tagged ${tag} on mrmr.io`;
+    const canonicalPath = slug;
 
     return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
@@ -60,7 +59,7 @@ export const query = graphql`
         allMdx(
             filter: {
                 frontmatter: {
-                    tags: { elemMatch: { tag: { eq: $tag } } }
+                    tags: { elemMatch: { tag: { tag: { eq: $tag } } } }
                     unlisted: { ne: true }
                 }
             }
@@ -84,6 +83,9 @@ export const query = graphql`
         tagsYaml(tag: { eq: $tag }) {
             tag
             color
+            fields {
+                slug
+            }
         }
     }
 `;
@@ -105,5 +107,16 @@ const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] => {
     });
 };
 
-const parseTag = (data: Queries.TagListingPageQuery) =>
-    parseTagYaml(data.tagsYaml);
+/**
+ * Convert the tag data we get from GraphQL into the {@link Tag} type that the
+ * rest of our code uses.
+ */
+const parseTag = (data: Queries.TagListingPageQuery): Tag => {
+    const tagsYaml = ensure(replaceNullsWithUndefineds(data.tagsYaml));
+
+    const tag = ensure(tagsYaml.tag);
+    const slug = ensure(tagsYaml.fields?.slug);
+    const color = parseColor(tagsYaml.color);
+
+    return { tag, slug, color };
+};

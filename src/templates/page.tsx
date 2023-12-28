@@ -8,7 +8,6 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { FrontmatterTag, parseTagYaml } from "parsers/tag";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
@@ -110,11 +109,6 @@ export const query = graphql`
                 publicURL
             }
         }
-        allTagsYaml {
-            nodes {
-                tag
-            }
-        }
         allMdx {
             nodes {
                 frontmatter {
@@ -141,8 +135,13 @@ export const query = graphql`
                 theme
                 attributes
                 tags {
-                    tag
                     label
+                    tag {
+                        tag
+                        fields {
+                            slug
+                        }
+                    }
                 }
                 related
             }
@@ -277,6 +276,22 @@ export interface PageLink {
     title: string;
 }
 
+/**
+ * A tag in the frontmatter
+ *
+ * For more details, see the documentation for thee `MdxFrontmatterTag` GraphQL
+ * type defined in `graphql-schema.ts`.
+ */
+export interface FrontmatterTag {
+    /** The label to show for the tag. This can be an arbitrary string. */
+    label: string;
+    /**
+     * If this tag is one of the predefined ones in `data/tags.yaml`, then
+     * this'll contain the slug from the corresponding {@link Tag} structure.
+     */
+    slug?: string;
+}
+
 export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const data = replaceNullsWithUndefineds(data_);
     const { mdx, images, mp3s } = data;
@@ -293,6 +308,16 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const theme = frontmatter?.theme;
     const attributes = filterDefined(frontmatter?.attributes);
 
+    const tags = filterDefined(frontmatter?.tags).map(({ label, tag }) => {
+        if (label === undefined && tag === undefined)
+            throw new Error(
+                `Obtained a tag without either label or tag: ${frontmatter}`,
+            );
+        if (!label) label = capitalize(ensure(tag).tag);
+        const slug = tag?.fields?.slug;
+        return { label, slug };
+    });
+
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
 
@@ -303,7 +328,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
 
-    const tags = parseTags(data);
     const { relatedPageLinks, linkedFromPageLinks } = parsePageLinks(data);
 
     // Gatsby's `StaticImage` component currently doesn't support paths that are
@@ -360,33 +384,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 const descriptionOrFallback = (description?: string) => {
     if (description) return description;
     return `Words, music and art by Manav`;
-};
-
-/**
- * Parse a list of tags, additionally attaching slugs to tag page listings if
- * the tag is one of `allTagsYaml`.
- */
-const parseTags = (
-    data: RecursivelyReplaceNullWithUndefined<Queries.PageTemplateQuery>,
-) => {
-    // This function only needs the mdx.frontmatter.tags and allTagsYaml fields,
-    // but there doesn't seem to be a way to get at the TypeScript types of the
-    // named nested parts of the PageTemplateQuery, so we just pass everything.
-    const { mdx, allTagsYaml } = data;
-
-    const fTags = filterDefined(mdx?.frontmatter?.tags);
-
-    // Early return if there are no tags.This way we avoid having to parse
-    // allTagsYaml for pages that don't have any tags.
-    if (!fTags) return [];
-
-    const knownTags = filterDefined(allTagsYaml.nodes).map(parseTagYaml);
-    return fTags.map((ft) => {
-        const tag = ensure(ft.tag);
-        const label = ft.label ?? capitalize(tag);
-        const slug = knownTags.find((t) => t.tag == tag)?.slug;
-        return { tag, label, slug };
-    });
 };
 
 /**
