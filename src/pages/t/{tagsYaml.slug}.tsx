@@ -3,7 +3,7 @@ import PageListingContent, {
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
-import { parseTag } from "parsers/tag";
+import { parseTag, type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
 import { filterDefined } from "utils/array";
@@ -21,18 +21,18 @@ const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
 }) => {
     const pages = parsePages(data);
     const tag = parseTags(data);
-
+    console.log(tag);
     return (
         <PageListingContent pages={pages}>
-            <Title_>{tag.slug}</Title_>
+            <Title_ {...tag}>{tag.slug}</Title_>
         </PageListingContent>
     );
 };
 
 export default TagListingPage;
 
-const Title_ = styled.div`
-    color: limegreen;
+const Title_ = styled.div<Tag>`
+    color: ${(props) => props.color ?? "var(--mrmr-color-4)"};
 `;
 
 export const Head: HeadFC = () => {
