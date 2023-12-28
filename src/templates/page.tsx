@@ -8,7 +8,7 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { FrontmatterTag, parseFrontmatterTag } from "parsers/tag";
+import { FrontmatterTag, parseFrontmatterTag, parseTagYaml } from "parsers/tag";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
@@ -275,7 +275,7 @@ export interface PageLink {
 
 export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const data = replaceNullsWithUndefineds(data_);
-    const { mdx, images, mp3s, allTagsYaml } = data;
+    const { mdx, images, mp3s } = data;
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
@@ -288,10 +288,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
     const attributes = filterDefined(frontmatter?.attributes);
-    const tags = filterDefined(frontmatter?.tags).map((s) => {
-        const t = parseFrontmatterTag(s)
-        return t;
-    });
 
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
@@ -303,6 +299,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
 
+    const tags = parseTags(data);
     const { relatedPageLinks, linkedFromPageLinks } = parsePageLinks(data);
 
     // Gatsby's `StaticImage` component currently doesn't support paths that are
@@ -358,7 +355,33 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
  */
 const descriptionOrFallback = (description?: string) => {
     if (description) return description;
-    return `Music, words and art by Manav`;
+    return `Words, music and art by Manav`;
+};
+
+/**
+ * Parse a list of tags, additionally attaching slugs to tag page listings if
+ * the tag is one of `allTagsYaml`.
+ */
+const parseTags = (
+    data: RecursivelyReplaceNullWithUndefined<Queries.PageTemplateQuery>,
+) => {
+    // This function only needs the mdx.frontmatter.tags and allTagsYaml fields,
+    // but there doesn't seem to be a way to get at the TypeScript types of the
+    // named nested parts of the PageTemplateQuery, so we just pass everything.
+    const { mdx, allTagsYaml } = data;
+
+    const fTags = filterDefined(mdx?.frontmatter?.tags);
+
+    // Early return if there are no tags.This way we avoid having to parse
+    // allTagsYaml for pages that don't have any tags.
+    if (!fTags) return [];
+
+    const knownTags = filterDefined(allTagsYaml.nodes).map(parseTagYaml);
+    return fTags.map((s) => {
+        const tag = parseFrontmatterTag(s);
+        const slug = knownTags.find((t) => t.tag == tag.tag)?.slug;
+        return { ...tag, slug };
+    });
 };
 
 /**
