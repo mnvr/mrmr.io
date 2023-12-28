@@ -9,19 +9,20 @@ import styled from "styled-components";
 import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
+import { capitalize } from "utils/string";
 
 /**
  * A template page for showing the list of pages with the given tag.
  *
- * At build time, Gatsby will build one of these at "/t/slug", for each of the
- * slugs defined in `data/tags.yaml`.
+ * At build time, Gatsby will build one of these at "/t/{tag.slug}", one for
+ * each of the tags defined in `data/tags.yaml`.
  */
 const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
     data,
 }) => {
     const pages = parsePages(data);
     const tag = parseTags(data);
-    console.log(tag);
+
     return (
         <PageListingContent pages={pages}>
             <Title_ {...tag}>{tag.slug}</Title_>
@@ -35,17 +36,22 @@ const Title_ = styled.div<Tag>`
     color: ${(props) => props.color ?? "var(--mrmr-color-4)"};
 `;
 
-export const Head: HeadFC = () => {
-    const titlePrefix = "Programming";
-    // TODO
-    const description = "Listing of all pages tagged Programming on mrmr.io";
-    const canonicalPath = "/t/programming";
+export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {
+    const tag = parseTags(data);
+
+    // All the slugs so far are single words, and so here we can use it as a
+    // the "name" of the tag.
+    const slug = tag.slug;
+
+    const titlePrefix = capitalize(slug);
+    const description = `Listing of all pages tagged ${slug} on mrmr.io`;
+    const canonicalPath = `/t/${slug}`;
 
     return <DefaultHead {...{ titlePrefix, description, canonicalPath }} />;
 };
 
 /**
- * Fetch all pages with the "poem" attribute, sorted by recency.
+ * Fetch all pages with the given tag, sorted by recency.
  *
  * - Exclude the pages which are marked `unlisted`.
  */
