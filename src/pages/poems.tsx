@@ -1,6 +1,6 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
-    parsePageListingPage,
+    parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
@@ -61,7 +61,7 @@ export const query = graphql`
 
 const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] =>
     replaceNullsWithUndefineds(data.allMdx)
-        .nodes.map(parsePageListingPage)
+        .nodes.map(parsePageListingPageData)
         .map(modifyDescription);
 
 const modifyDescription = (page: PageListingPage): PageListingPage => {

@@ -1,6 +1,6 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
-    parsePageListingPage,
+    parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
 import { Link, PageProps, graphql, type HeadFC } from "gatsby";
@@ -58,4 +58,4 @@ export const query = graphql`
 `;
 
 const parsePages = (data: Queries.AllPageQuery): PageListingPage[] =>
-    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPage);
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPageData);

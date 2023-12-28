@@ -233,7 +233,7 @@ export const query = graphql`
  * A helper function to parse the node obtained from a GraphQL query that embeds
  * the PageListingPageData fragment above into a {@link PageListingPage}.
  */
-export const parsePageListingPage = (
+export const parsePageListingPageData = (
     node: RecursivelyReplaceNullWithUndefined<Queries.PageListingPageDataFragment>,
 ): PageListingPage => {
     const { frontmatter, fields } = node;

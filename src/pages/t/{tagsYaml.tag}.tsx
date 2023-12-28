@@ -1,11 +1,10 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
-    parsePageListingPage,
+    parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
-import { parseColor } from "parsers/colors";
-import { type Tag } from "parsers/tag";
+import { parseTagData, type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
@@ -73,28 +72,13 @@ export const query = graphql`
             }
         }
         tagsYaml(tag: { eq: $tag }) {
-            tag
-            color
-            fields {
-                slug
-            }
+            ...TagData
         }
     }
 `;
 
 const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] =>
-    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPage);
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPageData);
 
-/**
- * Convert the tag data we get from GraphQL into the {@link Tag} type that the
- * rest of our code uses.
- */
-const parseTag = (data: Queries.TagListingPageQuery): Tag => {
-    const tagsYaml = ensure(replaceNullsWithUndefineds(data.tagsYaml));
-
-    const tag = ensure(tagsYaml.tag);
-    const slug = ensure(tagsYaml.fields?.slug);
-    const color = parseColor(tagsYaml.color);
-
-    return { tag, slug, color };
-};
+const parseTag = (data: Queries.TagListingPageQuery): Tag =>
+    parseTagData(ensure(replaceNullsWithUndefineds(data.tagsYaml)));
