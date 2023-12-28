@@ -6,7 +6,7 @@ import { PageProps, graphql, type HeadFC } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { filterDefined } from "utils/array";
-import { ensure } from "utils/ensure";
+import { ensure, ensureString } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
@@ -17,12 +17,16 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  */
 const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
     data,
+    params,
 }) => {
     const pages = parsePages(data);
+    // Gatsby will pass us the "slug" value that it used when expanding the
+    // collection route in `params`.
+    const slug = ensureString(params["slug"]);
 
     return (
         <PageListingContent pages={pages}>
-            <Title_>programming</Title_>
+            <Title_>{slug}</Title_>
         </PageListingContent>
     );
 };
@@ -48,11 +52,11 @@ export const Head: HeadFC = () => {
  * - Exclude the pages which are marked `unlisted`.
  */
 export const query = graphql`
-    query TagListingPage {
+    query TagListingPage($slug: String!) {
         allMdx(
             filter: {
                 frontmatter: {
-                    tags: { in: "Programming" }
+                    tags: { eq: $slug }
                     unlisted: { ne: true }
                 }
             }
