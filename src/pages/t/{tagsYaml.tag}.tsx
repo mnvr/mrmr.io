@@ -1,5 +1,6 @@
 import { DefaultHead } from "components/Head";
 import PageListingContent, {
+    parsePageListingPage,
     type PageListingPage,
 } from "components/PageListingContent";
 import { PageProps, graphql, type HeadFC } from "gatsby";
@@ -7,7 +8,6 @@ import { parseColor } from "parsers/colors";
 import { type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";
-import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 import { capitalize } from "utils/string";
@@ -69,15 +69,7 @@ export const query = graphql`
             ]
         ) {
             nodes {
-                frontmatter {
-                    title
-                    description
-                    formattedDateMY: date(formatString: "MMM YYYY")
-                    attributes
-                }
-                fields {
-                    slug
-                }
+                ...PageListingPageData
             }
         }
         tagsYaml(tag: { eq: $tag }) {
@@ -90,22 +82,8 @@ export const query = graphql`
     }
 `;
 
-const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] => {
-    const allMdx = replaceNullsWithUndefineds(data.allMdx);
-    const nodes = allMdx.nodes;
-
-    return nodes.map((node) => {
-        const { frontmatter, fields } = node;
-        const slug = ensure(fields?.slug);
-
-        const title = ensure(frontmatter?.title);
-        const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const attributes = filterDefined(frontmatter?.attributes);
-        const description = frontmatter?.description;
-
-        return { slug, title, description, formattedDateMY, attributes };
-    });
-};
+const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] =>
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPage);
 
 /**
  * Convert the tag data we get from GraphQL into the {@link Tag} type that the

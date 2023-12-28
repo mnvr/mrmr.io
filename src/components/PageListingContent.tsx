@@ -1,11 +1,14 @@
 import { Column } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
-import { Link } from "gatsby";
+import { Link, graphql } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
+import { filterDefined } from "utils/array";
 import { isBumped, isHindiContent } from "utils/attributes";
+import { ensure } from "utils/ensure";
+import { RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
 
 interface PageListingContentProps {
     /** The ordered list of pages to show */
@@ -207,3 +210,39 @@ const Footer_ = styled.footer`
     flex-direction: column;
     gap: 1rem;
 `;
+
+/**
+ * A GraphQL fragment that can be emdedded in page queries to get the data
+ * needed by a {@link PageListingPage}.
+ */
+export const query = graphql`
+    fragment PageListingPageData on Mdx {
+        frontmatter {
+            title
+            description
+            formattedDateMY: date(formatString: "MMM YYYY")
+            attributes
+        }
+        fields {
+            slug
+        }
+    }
+`;
+
+/**
+ * A helper function to parse the node obtained from a GraphQL query that embeds
+ * the PageListingPageData fragment above into a {@link PageListingPage}.
+ */
+export const parsePageListingPage = (
+    node: RecursivelyReplaceNullWithUndefined<Queries.PageListingPageDataFragment>,
+): PageListingPage => {
+    const { frontmatter, fields } = node;
+    const slug = ensure(fields?.slug);
+
+    const title = ensure(frontmatter?.title);
+    const formattedDateMY = ensure(frontmatter?.formattedDateMY);
+    const attributes = filterDefined(frontmatter?.attributes);
+    const description = frontmatter?.description;
+
+    return { slug, title, description, formattedDateMY, attributes };
+};
