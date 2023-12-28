@@ -8,7 +8,7 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
-import { FrontmatterTag, parseFrontmatterTag, parseTagYaml } from "parsers/tag";
+import { FrontmatterTag, parseTagYaml } from "parsers/tag";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
@@ -19,6 +19,7 @@ import {
     RecursivelyReplaceNullWithUndefined,
     replaceNullsWithUndefineds,
 } from "utils/replace-nulls";
+import { capitalize } from "utils/string";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -139,7 +140,10 @@ export const query = graphql`
                 dark_colors
                 theme
                 attributes
-                tags
+                tags {
+                    tag
+                    label
+                }
                 related
             }
             fields {
@@ -377,10 +381,11 @@ const parseTags = (
     if (!fTags) return [];
 
     const knownTags = filterDefined(allTagsYaml.nodes).map(parseTagYaml);
-    return fTags.map((s) => {
-        const tag = parseFrontmatterTag(s);
-        const slug = knownTags.find((t) => t.tag == tag.tag)?.slug;
-        return { ...tag, slug };
+    return fTags.map((ft) => {
+        const tag = ensure(ft.tag);
+        const label = ft.label ?? capitalize(tag);
+        const slug = knownTags.find((t) => t.tag == tag)?.slug;
+        return { tag, label, slug };
     });
 };
 

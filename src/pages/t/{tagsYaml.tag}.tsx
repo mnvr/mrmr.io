@@ -39,8 +39,8 @@ const Title_ = styled.div<Tag>`
 export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {
     const tag = parseTag(data);
 
-    // All the tags that link here single words, and so here we can use it as a
-    // the "name" of the tag.
+    // All the tag values are single words, and so here we can use it as a the
+    // "name" for the tag.
     const name = tag.tag;
 
     const titlePrefix = capitalize(name);
@@ -59,7 +59,10 @@ export const query = graphql`
     query TagListingPage($tag: String!) {
         allMdx(
             filter: {
-                frontmatter: { tags: { eq: $tag }, unlisted: { ne: true } }
+                frontmatter: {
+                    tags: { elemMatch: { tag: { eq: $tag } } }
+                    unlisted: { ne: true }
+                }
             }
             sort: [
                 { frontmatter: { date: DESC } }

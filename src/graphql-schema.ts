@@ -25,6 +25,11 @@ type Mdx implements Node {
     frontmatter: MdxFrontmatter
 }
 
+type MdxFrontmatterTag implements Node @dontInfer {
+    tag: String!
+    label: String
+}
+
 type MdxFrontmatter implements Node @dontInfer {
     # Title of the page
     #
@@ -168,18 +173,27 @@ type MdxFrontmatter implements Node @dontInfer {
 
     # Specify one or more tags to group posts.
     #
-    # A tag is specified in the MDX frontmatter as structured string. See the
-    # documentation of the FrontmatterTag type in 'parsers/tag.ts' for full
-    # details about the expected structure. As a short tldr, here are some
-    # examples of how tags can be specified:
+    # A tag is specified in the MDX frontmatter as pair of string, one is the
+    # required "tag" itself, and the other is an optional "label" to use when
+    # showing the tag.
+    #
+    # The "tag" itself is the unique key that is a foreign key link into the
+    # tags defined in 'data/tags.yaml'. Note that it is fine to add tags that
+    # are not defined in 'tags.yaml' - such tags will show up on the page
+    # footer (with the label), they just won't link back to a tag listing.
+    #
+    # The label is optional, and if not present, the capitalized tag will be
+    # used as the label.
+    #
+    # Here are examples of both labelled and unlabelled tags:
     #
     #     - tags:
-    #           - programming "This is a test"
-    #           - programming This is a test
-    #           - programming
+    #           - tag: programming
+    #             label: This is a test
+    #           - tag: programming
     #
-    # The list of tag slugs can be found in 'data/tags.yaml'.
-    tags: [String]
+    # See also: Documentation for the FrontmatterTag type in 'parsers/tag.ts'.
+    tags: [MdxFrontmatterTag]
 
     # Specify the slugs of related pages.
     #

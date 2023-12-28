@@ -7,11 +7,15 @@ import { capitalize } from "utils/string";
  * A type for the parsed representation of tags.
  *
  * Tags exist in two places:
- * - In `data/tags.yaml`
- * - In the MDX page frontmatters
  *
- * This Tag type is the parsed representation of the first one. The tags as
- * specified in the MDX pages are represented by {@link FrontmatterTag}.
+ * - In `data/tags.yaml`. This `Tag` type is their parsed representation.
+ *
+ * - In the MDX page frontmatter. These are represented by
+ *   {@link FrontmatterTag}.
+ *
+ * They are linked together by the `tag` field that is present in both. However,
+ * since there can be tags in the MDX page frontmatter that are not present
+ * in `data/tags.yaml`, this linking is done manually.
  */
 export type Tag = {
     /**
@@ -49,58 +53,24 @@ export const parseTagYaml = (
 };
 
 /**
- * A tag in the frontmatter is string with some structure. It conceptually
- * consists of two bits of information - the tag itself, and the label attached
- * to it.
+ * A tag in the frontmatter (represented by the MdxFrontmatterTag GraphQL type)
+ * consists of two bits of information - the tag itself, and an optional label.
  *
- * - The first word of the string is taken as the tag itself.
- * - The rest of the string is taken as the label of the tag.
- *
- * For legibility, it is expected that the rest of the string is enclosed in
- * double quotes. But this is not required.
-
- * For example, a tag can be specified in the frontmatter this way:
+ * If a label is not present, then the the capitalized tag will be used as the
+ * label. E.g. both of these will be parsed into a FrontmatterTag with tag
+ * 'programming' and label 'Programming'
  *
  *     - tags:
- *           - programming "This is a test"
- *           - programming This is a test
+ *           - tag: programming
+ *             label: Programming
+ *           - tag: programming
  *
- * Both of these will be parsed into a FrontmatterTag with tag 'programming' and
- * label 'This is a test' (without the quotes).
- *
- * Additionally, if a label is not specified then the capitalized tag will be
- * used as the label. So
- *
- *     - tags:
- *           - programming
- *
- * Will be parsed into a FrontmatterTag with tag 'programming' and label
- * 'Programming'.
- *
- * Finally, tags which match an existing entry in `data/tags.yaml` will also be
- * given a {@link slug} value. See the type {@link Tag} for more details about
- * these listings.
+ * Tags which match an existing entry in `data/tags.yaml` will also be given a
+ * {@link slug} value that points to a listing of all pages that have that tag.
+ * See the type {@link Tag} for more details about these listings.
  */
 export interface FrontmatterTag {
     tag: string;
     label: string;
     slug?: string;
 }
-
-/**
- * Parse a slug into a {@link FrontmatterTag}.
- *
- * Throws an error if it doesn't conform to the expected format.
- */
-export const parseFrontmatterTag = (s: string): FrontmatterTag => {
-    const [t, ...r] = s.split(" ");
-    const tag = ensure(t);
-
-    let label = r.join(" ");
-    if (label.startsWith('"')) label = label.slice(1);
-    if (label.endsWith('"')) label = label.slice(0, label.length - 1);
-
-    if (!label) label = capitalize(tag);
-
-    return { tag, label };
-};
