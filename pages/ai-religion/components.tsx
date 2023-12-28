@@ -13,6 +13,8 @@ export const Sketch: React.FC = () => {
 
 const Sketch_ = styled.div`
     /**
+     * Note: [Extra height at bottom of ReactP5Wrapper]
+     *
      * For an unknown reason, the react-p5-wrapper div has an extra 4 pixels of
      * height. Setting the display to flex fixes that discrepancy (I don't know
      * why either).

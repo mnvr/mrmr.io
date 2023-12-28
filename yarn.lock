@@ -2920,6 +2920,11 @@ argparse@^1.0.7:
   dependencies:
     sprintf-js "~1.0.2"
 
+argparse@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
+  integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
+
 aria-query@^5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/aria-query/-/aria-query-5.3.0.tgz#650c569e41ad90b51b3d7df5e5eed1c7549c103e"
@@ -5848,6 +5853,15 @@ gatsby-transformer-sharp@^5.11.0:
     semver "^7.5.3"
     sharp "^0.32.6"
 
+gatsby-transformer-yaml@^5.13.0:
+  version "5.13.0"
+  resolved "https://registry.yarnpkg.com/gatsby-transformer-yaml/-/gatsby-transformer-yaml-5.13.0.tgz#5d8d419f56ba685377afedacf13435cbaa7675b4"
+  integrity sha512-vGVbvhIWRQZ39ZVNIj/6m73WtzEHkPrW+PEbe0t2ze48vFJ3ceEe5+z5L9ayM1BUob3Th3taWnxDic+KFE2qmQ==
+  dependencies:
+    "@babel/runtime" "^7.20.13"
+    js-yaml "^4.1.0"
+    lodash "^4.17.21"
+
 gatsby-worker@^2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/gatsby-worker/-/gatsby-worker-2.13.0.tgz#d935f9a9ce72124a4ed4af8cfc47dd4162138144"
@@ -7120,6 +7134,13 @@ js-yaml@^3.13.1:
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
+
+js-yaml@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-4.1.0.tgz#c1fb65f8f5017901cdd2c951864ba18458a10602"
+  integrity sha512-wpxZs9NoxZaJESJGIZTyDEaYpl0FKSA+FB9aJiyemKhMwkxQg63h4T1KJgUGHpTqPDNRcmmYLugrRjJlBtWvRA==
+  dependencies:
+    argparse "^2.0.1"
 
 jsesc@^2.5.1:
   version "2.5.2"

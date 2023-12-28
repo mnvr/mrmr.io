@@ -29,7 +29,44 @@ const Sketch: React.FC = () => {
 };
 
 const Sketch_ = styled.div`
+    /**
+     * Note: [Extra height at bottom of ReactP5Wrapper]
+     *
+     * For an unknown reason, the react-p5-wrapper div has an extra 4 pixels of
+     * height. Setting the display to flex fixes that discrepancy (I don't know
+     * why either).
+     */
+    display: flex;
+    /**
+     * Center the sketch within the container.
+     */
+    justify-content: center;
+    /**
+     * Provide a minimum height to prevent a layout shift on load
+     *
+     * This is the same value is that in sketch.tsx.
+     */
+    min-height: 200px;
     border: 1px solid tomato;
 `;
 
-export const sketch: Sketch = (p5) => {};
+const Sketch2_ = styled.div`
+    border: 1px solid tomato;
+    /**
+     * Note: [Extra height at bottom of ReactP5Wrapper]
+     *
+     * For an unknown reason, the react-p5-wrapper div has an extra 4 pixels of
+     * height. Setting the display to flex fixes that discrepancy (I don't know
+     * why either).
+     */
+    display: flex;
+`;
+
+export const sketch: Sketch = (p5) => {
+    p5.setup = () => p5.createCanvas(500, 500);
+
+    p5.draw = () => {
+        p5.background(40);
+        p5.noLoop();
+    };
+};
