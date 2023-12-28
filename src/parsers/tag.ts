@@ -1,5 +1,5 @@
 import { parseColor } from "parsers/colors";
-import { ensure } from "utils/ensure";
+import { ensureString } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** A type for the parsed representation of tags */
@@ -21,10 +21,10 @@ export type Tag = {
  * Convert the tag data we get from GraphQL into the {@link Tag} type that the
  * rest of our code uses.
  */
-export const parseTag = (data: Queries.TagsYaml): Tag => {
+export const parseTag = (data: Record<string, unknown>): Tag => {
     const tagsYaml = replaceNullsWithUndefineds(data);
 
-    const slug = ensure(tagsYaml.slug);
+    const slug = ensureString(tagsYaml.slug);
     const color = parseColor(tagsYaml.color);
 
     return { slug, color };

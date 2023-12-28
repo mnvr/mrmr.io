@@ -1,6 +1,6 @@
 import { isDefined } from "utils/array";
 import { color, setAlpha } from "utils/colorsjs";
-import { ensure } from "utils/ensure";
+import { ensure, ensureString } from "utils/ensure";
 
 /**
  * A set of colors, or as Picasso would say, a palette.
@@ -169,7 +169,7 @@ export const parseColorPalette = (
  * As another convenience, it accepts undefined values, and just returns them
  * back as it is: this makes it simpler to chain.
  */
-export const parseColor = (c: string | undefined) => {
-    if (c === undefined) return c;
-    return color(c).toString();
+export const parseColor = (c: unknown): string | undefined => {
+    if (typeof c === "undefined") return c;
+    return color(ensureString(c)).toString();
 };
