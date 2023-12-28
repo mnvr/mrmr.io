@@ -69,7 +69,7 @@ const ColorCell: React.FC<ColorCellProps> = ({ colorInfo }) => {
     // Print a 0-255 RGB component representation of the color on the console on
     // click. This is handy when copy pasting into vanilla P5 sketches.
     const handleClick = () => {
-        console.log(rgb255String(color));
+        console.info(rgb255String(color));
     };
 
     return (

@@ -78,7 +78,7 @@ const addDebug = (hr: HydraRenderer) => {
     _proto(hr).debug = function () {
         const passes = this.glsl();
         const code = passes[0].frag;
-        console.log(code);
+        console.info(code);
         return this;
     };
 };

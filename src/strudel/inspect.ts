@@ -21,7 +21,7 @@ const debugPrint = (pattern: Pattern, n = 10, preamble?: string) => {
     if (!isDevelopment()) return pattern;
 
     const events = pattern.sortHapsByPart().queryArc(0, n);
-    if (preamble) console.log(preamble);
-    events.forEach((e) => console.log(e.show()));
+    if (preamble) console.info(preamble);
+    events.forEach((e) => console.info(e.show()));
     return pattern;
 };

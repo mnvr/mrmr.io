@@ -15,6 +15,6 @@ export const timed = <T>(f: () => T): T => {
     const result = f();
     const end = performance.now();
     const ms = Math.round(end - start);
-    console.log(`timed function took ${ms} ms`);
+    console.info(`timed function took ${ms} ms`);
     return result;
 };
