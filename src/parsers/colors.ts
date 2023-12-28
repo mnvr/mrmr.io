@@ -97,6 +97,10 @@ import { ensure } from "utils/ensure";
  *
  */
 export interface ColorPalette {
+    /**
+     * Each of these is a a string representation of the colors that CSS can
+     * understand.
+     */
     backgroundColor1: string;
     color1: string;
     color2: string;
@@ -156,4 +160,16 @@ export const parseColorPalette = (
         backgroundColor1Transparent: backgroundColor1Transparent.toString(),
         color1Transparent: color1Transparent.toString(),
     };
+};
+
+/**
+ * Convenience method to verify that a color string indeed represents a color
+ * that CSS can understand by doing a round-trip through the colorjs.io library.
+ *
+ * As another convenience, it accepts undefined values, and just returns them
+ * back as it is: this makes it simpler to chain.
+ */
+export const parseColor = (c: string | undefined) => {
+    if (c === undefined) return c;
+    return color(c).toString();
 };

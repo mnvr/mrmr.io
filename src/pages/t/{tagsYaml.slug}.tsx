@@ -77,10 +77,31 @@ export const query = graphql`
                 }
             }
         }
+        tagsYaml(slug: {eq: "quotes"}) {
+            slug
+            color
+        }
     }
 `;
 
 const parsePages = (data: Queries.TagListingPageQuery): PageListingPage[] => {
+    const allMdx = replaceNullsWithUndefineds(data.allMdx);
+    const nodes = allMdx.nodes;
+
+    return nodes.map((node) => {
+        const { frontmatter, fields } = node;
+        const slug = ensure(fields?.slug);
+
+        const title = ensure(frontmatter?.title);
+        const formattedDateMY = ensure(frontmatter?.formattedDateMY);
+        const attributes = filterDefined(frontmatter?.attributes);
+        const description = frontmatter?.description;
+
+        return { slug, title, description, formattedDateMY, attributes };
+    });
+};
+
+const parseTag = (data: Queries.TagListingPageQuery): PageListingPage[] => {
     const allMdx = replaceNullsWithUndefineds(data.allMdx);
     const nodes = allMdx.nodes;
 
