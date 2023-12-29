@@ -77,9 +77,9 @@ const TagList: React.FC<TagsProps> = ({ tags }) => {
     return (
         <TagUL>
             {tags.map((tag) => (
-                <li key={tag.tag}>
+                <TagLI key={tag.tag} {...tag}>
                     <TagItem tag={tag} />
-                </li>
+                </TagLI>
             ))}
         </TagUL>
     );
@@ -87,8 +87,13 @@ const TagList: React.FC<TagsProps> = ({ tags }) => {
 
 const TagUL = styled.ul`
     margin-block-start: 2.2rem;
-    li {
-        margin-block: 1rem;
+`;
+
+const TagLI = styled.li<Tag>`
+    color: ${(props) => props.color ?? "inherit"};
+    margin-block: 1rem;
+    a {
+        color: var(--mrmr-color-1);
     }
 `;
 
