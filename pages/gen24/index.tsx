@@ -1,4 +1,6 @@
 import { type Sketch } from "@p5-wrapper/react";
+import { ExternalLink } from "components/ExternalLink";
+import { LinkStyleUnderlined } from "components/LinkStyles";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
 import styled from "styled-components";
@@ -10,7 +12,9 @@ export const Content: React.FC = () => {
                 <Banner />
                 <SketchContainer />
             </FirstFold>
-            <Description />
+            <LinkStyleUnderlined>
+                <Description />
+            </LinkStyleUnderlined>
         </Content_>
     );
 };
@@ -196,10 +200,13 @@ const Description: React.FC = () => {
                 is like a Griduary too.
             </p>
             <p>
-                I'm using p5.js to make these sketches, and the source code for
-                all of these is available on GitHub. The one you see above is
-                not a remix, it is a cover I made to kickstart things off. The
-                remixes are below. Tap on any of them to view a live version.
+                I'm using p5.js to make these sketches, and the{" "}
+                <ExternalLink href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
+                    source code for all of these is available on GitHub
+                </ExternalLink>
+                . The one you see above is not a remix, it is a cover I made to
+                kickstart things off. The remixes are below. Tap on any of them
+                to view a live version.
             </p>
             <p>Have a great and inspiring 2024.</p>
         </Description_>
@@ -211,4 +218,12 @@ const Description_ = styled.div`
     margin-inline: 1rem;
 
     max-width: 30rem;
+
+    p {
+        line-height: 1.5rem;
+    }
+
+    a {
+        font-weight: normal;
+    }
 `;
