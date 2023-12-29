@@ -217,7 +217,7 @@ const Description: React.FC = () => {
                 {/*The remixes are below. Tap on any of them
                 to view a live version.*/}
             </p>
-            <p>Have a great and inspired 2024.</p>
+            <p>Have a great and inspiring 2024.</p>
         </Description_>
     );
 };
