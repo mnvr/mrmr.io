@@ -39,8 +39,7 @@ const Banner: React.FC = () => {
 };
 
 const Banner_ = styled.div`
-    background-color: green;
-    height: 67px;
+    height: 62px;
 `;
 
 const SketchContainer: React.FC = () => {
@@ -52,14 +51,11 @@ const SketchContainer: React.FC = () => {
 };
 
 const SketchContainer_ = styled.div`
-    background-color: #aac7e0;
     flex-grow: 1;
 
     display: flex;
-    /* center horizontally */
-    justify-content: center;
-    /* center vertically */
-    align-items: center;
+    justify-content: center; /* horizontally */
+    align-items: center; /* vertically */
 `;
 
 const BannerH: React.FC = () => {
@@ -69,7 +65,7 @@ const BannerH: React.FC = () => {
 const BannerH_ = styled.h3`
     margin-inline: 1rem;
     color: var(--mrmr-color-3);
-    font-weight: 200;
+    font-weight: 300;
 `;
 
 const Sketch: React.FC = () => {
@@ -144,7 +140,7 @@ export const sketch: Sketch = (p5) => {
         let [w, h] = [p5.windowWidth, p5.windowHeight];
         // Account for the (fixed size) banner at the top, and the slight margin
         // at the bottom of the fold since it is 98svh, not 100vh.
-        h -= 100;
+        h -= 90;
         // Don't risk a scrollbar
         w -= 2;
         // Clamp
