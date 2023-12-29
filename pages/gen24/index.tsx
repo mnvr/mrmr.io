@@ -1,5 +1,5 @@
 import { type Sketch } from "@p5-wrapper/react";
-import ReactP5Wrapper from "p5/ReactP5Wrapper";
+import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
 import styled from "styled-components";
 
@@ -69,7 +69,7 @@ const BannerH_ = styled.h3`
 `;
 
 const Sketch: React.FC = () => {
-    return <ReactP5Wrapper sketch={sketch} />;
+    return <ReactP5WrapperWithFade sketch={sketch} />;
 };
 
 export const sketch: Sketch = (p5) => {
