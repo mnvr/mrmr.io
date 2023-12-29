@@ -10,6 +10,7 @@ export const Content: React.FC = () => {
                 <Banner />
                 <SketchContainer />
             </FirstFold>
+            <Description />
         </Content_>
     );
 };
@@ -180,3 +181,34 @@ export const sketch: Sketch = (p5) => {
         }
     };
 };
+
+const Description: React.FC = () => {
+    return (
+        <Description_>
+            <p>
+                Genuary is an month-long online art fair (that's one way of
+                putting it!) that happens every year, in, you guessed it,
+                January. This year I thought I'll do remixes of the other
+                Genuary art that I come across and find particularly inspiring.
+            </p>
+            <p>
+                Additionally, I've constrained myself to use only grids. So this
+                is like a Griduary too.
+            </p>
+            <p>
+                I'm using p5.js to make these sketches, and the source code for
+                all of these is available on GitHub. The one you see above is
+                not a remix, it is a cover I made to kickstart things off. The
+                remixes are below. Tap on any of them to view a live version.
+            </p>
+            <p>Have a great and inspiring 2024.</p>
+        </Description_>
+    );
+};
+
+const Description_ = styled.div`
+    margin-block: 1rem;
+    margin-inline: 1rem;
+
+    max-width: 30rem;
+`;
