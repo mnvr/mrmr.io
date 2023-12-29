@@ -87,6 +87,29 @@ export const sketch: Sketch = (p5) => {
      */
     let cellSize = 100;
 
+    /**
+     * Offset (usually negtive) after which we should start drawing the first
+     * cell in a row (ditto for the first cell in a column).
+     *
+     * `cellSize * cellCount` will generally not cover the entire canvas.
+     * This'll be for two reasons:
+     *
+     * - `cellSize` is integral, but the width (or height) divided by the
+     *   cellCount might not be integral.
+     *
+     * - The width and height of the canvas might be different, in which case
+     *   the `cellSize` is computed such that we get a "size-to-fill" sort of
+     *   behaviour. This means that on one of the axes, the last drawn cell
+     *   might not be actually the last cell, and it might not even be drawn
+     *   fully.
+     *
+     * To make things aesthetically more pleasing without having a more
+     * complicated sizing algorithm, what we do is that we start drawing from an
+     * offset, so that there is a similar half-drawn cell at both ends, and the
+     * grid overall looks (uniformly) clipped and centered.
+     */
+    let cellOffset = { x: 0, y: 0 };
+
     p5.setup = () => {
         p5.createCanvas(...sketchSize());
         updateSizes();
@@ -137,6 +160,11 @@ export const sketch: Sketch = (p5) => {
         // expected rows and columns is the same.
         console.assert(cellCount.x == cellCount.y);
         cellSize = p5.ceil(minDimension / cellCount.x);
+
+        // This'll be negative, which is what we want.
+        let remainingX = p5.width - cellSize * cellCount.x;
+        let remainingY = p5.height - cellSize * cellCount.y;
+        cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
     p5.draw = () => {
@@ -144,8 +172,8 @@ export const sketch: Sketch = (p5) => {
 
         for (let y = 0; y < cellCount.y; y++) {
             for (let x = 0; x < cellCount.x; x++) {
-                let px = x * cellSize;
-                let py = y * cellSize;
+                let px = x * cellSize + cellOffset.x;
+                let py = y * cellSize + cellOffset.y;
                 p5.fill(170);
                 p5.rect(px, py, cellSize, cellSize);
             }
