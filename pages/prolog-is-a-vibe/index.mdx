@@ -10,7 +10,7 @@ related:
     - "/the-universe-is-its-own-simulation"
 ---
 
-import { ExternalLink } from "components/ExternalLink";
+import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { RefLink } from "components/text/extra";
 
 Start with a base sets of facts. Combine those facts to produce more facts. Then
@@ -39,9 +39,9 @@ capture this vibe, this process of the computer program "thinking" in its
 thought space, interospecting on its own previous thoughts, until it links them
 together into a solution.
 
-The <ExternalLink
-href="https://github.com/mnvr/advent-of-code-2023/blob/main/03.az.sh">
-resultant shell script</ExternalLink> is not structured as functions or
+The <ExternalLinkWithIcon
+href="https://github.com/mnvr/advent-of-code-2023/blob/main/03.az.sh">resultant
+shell script</ExternalLinkWithIcon> is not structured as functions or
 subroutines or steps. It is instead structured as a set of passes over a
 database of facts. What database do we use? It’s own log file!
 
@@ -68,7 +68,7 @@ like, building higher and higher level deductions, until we’ve combined our wa
 to the solution, say `"The longest run of lines each with an interesting number
 is of size 23"`.
 
-If it sounds abstract, have a <ExternalLink
+If it sounds abstract, have a <ExternalLinkWithIcon
 href="https://github.com/mnvr/advent-of-code-2023/blob/main/03.az.sh">gander at
-the source code</ExternalLink>. Even if you don’t talk shell script or awk, you
-should be able to get the basic flow that I’m hinting at.
+the source code</ExternalLinkWithIcon>. Even if you don’t talk shell script or
+awk, you should be able to get the basic flow that I’m hinting at.
