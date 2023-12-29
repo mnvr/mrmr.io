@@ -1,6 +1,11 @@
 import * as React from "react";
+import { RxArrowTopRight } from "react-icons/rx";
 
-/** A link that opens in an new tab */
+/**
+ * A link that opens in an new tab
+ *
+ * @see also {@link ExternalLinkWithIcon}.
+ * */
 export const ExternalLink: React.FC<
     React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
 > = ({ children, ...props }) => {
@@ -10,6 +15,24 @@ export const ExternalLink: React.FC<
     return (
         <a target="_blank" rel="noopener" {...props}>
             {children}
+        </a>
+    );
+};
+
+/**
+ * A link that opens in an new tab, with an indicator.
+ *
+ * This is a variant of {@link ExternalLink} that shows an outward (top right)
+ * facing arrow icon after the children to indicate that the link will open in a
+ * new tab.
+ * */
+export const ExternalLinkWithIcon: React.FC<
+    React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
+> = ({ children, ...props }) => {
+    return (
+        <a target="_blank" rel="noopener" {...props}>
+            {children}
+            <RxArrowTopRight />
         </a>
     );
 };

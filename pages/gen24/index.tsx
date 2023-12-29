@@ -1,10 +1,9 @@
 import { type Sketch } from "@p5-wrapper/react";
-import { ExternalLink } from "components/ExternalLink";
+import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
-import { RxArrowTopRight } from "react-icons/rx";
 import styled from "styled-components";
 
 export const Content: React.FC = () => {
@@ -210,10 +209,9 @@ const Description: React.FC = () => {
             </p>
             <p>
                 I'm using p5.js to make these sketches, and the{" "}
-                <ExternalLink href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
+                <ExternalLinkWithIcon href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
                     source code for all of these is available on GitHub
-                    <RxArrowTopRight />
-                </ExternalLink>
+                </ExternalLinkWithIcon>
                 . The one you see above is not a remix, it is a cover I made to
                 kickstart things off.{" "}
                 {/*The remixes are below. Tap on any of them
