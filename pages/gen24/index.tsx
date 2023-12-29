@@ -48,10 +48,31 @@ const Sketch_ = styled.div`
 `;
 
 export const sketch: Sketch = (p5) => {
+    /**
+     * The last index determines the number of rows and columns in the grid.
+     * This is the thing that is usually fixed for a grid.
+     */
     let lastIndex = { x: 13, y: 13 };
+
+    /**
+     * The size (both width and height) of an individual cell in the grid.
+     */
     let cellSize = 100;
 
-    p5.setup = () => p5.createCanvas(500, 500);
+    p5.setup = () => {
+        p5.createCanvas(500, 500);
+        updateSizes();
+    }
+
+    /**
+     * Called whenever the width and height of the sketch is updated, including
+     * the first time when the sketch is created.
+     */
+    const updateSizes = () => {
+        const minDimension = p5.min(p5.width, p5.height);
+        console.assert(lastIndex.x == lastIndex.y);
+        cellSize = p5.ceil(minDimension / lastIndex.x);
+    }
 
     p5.draw = () => {
         p5.background(40);
