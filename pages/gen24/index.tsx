@@ -74,10 +74,13 @@ const Sketch: React.FC = () => {
 
 export const sketch: Sketch = (p5) => {
     /**
-     * The last index determines the number of rows and columns in the grid.
-     * This is the thing that is usually fixed for a grid.
+     * The number of rows and columns in the grid.
+     *
+     * This is the thing that is usually fixed for a grid. At runtime, we then
+     * distribute the available width and height and compute the size of the
+     * individual cells ({@link cellSize}).
      */
-    let lastIndex = { x: 13, y: 13 };
+    let cellCount = { x: 13, y: 13 };
 
     /**
      * The size (both width and height) of an individual cell in the grid.
@@ -115,9 +118,11 @@ export const sketch: Sketch = (p5) => {
         // Account for the (fixed size) banner at the top, and the slight margin
         // at the bottom of the fold since it is 98svh, not 100vh.
         h -= 100;
+        // Don't risk a scrollbar
+        w -= 2;
         // Clamp
-        h = p5.min(h, 300);
-        w = p5.min(w, 300);
+        h = p5.min(h, 900);
+        w = p5.min(w, 900);
         return [w, h];
     };
 
@@ -126,22 +131,24 @@ export const sketch: Sketch = (p5) => {
      * the first time when the sketch is created.
      */
     const updateSizes = () => {
-        const minDimension = p5.min(p5.width, p5.height);
-        console.assert(lastIndex.x == lastIndex.y);
-        cellSize = p5.ceil(minDimension / lastIndex.x);
+        const minDimension = p5.max(p5.width, p5.height);
+        // Currently we support only cells that are sized the same both in width
+        // and height. To keep things simple, we also require that the number of
+        // expected rows and columns is the same.
+        console.assert(cellCount.x == cellCount.y);
+        cellSize = p5.ceil(minDimension / cellCount.x);
     };
 
     p5.draw = () => {
         p5.background(40);
 
-        for (let y = 0; y <= lastIndex.y; y++) {
-            for (let x = 0; x <= lastIndex.x; x++) {
+        for (let y = 0; y < cellCount.y; y++) {
+            for (let x = 0; x < cellCount.x; x++) {
                 let px = x * cellSize;
                 let py = y * cellSize;
                 p5.fill(170);
                 p5.rect(px, py, cellSize, cellSize);
             }
         }
-        p5.noLoop();
     };
 };
