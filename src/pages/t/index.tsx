@@ -86,7 +86,7 @@ const TagList: React.FC<TagsProps> = ({ tags }) => {
 };
 
 const TagUL = styled.ul`
-    margin-block-start: 2.8rem;
+    margin-block-start: 2.2rem;
     li {
         margin-block: 1rem;
     }
