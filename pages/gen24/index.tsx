@@ -21,6 +21,8 @@ export const Content: React.FC = () => {
 const Content_ = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 900px;
+    margin: auto;
 `;
 
 const FirstFold = styled.div`
@@ -39,7 +41,7 @@ const Banner: React.FC = () => {
 };
 
 const Banner_ = styled.div`
-    height: 62px;
+    height: 67px;
 `;
 
 const SketchContainer: React.FC = () => {
@@ -63,7 +65,9 @@ const BannerH: React.FC = () => {
 };
 
 const BannerH_ = styled.h3`
-    margin-inline: 1rem;
+    @media (max-width: 900px) {
+        margin-inline: 1rem;
+    }
     color: var(--mrmr-color-3);
     font-weight: 300;
 `;
@@ -213,7 +217,7 @@ const Description: React.FC = () => {
                 {/*The remixes are below. Tap on any of them
                 to view a live version.*/}
             </p>
-            <p>Have a great and inspiring 2024.</p>
+            <p>Have a great and inspired 2024.</p>
         </Description_>
     );
 };
@@ -223,7 +227,9 @@ const Description_ = styled.div`
     @media (min-width: 800px) {
         margin-block: 2rem;
     }
-    margin-inline: 1rem;
+    @media (max-width: 900px) {
+        margin-inline: 1rem;
+    }
 
     max-width: 30rem;
 
@@ -248,7 +254,9 @@ const Footer: React.FC = () => {
 
 const Footer_ = styled.div`
     margin-block: 3rem;
-    margin-inline: 1rem;
+    @media (max-width: 900px) {
+        margin-inline: 1rem;
+    }
 
     p {
         line-height: 1.5rem;
