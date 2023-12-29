@@ -1,4 +1,4 @@
-import type { Sketch } from "@p5-wrapper/react";
+import { type Sketch } from "@p5-wrapper/react";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import * as React from "react";
 import styled from "styled-components";

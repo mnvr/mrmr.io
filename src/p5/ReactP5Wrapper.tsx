@@ -6,8 +6,15 @@ import loadable from "@loadable/component";
  * importing p5 requires window to be available, and it isn't when server side
  * rendering).
  *
- * To resolve this, we can use Gatsby's loadable-components, which allow us to
- * load client-side dependent components asynchronously.
+ * To resolve this, we can use loadable-components, which is primarily a code
+ * splitting mechanism, but here it allow us to load components with client-side
+ * dependencies asynchronously.
+ *
+ * For more details, see the documentation for loadable-components:
+ * https://loadable-components.com/
+ *
+ * For a comparison with Suspense, see
+ * https://github.com/mnvr/suspense-vs-loadable.
  */
 const P5Wrapper = loadable(() => import("@p5-wrapper/react"), {
     resolveComponent: ({ ReactP5Wrapper }) => ReactP5Wrapper,
