@@ -5,22 +5,22 @@ import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
 import styled from "styled-components";
 
-export const Content: React.FC<React.PropsWithChildren<P5WrapperProps>> = ({
+export const Layout: React.FC<React.PropsWithChildren<P5WrapperProps>> = ({
     sketch,
     children,
 }) => {
     return (
-        <Content_>
+        <Layout_>
             <FirstFold>
                 <Banner />
                 <SketchContainer sketch={sketch} />
             </FirstFold>
             {children}
-        </Content_>
+        </Layout_>
     );
 };
 
-const Content_ = styled.div`
+const Layout_ = styled.div`
     display: flex;
     flex-direction: column;
     max-width: 900px;

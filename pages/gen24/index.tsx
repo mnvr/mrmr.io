@@ -5,9 +5,9 @@ import { sketch } from "./sketch";
 
 export const Content: React.FC = () => {
     return (
-        <C.Content sketch={sketch}>
+        <C.Layout sketch={sketch}>
             <Description />
-        </C.Content>
+        </C.Layout>
     );
 };
 
