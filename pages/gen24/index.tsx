@@ -114,14 +114,49 @@ export const sketch: Sketch = (p5) => {
      */
     let cellOffset = { x: 0, y: 0 };
 
+    /**
+     * Note: [Handling "spurious" window resizes on mobile browsers]
+     *
+     * On mobile browsers (I can observe this on Safari, but it also apparently
+     * happens on Chrome), the frame of the browser gets adjusted as we scroll.
+     * e.g. on Safari initially there is a big navigation bar at the bottom, but
+     * as we scroll along the page, this navigation bar collapses down to a
+     * smaller one in the safe area.
+     *
+     * This is all expected, that's why the concept of svh and lvh were added in
+     * addition of vh to capture this varying window size.
+     * https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units
+     *
+     * The problem is - this also causes the `windowResized` event below to
+     * fire. From our current perspective, this is a "spurious" resize, and it
+     * causes the canvas cell sizes to shift around a bit disorientingly.
+     *
+     * Now, maybe there is a more principled way of filtering these out, but
+     * since I don't have immediate access to the other mobile browsers and
+     * can't test things out there, I'll go with a more hammer-on approach that
+     * should work in all such situations - just ignore any new window sizes
+     * that have the same width as the previous window size we encountered.
+     */
+    let previousWindowSize = { width: 0 };
+
     p5.setup = () => {
+        previousWindowSize.width = p5.windowWidth;
         p5.createCanvas(...sketchSize());
         updateSizes();
     };
 
     p5.windowResized = () => {
+        if (shouldIgnoreWindowResizedEvent()) return;
         p5.resizeCanvas(...sketchSize());
         updateSizes();
+    };
+
+    /** See: [Handling "spurious" window resizes on mobile browsers] */
+    const shouldIgnoreWindowResizedEvent = () => {
+        const width = p5.windowWidth;
+        if (width === previousWindowSize.width) return true;
+        previousWindowSize.width = width;
+        return false;
     };
 
     /**
