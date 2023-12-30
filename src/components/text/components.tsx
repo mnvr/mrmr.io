@@ -97,6 +97,11 @@ const Content_ = styled(LinkStyleUnderlined)`
         padding-inline: 1.4rem;
         border-radius: 4px;
 
+        /* Extend outward the same as the inline-padding. This way, the actual
+           content of the pre block is left-aligned with the normal text, only
+           the background of it extends out and gets a padding from */
+        margin-inline: -1.4rem;
+
         /* If the lines in code block do not fit, add a horizontal scroll to the
            pre element instead of increasing the width of the page contents. */
         overflow-x: scroll;
