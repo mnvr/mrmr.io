@@ -1,4 +1,3 @@
-import { ExternalLinkWithIcon } from "components/ExternalLink";
 import * as React from "react";
 import * as C from "./components";
 import { sketch } from "./sketch";
@@ -26,9 +25,9 @@ const Description: React.FC = () => {
             </p>
             <p>
                 I'm using p5.js to make these sketches, and the{" "}
-                <ExternalLinkWithIcon href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
+                <C.ELink href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
                     source code for all of these is available on GitHub
-                </ExternalLinkWithIcon>
+                </C.ELink>
                 . The one you see above is not a remix, it is a cover I made to
                 kickstart things off.{" "}
                 {/*The remixes are below. Tap on any of them

@@ -1,4 +1,5 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
+import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
@@ -140,3 +141,10 @@ const Footer_ = styled.div`
         line-height: 1.5rem;
     }
 `;
+
+/**
+ * This is as alias for {@link ExternalLinkWithIcon}, just reexported with a
+ * shorter name for convenience and avoiding requiring another import in the MDX
+ * file.
+ */
+export const ELink = ExternalLinkWithIcon;
