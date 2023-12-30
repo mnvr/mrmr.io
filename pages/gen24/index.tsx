@@ -3,6 +3,7 @@ import * as React from "react";
 import { HiArrowRight } from "react-icons/hi";
 import styled from "styled-components";
 import * as C from "./components";
+import { days, type Day } from "./days";
 import { sketch } from "./sketch";
 
 export const Content: React.FC = () => {
@@ -45,7 +46,11 @@ const Description: React.FC = () => {
 const DayList: React.FC = () => {
     return (
         <DayUL>
-            <D1 />
+            {days.map((day, i) => (
+                <li key={i}>
+                    <DayCard {...day} />
+                </li>
+            ))}
         </DayUL>
     );
 };
@@ -59,25 +64,17 @@ const DayUL = styled.ul`
 
     li {
         margin: 1rem;
-        border: 1px solid tomato;
     }
 `;
 
-const D1: React.FC = () => {
+const DayCard: React.FC<Day> = ({ day, prompt, color }) => {
     return (
-        <li>
-            <DayCard />
-        </li>
-    );
-};
-
-const DayCard: React.FC = () => {
-    return (
-        <Link to="gen24/1">
-            <DayCard_>
+        <Link to={`${day}`}>
+            <DayCard_ color={color}>
                 <p>
-                    <b>Day 1</b> <span style={{ color: "tomato" }}>·</span>{" "}
-                    <i>Particles</i>
+                    <b>{`Day ${day}`}</b>
+                    <span style={{ color }}> · </span>
+                    <i>{prompt}</i>
                 </p>
                 <HiArrowRight />
             </DayCard_>
@@ -85,7 +82,9 @@ const DayCard: React.FC = () => {
     );
 };
 
-const DayCard_ = styled.div`
+const DayCard_ = styled.div<{ color: string }>`
+    border: 1px solid ${(props) => props.color};
+
     padding-block: 1rem;
     padding-inline: 1.5rem;
 
@@ -94,10 +93,10 @@ const DayCard_ = styled.div`
     align-items: center;
 
     &:hover {
-        color: tomato;
+        color: ${(props) => props.color};
     }
+
     svg {
         font-size: 1.2rem;
-        /* color: tomato; */
     }
 `;
