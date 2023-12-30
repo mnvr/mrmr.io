@@ -113,7 +113,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
 
     const siteTitle = site?.siteMetadata?.title;
     const pageTitle =
-        title ?? [titlePrefix, siteTitle].filter(isDefined).join(" • ");
+        title ?? [titlePrefix, siteTitle].filter(isDefined).join(" · ");
 
     let canonicalURL: string | undefined;
     if (canonicalPath === "") {
