@@ -6,20 +6,51 @@ import { type P5CanvasInstance, type Sketch } from "@p5-wrapper/react";
  * This will be called for each cell, passing it the p5 instance, the cell
  * specific data, and the overall grid shape. This is modeled somewhat similarly
  * to WebGL fragment shaders, although much (much) more coarse.
- *
- * @param p5 an instance of {@link P5CanvasInstance}. This is the same as the p5
- * instance passed to the actual {@link Sketch} type that we'll be drawing on
- * the screen.
- *
  */
 export type CellShader = (params: CellShaderParams) => void;
+
+/**
+ * Data representing the entire grid.
+ *
+ * This is data that is invariant across cells, and is common to the entire
+ * grid.
+ */
+export interface Grid {
+    /** Number of cells per axis */
+    n: number;
+}
+
+/**
+ * Data representing each cell.
+ *
+ * A cell has a fixed position in the grid, which can be read off from here.
+ */
+export interface Cell {
+    /**
+     * The vertical index of the cell
+     *
+     * This ranges from 0 to {@link Grid.n} across all the cells.
+     */
+    row: number;
+    /**
+     * The horizontal index of the cell
+     *
+     * This ranges from 0 to {@link Grid.n} across all the cells.
+     */
+    col: number;
+}
 
 /**
  * Parameters passed to the {@link CellShader} when invoking it during
  * {@link drawCell}.
  */
 export interface CellShaderParams {
-    /** The p5 instance to use */
+    /**
+     * The p5 instance to use
+     *
+     * This is the same as the {@link P5CanvasInstance} passed to the actual
+     * {@link Sketch} type that we'll be drawing on the screen.
+     */
     p5: P5CanvasInstance;
     /**
      * X coordinate for the top left corner of the cell.
@@ -39,6 +70,35 @@ export interface CellShaderParams {
      * The cells are all squares.
      */
     s: number;
+    /**
+     * Data about the cell itself.
+     */
+    cell: Cell;
+    /**
+     * Data about the grid we're part of.
+     */
+    grid: Grid;
+}
+
+/**
+ * A function that is called once (per frame) for doing any background drawing
+ * or clearing before we start drawing each cell.
+ */
+export type GridShader = (params: GridShaderParams) => void;
+
+/**
+ * Parameters passed to the {@link GridShader} when invoking it during
+ * {@link drawGrid}.
+ */
+export interface GridShaderParams {
+    /**
+     * The p5 instance to use
+     */
+    p5: P5CanvasInstance;
+    /**
+     * Data about the grid.
+     */
+    grid: Grid;
 }
 
 /**
@@ -54,7 +114,16 @@ export interface GridSketchParams {
     drawCell?: CellShader;
 
     /**
-     * The number of cells per axis
+     * A function to prepare the grid before we start drawing each cell.
+     *
+     * See the documentation of {@link GridShader} for more info.
+     *
+     * The default implementation clears the canvas.
+     */
+    drawGrid?: GridShader;
+
+    /**
+     * Number of cells per axis
      *
      * This is the number of rows, and the number of columns, in the grid.
      *
@@ -68,7 +137,7 @@ export interface GridSketchParams {
      *
      * Default is 13.
      */
-    cellsPerAxis?: number;
+    n?: number;
 }
 
 /**
@@ -80,9 +149,17 @@ const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
     p5.rect(x, y, s, s);
 };
 
+/**
+ * A default implementation for {@link drawGrid} that clears the canvas.
+ */
+const defaultGridShader: GridShader = ({ p5 }) => {
+    p5.clear();
+};
+
 export const defaultParams: Required<GridSketchParams> = {
     drawCell: defaultCellShader,
-    cellsPerAxis: 13,
+    drawGrid: defaultGridShader,
+    n: 13,
 };
 
 /**
@@ -103,7 +180,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const { drawCell, cellsPerAxis } = paramsOrDefault;
+    const { drawCell, drawGrid, n } = paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -112,7 +189,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * distribute the available width and height and compute the size of the
      * individual cells ({@link cellSize}).
      */
-    let cellCount = { x: cellsPerAxis, y: cellsPerAxis };
+    let cellCount = { x: n, y: n };
 
     /**
      * The size (both width and height) of an individual cell in the grid.
@@ -240,13 +317,15 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     };
 
     const draw = (p5: P5CanvasInstance) => {
-        p5.background(40);
+        const grid: Grid = { n: n };
+        drawGrid({ p5, grid });
 
         for (let y = 0; y < cellCount.y; y++) {
             for (let x = 0; x < cellCount.x; x++) {
-                let px = x * cellSize + cellOffset.x;
-                let py = y * cellSize + cellOffset.y;
-                drawCell({ p5, x: px, y: py, s: cellSize });
+                const cell = { row: y, col: x };
+                const px = x * cellSize + cellOffset.x;
+                const py = y * cellSize + cellOffset.y;
+                drawCell({ p5, x: px, y: py, s: cellSize, cell, grid });
             }
         }
     };
