@@ -94,13 +94,25 @@ const Content_ = styled(LinkStyleUnderlined)`
            in Markdown. */
         background-color: var(--mrmr-code-background-color);
         padding: 1rem;
-        padding-inline: 1.4rem;
-        border-radius: 4px;
+        /* On small screens, the block's background extends to the edge (beacuse
+           of the negative margin we apply before). So don't apply the border
+           radius, which looks odd when otherwise the background spans the
+           entire width of the screen.
+         */
+        @media (min-width: 600px) {
+            border-radius: 4px;
+        }
 
         /* Extend outward the same as the inline-padding. This way, the actual
            content of the pre block is left-aligned with the normal text, only
-           the background of it extends out and gets a padding from */
-        margin-inline: -1.4rem;
+           the background of it extends out and gets a padding from.
+
+           This negative margin should not be more than the padding applied at
+           the top level, otherwise this pre block will cause a horizontal
+           scroll bar to appear on mobile devices (when the screen width is such
+           that the max width of this column is restricted by the screen size).
+           */
+        margin-inline: -1rem;
 
         /* If the lines in code block do not fit, add a horizontal scroll to the
            pre element instead of increasing the width of the page contents. */
