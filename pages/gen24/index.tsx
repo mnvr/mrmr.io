@@ -13,7 +13,7 @@ export const Content: React.FC = () => {
 
 const Description: React.FC = () => {
     return (
-        <C.Description>
+        <>
             <p>
                 Genuary is an month-long online art fair (that's one way of
                 putting it!) that happens every year, in, you guessed it,
@@ -35,6 +35,6 @@ const Description: React.FC = () => {
                 to view a live version.*/}
             </p>
             <p>Have a great and inspiring 2024.</p>
-        </C.Description>
+        </>
     );
 };

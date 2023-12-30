@@ -15,7 +15,7 @@ export const Layout: React.FC<React.PropsWithChildren<P5WrapperProps>> = ({
                 <Banner />
                 <SketchContainer sketch={sketch} />
             </FirstFold>
-            {children}
+            <Description>{children}</Description>
             <Footer />
         </Layout_>
     );
@@ -75,9 +75,7 @@ const BannerH_ = styled.h3`
     font-weight: 300;
 `;
 
-export const Description: React.FC<React.PropsWithChildren> = ({
-    children,
-}) => {
+const Description: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <LinkStyleUnderlined>
             <Description_>{children}</Description_>
