@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
 import styled from "styled-components";
-import { gridSketch } from "./grid";
+import { sketch } from "./sketch";
 
 export const Content: React.FC = () => {
     return (
@@ -74,11 +74,7 @@ const BannerH_ = styled.h3`
 `;
 
 const Sketch: React.FC = () => {
-    return <ReactP5WrapperWithFade sketch={makeSketch()} />;
-};
-
-export const makeSketch = () => {
-    return gridSketch();
+    return <ReactP5WrapperWithFade sketch={sketch} />;
 };
 
 const RestOfTheContent: React.FC = () => {
