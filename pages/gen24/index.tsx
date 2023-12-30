@@ -1,4 +1,6 @@
 import * as React from "react";
+import { HiArrowRight } from "react-icons/hi";
+import styled from "styled-components";
 import * as C from "./components";
 import { sketch } from "./sketch";
 
@@ -6,6 +8,7 @@ export const Content: React.FC = () => {
     return (
         <C.Layout sketch={sketch}>
             <Description />
+            <DayList />
         </C.Layout>
     );
 };
@@ -35,5 +38,48 @@ const Description: React.FC = () => {
             </p>
             <p>Have a great and inspiring 2024.</p>
         </>
+    );
+};
+
+const DayList: React.FC = () => {
+    return (
+        <DayUL>
+            <D1 />
+        </DayUL>
+    );
+};
+
+const DayUL = styled.ul`
+    margin-block: 2rem;
+
+    /* Remove default list formatting */
+    list-style: none;
+    padding-inline-start: 0;
+
+    li {
+        margin: 1rem;
+        padding-block: 1rem;
+        padding-inline: 1.5rem;
+        border: 1px solid tomato;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        svg {
+            font-size: 1.2rem;
+            /* color: tomato; */
+        }
+    }
+`;
+
+const D1: React.FC = () => {
+    return (
+        <li>
+            <p>
+                <b>Day 1</b> <span style={{color: "tomato"}}>·</span> <i>Particles</i>
+            </p>
+            <HiArrowRight />
+        </li>
     );
 };
