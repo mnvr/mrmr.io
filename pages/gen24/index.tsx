@@ -1,3 +1,4 @@
+import { Link } from "gatsby";
 import * as React from "react";
 import { HiArrowRight } from "react-icons/hi";
 import styled from "styled-components";
@@ -58,28 +59,45 @@ const DayUL = styled.ul`
 
     li {
         margin: 1rem;
-        padding-block: 1rem;
-        padding-inline: 1.5rem;
         border: 1px solid tomato;
-
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        svg {
-            font-size: 1.2rem;
-            /* color: tomato; */
-        }
     }
 `;
 
 const D1: React.FC = () => {
     return (
         <li>
-            <p>
-                <b>Day 1</b> <span style={{color: "tomato"}}>·</span> <i>Particles</i>
-            </p>
-            <HiArrowRight />
+            <DayCard />
         </li>
     );
 };
+
+const DayCard: React.FC = () => {
+    return (
+        <Link to="gen24/1">
+            <DayCard_>
+                <p>
+                    <b>Day 1</b> <span style={{ color: "tomato" }}>·</span>{" "}
+                    <i>Particles</i>
+                </p>
+                <HiArrowRight />
+            </DayCard_>
+        </Link>
+    );
+};
+
+const DayCard_ = styled.div`
+    padding-block: 1rem;
+    padding-inline: 1.5rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+        color: tomato;
+    }
+    svg {
+        font-size: 1.2rem;
+        /* color: tomato; */
+    }
+`;
