@@ -47,7 +47,9 @@ const Banner: React.FC<DayProps> = ({ day }) => {
     return (
         <Banner_>
             <BannerH>GEN 24</BannerH>
-            <BannerH>{day ? `DAY ${pad2(day)}` : "BEGIN"}</BannerH>
+            <BannerH>
+                {day !== undefined ? `DAY ${pad2(day)}` : "BEGIN"}
+            </BannerH>
         </Banner_>
     );
 };
@@ -117,7 +119,7 @@ const Footer: React.FC<DayProps> = ({ day }) => {
     return (
         <LinkStyleUnderlined>
             <Footer_>
-                {day && (
+                {day !== undefined && (
                     <p>
                         <Link to="/gen24">All days</Link>
                     </p>
