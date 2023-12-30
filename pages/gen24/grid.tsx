@@ -138,6 +138,18 @@ export interface GridSketchParams {
      * Default is 13.
      */
     n?: number;
+
+    /**
+     * If true, then the grid will be drawn "staggered" by offsetting all the
+     * even rows by half a cell width.
+     *
+     * This will cause the rectangular bounds of the cells to overlap, but if
+     * the cells draw themselves in the "rotated" square area instead, they can
+     * produce an isometric-grid like result.
+     *
+     * Default is `false`.
+     */
+    staggered?: boolean;
 }
 
 /**
@@ -160,6 +172,7 @@ export const defaultParams: Required<GridSketchParams> = {
     drawCell: defaultCellShader,
     drawGrid: defaultGridShader,
     n: 13,
+    staggered: false,
 };
 
 /**
@@ -180,7 +193,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const { drawCell, drawGrid, n } = paramsOrDefault;
+    const { drawCell, drawGrid, n, staggered } = paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -323,8 +336,9 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         for (let y = 0; y < cellCount.y; y++) {
             for (let x = 0; x < cellCount.x; x++) {
                 const cell = { row: y, col: x };
-                const px = x * cellSize + cellOffset.x;
-                const py = y * cellSize + cellOffset.y;
+                let px = x * cellSize + cellOffset.x;
+                let py = y * cellSize + cellOffset.y;
+                if (staggered && y % 2 === 0) px += cellSize / 2;
                 drawCell({ p5, x: px, y: py, s: cellSize, cell, grid });
             }
         }
