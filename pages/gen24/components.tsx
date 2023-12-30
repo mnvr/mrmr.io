@@ -16,6 +16,7 @@ export const Layout: React.FC<React.PropsWithChildren<P5WrapperProps>> = ({
                 <SketchContainer sketch={sketch} />
             </FirstFold>
             {children}
+            <Footer />
         </Layout_>
     );
 };
@@ -80,7 +81,6 @@ export const Description: React.FC<React.PropsWithChildren> = ({
     return (
         <LinkStyleUnderlined>
             <Description_>{children}</Description_>
-            <Footer />
         </LinkStyleUnderlined>
     );
 };
@@ -107,11 +107,13 @@ const Description_ = styled.div`
 
 const Footer: React.FC = () => {
     return (
-        <Footer_>
-            <p>
-                <Link to="/">mrmr.io</Link>
-            </p>
-        </Footer_>
+        <LinkStyleUnderlined>
+            <Footer_>
+                <p>
+                    <Link to="/">mrmr.io</Link>
+                </p>
+            </Footer_>
+        </LinkStyleUnderlined>
     );
 };
 
