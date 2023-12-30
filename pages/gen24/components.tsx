@@ -47,7 +47,7 @@ const Banner: React.FC<DayProps> = ({ day }) => {
     return (
         <Banner_>
             <BannerH>GEN 24</BannerH>
-            {day && <BannerH>{`DAY ${pad2(day)}`}</BannerH>}
+            <BannerH>{day ? `DAY ${pad2(day)}` : "BEGIN"}</BannerH>
         </Banner_>
     );
 };
