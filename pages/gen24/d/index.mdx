@@ -6,16 +6,16 @@ unlisted: true
 ---
 
 import * as C from "./components";
-import { sketch as straightMin } from "./straight-min";
-import { sketch as staggeredMin } from "./staggered-min";
-import { sketch as negMin } from "./neg-min";
-import { sketch as straightNeg } from "./straight-neg";
-import { sketch as fullStraightRot } from "./full-straight-rot";
-import { sketch as fullStaggeredRot } from "./full-staggered-rot";
+import { sketch as s01 } from "./01";
+import { sketch as s02 } from "./02";
+import { sketch as s03 } from "./03";
+import { sketch as s04 } from "./04";
+import { sketch as s05 } from "./05";
+import { sketch as s06 } from "./06";
 
 <C.Layout>
 
-<C.Demo n={1}  sketch={straightMin}>
+<C.Demo n={1} sketch={s01}>
 
 A minimal straight grid.
 
@@ -30,7 +30,7 @@ for (let y = 0; y < 13; y += 1)
 
 </C.Demo>
 
-<C.Demo n={2}  sketch={staggeredMin}>
+<C.Demo n={2} sketch={s02}>
 
 A minimal staggered grid.
 
@@ -40,7 +40,7 @@ this way leads to buildings that are stronger.
 
 </C.Demo>
 
-<C.Demo n={3} sketch={negMin}>
+<C.Demo n={3} sketch={s03}>
 
 Negative space.
 
@@ -50,7 +50,7 @@ thing, but two images intertwined in the same visual.
 
 </C.Demo>
 
-<C.Demo n={4} sketch={straightNeg}>
+<C.Demo n={4} sketch={s04}>
 
 Marble floors.
 
@@ -58,7 +58,7 @@ We can do the same thing, but not stagger.
 
 </C.Demo>
 
-<C.Demo n={5} sketch={fullStraightRot}>
+<C.Demo n={5} sketch={s05}>
 
 Rotate at the full size.
 
@@ -68,13 +68,16 @@ the places where there is no overlap.
 
 </C.Demo>
 
-<C.Demo n={6} sketch={fullStaggeredRot}>
+<C.Demo n={6} sketch={s06}>
 
 If we reintroduce the staggering though, they'll fit back in nicely, just like
 how they were in DEX 02 above.
 
 Here we're animating their rotation to show how they fit back in, but this also
-shows the variety of effects that can already be produced.
+shows the variety of effects that can already be produced. We can explore a lot,
+these variations, but let us get back to DEX 03 - the one with the staggered,
+smaller, and rotated, squares, and cover the negative space by drawing 2 more
+rectangles in each cell.
 
 </C.Demo>
 
