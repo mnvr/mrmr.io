@@ -371,7 +371,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
-        p5.stroke("lightgray");
+        p5.stroke(240, 200 /* alpha, 0 - 255 */);
         p5.strokeWeight(1);
 
         const { w, h } = cellSize;
