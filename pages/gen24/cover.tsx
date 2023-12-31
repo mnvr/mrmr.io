@@ -11,9 +11,9 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
     // our bounds (height). That's intentional so that we tile the grid.
     const p = s / 2;
     const q = p / 2;
-    p5.fill(225, 242, 84);
+    p5.fill(215, 242, 20);
     p5.quad(x, y, x + p, y - p + q, x + s, y, x + p, y + p - q);
-    p5.fill(57, 112, 78);
+    p5.fill(20, 112, 20);
     p5.quad(x, y, x + p, y + p - q, x + p, y + p + q, x, y + p);
 };
 
