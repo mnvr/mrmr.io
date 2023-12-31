@@ -4,13 +4,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { zeroPad2 } from "utils/string";
-import {
-    Banner,
-    Description,
-    ELink as ELink_,
-    FirstFold,
-    SketchContainer,
-} from "../components";
+import { Banner, Description, FirstFold, SketchContainer } from "../components";
 
 export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
@@ -61,7 +55,7 @@ const Footer: React.FC = () => {
         <LinkStyleUnderlined>
             <Footer_>
                 <p>
-                    <Link to="/gen24">Griduary 24</Link>
+                    <Link to="/gen24">Genuary 24</Link>
                 </p>
                 <p>
                     <Link to="/">Home</Link>
@@ -82,5 +76,3 @@ const Footer_ = styled.div`
         line-height: 1.5rem;
     }
 `;
-
-export const ELink = ELink_;

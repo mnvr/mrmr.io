@@ -1,6 +1,6 @@
 ---
-title: Draft Grids
-description: Demonstrations of grids
+title: Grid examples
+description: Demonstrations of some designs using only simple grids
 date: 2024-01-01
 unlisted: true
 ---
@@ -8,7 +8,7 @@ unlisted: true
 import * as C from "./components";
 import { sketch as straightMin } from "./straight-min";
 import { sketch as staggeredMin } from "./staggered-min";
-import { sketch as isoMin } from "./iso-min";
+import { sketch as negMin } from "./neg-min";
 
 <C.Layout>
 
@@ -27,11 +27,23 @@ for (let y = 0; y < 13; y += 1)
 </C.Demo>
 
 <C.Demo n={2}  sketch={staggeredMin}>
-A minimal staggered grid
+A minimal staggered grid.
+
+We can add a half a cell offset to every alternate row. This gives us a
+staggered, less monotonous, appearance.
+
+> Brick-layers found out that intertwining this way leads to buildings that are
+> stronger.
+
 </C.Demo>
 
-<C.Demo n={3} sketch={isoMin}>
-A minimal isometric grid
+<C.Demo n={3} sketch={negMin}>
+Negative space.
+
+Here we rotate the rectangles by 45°, and make them smaller. This simple, common
+motif keeps brains entertained - because of negative space. It is no longer one
+thing, but two images intertwined in the same visual.
+
 </C.Demo>
 
 </C.Layout>

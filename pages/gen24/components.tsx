@@ -125,6 +125,13 @@ const Description_ = styled.div`
         font-weight: normal;
     }
 
+    blockquote {
+        color: var(--mrmr-color-3);
+        font-style: italic;
+        font-family: serif;
+        font-size: 105%;
+    }
+
     code {
         /* The monospace font looks too big sitting next to the other fonts */
         font-size: 90%;
