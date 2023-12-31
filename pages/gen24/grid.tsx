@@ -363,7 +363,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
 
         const minDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(minDimension / n);
-        cellSize = { w: s / cellAspectRatio, h: s };
+        cellSize = { w: s, h: s / cellAspectRatio};
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
         let remainingY = p5.height - cellSize.h * cellCount.y;
@@ -396,24 +396,15 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     const draw = (p5: P5CanvasInstance) => {
         drawGrid({ p5 });
 
+        const { w, h } = cellSize;
         let py = cellOffset.y;
-        for (let y = 0; y < cellCount.y; y++) {
+        for (let y = 0; y < cellCount.y; y++, py += h) {
             let px = cellOffset.x;
-            if (staggered && y % 2 === 0) px -= cellSize.w / 2;
-            for (let x = 0; x < cellCount.x; x++) {
+            if (staggered && y % 2 === 0) px -= w / 2;
+            for (let x = 0; x < cellCount.x; x++, px += w) {
                 const cell = { row: y, col: x };
-                drawCell({
-                    p5,
-                    x: px,
-                    y: py,
-                    s: cellSize.w,
-                    w: cellSize.w,
-                    h: cellSize.h,
-                    cell,
-                });
-                px += cellSize.w;
+                drawCell({ p5, x: px, y: py, s: w, w, h, cell });
             }
-            py += cellSize.h;
         }
 
         if (showGuides) {
