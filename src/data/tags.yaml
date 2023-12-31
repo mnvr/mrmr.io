@@ -2,4 +2,5 @@
   color: yellowgreen
 - tag: fiction
   color: steelblue
-- tag: quotes
+- tag: rant
+  color: red
