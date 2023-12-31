@@ -171,15 +171,6 @@ export interface GridSketchParams {
      * Default is 1.
      */
     cellAspectRatio?: number;
-
-    /**
-     * Margin between rows.
-     *
-     * This can be a negative number if we want to squish the rows together.
-     *
-     * Default is 0.
-     */
-    rowMargin?: number;
 }
 
 /**
@@ -206,7 +197,6 @@ export const defaultParams: Required<GridSketchParams> = {
     staggered: false,
     noLoop: false,
     cellAspectRatio: 1,
-    rowMargin: 0,
 };
 
 /**
@@ -227,15 +217,8 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const {
-        drawCell,
-        drawGrid,
-        n,
-        staggered,
-        noLoop,
-        cellAspectRatio,
-        rowMargin,
-    } = paramsOrDefault;
+    const { drawCell, drawGrid, n, staggered, noLoop, cellAspectRatio } =
+        paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -364,7 +347,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
 
         const minDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(minDimension / n);
-        cellSize = { w: s, h: s };
+        cellSize = { w: s / cellAspectRatio, h: s };
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
         let remainingY = p5.height - cellSize.h * cellCount.y;
@@ -392,7 +375,6 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
                 px += cellSize.w;
             }
             py += cellSize.h;
-            py += rowMargin;
         }
     };
 
