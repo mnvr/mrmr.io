@@ -72,4 +72,5 @@ export const quotes: string[] = [
     "The void which binds",
     "Existence over essence",
     "Whose Justice? Which Rationality?",
+    "Do something again and again from morning till evening, and to dream of it at night, and to think of nothing else than doing this well, as well as I alone can. When one lives this way, one thing after another that does not belong to such a life drops off, without hate or reluctance. What we do should determine what we forego."
 ];
