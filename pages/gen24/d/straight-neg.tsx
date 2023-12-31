@@ -1,11 +1,13 @@
-import { gridSketch, type CellShader } from "../grid";
+import { gridSketch, type CellShader, type GridShader } from "../grid";
+
+const drawGrid: GridShader = ({ p5 }) => p5.fill(160);
 
 const drawCell: CellShader = ({ p5, x, y, s }) => {
-    p5.fill(160);
     p5.quad(x, y, x + s / 2, y - s / 2, x + s, y, x + s / 2, y + s / 2);
 };
 
 export const sketch = gridSketch({
+    drawGrid,
     drawCell,
     noLoop: true,
 });

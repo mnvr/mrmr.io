@@ -10,6 +10,8 @@ import { sketch as straightMin } from "./straight-min";
 import { sketch as staggeredMin } from "./staggered-min";
 import { sketch as negMin } from "./neg-min";
 import { sketch as straightNeg } from "./straight-neg";
+import { sketch as fullStraightRot } from "./full-straight-rot";
+import { sketch as fullStaggeredRot } from "./full-staggered-rot";
 
 <C.Layout>
 
@@ -53,6 +55,26 @@ thing, but two images intertwined in the same visual.
 Marble floors.
 
 We can do the same thing, but not stagger.
+
+</C.Demo>
+
+<C.Demo n={5} sketch={fullStraightRot}>
+
+Rotate at the full size.
+
+What if we didn't reduce the size of the square before rotating it though? Of
+course, they would start overlapping, but there would still be negative space in
+the places where there is no overlap.
+
+</C.Demo>
+
+<C.Demo n={6} sketch={fullStaggeredRot}>
+
+If we reintroduce the staggering though, they'll fit back in nicely, just like
+how they were in DEX 02 above.
+
+Here we're animating their rotation to show how they fit back in, but this also
+shows the variety of effects that can already be produced.
 
 </C.Demo>
 
