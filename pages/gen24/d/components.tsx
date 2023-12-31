@@ -22,18 +22,18 @@ const Layout_ = styled.div`
 `;
 
 type DemoProps = P5WrapperProps & {
-    title: string;
+    n: number;
 };
 
 export const Demo: React.FC<React.PropsWithChildren<DemoProps>> = ({
-    title,
+    n,
     sketch,
     children,
 }) => {
     return (
         <Demo_>
             <FirstFold>
-                <Banner title={title} />
+                <Banner n={n} />
                 <SketchContainer sketch={sketch} />
             </FirstFold>
             <Description>{children}</Description>
@@ -52,14 +52,16 @@ const FirstFold = styled.div`
     flex-direction: column;
 `;
 
-const Banner: React.FC<{ title: string }> = ({ title }) => {
+const Banner: React.FC<{ n: number }> = ({ n }) => {
     return (
         <Banner_>
-            <BannerH>GRID</BannerH>
-            <BannerH>{title.toUpperCase()}</BannerH>
+            <BannerH>GRD 24</BannerH>
+            <BannerH>{`DEO ${pad2(n)}`}</BannerH>
         </Banner_>
     );
 };
+
+const pad2 = (n: number) => (n < 10 ? `0${n}` : `${n}`);
 
 const Banner_ = styled.div`
     height: 67px;
