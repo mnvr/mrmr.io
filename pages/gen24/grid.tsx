@@ -375,23 +375,23 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         // details about what we're trying to do here.
 
         const r = cellAspectRatio;
-        let [nr, nc] = [n, n];
-        let [mw, mh] = [1, 1];
+        let [nx, ny] = [n, n];
+        let [sw, sh] = [1, 1];
         if (r < 1) {
             // cell w < cell h, portrait cells, so we'll need more per row.
-            nc = p5.ceil(n / r);
-            mh = 1 / r;
+            nx = p5.floor(n / r);
+            sh = 1 / r;
         } else {
             // cell w >= cell h, landscape cells, so we'll need more per column.
-            nr = p5.ceil(n * r);
-            mw = r;
+            ny = p5.floor(n * r);
+            sw = r;
         }
 
         const maxDimension = p5.max(p5.width, p5.height);
-        const s = p5.ceil(maxDimension / p5.max(nr, nc));
+        const s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        cellCount = { x: nc + (staggered ? 2 : 0), y: nr };
-        cellSize = { w: s * mw, h: s * mh };
+        cellCount = { x: nx + (staggered ? 1 : 0), y: ny };
+        cellSize = { w: s * sw, h: s * sh };
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
         let remainingY = p5.height - cellSize.h * cellCount.y;
@@ -432,7 +432,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
             for (let x = 0; x < cellCount.x; x++, px += w) {
                 const cell = { row: y, col: x };
                 const s = p5.max(w, h);
-                drawCell({ p5, x: px, y: py, s: w, w, h, cell });
+                drawCell({ p5, x: px, y: py, s, w, h, cell });
             }
         }
 
