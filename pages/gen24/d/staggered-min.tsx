@@ -1,4 +1,4 @@
-import { gridSketch } from "../../grid";
+import { gridSketch } from "../grid";
 
 export const sketch = gridSketch({
     staggered: true,

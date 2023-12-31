@@ -1,4 +1,4 @@
-import { gridSketch, type CellShader } from "../../grid";
+import { gridSketch, type CellShader } from "../grid";
 
 const staggered = true;
 
