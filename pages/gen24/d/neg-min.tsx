@@ -10,4 +10,5 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
 export const sketch = gridSketch({
     drawCell,
     staggered,
+    noLoop: true,
 });

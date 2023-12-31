@@ -131,6 +131,17 @@ export interface GridSketchParams {
      * Default is `false`.
      */
     staggered?: boolean;
+
+    /**
+     * If true, then we disable animations. The cells don't update after being
+     * drawn once (unless the canvas is resized).
+     *
+     * For static grids, turning animations off reduces CPU load for the page.
+     *
+     * Default is `false`. Apologies for the double negation, but that means
+     * that by default, animations are enabled.
+     */
+    noLoop?: boolean;
 }
 
 /**
@@ -155,6 +166,7 @@ export const defaultParams: Required<GridSketchParams> = {
     drawGrid: defaultGridShader,
     n: 13,
     staggered: false,
+    noLoop: false,
 };
 
 /**
@@ -175,7 +187,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const { drawCell, drawGrid, n, staggered } = paramsOrDefault;
+    const { drawCell, drawGrid, n, staggered, noLoop } = paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -245,12 +257,14 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         previousWindowSize.width = p5.windowWidth;
         p5.createCanvas(...sketchSize(p5));
         updateSizes(p5);
+        if (noLoop) p5.noLoop();
     };
 
     const windowResized = (p5: P5CanvasInstance) => {
         if (shouldIgnoreWindowResizedEvent(p5)) return;
         p5.resizeCanvas(...sketchSize(p5));
         updateSizes(p5);
+        if (noLoop) p5.redraw();
     };
 
     /** See: [Handling "spurious" window resizes on mobile browsers] */
