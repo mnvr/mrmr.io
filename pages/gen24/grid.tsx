@@ -311,16 +311,16 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     const draw = (p5: P5CanvasInstance) => {
         drawGrid({ p5 });
 
+        let py = cellOffset.y;
         for (let y = 0; y < cellCount.y; y++) {
+            let px = cellOffset.x;
+            if (staggered && y % 2 === 0) px -= cellSize / 2;
             for (let x = 0; x < cellCount.x; x++) {
                 const cell = { row: y, col: x };
-                let px = x * cellSize + cellOffset.x;
-                let py = y * cellSize + cellOffset.y;
-                if (staggered && y % 2 === 0) px -= cellSize / 2;
-                // px += 100;
-                // py += 200;
                 drawCell({ p5, x: px, y: py, s: cellSize, cell });
+                px += cellSize;
             }
+            py += cellSize;
         }
     };
 
