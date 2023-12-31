@@ -1,8 +1,7 @@
-import { gridSketch, type CellShader, type GridShader } from "./grid";
+import { gridSketch, type CellShader, type GridShader } from "../grid";
 
 const drawGrid: GridShader = ({ p5 }) => {
     p5.clear();
-    p5.noStroke();
     p5.background(255, 0, 0);
 }
 
