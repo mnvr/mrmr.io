@@ -1,6 +1,6 @@
 ---
-title: Grid examples
-description: Demonstrations of some designs using only simple grids
+title: Genuary 24 - Cover
+description: Starting from the simplest possible grid, we reconstruct the colorful isometric grid that forms the cover of my Genuary 2024 experiments.
 date: 2024-01-01
 unlisted: true
 ---
@@ -20,8 +20,8 @@ import { sketch as s07 } from "./07";
 
 A minimal straight grid.
 
-At its essence, the code for drawing that grid is just a glorified wrapper
-around two nested loops.
+At its essence, the code for drawing it is just a glorified wrapper around two
+nested loops.
 
 ```typescript
 for (let y = 0; y < 13; y += 1)
@@ -53,15 +53,12 @@ thing, but two images intertwined in the same visual.
 
 <C.Demo n={4} sketch={s04}>
 
-Marble floors.
-
-We can do the same thing, but not stagger.
+We can do the same thing, but not stagger. This'll give us marble floors, and
+chess boards.
 
 </C.Demo>
 
 <C.Demo n={5} sketch={s05}>
-
-Rotate at the full size.
 
 If we don't reduce the size of the squares before rotating them, they will start
 overlapping, but there would still be negative space in the places where there
@@ -71,11 +68,11 @@ is no overlap.
 
 <C.Demo n={6} sketch={s06}>
 
-If we reintroduce the staggering though, they'll fit back in nicely, just like
-how they were in DEX 02 above.
+If we reintroduce the staggering of the alternate rows, they'll fit back in
+nicely, just like how they were in DEX 02 above.
 
-Here we're animating their rotation to show how they fit back in, but this also
-shows the variety of effects that can already be produced.
+In the last two DEXs, we're animating their rotation to show how they fit back
+in, but this also shows the variety of effects that can already be produced.
 
 We could keep exploring these variations, but let us get back to DEX 03 - the
 one with the staggered, smaller, and rotated, squares. DEX 03 is a common motif
@@ -97,8 +94,9 @@ isometric grid!
 Isometric grid.
 
 I just added one extra rectangle (a quadrilateral, but we can just think of it
-as a skewed rectangle) to each cell. In fact, this is the full code for the
-function that draws each cell:
+as a skewed rectangle) to each cell. In fact, this is the code for the function
+that draws each cell - first quad is the original (rotated) square we already
+drew for DEX 03, and the second quad is the new one:
 
 ```typescript
 h = s/2
@@ -112,17 +110,16 @@ by ability or training, so I'm just amateuring around. But the simplicity of
 this formulation did blow my mind.
 
 I guess this is perhaps because I personally have been enamoured by the
-isometric grid (I _think_ that's what this is called!), other people might
-indeed find this cliche and common place. I had a carpet once, €20 only, that
-had an extremely simple grayscale isometric pattern, and I would stare at it for
-more time than I'll acknowledge here, trying to figure out which direction the
-cubes actually were facing.
+isometric grid (I _think_ that's what this is called), other people might indeed
+find it cliche. I had a carpet once, €20 only, that had a basic grayscale
+isometric pattern, and I would stare at it for more time than I'll acknowledge
+here, trying to figure out which direction the cubes were facing.
 
-Making these on the computer, I've come across one more aspect of ambiguity - if
-I stare at it, sometimes I start seeing these not as cubes, but as diagonal
-lines of "kites". Perhaps you can see what I'm talking about - focus on the
-negative space, and see how they form lines of "four sided triangles" flowing
-towards the top right of the figure.
+Making these on the computer, I've come across one more aspect of ambiguity:
+sometimes I start seeing these not as cubes, but as diagonal lines of "kites".
+Perhaps you can see what I'm talking about - focus on the negative space, and
+see how they form lines of "four sided triangles" flowing towards the top right
+of the figure.
 
 </C.Demo>
 

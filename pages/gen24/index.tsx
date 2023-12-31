@@ -22,8 +22,8 @@ const Description: React.FC = () => {
             <p>
                 Genuary is an month-long online art fair (that's one way of
                 putting it!) that happens every year, in, you guessed it,
-                January. This year I thought I'll do remixes of the other
-                Genuary art that I come across and like.
+                January. This year I thought I'll do remixes of other
+                Genuary art that I like.
             </p>
             <p>
                 Additionally, I've constrained myself to use only grids. So this
@@ -34,10 +34,7 @@ const Description: React.FC = () => {
                 <C.ELink href="https://github.com/mnvr/mrmr.io/tree/main/pages/gen24">
                     source code for all of these is available on GitHub
                 </C.ELink>
-                . The one you see above is not a remix, it is a cover I made to
-                kickstart things off.{" "}
-                {/*The remixes are below. Tap on any of them
-                to view a live version.*/}
+                .
             </p>
         </>
     );
@@ -47,8 +44,10 @@ const Description2: React.FC = () => {
     return (
         <>
             <p>
-                I've also created some <Link to="d">examples</Link> to show how
-                much can be done just by simple, basic grids.
+                I've also created a <Link to="cover">demonstration</Link> to
+                show how much can be done just by simple, basic grids - I start
+                with the simplest possible grid, and derive the cover art that
+                you see at top.
             </p>
             <p>Have a great and inspiring 2024.</p>
         </>

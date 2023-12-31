@@ -7,9 +7,10 @@ const drawGrid: GridShader = ({ p5 }) => {
 };
 
 const drawCell: CellShader = ({ p5, x, y, s }) => {
+    const t = p5.millis() / 1000 / 4;
     p5.push();
     p5.translate(x + s / 2, y + s / 2);
-    p5.rotate(p5.PI / 4);
+    p5.rotate(t);
     p5.rect(0, 0, s, s);
     p5.pop();
 };
@@ -17,5 +18,4 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
 export const sketch = gridSketch({
     drawGrid,
     drawCell,
-    noLoop: true,
 });
