@@ -57,10 +57,14 @@ export interface CellShaderParams {
      * "Side" of the cell.
      *
      * If cells are is a square (i.e. the {@link cellAspectRatio} is 1), then
-     * this value will be set to the width, or the height (both are the same).
+     * this value will be set to the width and the height (both are the same).
      *
-     * If the aspect ratio is not 1, then this value is undefined, use the
-     * provided cell width ({@link w}) or cell height ({@link h}) instead.
+     * If the aspect ratio is not 1, then this value will be the larger of the
+     * two dimensions. This is useful when drawing outside the alloted cell
+     * bounds.
+     *
+     * Note: We also have separate access to the cell width ({@link w}) and
+     * height ({@link h}).
      */
     s: number;
     /**
@@ -242,8 +246,14 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * This is the thing that is usually fixed for a grid. At runtime, we then
      * distribute the available width and height and compute the size of the
      * individual cells ({@link cellSize}).
+     *
+     * While conceputally this is a fixed value, {@link n}, but because of
+     * {@link staggered} and {@link cellAspectRatio}, the number of rows or the
+     * number of colums may be more than {@link n}. So this value is also
+     * computed at the same time when we're computing the cell sizes, in the
+     * `updateSizes` function below.
      */
-    let cellCount = { x: n + (staggered ? 1 : 0), y: n };
+    let cellCount = { x: 0, y: 0 };
 
     /**
      * The size of an individual cell in the grid.
@@ -358,12 +368,34 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * the first time when the sketch is created.
      */
     const updateSizes = (p5: P5CanvasInstance) => {
-        // See the documentation of cellOffset for more details about what we're
-        // trying to do here.
+        // First compute the number of rows and colums. Then use that to
+        // determine the size of cells.
+        //
+        // See the documentation of `cellCount` and `cellOffset` for more
+        // details about what we're trying to do here.
 
-        const minDimension = p5.max(p5.width, p5.height);
-        const s = p5.ceil(minDimension / n);
-        cellSize = { w: s, h: s / cellAspectRatio};
+        let nr = n,
+            nc = n,
+            r = cellAspectRatio;
+        if (r < 1) {
+            // cell w < h, portrait cells, so we'll need more per row.
+            nc = p5.ceil(n / r);
+        } else {
+            // cell w >= h, landscape cells, so we'll need more per column.
+            nr = p5.ceil(n * r);
+        }
+
+        cellCount = { x: nc + (staggered ? 1 : 0), y: nr };
+
+        const maxDimension = p5.max(p5.width, p5.height);
+        const s = p5.ceil(maxDimension / p5.max(nr, nc));
+        if (r < 1) {
+            // cell w < h
+            cellSize = { w: s / r, h: s };
+        } else {
+            // cell w >= h
+            cellSize = { w: s * r, h: s };
+        }
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
         let remainingY = p5.height - cellSize.h * cellCount.y;

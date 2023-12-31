@@ -6,29 +6,15 @@ const drawGrid: GridShader = ({ p5 }) => {
     p5.background(255, 0, 0);
 };
 
-const drawCell: CellShader = ({ p5, x, y, w, h }) => {
+const drawCell: CellShader = ({ p5, x, y, s }) => {
+    // We use s, and not h, for drawing vertically. Thus we will draw outside
+    // our bounds (height). That's intentional so that we tile the grid.
+    const p = s / 2;
+    const q = p / 2;
     p5.fill(225, 242, 84);
-    p5.quad(
-        x,
-        y,
-        x + w / 2,
-        y - h / 2 + h / 4,
-        x + w,
-        y,
-        x + w / 2,
-        y + h / 2 - h / 4,
-    );
+    p5.quad(x, y, x + p, y - p + q, x + s, y, x + p, y + p - q);
     p5.fill(57, 112, 78);
-    p5.quad(
-        x,
-        y,
-        x + w / 2,
-        y + h / 2 - h / 4,
-        x + w / 2,
-        y + h - h / 4,
-        x,
-        y + h / 2,
-    );
+    p5.quad(x, y, x + p, y + p - q, x + p, y + p + q, x, y + p);
 };
 
 export const sketch = gridSketch({
@@ -36,6 +22,6 @@ export const sketch = gridSketch({
     drawCell,
     staggered: true,
     noLoop: true,
-    // cellAspectRatio: 1.33,//.25,
+    cellAspectRatio: 1.33,
     // showGuides: true,
 });
