@@ -9,9 +9,9 @@ const drawGrid: GridShader = ({ p5 }) => {
 const drawCell: CellShader = ({ p5, x, y, s }) => {
     const h = s / 2;
     const o = h / 2;
-    p5.fill(255, 255, 0);
+    p5.fill(225, 242, 84);
     p5.quad(x, y, x + h, y - h + o, x + s, y, x + h, y + h - o);
-    p5.fill(0, 255, 0);
+    p5.fill(57, 112, 78);
     p5.quad(x, y, x + h, y + h - o, x + h, y + s - o, x, y + h);
 };
 
