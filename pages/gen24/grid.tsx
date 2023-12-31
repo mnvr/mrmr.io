@@ -374,28 +374,24 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         // See the documentation of `cellCount` and `cellOffset` for more
         // details about what we're trying to do here.
 
-        let nr = n,
-            nc = n,
-            r = cellAspectRatio;
+        const r = cellAspectRatio;
+        let [nr, nc] = [n, n];
+        let [mw, mh] = [1, 1];
         if (r < 1) {
-            // cell w < h, portrait cells, so we'll need more per row.
+            // cell w < cell h, portrait cells, so we'll need more per row.
             nc = p5.ceil(n / r);
+            mh = 1 / r;
         } else {
-            // cell w >= h, landscape cells, so we'll need more per column.
+            // cell w >= cell h, landscape cells, so we'll need more per column.
             nr = p5.ceil(n * r);
+            mw = r;
         }
-
-        cellCount = { x: nc + (staggered ? 1 : 0), y: nr };
 
         const maxDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(maxDimension / p5.max(nr, nc));
-        if (r < 1) {
-            // cell w < h
-            cellSize = { w: s / r, h: s };
-        } else {
-            // cell w >= h
-            cellSize = { w: s * r, h: s };
-        }
+
+        cellCount = { x: nc + (staggered ? 2 : 0), y: nr };
+        cellSize = { w: s * mw, h: s * mh };
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
         let remainingY = p5.height - cellSize.h * cellCount.y;
@@ -435,13 +431,12 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
             if (staggered && y % 2 === 0) px -= w / 2;
             for (let x = 0; x < cellCount.x; x++, px += w) {
                 const cell = { row: y, col: x };
+                const s = p5.max(w, h);
                 drawCell({ p5, x: px, y: py, s: w, w, h, cell });
             }
         }
 
-        if (showGuides) {
-            drawGuides(p5);
-        }
+        if (showGuides) drawGuides(p5);
     };
 
     return (p5) => {

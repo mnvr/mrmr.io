@@ -23,5 +23,4 @@ export const sketch = gridSketch({
     staggered: true,
     noLoop: true,
     cellAspectRatio: 1.33,
-    // showGuides: true,
 });
