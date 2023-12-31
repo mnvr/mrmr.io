@@ -171,6 +171,14 @@ export interface GridSketchParams {
      * Default is 1.
      */
     cellAspectRatio?: number;
+
+    /**
+     * If true, overlay the guidelines and the center point of each cell on top
+     * of the final result. This is useful when working on a sketch.
+     *
+     * Default is `false`.
+     */
+    showGuides?: boolean;
 }
 
 /**
@@ -197,6 +205,7 @@ export const defaultParams: Required<GridSketchParams> = {
     staggered: false,
     noLoop: false,
     cellAspectRatio: 1,
+    showGuides: false,
 };
 
 /**
@@ -217,8 +226,15 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const { drawCell, drawGrid, n, staggered, noLoop, cellAspectRatio } =
-        paramsOrDefault;
+    const {
+        drawCell,
+        drawGrid,
+        n,
+        staggered,
+        noLoop,
+        cellAspectRatio,
+        showGuides,
+    } = paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -354,6 +370,29 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
+    const drawGuides = (p5: P5CanvasInstance) => {
+        p5.stroke("lightgray");
+        p5.strokeWeight(1);
+
+        const { w, h } = cellSize;
+
+        for (let y = cellOffset.y; y < p5.height; y += h) {
+            p5.line(0, y, p5.width, y);
+        }
+        for (let x = cellOffset.x; x < p5.width; x += w) {
+            p5.line(x, 0, x, p5.height);
+        }
+
+        p5.stroke("blue");
+        p5.strokeWeight(2);
+
+        for (let y = cellOffset.y + h / 2; y < p5.height; y += h) {
+            for (let x = cellOffset.x + w / 2; x < p5.width; x += w) {
+                p5.point(x, y);
+            }
+        }
+    };
+
     const draw = (p5: P5CanvasInstance) => {
         drawGrid({ p5 });
 
@@ -375,6 +414,10 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
                 px += cellSize.w;
             }
             py += cellSize.h;
+        }
+
+        if (showGuides) {
+            drawGuides(p5);
         }
     };
 
