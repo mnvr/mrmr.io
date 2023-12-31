@@ -5,19 +5,23 @@ date: 2024-01-01
 unlisted: true
 ---
 
-import * as C from "../components";
+import * as C from "./components";
 import { sketch as straightMin } from "./straight-min";
 import { sketch as staggeredMin } from "./staggered-min";
 import { sketch as isoMin } from "./iso-min";
 
-<C.Layout day={0} sketch={straightMin}>
+<C.Layout>
+
+<C.Demo title="strt" sketch={straightMin}>
 A minimal straight grid
-</C.Layout>
+</C.Demo>
 
-<C.Layout day={0} sketch={staggeredMin}>
+<C.Demo title="stgr" sketch={staggeredMin}>
 A minimal staggered grid
-</C.Layout>
+</C.Demo>
 
-<C.Layout day={0} sketch={isoMin}>
+<C.Demo title="iso" sketch={isoMin}>
 A minimal isometric grid
+</C.Demo>
+
 </C.Layout>
