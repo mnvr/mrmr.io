@@ -12,6 +12,7 @@ import { sketch as s03 } from "./03";
 import { sketch as s04 } from "./04";
 import { sketch as s05 } from "./05";
 import { sketch as s06 } from "./06";
+import { sketch as s07 } from "./07";
 
 <C.Layout>
 
@@ -44,8 +45,8 @@ this way leads to buildings that are stronger.
 
 Negative space.
 
-Here we rotate the rectangles by 45°, and make them smaller. This simple, common
-motif keeps brains entertained - because of negative space. It is no longer one
+Here we rotate the rectangles by 45°, and make them smaller. This common motif
+keeps brains entertained because of the negative space. It is no longer one
 thing, but two images intertwined in the same visual.
 
 </C.Demo>
@@ -62,9 +63,9 @@ We can do the same thing, but not stagger.
 
 Rotate at the full size.
 
-What if we didn't reduce the size of the square before rotating it though? Of
-course, they would start overlapping, but there would still be negative space in
-the places where there is no overlap.
+If we don't reduce the size of the squares before rotating them, they will start
+overlapping, but there would still be negative space in the places where there
+is no overlap.
 
 </C.Demo>
 
@@ -74,10 +75,54 @@ If we reintroduce the staggering though, they'll fit back in nicely, just like
 how they were in DEX 02 above.
 
 Here we're animating their rotation to show how they fit back in, but this also
-shows the variety of effects that can already be produced. We can explore a lot,
-these variations, but let us get back to DEX 03 - the one with the staggered,
-smaller, and rotated, squares, and cover the negative space by drawing 2 more
-rectangles in each cell.
+shows the variety of effects that can already be produced.
+
+We could keep exploring these variations, but let us get back to DEX 03 - the
+one with the staggered, smaller, and rotated, squares. DEX 03 is a common motif
+in Indian, African and many other artworks (this is the Holiday season, so you'd
+have probably recently seen it in Christmas sweaters too!).
+
+Part of the popularity probably has to do with how easy it is to make, but I
+feel it also has to do with the "necker cube" like phenomena it exhibits - how
+it changes shape if we stare at it for a while.
+
+But the next modification blew my mind when I first chanced upon it. By adding a
+single rectangle to each cell, we can convert this simple motif into an
+isometric grid!
+
+</C.Demo>
+
+<C.Demo n={7} sketch={s07}>
+
+Isometric grid.
+
+I just added one extra rectangle (a quadrilateral, but we can just think of it
+as a skewed rectangle) to each cell. In fact, this is the full code for the
+function that draws each cell:
+
+```typescript
+h = s/2
+quad(x, y, x+h, y-h, x+s, y, x+h, y+h)
+quad(x, y, x+h, y+h, x+h, y+s, x, y+h)
+```
+
+Now, I don't know if this is the best way to draw an isometric grid, or if this
+is indeed even an isometric grid technically. I'm an artist by aspiration, not
+by ability or training, so I'm just amateuring around. But the simplicity of
+this formulation did blow my mind.
+
+I guess this is perhaps because I personally have been enamoured by the
+isometric grid (I _think_ that's what this is called!), other people might
+indeed find this cliche and common place. I had a carpet once, €20 only, that
+had an extremely simple grayscale isometric pattern, and I would stare at it for
+more time than I'll acknowledge here, trying to figure out which direction the
+cubes actually were facing.
+
+Making these on the computer, I've come across one more aspect of ambiguity - if
+I stare at it, sometimes I start seeing these not as cubes, but as diagonal
+lines of "kites". Perhaps you can see what I'm talking about - focus on the
+negative space, and see how they form lines of "four sided triangles" flowing
+towards the top right of the figure.
 
 </C.Demo>
 

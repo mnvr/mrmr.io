@@ -128,6 +128,9 @@ const Description_ = styled.div`
     code {
         /* The monospace font looks too big sitting next to the other fonts */
         font-size: 90%;
+        @media (max-width: 450px) {
+            font-size: 78%;
+        }
     }
 
     pre {
