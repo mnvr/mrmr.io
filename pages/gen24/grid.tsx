@@ -139,7 +139,7 @@ export interface GridSketchParams {
  * default p5 stroke.
  */
 const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
-    p5.fill(170);
+    p5.fill(160);
     p5.rect(x, y, s, s);
 };
 

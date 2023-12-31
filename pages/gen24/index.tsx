@@ -11,6 +11,7 @@ export const Content: React.FC = () => {
         <C.Layout sketch={sketch}>
             <Description />
             <DayList />
+            <Description2 />
         </C.Layout>
     );
 };
@@ -22,7 +23,7 @@ const Description: React.FC = () => {
                 Genuary is an month-long online art fair (that's one way of
                 putting it!) that happens every year, in, you guessed it,
                 January. This year I thought I'll do remixes of the other
-                Genuary art that I come across and find particularly inspiring.
+                Genuary art that I come across and like.
             </p>
             <p>
                 Additionally, I've constrained myself to use only grids. So this
@@ -37,6 +38,17 @@ const Description: React.FC = () => {
                 kickstart things off.{" "}
                 {/*The remixes are below. Tap on any of them
                 to view a live version.*/}
+            </p>
+        </>
+    );
+};
+
+const Description2: React.FC = () => {
+    return (
+        <>
+            <p>
+                I've also created some <Link to="d">examples</Link> to show how
+                much can be done just by simple, basic grids.
             </p>
             <p>Have a great and inspiring 2024.</p>
         </>

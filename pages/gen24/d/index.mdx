@@ -9,10 +9,12 @@ import * as C from "./components";
 import { sketch as straightMin } from "./straight-min";
 import { sketch as staggeredMin } from "./staggered-min";
 import { sketch as negMin } from "./neg-min";
+import { sketch as straightNeg } from "./straight-neg";
 
 <C.Layout>
 
 <C.Demo n={1}  sketch={straightMin}>
+
 A minimal straight grid.
 
 At its essence, the code for drawing that grid is just a glorified wrapper
@@ -27,22 +29,30 @@ for (let y = 0; y < 13; y += 1)
 </C.Demo>
 
 <C.Demo n={2}  sketch={staggeredMin}>
+
 A minimal staggered grid.
 
 We can add a half a cell offset to every alternate row. This gives us a
-staggered, less monotonous, appearance.
-
-> Brick-layers found out that intertwining this way leads to buildings that are
-> stronger.
+staggered, less monotonous, appearance. Bricklayers found out that intertwining
+this way leads to buildings that are stronger.
 
 </C.Demo>
 
 <C.Demo n={3} sketch={negMin}>
+
 Negative space.
 
 Here we rotate the rectangles by 45°, and make them smaller. This simple, common
 motif keeps brains entertained - because of negative space. It is no longer one
 thing, but two images intertwined in the same visual.
+
+</C.Demo>
+
+<C.Demo n={4} sketch={straightNeg}>
+
+Marble floors.
+
+We can do the same thing, but not stagger.
 
 </C.Demo>
 
