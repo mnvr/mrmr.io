@@ -124,6 +124,21 @@ const Description_ = styled.div`
     a {
         font-weight: normal;
     }
+
+    code {
+        /* The monospace font looks too big sitting next to the other fonts */
+        font-size: 90%;
+    }
+
+    pre {
+        color: var(--mrmr-color-3);
+        /* See: Note: [Styling markdown code blocks] */
+        padding: 0.5rem;
+        border-radius: 5px;
+        background-color: oklch(90% 0 0 / 0.1);
+        overflow-x: scroll;
+    }
+
 `;
 
 const Footer: React.FC<DayProps> = ({ day }) => {

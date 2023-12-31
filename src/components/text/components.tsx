@@ -90,7 +90,8 @@ const Content_ = styled(LinkStyleUnderlined)`
     }
 
     pre {
-        /* These rules are primarily aimed at backtick terminated "code blocks"
+        /* Note: [Styling markdown code blocks]
+           These rules are primarily aimed at backtick terminated "code blocks"
            in Markdown. */
         background-color: var(--mrmr-code-background-color);
         padding: 1rem;
