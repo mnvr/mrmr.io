@@ -10,17 +10,6 @@ import { type P5CanvasInstance, type Sketch } from "@p5-wrapper/react";
 export type CellShader = (params: CellShaderParams) => void;
 
 /**
- * Data representing the entire grid.
- *
- * This is data that is invariant across cells, and is common to the entire
- * grid.
- */
-export interface Grid {
-    /** Number of cells per axis */
-    n: number;
-}
-
-/**
  * Data representing each cell.
  *
  * A cell has a fixed position in the grid, which can be read off from here.
@@ -74,10 +63,6 @@ export interface CellShaderParams {
      * Data about the cell itself.
      */
     cell: Cell;
-    /**
-     * Data about the grid we're part of.
-     */
-    grid: Grid;
 }
 
 /**
@@ -95,10 +80,6 @@ export interface GridShaderParams {
      * The p5 instance to use
      */
     p5: P5CanvasInstance;
-    /**
-     * Data about the grid.
-     */
-    grid: Grid;
 }
 
 /**
@@ -127,21 +108,21 @@ export interface GridSketchParams {
      *
      * This is the number of rows, and the number of columns, in the grid.
      *
-     * Note that we might not end up showing all of these - the sizing algorithm
-     * when showing our sketch on the canvas is a "size to fill" (and we also
-     * require some minimum overflow), which means that at least some, if not
-     * many, cells will be outside the canvas viewport and not get shown.
-     * However, the {@link drawCell} method will still be called for all the
-     * cells - this is to ensure that they get to update their state in sync
-     * with the other cells.
+     * We might not end up showing all of these - the sizing algorithm when
+     * showing our sketch on the canvas is a "size to fill" (and we also require
+     * some minimum overflow), which means that there may be that cells that lie
+     * completely outside the canvas and do not get shown.
+     *
+     * We will also show one more than this on alternate rows when we're drawing
+     * in the staggered configuration.
      *
      * Default is 13.
      */
     n?: number;
 
     /**
-     * If true, then the grid will be drawn "staggered" by offsetting all the
-     * even rows by half a cell width.
+     * If true, then the grid will be drawn "staggered" by offsetting alternate
+     * rows by half a cell width.
      *
      * This will cause the rectangular bounds of the cells to overlap, but if
      * the cells draw themselves in the "rotated" square area instead, they can
@@ -154,7 +135,8 @@ export interface GridSketchParams {
 
 /**
  * A default implementation for {@link drawCell} that draws a square covering
- * the entire cell and fills it with a shade of gray.
+ * the entire cell and fills it with a shade of gray. This square also has the
+ * default p5 stroke.
  */
 const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
     p5.fill(170);
@@ -176,12 +158,12 @@ export const defaultParams: Required<GridSketchParams> = {
 };
 
 /**
- * Create a new grid based sketch
+ * Create a new grid based sketch.
  *
  * The `gridSketch` function returns a new {@link Sketch} that uses the provided
  * params to draw on a p5 canvas by calling the {@link drawCell} function for
  * each cell in the grid. The other parameters in {@link GridSketchParams}
- * define the shape and size of the grid.
+ * define the shape and size of the grid, and other customization options.
  *
  * @param param An instance of {@link GridSketchParams}. See the documentation
  * for the individual properties of {@link GridSketchParams} for more details.
@@ -202,36 +184,35 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * distribute the available width and height and compute the size of the
      * individual cells ({@link cellSize}).
      */
-    let cellCount = { x: n, y: n };
+    let cellCount = { x: n + (staggered ? 1 : 0), y: n };
 
     /**
      * The size (both width and height) of an individual cell in the grid.
      *
      * This value will be computed based on the actual canvas size and
-     * {@link cellCount}. The starting value 100 below is just a placeholder.
+     * {@link cellCount}.
      */
-    let cellSize = 100;
+    let cellSize = 0;
 
     /**
-     * Offset (usually negtive) after which we should start drawing the first
-     * cell in a row (ditto for the first cell in a column).
+     * Offset (negative) from the canvas edge to where we start drawing cells.
      *
-     * `cellSize * cellCount` will generally not cover the entire canvas.
-     * This'll be for two reasons:
+     * `cellSize * cellCount` will generally not cover the entire canvas, for a
+     * few reasons:
      *
      * - `cellSize` is integral, but the width (or height) divided by the
      *   cellCount might not be integral.
      *
      * - The width and height of the canvas might be different, in which case
-     *   the `cellSize` is computed such that we get a "size-to-fill" sort of
-     *   behaviour. This means that on one of the axes, the last drawn cell
-     *   might not be actually the last cell, and it might not even be drawn
-     *   fully.
+     *   the `cellSize * cellCount` will exceed the smaller dimension.
      *
-     * To make things aesthetically more pleasing without having a more
-     * complicated sizing algorithm, what we do is that we start drawing from an
-     * offset, so that there is a similar half-drawn cell at both ends, and the
-     * grid overall looks (uniformly) clipped and centered.
+     * - When drawing in the staggered configuration, we draw one extra cell per
+     *   row so that the grid doesn't have any empty space at the corners even
+     *   when we're starting every alternate row half a cell ahead.
+     *
+     * To account for all these factors, we start drawing from an offset that is
+     * half of the extra space. This way, there is a similar half-drawn cell at
+     * both ends, and the grid overall looks (uniformly) clipped and centered.
      */
     let cellOffset = { x: 0, y: 0 };
 
@@ -316,30 +297,29 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * the first time when the sketch is created.
      */
     const updateSizes = (p5: P5CanvasInstance) => {
-        const minDimension = p5.max(p5.width, p5.height);
-        // Currently we support only cells that are sized the same both in width
-        // and height. To keep things simple, we also require that the number of
-        // expected rows and columns is the same.
-        console.assert(cellCount.x == cellCount.y);
-        cellSize = p5.ceil(minDimension / cellCount.x);
+        // See the documentation of cellOffset for more details about what we're
+        // trying to do here.
 
-        // This'll be negative, which is what we want.
+        const minDimension = p5.max(p5.width, p5.height);
+        cellSize = p5.ceil(minDimension / n);
+
         let remainingX = p5.width - cellSize * cellCount.x;
         let remainingY = p5.height - cellSize * cellCount.y;
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
     const draw = (p5: P5CanvasInstance) => {
-        const grid: Grid = { n: n };
-        drawGrid({ p5, grid });
+        drawGrid({ p5 });
 
         for (let y = 0; y < cellCount.y; y++) {
             for (let x = 0; x < cellCount.x; x++) {
                 const cell = { row: y, col: x };
                 let px = x * cellSize + cellOffset.x;
                 let py = y * cellSize + cellOffset.y;
-                if (staggered && y % 2 === 0) px += cellSize / 2;
-                drawCell({ p5, x: px, y: py, s: cellSize, cell, grid });
+                if (staggered && y % 2 === 0) px -= cellSize / 2;
+                // px += 100;
+                // py += 200;
+                drawCell({ p5, x: px, y: py, s: cellSize, cell });
             }
         }
     };
