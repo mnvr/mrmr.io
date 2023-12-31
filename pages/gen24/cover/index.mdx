@@ -14,6 +14,7 @@ import { sketch as s05 } from "./05";
 import { sketch as s06 } from "./06";
 import { sketch as s07 } from "./07";
 import { sketch as s08 } from "./08";
+import { sketch as cover } from "../cover";
 
 <C.Layout>
 
@@ -129,12 +130,21 @@ From this to the cover is just a matter of adding colors.
 <C.Demo n={8} sketch={s08}>
 
 I've added a different color for each of the three "faces" (there really are
-only two faces, the third face is the background, the negative space). Notice
-how now there is not one but two different sets of kites flying around.
+only two faces, the third face is the background, the negative space).
 
-I took these colors from the cover of a notebook I have that also has an
-isometric grid on top. Just like the carpet, this notebook has had me staring at
-it for much longer than I should've.
+Notice how now there is not one but two different sets of kites flying around
+(one red, and one green). And the necker cubes, facing this way or that
+(shifting based on I don't know what part of my perception), are still there.
+
+</C.Demo>
+
+<C.Demo sketch={cover}>
+
+The final cover has a few more tweaks - there is no stroke, and the colors were
+taken from the isometric-ish cover of a notebook I have (Carpets, notebooks.
+_Doctor, I have an isometric grid problem_). On the notebook the top face (the
+yellow part) is also a bit "thinner", which causes another set of "kites" flying
+around, this time horizontally, and I've done the same.
 
 </C.Demo>
 

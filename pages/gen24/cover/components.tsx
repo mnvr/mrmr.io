@@ -23,7 +23,7 @@ const Layout_ = styled.div`
 `;
 
 type DemoProps = P5WrapperProps & {
-    n: number;
+    n?: number;
 };
 
 export const Demo: React.FC<React.PropsWithChildren<DemoProps>> = ({
@@ -46,8 +46,11 @@ const Demo_ = styled.div`
     margin-block-end: 5rem;
 `;
 
-const Title: React.FC<{ n: number }> = ({ n }) => (
-    <Banner left="GRD 24" right={`DEX ${zeroPad2(n)}`} />
+const Title: React.FC<{ n?: number }> = ({ n }) => (
+    <Banner
+        left="GRD 24"
+        right={n === undefined ? "COVER" : `DEX ${zeroPad2(n)}`}
+    />
 );
 
 const Footer: React.FC = () => {

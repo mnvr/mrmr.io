@@ -4,7 +4,7 @@ import { HiArrowRight } from "react-icons/hi";
 import styled from "styled-components";
 import * as C from "./components";
 import { days, type Day } from "./days";
-import { sketch } from "./sketch";
+import { sketch } from "./cover";
 
 export const Content: React.FC = () => {
     return (
