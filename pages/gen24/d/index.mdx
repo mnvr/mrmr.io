@@ -13,7 +13,17 @@ import { sketch as isoMin } from "./iso-min";
 <C.Layout>
 
 <C.Demo n={1}  sketch={straightMin}>
-A minimal straight grid
+A minimal straight grid.
+
+At its essence, the code for drawing that grid is just a glorified wrapper
+around two nested loops.
+
+```typescript
+for (let y = 0; y < 13; y += 1)
+    for (let x = 0; x < 13; x += 1)
+        p5.rect(x * 100, y * 100, 100, 100)
+```
+
 </C.Demo>
 
 <C.Demo n={2}  sketch={staggeredMin}>

@@ -5,6 +5,7 @@ import { Link } from "gatsby";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
 import styled from "styled-components";
+import { zeroPad2 } from "utils/string";
 
 interface DayProps {
     day?: number;
@@ -20,7 +21,7 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
     return (
         <Layout_>
             <FirstFold>
-                <Banner day={day} />
+                <Title day={day} />
                 <SketchContainer sketch={sketch} />
             </FirstFold>
             <Description>{children}</Description>
@@ -36,25 +37,33 @@ const Layout_ = styled.div`
     margin: auto;
 `;
 
-const FirstFold = styled.div`
+export const FirstFold = styled.div`
     min-height: 98svh;
 
     display: flex;
     flex-direction: column;
 `;
 
-const Banner: React.FC<DayProps> = ({ day }) => {
+const Title: React.FC<DayProps> = ({ day }) => (
+    <Banner
+        left="GEN 24"
+        right={day !== undefined ? `DAY ${zeroPad2(day)}` : "BEGIN"}
+    />
+);
+
+export interface BannerProps {
+    left: string;
+    right: string;
+}
+
+export const Banner: React.FC<BannerProps> = ({ left, right }) => {
     return (
         <Banner_>
-            <BannerH>GEN 24</BannerH>
-            <BannerH>
-                {day !== undefined ? `DAY ${pad2(day)}` : "BEGIN"}
-            </BannerH>
+            <BannerH>{left}</BannerH>
+            <BannerH>{right}</BannerH>
         </Banner_>
     );
 };
-
-const pad2 = (day: number) => (day < 10 ? `0${day}` : `${day}`);
 
 const Banner_ = styled.div`
     height: 67px;
@@ -71,7 +80,7 @@ const BannerH = styled.h3`
     font-weight: 300;
 `;
 
-const SketchContainer: React.FC<P5WrapperProps> = ({ sketch }) => {
+export const SketchContainer: React.FC<P5WrapperProps> = ({ sketch }) => {
     return (
         <SketchContainer_>
             <ReactP5WrapperWithFade sketch={sketch} />
@@ -87,7 +96,9 @@ const SketchContainer_ = styled.div`
     align-items: center; /* vertically */
 `;
 
-const Description: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Description: React.FC<React.PropsWithChildren> = ({
+    children,
+}) => {
     return (
         <LinkStyleUnderlined>
             <Description_>{children}</Description_>
