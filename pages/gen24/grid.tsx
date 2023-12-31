@@ -54,11 +54,23 @@ export interface CellShaderParams {
      */
     y: number;
     /**
-     * Size / dimension / width / height of the cell.
+     * "Side" of the cell.
      *
-     * The cells are all squares.
+     * If cells are is a square (i.e. the {@link cellAspectRatio} is 1), then
+     * this value will be set to the width, or the height (both are the same).
+     *
+     * If the aspect ratio is not 1, then this value is undefined, use the
+     * provided cell width ({@link w}) or cell height ({@link h}) instead.
      */
     s: number;
+    /**
+     * Width of the cell.
+     */
+    w: number;
+    /**
+     * Height of the cell.
+     */
+    h: number;
     /**
      * Data about the cell itself.
      */
@@ -142,6 +154,32 @@ export interface GridSketchParams {
      * that by default, animations are enabled.
      */
     noLoop?: boolean;
+
+    /**
+     * The aspect ratio of each cell.
+     *
+     * This is the ratio between width and height of each cell.
+     *
+     * - If it is less than 1, then the width of the cell, w = h * 0.x, is less
+     *   than its height (i.e., the cell is in "portrait mode").
+     *
+     * - If it is 1, then the width and the height are the same.
+     *
+     * - If it is more than 1, then the width of the cell, w = h * 1.x, is more
+     *   than the height (i.e., the cell is in "landscape mode").
+     *
+     * Default is 1.
+     */
+    cellAspectRatio?: number;
+
+    /**
+     * Margin between rows.
+     *
+     * This can be a negative number if we want to squish the rows together.
+     *
+     * Default is 0.
+     */
+    rowMargin?: number;
 }
 
 /**
@@ -167,6 +205,8 @@ export const defaultParams: Required<GridSketchParams> = {
     n: 13,
     staggered: false,
     noLoop: false,
+    cellAspectRatio: 1,
+    rowMargin: 0,
 };
 
 /**
@@ -187,7 +227,15 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         ...params,
     };
 
-    const { drawCell, drawGrid, n, staggered, noLoop } = paramsOrDefault;
+    const {
+        drawCell,
+        drawGrid,
+        n,
+        staggered,
+        noLoop,
+        cellAspectRatio,
+        rowMargin,
+    } = paramsOrDefault;
 
     /**
      * The number of rows and columns in the grid.
@@ -199,12 +247,12 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     let cellCount = { x: n + (staggered ? 1 : 0), y: n };
 
     /**
-     * The size (both width and height) of an individual cell in the grid.
+     * The size of an individual cell in the grid.
      *
      * This value will be computed based on the actual canvas size and
      * {@link cellCount}.
      */
-    let cellSize = 0;
+    let cellSize = { w: 0, h: 0 };
 
     /**
      * Offset (negative) from the canvas edge to where we start drawing cells.
@@ -315,10 +363,11 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         // trying to do here.
 
         const minDimension = p5.max(p5.width, p5.height);
-        cellSize = p5.ceil(minDimension / n);
+        const s = p5.ceil(minDimension / n);
+        cellSize = { w: s, h: s };
 
-        let remainingX = p5.width - cellSize * cellCount.x;
-        let remainingY = p5.height - cellSize * cellCount.y;
+        let remainingX = p5.width - cellSize.w * cellCount.x;
+        let remainingY = p5.height - cellSize.h * cellCount.y;
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
@@ -328,13 +377,22 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         let py = cellOffset.y;
         for (let y = 0; y < cellCount.y; y++) {
             let px = cellOffset.x;
-            if (staggered && y % 2 === 0) px -= cellSize / 2;
+            if (staggered && y % 2 === 0) px -= cellSize.w / 2;
             for (let x = 0; x < cellCount.x; x++) {
                 const cell = { row: y, col: x };
-                drawCell({ p5, x: px, y: py, s: cellSize, cell });
-                px += cellSize;
+                drawCell({
+                    p5,
+                    x: px,
+                    y: py,
+                    s: cellSize.w,
+                    w: cellSize.w,
+                    h: cellSize.h,
+                    cell,
+                });
+                px += cellSize.w;
             }
-            py += cellSize;
+            py += cellSize.h;
+            py += rowMargin;
         }
     };
 

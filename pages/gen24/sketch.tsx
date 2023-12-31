@@ -8,10 +8,11 @@ const drawGrid: GridShader = ({ p5 }) => {
 
 const drawCell: CellShader = ({ p5, x, y, s }) => {
     const h = s / 2;
+    const o = h / 2;
     p5.fill(255, 255, 0);
-    p5.quad(x, y, x + h, y - h, x + s, y, x + h, y + h);
+    p5.quad(x, y, x + h, y - h + o, x + s, y, x + h, y + h - o);
     p5.fill(0, 255, 0);
-    p5.quad(x, y, x + h, y + h, x + h, y + s, x, y + h);
+    p5.quad(x, y, x + h, y + h - o, x + h, y + s - o, x, y + h);
 };
 
 export const sketch = gridSketch({
@@ -19,4 +20,5 @@ export const sketch = gridSketch({
     drawCell,
     staggered: true,
     noLoop: true,
+    cellAspectRatio: 0.8,
 });
