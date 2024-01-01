@@ -438,7 +438,7 @@ export const gridSketch = (
         const maxDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        cellCount = { x: nx + (staggered ? 1 : 0), y: ny };
+        cellCount = { x: nx + (staggered ? 1 : 0), y: ny + 1 };
         cellSize = { w: s * sw, h: s * sh };
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
