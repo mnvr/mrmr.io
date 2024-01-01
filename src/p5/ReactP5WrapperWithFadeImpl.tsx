@@ -1,8 +1,11 @@
-import { ReactP5Wrapper, type P5WrapperProps } from "@p5-wrapper/react";
+import {
+    ReactP5Wrapper,
+    SketchProps,
+    type P5WrapperProps,
+} from "@p5-wrapper/react";
 import * as React from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
-import { type ReactP5WrapperWithFadeSketchProps } from "./ReactP5WrapperWithFade";
 
 /**
  * Note: [Using client-side only code with SSR]
@@ -34,10 +37,11 @@ import { type ReactP5WrapperWithFadeSketchProps } from "./ReactP5WrapperWithFade
  * If you don't understand why this is the case (or you're me and have
  * forgotten), just import and use {@link ReactP5WrapperWithFade}, forget about
  * this file.
+ *
+ * Also, this is written as a regular function and not as an arrow React.FC
+ * because apparently there isn't a simple way to make a generic React.FC.
  */
-const ReactP5WrapperWithFadeImpl: React.FC<
-    P5WrapperProps<ReactP5WrapperWithFadeSketchProps>
-> = (props) => {
+function ReactP5WrapperWithFadeImpl<T>(props: P5WrapperProps<T & SketchProps>) {
     return (
         <Container_>
             <CSSTransition
@@ -50,7 +54,7 @@ const ReactP5WrapperWithFadeImpl: React.FC<
             </CSSTransition>
         </Container_>
     );
-};
+}
 
 export default ReactP5WrapperWithFadeImpl;
 

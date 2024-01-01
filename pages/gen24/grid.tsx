@@ -234,10 +234,6 @@ export const defaultParams: Required<GridSketchParams> = {
  *
  * These will be passed to the Sketch that is _returned_ by the `gridSketch`
  * function.
- *
- * Sneakily, we've set this up so that this is the exact same shape as
- * {@link ReactP5WrapperWithFadeSketchProps}. For more about this workaround,
- * See: Note: [Forwarding SketchProps across Loadable Component].
  */
 type GridSketchProps = SketchProps & {
     /** True if ``@media (prefers-color-scheme: dark)` is true */
