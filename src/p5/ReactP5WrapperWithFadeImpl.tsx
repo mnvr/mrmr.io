@@ -2,6 +2,7 @@ import { ReactP5Wrapper, type P5WrapperProps } from "@p5-wrapper/react";
 import * as React from "react";
 import { CSSTransition } from "react-transition-group";
 import styled from "styled-components";
+import { type ReactP5WrapperWithFadeSketchProps } from "./ReactP5WrapperWithFade";
 
 /**
  * Note: [Using client-side only code with SSR]
@@ -34,7 +35,9 @@ import styled from "styled-components";
  * forgotten), just import and use {@link ReactP5WrapperWithFade}, forget about
  * this file.
  */
-const ReactP5WrapperWithFadeImpl: React.FC<P5WrapperProps> = ({ sketch }) => {
+const ReactP5WrapperWithFadeImpl: React.FC<
+    P5WrapperProps<ReactP5WrapperWithFadeSketchProps>
+> = (props) => {
     return (
         <Container_>
             <CSSTransition
@@ -43,7 +46,7 @@ const ReactP5WrapperWithFadeImpl: React.FC<P5WrapperProps> = ({ sketch }) => {
                 timeout={300}
                 classNames="fade"
             >
-                <ReactP5Wrapper sketch={sketch} />
+                <ReactP5Wrapper {...props} />
             </CSSTransition>
         </Container_>
     );

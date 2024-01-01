@@ -1,4 +1,25 @@
 import loadable from "@loadable/component";
+import { type SketchProps } from "@p5-wrapper/react";
+
+/**
+ * Properties (browser state etc) passed to the Sketch by the the React
+ * component that contains it.
+ *
+ * Note: [Forwarding SketchProps across Loadable Component]
+ *
+ * These properties are rather sketch specific (these are pretty generic
+ * actually, but not all sketches need these). However, since we're using
+ * loadable to lazily load the ReactP5Wrapper component, it is simpler to just
+ * pass them always.
+ *
+ * There likely would be a way of making {@link ReactP5WrapperWithFade} take a
+ * generic {@link SketchProps}, but I leave that to another day when my
+ * Typescript-fu is better.
+ */
+export type ReactP5WrapperWithFadeSketchProps = SketchProps & {
+    /** True if ``@media (prefers-color-scheme: dark)` is true */
+    isDarkMode?: boolean;
+};
 
 /**
  * A lazily loaded ReactP5Wrapper component from the "@p5-wrapper/react" library
