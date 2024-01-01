@@ -30,6 +30,9 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
     const vu = cellV(p5, x, y - 1);
     const vd = cellV(p5, x, y + 1);
 
+    const ps = p5.sin(vl + vr + vu + vd + v) + 2 * 4;
+    p5.strokeWeight(ps);
+
     const th = 15; /* threshold */
     if (p5.abs(v - vl) < th) p5.line(x, y + m, x + m, y + m);
     if (p5.abs(v - vr) < th) p5.line(x + m, y + m, x + s, y + m);
