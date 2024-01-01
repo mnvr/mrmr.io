@@ -1,6 +1,7 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
 import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
+import { Signoff } from "components/text/components";
 import { Link } from "gatsby";
 import { useIsDarkMode } from "hooks/use-is-dark-mode";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
@@ -25,7 +26,10 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
                 <Title day={day} />
                 <SketchContainer sketch={sketch} />
             </FirstFold>
-            <Description>{children}</Description>
+            <Description>
+                {children}
+                <Signoff />
+            </Description>
             <Footer day={day} />
         </Layout_>
     );
@@ -155,7 +159,7 @@ const Description_ = styled.div`
  */
 export const DescriptionExtraMarginTop = styled.div`
     margin-block: 2rem;
-`
+`;
 
 const Footer: React.FC<DayProps> = ({ day }) => {
     return (

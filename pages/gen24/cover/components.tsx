@@ -1,5 +1,6 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
 import { LinkStyleUnderlined } from "components/LinkStyles";
+import { Signoff } from "components/text/components";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -10,6 +11,9 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Layout_>
             {children}
+            <SignoffContainer>
+                <Signoff />
+            </SignoffContainer>
             <Footer />
         </Layout_>
     );
@@ -53,6 +57,13 @@ const Title: React.FC<{ n?: number }> = ({ n }) => (
     />
 );
 
+const SignoffContainer = styled.div`
+    margin-block-start: -5rem;
+    @media (max-width: 900px) {
+        margin-inline: 1rem;
+    }
+`;
+
 const Footer: React.FC = () => {
     return (
         <LinkStyleUnderlined>
@@ -69,7 +80,7 @@ const Footer: React.FC = () => {
 };
 
 const Footer_ = styled.div`
-    margin-block: 3rem;
+    margin-block: 4rem;
     @media (max-width: 900px) {
         margin-inline: 1rem;
     }
