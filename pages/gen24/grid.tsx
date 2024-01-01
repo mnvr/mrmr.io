@@ -399,6 +399,8 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
+        p5.push();
+
         p5.stroke(240, 200 /* alpha, 0 - 255 */);
         p5.strokeWeight(1);
 
@@ -412,13 +414,15 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
         }
 
         p5.stroke("blue");
-        p5.strokeWeight(2);
+        p5.strokeWeight(4);
 
         for (let y = cellOffset.y + h / 2; y < p5.height; y += h) {
             for (let x = cellOffset.x + w / 2; x < p5.width; x += w) {
                 p5.point(x, y);
             }
         }
+
+        p5.pop();
     };
 
     const draw = (p5: P5CanvasInstance) => {

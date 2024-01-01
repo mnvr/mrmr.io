@@ -13,13 +13,22 @@ const cellV = (p5: P5CanvasInstance, x: number, y: number) => {
     return p5.floor(p5.abs(p5.sin(x ** 2 + y ** 2 + t)) * 100);
 };
 
-const drawCell: CellShader = ({ p5, x, y }) => {
+const drawCell: CellShader = ({ p5, x, y, s }) => {
+    const m = s / 2;
     const v = cellV(p5, x, y);
+    const vp = cellV(p5, x - 1, y);
     p5.textFont("monospace");
     p5.textSize(16);
     p5.text(`${v}`, x, y);
+
+
+    p5.line(x, y + m, x + m, y + m)
+    p5.line(x + m, y + m, x + s, y + m)
+    p5.line(x + m, y, x + m, y + m)
+    p5.line(x + m, y + m, x + m, y + s)
 };
 
 export const sketch = gridSketch({
     drawCell,
+    showGuides: true,
 });
