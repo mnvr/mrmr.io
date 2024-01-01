@@ -25,7 +25,8 @@ A minimal straight grid.
 At its essence, the code for drawing it is just a glorified wrapper around two
 nested loops.
 
-```
+{/* prettier-ignore */}
+```typescript
 for (let y = 0; y < 13; y += 1)
     for (let x = 0; x < 13; x += 1)
         p5.rect(x * 50, y * 50, 50, 50)
@@ -100,10 +101,11 @@ as a skewed rectangle) to each cell. In fact, this is the code for the function
 that draws each cell - first quad is the original (rotated) square we already
 drew for DEX 03, and the second quad is the new one:
 
-```
-h = s/2
-quad(x, y, x+h, y-h, x+s, y, x+h, y+h)
-quad(x, y, x+h, y+h, x+h, y+s, x, y+h)
+{/* prettier-ignore */}
+```typescript
+m = s / 2 /* mid-point of side s */
+quad(x, y, x+m, y-m, x+s, y, x+m, y+m)
+quad(x, y, x+m, y+m, x+m, y+s, x, y+m)
 ```
 
 Now, I don't know if this is the best way to draw an isometric grid, or if this
