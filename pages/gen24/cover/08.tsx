@@ -3,7 +3,7 @@ import { gridSketch, type CellShader, type GridShader } from "../grid";
 const drawGrid: GridShader = ({ p5 }) => {
     p5.clear();
     p5.background(255, 0, 0);
-}
+};
 
 const drawCell: CellShader = ({ p5, x, y, s }) => {
     const h = s / 2;

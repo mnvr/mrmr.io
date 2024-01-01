@@ -3,8 +3,8 @@ import * as React from "react";
 import { HiArrowRight } from "react-icons/hi";
 import styled from "styled-components";
 import * as C from "./components";
-import { days, type Day } from "./days";
 import { sketch } from "./cover";
+import { days, type Day } from "./days";
 
 export const Content: React.FC = () => {
     return (
@@ -22,8 +22,8 @@ const Description: React.FC = () => {
             <p>
                 Genuary is an month-long online art fair (that's one way of
                 putting it!) that happens every year, in, you guessed it,
-                January. This year I thought I'll do remixes of other
-                Genuary art that I like.
+                January. This year I thought I'll do remixes of other Genuary
+                art that I like.
             </p>
             <p>
                 Additionally, I've constrained myself to use only grids. So this
