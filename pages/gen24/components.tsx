@@ -2,6 +2,7 @@ import { ReactP5Wrapper, type P5WrapperProps } from "@p5-wrapper/react";
 import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
+import { useIsDarkMode } from "hooks/use-is-dark-mode";
 import * as React from "react";
 import styled from "styled-components";
 import { zeroPad2 } from "utils/string";
@@ -81,8 +82,8 @@ const BannerH = styled.h3`
 
 export const SketchContainer: React.FC<P5WrapperProps> = ({ sketch }) => {
     // TODO: Fix me
-    // const isDarkMode = useIsDarkMode();
-    const isDarkMode = true;
+    const isDarkMode = useIsDarkMode();
+    // const isDarkMode = true;
     // TODO: Forward via ReactP5WrapperWithFade
     return (
         <SketchContainer_>

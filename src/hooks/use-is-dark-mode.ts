@@ -11,13 +11,11 @@ export const useIsDarkMode = () => {
     const [isDarkMode, setIsDarkMode] = React.useState(false);
 
     React.useEffect(() => {
-        const handleChange = () => {
-            setIsDarkMode(
-                window.matchMedia("(prefers-color-scheme: dark)").matches,
-            );
-        };
-        window.addEventListener("change", handleChange);
-        return () => window.removeEventListener("change", handleChange);
+        const mql = window.matchMedia("(prefers-color-scheme: dark)");
+        const handleChange = () => setIsDarkMode(mql.matches);
+        handleChange();
+        mql.addEventListener("change", handleChange);
+        return () => mql.removeEventListener("change", handleChange);
     }, []);
 
     return isDarkMode;
