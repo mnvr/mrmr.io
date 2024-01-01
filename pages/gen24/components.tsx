@@ -145,6 +145,18 @@ const Description_ = styled.div`
     }
 `;
 
+/**
+ * Add extra top margin for a description.
+ *
+ * The {@link Description} for some of the sketches needs a bit more space at
+ * the top to separate it out from the sketch, especially when the sketch has a
+ * diffuse boundary. This is a convenience component to do that, it increases
+ * the margin-block from "1rem" (default for mobiles) to "2rem" always.
+ */
+export const DescriptionExtraMarginTop = styled.div`
+    margin-block: 2rem;
+`
+
 const Footer: React.FC<DayProps> = ({ day }) => {
     return (
         <LinkStyleUnderlined>
