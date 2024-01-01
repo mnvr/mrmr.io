@@ -1,7 +1,12 @@
 import { P5CanvasInstance } from "@p5-wrapper/react";
-import { gridSketch, type CellShader } from "../grid";
+import { gridSketch, type CellShader, type GridShader } from "../grid";
 
 const debug = false;
+
+const drawGrid: GridShader = ({ p5, env }) => {
+    p5.clear();
+    p5.stroke(env.isDarkMode ? 255 : 20);
+};
 
 /**
  * An arbitrary, smoothly varying value between 0 and 100 ([0, 100)) for the
@@ -42,5 +47,6 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
 
 export const sketch = gridSketch({
     drawCell,
+    drawGrid,
     showGuides: debug,
 });

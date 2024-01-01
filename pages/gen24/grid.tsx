@@ -1,4 +1,8 @@
-import { type P5CanvasInstance, type Sketch } from "@p5-wrapper/react";
+import {
+    SketchProps,
+    type P5CanvasInstance,
+    type Sketch,
+} from "@p5-wrapper/react";
 
 /**
  * A function that is called for drawing each cell.
@@ -96,6 +100,18 @@ export interface GridShaderParams {
      * The p5 instance to use
      */
     p5: P5CanvasInstance;
+    /**
+     * The environment in which the grid is being shown.
+     */
+    env: Env;
+}
+
+/**
+ * Data about the environment in which the grid sketch is being rendered.
+ */
+export interface Env {
+    /** True if `@media (prefers-color-scheme: dark)` is true.  */
+    isDarkMode: boolean;
 }
 
 /**
@@ -213,6 +229,18 @@ export const defaultParams: Required<GridSketchParams> = {
 };
 
 /**
+ * Properties (browser state etc) passed to the Sketch by the the React
+ * component that contains it.
+ *
+ * These will be passed to the Sketch that is _returned_ by the `gridSketch`
+ * function.
+ */
+type GridSketchProps = SketchProps & {
+    /** True if ``@media (prefers-color-scheme: dark)` is true */
+    isDarkMode?: boolean;
+};
+
+/**
  * Create a new grid based sketch.
  *
  * The `gridSketch` function returns a new {@link Sketch} that uses the provided
@@ -224,7 +252,9 @@ export const defaultParams: Required<GridSketchParams> = {
  * for the individual properties of {@link GridSketchParams} for more details.
  * All of them are optional.
  */
-export const gridSketch = (params?: GridSketchParams): Sketch => {
+export const gridSketch = (
+    params?: GridSketchParams,
+): Sketch<GridSketchProps> => {
     const paramsOrDefault: Required<GridSketchParams> = {
         ...defaultParams,
         ...params,
@@ -309,6 +339,20 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
      * that have the same width as the previous window size we encountered.
      */
     let previousWindowSize = { width: 0 };
+
+    /**
+     * The environment.
+     *
+     * This is read-in from {@link GridSketchProps}.
+     */
+    let env: Env = { isDarkMode: false };
+
+    /**
+     * Update our local state when the custom props passed to the sketch change.
+     */
+    const updateWithProps = (p5: P5CanvasInstance, props: GridSketchProps) => {
+        env.isDarkMode = props.isDarkMode ?? false;
+    };
 
     const setup = (p5: P5CanvasInstance) => {
         previousWindowSize.width = p5.windowWidth;
@@ -426,7 +470,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     };
 
     const draw = (p5: P5CanvasInstance) => {
-        drawGrid({ p5 });
+        drawGrid({ p5, env });
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
@@ -444,6 +488,7 @@ export const gridSketch = (params?: GridSketchParams): Sketch => {
     };
 
     return (p5) => {
+        p5.updateWithProps = (props) => updateWithProps(p5, props);
         p5.setup = () => setup(p5);
         p5.windowResized = () => windowResized(p5);
         p5.draw = () => draw(p5);
