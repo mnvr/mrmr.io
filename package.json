@@ -11,6 +11,7 @@
         "serve": "gatsby serve",
         "clean": "gatsby clean",
         "lint": "tsc --noEmit && yarn prettier --check .",
+        "push": "git diff --name-only --diff-filter=d origin/main | grep -E '\\.(ts|md|yaml|json).?$' | xargs yarn prettier --check && git push",
         "postinstall": "patch-package"
     },
     "dependencies": {
