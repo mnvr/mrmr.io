@@ -22,12 +22,11 @@ const Description: React.FC = () => {
             <p>
                 Genuary is an month-long online art fair (that's one way of
                 putting it!) that happens every year, in, you guessed it,
-                January. This year I thought I'll do remixes of other Genuary
-                art that I like.
+                January.
             </p>
             <p>
-                Additionally, I've constrained myself to use only grids. So this
-                is like a Griduary too.
+                This year, I've constrained myself to use only grids. So this is
+                like a Griduary too.
             </p>
             <p>
                 I'm using p5.js to make these sketches, and the{" "}
