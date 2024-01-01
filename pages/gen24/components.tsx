@@ -28,6 +28,7 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
             </FirstFold>
             <Description>
                 {children}
+                {day && <SourceLink day={day} />}
                 <Signoff />
             </Description>
             <Footer day={day} />
