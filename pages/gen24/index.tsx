@@ -47,7 +47,7 @@ const Description2: React.FC = () => {
                 I've also created a <Link to="cover">demonstration</Link> to
                 show how much can be done just by simple, basic grids - I start
                 with the simplest possible grid, and derive the cover art that
-                you see at top.
+                you see at the top.
             </p>
             <p>Have a great and inspiring 2024.</p>
         </>
