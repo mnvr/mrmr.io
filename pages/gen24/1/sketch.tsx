@@ -5,7 +5,7 @@ const debug = false;
 
 const drawGrid: GridShader = ({ p5, env }) => {
     p5.clear();
-    p5.stroke(env.isDarkMode ? 255 : 20);
+    p5.stroke(env.isDarkMode ? 235 : 20);
 };
 
 /**
