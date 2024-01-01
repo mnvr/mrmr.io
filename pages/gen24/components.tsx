@@ -196,3 +196,26 @@ const Footer_ = styled.div`
  * file.
  */
 export const ELink = ExternalLinkWithIcon;
+
+interface SourceLinkProps {
+    day: number;
+}
+
+/**
+ * A link to the source code – "sketch.tsx" – for the given day.
+ */
+export const SourceLink: React.FC<SourceLinkProps> = ({ day }) => {
+    return (
+        <SourceLink_>
+            <ELink
+                href={`https://github.com/mnvr/mrmr.io/blob/main/pages/gen24/${day}/sketch.tsx`}
+            >
+                Source code for the sketch
+            </ELink>
+        </SourceLink_>
+    );
+};
+
+const SourceLink_ = styled.p`
+    margin-block-start: 2rem;
+`;
