@@ -132,7 +132,7 @@ const drawGrid: GridShader = ({ p5, grid }) => {
         p5.textAlign(p5.LEFT, p5.TOP);
     }
 
-    every(p5, { ms: 300 }, () => {
+    every(p5, { ms: 10000 }, () => {
         // p5.fill(0);
         // p5.circle(100, 100, 100);
         n += 1;
@@ -333,9 +333,9 @@ const every = (
     // be true once every `s` seconds.
     //
     // This was assuming nice integral values, but we may get floating point
-    // results from `frameCount / s`. To handle them, we take the ceil.
+    // results from `frameCount / s`. TODO.
 
-    const scaledFrameCount = p5.ceil(p5.frameCount * (1 / s));
+    const scaledFrameCount = (p5.frameCount * (1 / s));
     if (scaledFrameCount % fps === 0) {
         console.log("bang", scaledFrameCount);
         action();
