@@ -311,9 +311,33 @@ const every = (
     // this method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
 
-    // Find the nearest frame
-    if ((p5.frameCount * (1 / s)) % fps === 0) {
-        console.log("bang");
+    // Find the nearest frame.
+    //
+    // The simple case is when seconds is 1. Then, every 1 second, the
+    // frameCount is a multiple of the fps (this is by their definitions - fps
+    // is frames per second, so after 1 second, the frameCount will be an exact
+    // multiple of the fps. `frameCount % fps == 0` is true once every second.
+    //
+    // Now what if seconds is more than 1. Let us say 2. We want to set things
+    // up so that it becomes a multiple of fps after every 2 seconds (instead of
+    // 1). So what we can do is - we can divide the frameCount by 2. This way,
+    // it'll take twice as longer for it to loop back to the exact fps value,
+    // which is what we want.
+    //
+    // And what if seconds is less than 1? Let us say 0.5. We now want it to
+    // loop back to the exact fps value twice a second. So we multiply the
+    // frameCount by 2. Multiplying by 2 is the same as dividing by 0.5.
+    //
+    // Thus, in both cases, we can scale up the frameCount by dividing it by the
+    // number of seconds we want to hit. i.e. `(frameCount / s) % fps == 0` will
+    // be true once every `s` seconds.
+    //
+    // This was assuming nice integral values, but we may get floating point
+    // results from `frameCount / s`. To handle them, we take the ceil.
+
+    const scaledFrameCount = p5.ceil(p5.frameCount * (1 / s));
+    if (scaledFrameCount % fps === 0) {
+        console.log("bang", scaledFrameCount);
         action();
     }
 
