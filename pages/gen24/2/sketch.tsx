@@ -132,24 +132,15 @@ const drawGrid: GridShader = ({ p5, grid }) => {
         p5.textAlign(p5.LEFT, p5.TOP);
     }
 
-    every(p5, { ms: 34 }, () => {
-        // p5.fill(0);
-        // p5.circle(100, 100, 100);
-        n += 1;
+    every(p5, { seconds: 1 }, () => {
+        movePhotons({ p5, grid });
+        collidePhotons({ p5, grid });
     });
-
-    p5.text(p5.nf(n, 2, 0), 20, 180);
-    p5.text(p5.nf(p5.frameCount, 2, 0), 20, 160);
-
-    // every(p5, { seconds: 1 }, () => {
-    //     movePhotons({ p5, grid });
-    //     collidePhotons({ p5, grid });
-    // });
 };
 
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
     let { row, col } = cell;
-    return;
+
     let cv = p5.createVector(col, row);
 
     const rp = ensure(photons[0]).position;
@@ -338,6 +329,4 @@ const every = (
     if (p5.frameCount % scaledFPS === 0) {
         action();
     }
-
-    p5.text(p5.nf(p5.millis() / 1000, 2, 0), 20, 200);
 };
