@@ -1,7 +1,7 @@
 import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
 import { ensure } from "utils/ensure";
-import { CellShader, gridSketch, type GridShader } from "../grid";
+import { CellShader, gridSketch, type GridShader, Cell } from "../grid";
 
 const debug = true;
 
@@ -55,13 +55,38 @@ const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
         if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
     }
 
-    p5.color(rgb);
+    p5.fill(rgb);
     p5.rect(x, y, s, s);
 
     if (debug) {
-        p5.text(`${row} ${col}`, x + 1, y + 2);
+        print(p5, x, y, cell);
     }
 };
+
+const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
+    let { row, col } = cell;
+
+    p5.push();
+    p5.fill("black");
+    p5.textSize(12);
+    p5.text(`${col} ${row}`, x + 1, y + 2);
+
+    p5.textSize(8);
+
+    const rp = ensure(photons[0]).position;
+    p5.fill("red");
+    p5.text(`${rp.x} ${rp.x}`, x + 1, y + 15);
+
+    const gp = ensure(photons[1]).position;
+    p5.fill("green");
+    p5.text(`${gp.x} ${gp.x}`, x + 1, y + 23);
+
+    const bp = ensure(photons[1]).position;
+    p5.fill("blue");
+    p5.text(`${bp.x} ${bp.x}`, x + 1, y + 31);
+
+    p5.pop();
+}
 
 export const sketch = gridSketch({
     drawGrid,
