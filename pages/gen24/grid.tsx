@@ -4,6 +4,8 @@ import {
     type Sketch,
 } from "@p5-wrapper/react";
 
+type DefaultState = undefined;
+
 /**
  * A function that is called for drawing each cell.
  *
@@ -11,7 +13,9 @@ import {
  * specific data, and the overall grid shape. This is modeled somewhat similarly
  * to WebGL fragment shaders, although much (much) more coarse.
  */
-export type CellShader = (params: CellShaderParams) => void;
+export type CellShader<S = DefaultState> = (
+    params: CellShaderParams<S>,
+) => void;
 
 /**
  * Data representing each cell.
@@ -36,8 +40,11 @@ export interface Cell {
 /**
  * Parameters passed to the {@link CellShader} when invoking it during
  * {@link drawCell}.
+ *
+ * The generic type variable `S` parameterizes the state threaded through the
+ * {@link gridSketch}.
  */
-export interface CellShaderParams {
+export interface CellShaderParams<S> {
     /**
      * The p5 instance to use
      *
@@ -83,6 +90,12 @@ export interface CellShaderParams {
      * Data about the cell itself.
      */
     cell: Cell;
+    /**
+     * Arbitrary, sketch dependent state passed to all the drawCall calls.
+     *
+     * The {@link drawGrid} function can change this state when needed.
+     */
+    state: S;
 }
 
 /**
@@ -110,14 +123,23 @@ export interface Grid {
 /**
  * A function that is called once (per frame) for doing any background drawing
  * or clearing before we start drawing each cell.
+ *
+ * If it returns a value of type `S`, then this (arbitrary, sketch dependent)
+ * state will be modified, and the updated value will be passed to subsequent
+ * drawGrid and {@link drawCell} calls.
  */
-export type GridShader = (params: GridShaderParams) => void;
+export type GridShader<S = DefaultState> = (
+    params: GridShaderParams<S>,
+) => S | undefined;
 
 /**
  * Parameters passed to the {@link GridShader} when invoking it during
  * {@link drawGrid}.
+ *
+ * The generic type variable `S` parameterizes the state threaded through the
+ * {@link gridSketch}.
  */
-export interface GridShaderParams {
+export interface GridShaderParams<S> {
     /**
      * The p5 instance to use
      */
@@ -130,6 +152,12 @@ export interface GridShaderParams {
      * The environment in which the grid is being shown.
      */
     env: Env;
+    /**
+     * The current value of the state threaded through the {@link gridSketch}.
+     *
+     * Return a new value to update this when needed.
+     */
+    state: S;
 }
 
 /**
@@ -143,14 +171,18 @@ export interface Env {
 /**
  * Parameters passed to {@link gridSketch}. See {@link defaultParams} for their
  * default values.
+ *
+ * The generic parameter S parameterizes the grid state that is threaded through
+ * the {@link drawGrid} and {@link drawCell} calls, and can be modified by
+ * {@link drawGrid} by returning a new value.
  */
-export interface GridSketchParams {
+export interface GridSketchParams<S> {
     /**
      * The most important bit - a function to call for drawing each cell.
      *
      * See the documentation of {@link CellShader} for more info.
      */
-    drawCell?: CellShader;
+    drawCell?: CellShader<S>;
 
     /**
      * A function to prepare the grid before we start drawing each cell.
@@ -159,7 +191,7 @@ export interface GridSketchParams {
      *
      * The default implementation clears the canvas.
      */
-    drawGrid?: GridShader;
+    drawGrid?: GridShader<S>;
 
     /**
      * Number of cells per axis
@@ -232,27 +264,20 @@ export interface GridSketchParams {
  * the entire cell and fills it with a shade of gray. This square also has the
  * default p5 stroke.
  */
-const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
+function defaultCellShader<S>({ p5, x, y, s }: CellShaderParams<S>) {
+    // const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
     p5.fill(160);
     p5.rect(x, y, s, s);
-};
+}
 
 /**
  * A default implementation for {@link drawGrid} that clears the canvas.
  */
-const defaultGridShader: GridShader = ({ p5 }) => {
+function defaultGridShader<S>({ p5 }: GridShaderParams<S>) {
+    // function defaultGridShader<S>: GridShader = ({ p5 }) => {
     p5.clear();
-};
-
-export const defaultParams: Required<GridSketchParams> = {
-    drawCell: defaultCellShader,
-    drawGrid: defaultGridShader,
-    n: 13,
-    staggered: false,
-    noLoop: false,
-    cellAspectRatio: 1,
-    showGuides: false,
-};
+    return undefined;
+}
 
 /**
  * Properties (browser state etc) passed to the Sketch by the the React
@@ -274,14 +299,28 @@ type GridSketchProps = SketchProps & {
  * each cell in the grid. The other parameters in {@link GridSketchParams}
  * define the shape and size of the grid, and other customization options.
  *
+ * The generic type variable `S` parameterizes the state threaded through the
+ * {@link gridSketch}.
+ *
  * @param param An instance of {@link GridSketchParams}. See the documentation
  * for the individual properties of {@link GridSketchParams} for more details.
  * All of them are optional.
  */
-export const gridSketch = (
-    params?: GridSketchParams,
-): Sketch<GridSketchProps> => {
-    const paramsOrDefault: Required<GridSketchParams> = {
+export function gridSketch<S = DefaultState>(
+    params: GridSketchParams<S>,
+    initialState: S,
+): Sketch<GridSketchProps> {
+    const defaultParams: Required<GridSketchParams<S>> = {
+        drawCell: defaultCellShader,
+        drawGrid: defaultGridShader,
+        n: 13,
+        staggered: false,
+        noLoop: false,
+        cellAspectRatio: 1,
+        showGuides: false,
+    };
+
+    const paramsOrDefault: Required<GridSketchParams<S>> = {
         ...defaultParams,
         ...params,
     };
@@ -295,6 +334,11 @@ export const gridSketch = (
         cellAspectRatio,
         showGuides,
     } = paramsOrDefault;
+
+    /**
+     * The sketch specific state.
+     */
+    let state = initialState;
 
     /**
      * The number of rows and columns in the grid.
@@ -511,7 +555,8 @@ export const gridSketch = (
     const draw = (p5: P5CanvasInstance) => {
         const grid = gridSize;
 
-        drawGrid({ p5, env, grid });
+        const newState = drawGrid({ p5, env, grid, state });
+        if (newState !== undefined) state = newState;
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
@@ -521,7 +566,7 @@ export const gridSketch = (
             for (let x = 0; x < gridSize.colCount; x++, px += w) {
                 const cell = { row: y, col: x };
                 const s = p5.max(w, h);
-                drawCell({ p5, x: px, y: py, s, w, h, cell });
+                drawCell({ p5, x: px, y: py, s, w, h, cell, state });
             }
         }
 
@@ -534,4 +579,4 @@ export const gridSketch = (
         p5.windowResized = () => windowResized(p5);
         p5.draw = () => draw(p5);
     };
-};
+}
