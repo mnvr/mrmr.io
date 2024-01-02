@@ -131,7 +131,7 @@ const drawGrid: GridShader = ({ p5, grid }) => {
 
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
     let { row, col } = cell;
-
+return;
     let cv = p5.createVector(col, row);
 
     const rp = ensure(photons[0]).position;
@@ -185,7 +185,7 @@ const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
             rgb[i] = 200;
             p5.fill(rgb);
             // p5.circle(x + s / 2, y + s / 2, s / 2)
-            p5.rect(x + s / 4, y + s / 4, s / 4, s / 4);
+            // p5.rect(x + s / 4, y + s / 4, s / 4, s / 4);
         }
     }
 
@@ -271,6 +271,9 @@ const every = (
         "Currently only supported value for every is 1 second",
     );
 
+    // Convert to milliseconds
+    const ms = 100;
+
     // frameRate doesn't return a value until the first frame is drawn
     // const fps = p5.frameRate() ?? 60;
     // frameRate is the actual frame rate, and is non-integral. What we actually
@@ -279,6 +282,16 @@ const every = (
     // Unfortunately, it seems that there isn't a type definition for this
     // method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
+    // Normalized frame count
+    const nfc = (p5.frameCount % fps);
+    if (true || debug) {
+        p5.textFont("monospace");
+        p5.textSize(12);
+        p5.textAlign(p5.LEFT, p5.TOP);
+        p5.fill(0);
+        p5.text(p5.nf(nfc), 100, 100);
+        console.log(p5.nf(nfc))
+    }
     s = 10;
     const scaledFC = s * p5.frameCount;
     if (scaledFC % fps === 0) action();
