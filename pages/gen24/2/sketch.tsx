@@ -48,7 +48,7 @@ interface MovePhotonsParams {
 }
 
 const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
-    const { photons } = state;
+    const { photons, boundsVec } = state;
 
     const isOutOfBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
@@ -58,10 +58,13 @@ const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
     for (let i = 0; i < 3; i++) {
         let pi = ensure(photons[i]);
         pi.position.add(pi.velocity);
-        // pi.position = vecMod(p5, pi.position, boundsVec);
         if (isOutOfBounds(pi.position)) {
-            pi.velocity.mult(-1);
-            pi.position.add(pi.velocity);
+            if (p5.random() > 0.5) {
+                pi.velocity.mult(-1);
+                pi.position.add(pi.velocity);
+            } else {
+                pi.position = vecMod(p5, pi.position, boundsVec);
+            }
         }
     }
 };
