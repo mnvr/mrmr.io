@@ -239,5 +239,7 @@ const every = (
     // Unfortunately, it seems that there isn't a type definition for this
     // method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
-    if (p5.frameCount % fps === 0) action();
+    s = 10
+    const scaledFC = s * p5.frameCount;
+    if (scaledFC % fps === 0) action();
 };
