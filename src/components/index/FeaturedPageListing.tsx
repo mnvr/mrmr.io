@@ -69,6 +69,12 @@ const BackgroundImageContainer = styled.div`
     bottom: 0;
     width: 100%;
 
+    /* Chrome 119 on macOS (and possibly others) still require the -webkit
+       vendor prefix for both mask-image and linear-gradient */
+    -webkit-mask-image: -webkit-linear-gradient(
+        transparent,
+        rgba(0, 0, 0, 0.3)
+    );
     mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
 `;
 

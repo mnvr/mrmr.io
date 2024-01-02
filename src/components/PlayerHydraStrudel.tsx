@@ -78,6 +78,7 @@ interface PlayButtonOverlayProps {
 
 const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
     background-color: rgba(72, 65, 79, 0.15);
+    -webkit-backdrop-filter: blur(13px);
     backdrop-filter: blur(13px);
 
     grid-area: 1/-1;
