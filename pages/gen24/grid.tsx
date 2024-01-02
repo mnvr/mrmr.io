@@ -22,13 +22,13 @@ export interface Cell {
     /**
      * The vertical index of the cell
      *
-     * This ranges from 0 to {@link Grid.n} across all the cells.
+     * This ranges from 0 to {@link Grid.rowCount}` - 1` across all the cells.
      */
     row: number;
     /**
      * The horizontal index of the cell
      *
-     * This ranges from 0 to {@link Grid.n} across all the cells.
+     * This ranges from 0 to {@link Grid.colCount}` - 1` across all the cells.
      */
     col: number;
 }
@@ -86,6 +86,28 @@ export interface CellShaderParams {
 }
 
 /**
+ * Data representing the grid itself.
+ *
+ * A grid has `cols` * `rows` {@link Cell}s.
+ */
+export interface Grid {
+    /**
+     * The number of rows in the grid (vertical indexes).
+     *
+     * Note that not all the cells might be fully visible. At the edges, some of
+     * them might even be completely occluded.
+     */
+    rowCount: number;
+    /**
+     * The number of columns in the grid (horizontal indexes).
+     *
+     * Note that not all the cells might be fully visible. At the edges, some of
+     * them might even be completely occluded.
+     */
+    colCount: number;
+}
+
+/**
  * A function that is called once (per frame) for doing any background drawing
  * or clearing before we start drawing each cell.
  */
@@ -100,6 +122,10 @@ export interface GridShaderParams {
      * The p5 instance to use
      */
     p5: P5CanvasInstance;
+    /**
+     * Data about the grid itself.
+     */
+    grid: Grid;
     /**
      * The environment in which the grid is being shown.
      */
@@ -283,27 +309,27 @@ export const gridSketch = (
      * computed at the same time when we're computing the cell sizes, in the
      * `updateSizes` function below.
      */
-    let cellCount = { x: 0, y: 0 };
+    let gridSize = { rowCount: 0, colCount: 0 };
 
     /**
      * The size of an individual cell in the grid.
      *
      * This value will be computed based on the actual canvas size and
-     * {@link cellCount}.
+     * {@link gridSize}.
      */
     let cellSize = { w: 0, h: 0 };
 
     /**
      * Offset (negative) from the canvas edge to where we start drawing cells.
      *
-     * `cellSize * cellCount` will generally not cover the entire canvas, for a
+     * `cellSize * gridSize` will generally not cover the entire canvas, for a
      * few reasons:
      *
      * - `cellSize` is integral, but the width (or height) divided by the
-     *   cellCount might not be integral.
+     *   gridSize might not be integral.
      *
      * - The width and height of the canvas might be different, in which case
-     *   the `cellSize * cellCount` will exceed the smaller dimension.
+     *   the `cellSize * gridSize` will exceed the smaller dimension.
      *
      * - When drawing in the staggered configuration, we draw one extra cell per
      *   row so that the grid doesn't have any empty space at the corners even
@@ -415,7 +441,7 @@ export const gridSketch = (
         // First compute the number of rows and colums. Then use that to
         // determine the size of cells.
         //
-        // See the documentation of `cellCount` and `cellOffset` for more
+        // See the documentation of `gridSize` and `cellOffset` for more
         // details about what we're trying to do here.
 
         const r = cellAspectRatio;
@@ -447,11 +473,11 @@ export const gridSketch = (
         const maxDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        cellCount = { x: cx + (staggered ? 1 : 0), y: cy };
+        gridSize = { rowCount: cy, colCount: cx + (staggered ? 1 : 0) };
         cellSize = { w: s * sw, h: s * sh };
 
-        let remainingX = p5.width - cellSize.w * cellCount.x;
-        let remainingY = p5.height - cellSize.h * cellCount.y;
+        let remainingX = p5.width - cellSize.w * gridSize.colCount;
+        let remainingY = p5.height - cellSize.h * gridSize.rowCount;
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
@@ -483,14 +509,16 @@ export const gridSketch = (
     };
 
     const draw = (p5: P5CanvasInstance) => {
-        drawGrid({ p5, env });
+        const grid = gridSize;
+
+        drawGrid({ p5, env, grid });
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
-        for (let y = 0; y < cellCount.y; y++, py += h) {
+        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
             let px = cellOffset.x;
             if (staggered && y % 2 === 0) px -= w / 2;
-            for (let x = 0; x < cellCount.x; x++, px += w) {
+            for (let x = 0; x < gridSize.colCount; x++, px += w) {
                 const cell = { row: y, col: x };
                 const s = p5.max(w, h);
                 drawCell({ p5, x: px, y: py, s, w, h, cell });

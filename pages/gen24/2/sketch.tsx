@@ -1,7 +1,13 @@
 import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
 import { ensure } from "utils/ensure";
-import { Cell, CellShader, gridSketch, type GridShader } from "../grid";
+import {
+    Cell,
+    CellShader,
+    gridSketch,
+    type Grid,
+    type GridShader,
+} from "../grid";
 
 const debug = true;
 
@@ -21,18 +27,36 @@ interface Photon {
     velocity: P5.Vector;
 }
 
-const makePhotons = ({ p5 }: { p5: P5CanvasInstance }): Photon[] => {
+interface MakePhotonsParams {
+    p5: P5CanvasInstance;
+}
+
+const makePhotons = ({ p5 }: MakePhotonsParams): Photon[] => {
     return [
         { position: p5.createVector(2, 2), velocity: p5.createVector(1, 0) },
-        { position: p5.createVector(10, 8), velocity: p5.createVector() },
+        { position: p5.createVector(10, 8), velocity: p5.createVector(0, 0) },
         { position: p5.createVector(5, 5), velocity: p5.createVector() },
     ];
 };
 
-const movePhotons = ({ p5 }: { p5: P5CanvasInstance }) => {
+interface MovePhotonsParams {
+    p5: P5CanvasInstance;
+    grid: Grid;
+}
+
+const movePhotons = ({ p5, grid }: MovePhotonsParams) => {
+    const isOutOfBounds = (vec: P5.Vector) => {
+        const [x, y] = [vec.x, vec.y];
+        return (x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount);
+    }
+
     for (let i = 0; i < 3; i++) {
         let pi = ensure(photons[i]);
         pi.position.add(pi.velocity);
+        if (isOutOfBounds(pi.position)) {
+            pi.velocity.mult(-1);
+            pi.position.add(pi.velocity);
+        }
     }
 };
 
@@ -41,7 +65,7 @@ const hasPosition = ({ position }: Photon, x: number, y: number) =>
 
 let photons: Photon[] = [];
 
-const drawGrid: GridShader = ({ p5 }) => {
+const drawGrid: GridShader = ({ p5, grid }) => {
     if (photons.length === 0) {
         photons = makePhotons({ p5 });
     }
@@ -54,7 +78,7 @@ const drawGrid: GridShader = ({ p5 }) => {
     }
 
     every(p5, { seconds: 1 }, () => {
-        movePhotons({ p5 });
+        movePhotons({ p5, grid });
     });
 };
 
@@ -92,7 +116,7 @@ const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
     p5.fill("green");
     p5.text(`${gp.x} ${gp.x}`, x + 1, y + 23);
 
-    const bp = ensure(photons[1]).position;
+    const bp = ensure(photons[2]).position;
     p5.fill("blue");
     p5.text(`${bp.x} ${bp.x}`, x + 1, y + 31);
 
