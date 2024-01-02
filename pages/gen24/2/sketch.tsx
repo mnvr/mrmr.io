@@ -41,23 +41,37 @@ const makePhotons = ({ p5 }: MakePhotonsParams): Photon[] => {
 };
 
 interface MovePhotonsParams {
+    p5: P5CanvasInstance;
     grid: Grid;
     state: State;
 }
 
-const movePhotons = ({ grid, state }: MovePhotonsParams) => {
-    const { photons } = state;
+const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
+    const { photons, maxDist } = state;
 
     const isOutOfBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
         return x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount;
     };
 
-    for (const p of photons) {
+    let haveCollided = false;
+
+    for (const [i, p] of photons.entries()) {
         p.position.add(p.velocity);
         if (isOutOfBounds(p.position)) {
             p.velocity.mult(-1);
             p.position.add(p.velocity);
+        }
+
+        for (const [j, q] of photons.entries()) {
+            if (haveCollided) break;
+            if (i === j) continue;
+            const d = p.position.dist(q.position) / maxDist;
+            if (d < 0.1) {
+                // Collision! With a low probabilty, reverse the directions.
+                haveCollided = true;
+                if (p5.random() < 0.2) p.velocity.mult(-1);
+            }
         }
     }
 };
@@ -95,7 +109,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     }
 
     every(p5, { seconds: 1 }, () => {
-        movePhotons({ grid, state: newState });
+        movePhotons({ p5, grid, state: newState });
     });
 
     return newState;
@@ -113,18 +127,19 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
     p5.rect(x, y, s, s);
 
-    if (debug) debugCell({ p5, x, y, cell, photonDist });
+    if (debug) debugCell({ p5, x, y, s, cell, photonDist });
 };
 
 interface DebugCellProps {
     p5: P5CanvasInstance;
     x: number;
     y: number;
+    s: number;
     cell: Cell;
     photonDist: number[];
 }
 
-const debugCell = ({ p5, x, y, cell, photonDist }: DebugCellProps) => {
+const debugCell = ({ p5, x, y, s, cell, photonDist }: DebugCellProps) => {
     const { row, col } = cell;
 
     p5.push();
@@ -137,14 +152,17 @@ const debugCell = ({ p5, x, y, cell, photonDist }: DebugCellProps) => {
     const rd = photonDist[0];
     p5.fill("red");
     p5.text(`${rd}`, x + 1, y + 15);
+    if (rd === 0) p5.rect(x, y, s, s);
 
     const gd = photonDist[1];
     p5.fill("green");
     p5.text(`${gd}`, x + 1, y + 23);
+    if (gd === 0) p5.rect(x, y, s, s);
 
     const bd = photonDist[2];
     p5.fill("blue");
     p5.text(`${bd}`, x + 1, y + 31);
+    if (bd === 0) p5.rect(x, y, s, s);
 
     p5.pop();
 };
