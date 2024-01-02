@@ -94,8 +94,14 @@ export interface CellShaderParams<S> {
      * Arbitrary, sketch dependent state passed to all the drawCall calls.
      *
      * The {@link drawGrid} function can change this state when needed.
+     *
+     * While this value is typed as `undefined` to make it easier to create
+     * sketches that don't have any state, for sketches that do create and
+     * return a state from {@link drawGrid}, this value is guaranteed to be
+     * present. It is a pending improvement to make the types reflect this
+     * guarantee.
      */
-    state: S;
+    state?: S;
 }
 
 /**
@@ -124,9 +130,15 @@ export interface Grid {
  * A function that is called once (per frame) for doing any background drawing
  * or clearing before we start drawing each cell.
  *
- * If it returns a value of type `S`, then this (arbitrary, sketch dependent)
- * state will be modified, and the updated value will be passed to subsequent
- * drawGrid and {@link drawCell} calls.
+ * It will be passed a arbitrary, sketch specific state (of type `S`) as part of
+ * the parameters. This value will be undefined initially, so this function
+ * should use that as a cue to make and return the initial state.
+ *
+ * The state will also be reset again to undefined if the size of the canvas
+ * changes, so this function should be prepared to initialize it again.
+ *
+ * The state return by it will be saved, and then be passed on to subsequent
+ * {@link drawCell} calls, and then to the next drawGrid invocation itself.
  */
 export type GridShader<S = DefaultState> = (
     params: GridShaderParams<S>,
@@ -155,9 +167,13 @@ export interface GridShaderParams<S> {
     /**
      * The current value of the state threaded through the {@link gridSketch}.
      *
-     * Return a new value to update this when needed.
+     * This will be `undefined` for the first call to `drawGrid`. It will also
+     * become `undefined` again if the size of the canvas changes.
+     *
+     * The value returned by `drawGrid` becomes the new state that will then be
+     * passed to the next invocation.
      */
-    state: S;
+    state?: S;
 }
 
 /**
@@ -273,7 +289,7 @@ function defaultCellShader<S>({ p5, x, y, s }: CellShaderParams<S>) {
 /**
  * A default implementation for {@link drawGrid} that clears the canvas.
  */
-function defaultGridShader<S>({ p5 }: GridShaderParams<S>) {
+function defaultGridShader<S = DefaultState>({ p5 }: GridShaderParams<S>) {
     // function defaultGridShader<S>: GridShader = ({ p5 }) => {
     p5.clear();
     return undefined;
@@ -308,7 +324,7 @@ type GridSketchProps = SketchProps & {
  */
 export function gridSketch<S = DefaultState>(
     params: GridSketchParams<S>,
-    initialState: S,
+    initialState?: S,
 ): Sketch<GridSketchProps> {
     const defaultParams: Required<GridSketchParams<S>> = {
         drawCell: defaultCellShader,
@@ -435,6 +451,7 @@ export function gridSketch<S = DefaultState>(
         if (shouldIgnoreWindowResizedEvent(p5)) return;
         p5.resizeCanvas(...sketchSize(p5));
         updateSizes(p5);
+        state = undefined;
         if (noLoop) p5.redraw();
     };
 
