@@ -64,10 +64,17 @@ const hasPosition = ({ position }: Photon, x: number, y: number) =>
     position.x === x && position.y == y;
 
 let photons: Photon[] = [];
+let maxDist = 0;
 
 const drawGrid: GridShader = ({ p5, grid }) => {
     if (photons.length === 0) {
         photons = makePhotons({ p5 });
+
+        let { rowCount, colCount } = grid;
+
+        const gv = p5.createVector(colCount, rowCount);
+        // TODO: Need to update this too
+        maxDist = gv.dist(p5.createVector(0, 0));
     }
     p5.clear();
 
@@ -85,43 +92,68 @@ const drawGrid: GridShader = ({ p5, grid }) => {
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
     let { row, col } = cell;
 
-    let rgb = [170, 170, 170];
+    let cv = p5.createVector(col, row);
+
+    const rp = ensure(photons[0]).position;
+    const rd = cv.dist(rp) / maxDist;
+
+    const gp = ensure(photons[1]).position;
+    const gd = cv.dist(gp) / maxDist;
+
+    const bp = ensure(photons[2]).position;
+    const bd = cv.dist(bp) / maxDist;
+
+    // let rgb = [170, 170, 170];
+    // for (let i = 0; i < 3; i++) {
+    //     if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
+    // }
+
+    let rgb = [0, 0, 0];
     for (let i = 0; i < 3; i++) {
         if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
     }
 
-    p5.fill(rgb);
+    // rgb = rgb.map((c) => 255 - c);
+
+    p5.fill(rgb);;
     p5.rect(x, y, s, s);
 
     if (debug) {
-        print(p5, x, y, cell);
+        const photonDist = [rd, gd, bd];
+        debugCell({ p5, x, y, cell, photonDist });
     }
 };
 
-const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
+interface DebugCellProps {
+    p5: P5CanvasInstance;
+    x: number;
+    y: number;
+    cell: Cell;
+    photonDist: number[];
+}
+
+const debugCell = ({ p5, x, y, cell, photonDist }: DebugCellProps) => {
     let { row, col } = cell;
     let cv = p5.createVector(col, row);
 
     p5.push();
-    p5.fill("black");
+    p5.fill("white");
     p5.textSize(12);
     p5.text(`${col} ${row}`, x + 1, y + 2);
 
     p5.textSize(8);
 
-    const rp = ensure(photons[0]).position;
-    const rd = cv.dist(rp);
+    const rd = photonDist[0];
     p5.fill("red");
-    // p5.text(`${rp.x} ${rp.x}`, x + 1, y + 15);
     p5.text(`${rd}`, x + 1, y + 15);
 
-    const gp = ensure(photons[1]).position;
+    const gd = photonDist[1];
     p5.fill("green");
-    p5.text(`${gp.x} ${gp.x}`, x + 1, y + 23);
+    p5.text(`${gd}`, x + 1, y + 23);
 
-    const bp = ensure(photons[2]).position;
+    const bd = photonDist[2];
     p5.fill("blue");
-    p5.text(`${bp.x} ${bp.x}`, x + 1, y + 31);
+    p5.text(`${bd}`, x + 1, y + 31);
 
     p5.pop();
 };
