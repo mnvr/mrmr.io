@@ -11,7 +11,7 @@ import {
     type GridShader,
 } from "../grid";
 
-const debug = true;
+const debug = false;
 
 /**
  * Sketch description
@@ -48,12 +48,21 @@ interface MovePhotonsParams {
 }
 
 const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
-    const { photons, boundsVec } = state;
+    const { photons } = state;
+
+    const isOutOfBounds = (vec: P5.Vector) => {
+        const [x, y] = [vec.x, vec.y];
+        return x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount;
+    };
 
     for (let i = 0; i < 3; i++) {
         let pi = ensure(photons[i]);
         pi.position.add(pi.velocity);
-        pi.position = vecMod(p5, pi.position, boundsVec);
+        // pi.position = vecMod(p5, pi.position, boundsVec);
+        if (isOutOfBounds(pi.position)) {
+            pi.velocity.mult(-1);
+            pi.position.add(pi.velocity);
+        }
     }
 };
 
