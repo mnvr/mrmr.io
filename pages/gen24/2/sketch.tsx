@@ -112,6 +112,8 @@ const hasPosition = ({ position }: Photon, x: number, y: number) =>
 let photons: Photon[] = [];
 let maxDist = 0;
 
+let n = 0;
+
 const drawGrid: GridShader = ({ p5, grid }) => {
     if (photons.length === 0) {
         photons = makePhotons({ p5 });
@@ -130,10 +132,18 @@ const drawGrid: GridShader = ({ p5, grid }) => {
         p5.textAlign(p5.LEFT, p5.TOP);
     }
 
-    every(p5, { seconds: 1 }, () => {
-        movePhotons({ p5, grid });
-        collidePhotons({ p5, grid });
+    every(p5, { seconds: 2 }, () => {
+        // p5.fill(0);
+        // p5.circle(100, 100, 100);
+        n += 1;
     });
+
+    p5.text(p5.nf(n, 2, 0), 20, 180);
+
+    // every(p5, { seconds: 1 }, () => {
+    //     movePhotons({ p5, grid });
+    //     collidePhotons({ p5, grid });
+    // });
 };
 
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
@@ -256,6 +266,16 @@ interface EveryOptions {
     s?: number;
     /** Do the action every `seconds` second. */
     seconds?: number;
+    /**
+     * Do the action every `ms` milliseconds.
+     *
+     * The accuracy for this is limited by the frame rate. e.g. at 60 FPS
+     * (generally the default), the lowest applicable value we can hit for this
+     * is 16.6 ms, below which it'll get rounded up to the nearest frame. But at
+     * that point, why not just do the action every frame! So you might not be
+     * needing this.
+     */
+    ms?: number;
 }
 
 /**
@@ -272,34 +292,40 @@ const every = (
     let s = 1;
     if (options.s) s = options.s;
     if (options.seconds) s = options.seconds;
-    // We'll implement the rest when we need it.
-    console.assert(
-        s === 1,
-        "Currently only supported value for every is 1 second",
-    );
 
     // Convert to milliseconds
-    const ms = 100;
+    let ms = s * 1000;
+    if (options.ms) ms = options.ms;
 
-    // frameRate doesn't return a value until the first frame is drawn
-    // const fps = p5.frameRate() ?? 60;
-    // frameRate is the actual frame rate, and is non-integral. What we actually
-    // need is the integral frame rate that P5 is trying to achieve.
+    // Note: [Using getTargetFrameRate instead of frameRate]
     //
-    // Unfortunately, it seems that there isn't a type definition for this
-    // method yet.
+    // frameRate is not suitable for our purpose here.
+    //
+    // Firstly, frameRate doesn't return a value until the first frame is drawn.
+    // This could be worked around by having a default value.
+    //
+    // But the bigger issue is that frameRate is the actually realized frame
+    // rate, and so it is a non-integral continuously changing value. What we
+    // actually need is the integral frame rate that P5 is trying to achieve.
+    //
+    // Luckily for us, p5 provides that value, as `getTargetFrameRate`.
+    //
+    // Unfortunately though, it seems that there isn't a type definition for
+    // this method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
-    // Normalized frame count
-    const nfc = p5.frameCount % fps;
-    if (true || debug) {
-        p5.textFont("monospace");
-        p5.textSize(12);
-        p5.textAlign(p5.LEFT, p5.TOP);
-        p5.fill(0);
-        p5.text(p5.nf(nfc, 2), 100, 100);
-        console.log(p5.nf(nfc, 2));
+
+    // Find the nearest frame that would correspond to this millisecond delta.
+    const secondsPerFrame = 1 / fps;
+    const msPerFrame = secondsPerFrame * 1000;
+    const nearestFrame = p5.ceil(ms / msPerFrame);
+
+    // See if the current one matches.
+    if (p5.frameCount % nearestFrame === 0) {
+        // Go for it
+        const frame = p5.frameCount;
+        console.log("bang", { fps, msPerFrame, nearestFrame, frame });
+        action();
     }
-    s = 10;
-    const scaledFC = s * p5.frameCount;
-    if (scaledFC % fps === 0) action();
+
+    p5.text(p5.nf(p5.millis() / 1000, 2, 0), 20, 200);
 };
