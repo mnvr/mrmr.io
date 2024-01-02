@@ -133,6 +133,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     }
 
     p5.fill(rgb);
+    p5.fill(photonDist.map((c) => c * 255));
     p5.rect(x, y, s, s);
 
     if (debug) {
