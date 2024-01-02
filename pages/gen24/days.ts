@@ -11,4 +11,7 @@ export interface Day {
     color: string;
 }
 
-export const days: Day[] = [{ day: 1, prompt: "Particles", color: "tomato" }];
+export const days: Day[] = [
+    { day: 1, prompt: "Particles", color: "tomato" },
+    { day: 2, prompt: "No palettes", color: "rgb(70, 194, 161)" },
+];
