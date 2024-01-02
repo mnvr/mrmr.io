@@ -189,7 +189,7 @@ const SketchContainer = styled.div<SketchContainerProps>`
     position: relative;
 
     /* Show an overlay on top of the sketch when the user is not playing */
-    &&::after {
+    &::after {
         content: "";
         position: absolute;
         top: 0;
@@ -197,9 +197,9 @@ const SketchContainer = styled.div<SketchContainerProps>`
         width: 100%;
         height: 100%;
         /* Safari doesn't cover the entire sketch, and a bit of the pixels on
-           the left and right show right throw the ::after overlay. I don't know
-           or understand why, though my best guess is that it has something to
-           do with fractional pixel positions for the sketch.
+           the left and right show right through the ::after pseudo-element
+           overlay. I don't know or understand why, though my best guess is that
+           it has something to do with fractional pixel positions of the sketch.
 
            Adding a tranparent border fixes the issue on the right hand side
            (and right hand side only). So this is half a workaround, and the

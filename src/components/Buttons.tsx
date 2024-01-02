@@ -39,7 +39,7 @@ const PlayIconWrapper = styled.div`
     /* See Note: [Workaround - Safari doesn't support rem units on SVG elements] */
     font-size: 2rem;
 
-    :hover {
+    &:hover {
         color: var(--mrmr-color-3);
     }
 `;
