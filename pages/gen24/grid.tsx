@@ -421,20 +421,33 @@ export const gridSketch = (
         const r = cellAspectRatio;
         let [nx, ny] = [n, n];
         let [sw, sh] = [1, 1];
+        let [cx, cy] = [n, n];
+
+        // Deal with non-unit aspect ratios.
         if (r < 1) {
             // cell w < cell h, portrait cells, so we'll need more per row.
             nx = p5.floor(n / r);
             sh = 1 / r;
-        } else {
+            cx = nx;
+        } else if (r > 1) {
             // cell w >= cell h, landscape cells, so we'll need more per column.
             ny = p5.floor(n * r);
+            // Because I'm doing math I don't understand, I need to add an extra
+            // row here, otherwise on certain sketch sizes there is empty space
+            // at the bottom.
+            //
+            // It has something to do with me using `p5.floor`, but `p5.ceil`
+            // has the other issue - there is extra leftover space to the right.
+            // Hence, for time being, we just duct tape a +1 to fend off any
+            // potential leftover areas at the bottom.
+            cy = ny + 1;
             sw = r;
         }
 
         const maxDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        cellCount = { x: nx + (staggered ? 1 : 0), y: ny + 1 };
+        cellCount = { x: cx + (staggered ? 1 : 0), y: cy };
         cellSize = { w: s * sw, h: s * sh };
 
         let remainingX = p5.width - cellSize.w * cellCount.x;
