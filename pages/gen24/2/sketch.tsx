@@ -2,6 +2,7 @@ import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
 import { every } from "p5/every";
 import { ensure } from "utils/ensure";
+import { mod } from "utils/math";
 import {
     Cell,
     CellShader,
@@ -47,7 +48,7 @@ interface MovePhotonsParams {
 }
 
 const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
-    const { photons, maxDist } = state;
+    const { photons, boundsVec, maxDist } = state;
 
     const isOutOfBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
@@ -59,8 +60,14 @@ const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
     for (const [i, p] of photons.entries()) {
         p.position.add(p.velocity);
         if (isOutOfBounds(p.position)) {
-            p.velocity.mult(-1);
-            p.position.add(p.velocity);
+            if (p5.random() < 0.9) {
+                p.velocity.mult(-1);
+                p.position.add(p.velocity);
+            } else {
+                // Every once in a while, let a photon wrap around from the end
+                // of the universe.
+                p.position = vecMod(p5, p.position, boundsVec);
+            }
         }
 
         for (const [j, q] of photons.entries()) {
@@ -76,8 +83,17 @@ const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
     }
 };
 
+/**
+ * Return the modulo `mod(v, q)` component-wise on the given vectors.
+ *
+ * This uses the {@link mod} function that returns the arithmetic modulo.
+ */
+const vecMod = (p5: P5CanvasInstance, v: P5.Vector, q: P5.Vector): P5.Vector =>
+    p5.createVector(mod(v.x, q.x), mod(v.y, q.y));
+
 interface State {
     photons: Photon[];
+    boundsVec: P5.Vector;
     maxDist: number;
 }
 
@@ -93,7 +109,7 @@ const makeState = ({ p5, grid }: MakeStateParams) => {
     const boundsVec = p5.createVector(colCount, rowCount);
     const maxDist = boundsVec.dist(p5.createVector(0, 0));
 
-    return { photons, maxDist };
+    return { photons, boundsVec, maxDist };
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
