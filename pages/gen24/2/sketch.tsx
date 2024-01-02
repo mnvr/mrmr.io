@@ -43,9 +43,12 @@ const makePhotons = ({ p5 }: MakePhotonsParams): Photon[] => {
 interface MovePhotonsParams {
     p5: P5CanvasInstance;
     grid: Grid;
+    state: State;
 }
 
-const movePhotons = ({ p5, grid }: MovePhotonsParams) => {
+const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
+    const { photons } = state;
+
     const isOutOfBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
         return x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount;
@@ -64,19 +67,30 @@ const movePhotons = ({ p5, grid }: MovePhotonsParams) => {
 const hasPosition = ({ position }: Photon, x: number, y: number) =>
     position.x === x && position.y == y;
 
-let photons: Photon[] = [];
-let maxDist = 0;
+interface State {
+    photons: Photon[];
+    maxDist: number;
+}
 
-const drawGrid: GridShader = ({ p5, grid }) => {
-    if (photons.length === 0) {
-        photons = makePhotons({ p5 });
+interface MakeStateParams {
+    p5: P5CanvasInstance;
+    grid: Grid;
+}
 
-        let { rowCount, colCount } = grid;
+const makeState = ({ p5, grid }: MakeStateParams) => {
+    let { rowCount, colCount } = grid;
 
-        const gv = p5.createVector(colCount, rowCount);
-        // TODO: Need to update this too
-        maxDist = gv.dist(p5.createVector(0, 0));
-    }
+    const photons = makePhotons({ p5 });
+    const gv = p5.createVector(colCount, rowCount);
+
+    const maxDist = gv.dist(p5.createVector(0, 0));
+
+    return { photons, maxDist };
+};
+
+const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
+    const newState = state ?? makeState({ p5, grid });
+
     p5.clear();
 
     if (debug) {
@@ -86,12 +100,15 @@ const drawGrid: GridShader = ({ p5, grid }) => {
     }
 
     every(p5, { seconds: 1 }, () => {
-        movePhotons({ p5, grid });
+        movePhotons({ p5, grid, state: newState });
     });
+
+    return newState;
 };
 
-const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
+const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     let { row, col } = cell;
+    const { photons, maxDist } = ensure(state);
 
     let cv = p5.createVector(col, row);
 
