@@ -572,8 +572,7 @@ export function gridSketch<S = DefaultState>(
     const draw = (p5: P5CanvasInstance) => {
         const grid = gridSize;
 
-        const newState = drawGrid({ p5, env, grid, state });
-        if (newState !== undefined) state = newState;
+        state = drawGrid({ p5, env, grid, state });
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
