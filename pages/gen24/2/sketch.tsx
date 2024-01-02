@@ -1,5 +1,6 @@
 import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
+import { every } from "p5/every";
 import { ensure } from "utils/ensure";
 import {
     Cell,
@@ -8,7 +9,6 @@ import {
     type Grid,
     type GridShader,
 } from "../grid";
-import { every } from "p5/every";
 
 const debug = false;
 

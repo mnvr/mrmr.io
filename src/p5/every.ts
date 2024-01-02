@@ -52,10 +52,7 @@ export const every = (
     // actually need is the integral frame rate that P5 is trying to achieve.
     //
     // Luckily for us, p5 provides that value, as `getTargetFrameRate`.
-    //
-    // Unfortunately though, it seems that there isn't a type definition for
-    // this method yet.
-    const fps = p5.getTargetFrameRate() ?? 60;
+    const fps = p5.getTargetFrameRate();
 
     // Find the nearest frame.
     //
