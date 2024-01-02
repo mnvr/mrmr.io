@@ -9,7 +9,7 @@ import {
     type GridShader,
 } from "../grid";
 
-const debug = true;
+const debug = false;
 
 /**
  * Sketch description
@@ -103,23 +103,56 @@ const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
     const bp = ensure(photons[2]).position;
     const bd = cv.dist(bp) / maxDist;
 
-    // let rgb = [170, 170, 170];
+    const photonDist = [rd, gd, bd];
+
+    p5.strokeWeight(0);
+    let rgb = [0, 0, 0];
+    if (rd < 0.4) rgb[0] = 25;
+    if (rd < 0.3) rgb[0] = 50;
+    if (rd < 0.2) rgb[0] = 100;
+    if (rd < 0.15) rgb[0] = 120;
+    if (rd < 0.1) rgb[0] = 180;
+
+    if (gd < 0.4) rgb[1] = 25;
+    if (gd < 0.3) rgb[1] = 50;
+    if (gd < 0.2) rgb[1] = 100;
+    if (gd < 0.15) rgb[1] = 120;
+    if (gd < 0.1) rgb[1] = 180;
+
+    if (bd < 0.4) rgb[2] = 25;
+    if (bd < 0.3) rgb[2] = 50;
+    if (bd < 0.2) rgb[2] = 100;
+    if (bd < 0.15) rgb[2] = 120;
+    if (bd < 0.1) rgb[2] = 180;
+
+    // rgb[0] = rgb[0] * (1 - rd);
+    // rgb[1] = rgb[1] * (1 - gd);
+    // rgb[2] = rgb[2] * (1 - bd);
     // for (let i = 0; i < 3; i++) {
-    //     if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
+        // if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
+        // rgb[i] *= 1;//photonDist[i];
     // }
 
-    let rgb = [0, 0, 0];
-    for (let i = 0; i < 3; i++) {
-        if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 255;
-    }
+    rgb = rgb.map((c) => 255 - c);
 
-    // rgb = rgb.map((c) => 255 - c);
-
-    p5.fill(rgb);;
+    p5.fill(rgb);
     p5.rect(x, y, s, s);
 
+    for (let i = 0; i < 3; i++) {
+        // if (hasPosition(ensure(photons[i]), col, row)) rgb[i] = 280;
+        if (hasPosition(ensure(photons[i]), col, row)) {
+            rgb = rgb.map((c) => 255);
+            rgb[i] = 200;
+            p5.fill(rgb);
+            // p5.circle(x + s / 2, y + s / 2, s / 2)
+            p5.rect(x + s / 4, y + s / 4, s / 2, s / 2)
+        }
+    }
+
+    // p5.fill(rgb);
+    // p5.rect(x, y, s, s);
+
     if (debug) {
-        const photonDist = [rd, gd, bd];
         debugCell({ p5, x, y, cell, photonDist });
     }
 };
