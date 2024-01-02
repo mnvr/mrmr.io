@@ -132,7 +132,7 @@ const drawGrid: GridShader = ({ p5, grid }) => {
         p5.textAlign(p5.LEFT, p5.TOP);
     }
 
-    every(p5, { seconds: 2 }, () => {
+    every(p5, { ms: 300 }, () => {
         // p5.fill(0);
         // p5.circle(100, 100, 100);
         n += 1;
@@ -292,10 +292,7 @@ const every = (
     let s = 1;
     if (options.s) s = options.s;
     if (options.seconds) s = options.seconds;
-
-    // Convert to milliseconds
-    let ms = s * 1000;
-    if (options.ms) ms = options.ms;
+    if (options.ms) s = options.ms / 1000;
 
     // Note: [Using getTargetFrameRate instead of frameRate]
     //
@@ -314,18 +311,24 @@ const every = (
     // this method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
 
-    // Find the nearest frame that would correspond to this millisecond delta.
-    const secondsPerFrame = 1 / fps;
-    const msPerFrame = secondsPerFrame * 1000;
-    const nearestFrame = p5.ceil(ms / msPerFrame);
-
-    // See if the current one matches.
-    if (p5.frameCount % nearestFrame === 0) {
-        // Go for it
-        const frame = p5.frameCount;
-        console.log("bang", { fps, msPerFrame, nearestFrame, frame });
+    // Find the nearest frame
+    if ((p5.frameCount * (1 / s)) % fps === 0) {
+        console.log("bang");
         action();
     }
+
+    // // Find the nearest frame that would correspond to this millisecond delta.
+    // const secondsPerFrame = 1 / fps;
+    // const msPerFrame = secondsPerFrame * 1000;
+    // const nearestFrame = p5.ceil(ms / msPerFrame);
+
+    // // See if the current one matches.
+    // if (p5.frameCount % nearestFrame === 0) {
+    //     // Go for it
+    //     const frame = p5.frameCount;
+    //     console.log("bang", { fps, msPerFrame, nearestFrame, frame });
+    //     action();
+    // }
 
     p5.text(p5.nf(p5.millis() / 1000, 2, 0), 20, 200);
 };
