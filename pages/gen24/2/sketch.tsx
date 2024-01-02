@@ -21,7 +21,11 @@ const debug = false;
  * green energy. The color of a cell is determined by which photons are near
  * that cell at that time, just by adding them up their energies as rgb values.
  *
- * The photons bounce off the edge of the grid.
+ * The photons bounce off the edge of the grid. Every once in a while though,
+ * the photon quantum teleports around the edge of the universe.
+ *
+ * The photons don't interact with each other, mostly, but sometimes they do
+ * collide and cause one of them to reverse its direction.
  */
 
 interface Photon {
