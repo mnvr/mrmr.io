@@ -34,8 +34,8 @@ interface MakePhotonsParams {
 const makePhotons = ({ p5 }: MakePhotonsParams): Photon[] => {
     return [
         { position: p5.createVector(2, 2), velocity: p5.createVector(1, 0) },
-        { position: p5.createVector(10, 8), velocity: p5.createVector(0, 0) },
-        { position: p5.createVector(5, 5), velocity: p5.createVector() },
+        { position: p5.createVector(10, 8), velocity: p5.createVector(0, 1) },
+        { position: p5.createVector(5, 5), velocity: p5.createVector(1, 1) },
     ];
 };
 
@@ -47,8 +47,8 @@ interface MovePhotonsParams {
 const movePhotons = ({ p5, grid }: MovePhotonsParams) => {
     const isOutOfBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
-        return (x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount);
-    }
+        return x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount;
+    };
 
     for (let i = 0; i < 3; i++) {
         let pi = ensure(photons[i]);
@@ -100,6 +100,7 @@ const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
 
 const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
     let { row, col } = cell;
+    let cv = p5.createVector(col, row);
 
     p5.push();
     p5.fill("black");
@@ -109,8 +110,10 @@ const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
     p5.textSize(8);
 
     const rp = ensure(photons[0]).position;
+    const rd = cv.dist(rp);
     p5.fill("red");
-    p5.text(`${rp.x} ${rp.x}`, x + 1, y + 15);
+    // p5.text(`${rp.x} ${rp.x}`, x + 1, y + 15);
+    p5.text(`${rd}`, x + 1, y + 15);
 
     const gp = ensure(photons[1]).position;
     p5.fill("green");
@@ -154,6 +157,15 @@ const every = (
     options: EveryOptions,
     action: () => void,
 ) => {
+    let s = 1;
+    if (options.s) s = options.s;
+    if (options.seconds) s = options.seconds;
+    // We'll implement the rest when we need it.
+    console.assert(
+        s === 1,
+        "Currently only supported value for every is 1 second",
+    );
+
     // frameRate doesn't return a value until the first frame is drawn
     // const fps = p5.frameRate() ?? 60;
     // frameRate is the actual frame rate, and is non-integral. What we actually
@@ -163,11 +175,4 @@ const every = (
     // method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
     if (p5.frameCount % fps === 0) action();
-
-    // TODO: Handle arbitrary seconds
-    // let s = 1;
-    // if (options.s) s = options.s;
-    // if (options.seconds) s = options.seconds;
-
-    // if (p5.abs(t - s) < 0.1) action();
 };
