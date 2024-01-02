@@ -74,8 +74,8 @@ const ColorCell: React.FC<ColorCellProps> = ({ colorInfo }) => {
 
     return (
         <ColorCellDiv
-            colorName={name}
-            isDark={lightness < 0.65}
+            $colorName={name}
+            $isDark={lightness < 0.65}
             onClick={handleClick}
         >
             {name}
@@ -84,15 +84,15 @@ const ColorCell: React.FC<ColorCellProps> = ({ colorInfo }) => {
 };
 
 interface ColorCellDivProps {
-    colorName: string;
-    isDark: boolean;
+    $colorName: string;
+    $isDark: boolean;
 }
 
 const ColorCellDiv = styled.div<ColorCellDivProps>`
-    background-color: ${(props) => props.colorName};
+    background-color: ${(props) => props.$colorName};
     width: 100px;
     height: 50px;
 
     font-size: 0.7rem;
-    color: ${(props) => (props.isDark ? "white" : "black")};
+    color: ${(props) => (props.$isDark ? "white" : "black")};
 `;

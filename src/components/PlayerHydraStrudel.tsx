@@ -30,10 +30,10 @@ export const PlayerHydraStrudel: React.FC<
             <FirstScreen>
                 {children}
                 <CanvasGrid onClick={toggleIsPlaying} title="">
-                    <CanvasContainer isVisible={wasPlayingOnce}>
+                    <CanvasContainer $isVisible={wasPlayingOnce}>
                         <HydraCanvas {...{ vis, isPlaying }} />
                     </CanvasContainer>
-                    <PlayButtonOverlay isVisible={!isPlaying}>
+                    <PlayButtonOverlay $isVisible={!isPlaying}>
                         <PlayButton />
                     </PlayButtonOverlay>
                 </CanvasGrid>
@@ -61,11 +61,11 @@ const CanvasGrid = styled.div`
 `;
 
 interface CanvasContainerProps {
-    isVisible: boolean;
+    $isVisible: boolean;
 }
 
 const CanvasContainer = styled.div<CanvasContainerProps>`
-    display: ${(props) => (props.isVisible ? "block" : "none")};
+    display: ${(props) => (props.$isVisible ? "block" : "none")};
     grid-area: 1/-1;
 
     /* The canvas itself is "position: absolute" */
@@ -73,7 +73,7 @@ const CanvasContainer = styled.div<CanvasContainerProps>`
 `;
 
 interface PlayButtonOverlayProps {
-    isVisible: boolean;
+    $isVisible: boolean;
 }
 
 const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
@@ -82,6 +82,6 @@ const PlayButtonOverlay = styled.div<PlayButtonOverlayProps>`
 
     grid-area: 1/-1;
 
-    display: ${(props) => (props.isVisible ? "grid" : "none")};
+    display: ${(props) => (props.$isVisible ? "grid" : "none")};
     place-items: center;
 `;

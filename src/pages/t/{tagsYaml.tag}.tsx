@@ -26,14 +26,14 @@ const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
 
     return (
         <PageListingContent {...{ pages, extraLink }}>
-            <Title_ {...tag}>{tag.tag}</Title_>
+            <Title_ color={tag.color}>{tag.tag}</Title_>
         </PageListingContent>
     );
 };
 
 export default TagListingPage;
 
-const Title_ = styled.div<Tag>`
+const Title_ = styled.div<{ color?: string }>`
     color: ${(props) => props.color ?? "var(--mrmr-color-4)"};
 `;
 

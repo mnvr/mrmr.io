@@ -35,7 +35,10 @@ export const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
                     onMouseEnter={() => setHoverPage(page)}
                     onMouseLeave={() => setHoverPage(undefined)}
                 >
-                    <PageItem {...page}>
+                    <PageItem
+                        $backgroundColor={page.colors?.backgroundColor1}
+                        $color={page.colors?.color1}
+                    >
                         <PageItemP>{page.title.toLowerCase()}</PageItemP>
                         <PageItemCount>{n - i}</PageItemCount>
                         <BackgroundImage page={page} />
@@ -101,9 +104,14 @@ const PageGrid = styled.div`
     }
 `;
 
-const PageItem = styled.div<FeaturedPage>`
-    background-color: ${(props) => props.colors?.backgroundColor1 ?? "inherit"};
-    color: ${(props) => props.colors?.color1 ?? "inherit"};
+interface PageItemProps {
+    $backgroundColor?: string;
+    $color?: string;
+}
+
+const PageItem = styled.div<PageItemProps>`
+    background-color: ${(props) => props.$backgroundColor ?? "inherit"};
+    color: ${(props) => props.$color ?? "inherit"};
     width: 13.7ch;
     height: 9.7ch;
     padding-block: 0.33rem;

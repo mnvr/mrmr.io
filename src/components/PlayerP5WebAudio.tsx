@@ -138,7 +138,7 @@ export const PlayerP5WebAudio: React.FC<
             <SketchContainer
                 id="sketch-container"
                 onClick={toggleShouldPlay}
-                showOverlay={showOverlay}
+                $showOverlay={showOverlay}
             >
                 <ReelSizedP5SketchBox
                     draw={draw}
@@ -182,7 +182,7 @@ const Grid = styled.div`
 `;
 
 interface SketchContainerProps {
-    showOverlay: boolean;
+    $showOverlay: boolean;
 }
 
 const SketchContainer = styled.div<SketchContainerProps>`
@@ -213,7 +213,7 @@ const SketchContainer = styled.div<SketchContainerProps>`
         -webkit-backdrop-filter: blur(8px) saturate(100%) contrast(60%)
             brightness(130%);
 
-        display: ${(props) => (props.showOverlay ? "block" : "none")};
+        display: ${(props) => (props.$showOverlay ? "block" : "none")};
     }
 
     /* Slot both the sketch and the (conditionally displayed) play button in the
