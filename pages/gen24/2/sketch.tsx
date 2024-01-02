@@ -132,7 +132,7 @@ const drawGrid: GridShader = ({ p5, grid }) => {
         p5.textAlign(p5.LEFT, p5.TOP);
     }
 
-    every(p5, { ms: 10000 }, () => {
+    every(p5, { ms: 152 }, () => {
         // p5.fill(0);
         // p5.circle(100, 100, 100);
         n += 1;
@@ -318,41 +318,25 @@ const every = (
     // is frames per second, so after 1 second, the frameCount will be an exact
     // multiple of the fps. `frameCount % fps == 0` is true once every second.
     //
-    // Now what if seconds is more than 1. Let us say 2. We want to set things
-    // up so that it becomes a multiple of fps after every 2 seconds (instead of
-    // 1). So what we can do is - we can divide the frameCount by 2. This way,
-    // it'll take twice as longer for it to loop back to the exact fps value,
-    // which is what we want.
+    // Now what if seconds is more than 1. Let us say 2. If we take the modulo
+    // of frameCount with (2 * fps), it'll now take twice as long for this to
+    // cycle back to 0.
     //
-    // And what if seconds is less than 1? Let us say 0.5. We now want it to
-    // loop back to the exact fps value twice a second. So we multiply the
-    // frameCount by 2. Multiplying by 2 is the same as dividing by 0.5.
+    // The same thing works even if seconds is less than 1? Let us say seconds
+    // is 0.5. So if we take the modulo of frameCount under (0.5 * fps), it will
+    // now become 0 twice a second.
     //
-    // Thus, in both cases, we can scale up the frameCount by dividing it by the
-    // number of seconds we want to hit. i.e. `(frameCount / s) % fps == 0` will
-    // be true once every `s` seconds.
+    // Thus, in both cases, we can scale up the fps by multiplying it with the
+    // seconds value, and then use this scaled FPS when taking the modulo of the
+    // frame count. Whenever the modulo becomes 0, that's our cue to trigger the
+    // action.
     //
-    // This was assuming nice integral values, but we may get floating point
-    // results from `frameCount / s`. TODO.
+    // To handle floating point results of `fps * s`, we take its floor.
 
-    const scaledFrameCount = (p5.frameCount * (1 / s));
-    if (scaledFrameCount % fps === 0) {
-        console.log("bang", scaledFrameCount);
+    const scaledFPS = p5.floor(fps * s);
+    if (p5.frameCount % scaledFPS === 0) {
         action();
     }
-
-    // // Find the nearest frame that would correspond to this millisecond delta.
-    // const secondsPerFrame = 1 / fps;
-    // const msPerFrame = secondsPerFrame * 1000;
-    // const nearestFrame = p5.ceil(ms / msPerFrame);
-
-    // // See if the current one matches.
-    // if (p5.frameCount % nearestFrame === 0) {
-    //     // Go for it
-    //     const frame = p5.frameCount;
-    //     console.log("bang", { fps, msPerFrame, nearestFrame, frame });
-    //     action();
-    // }
 
     p5.text(p5.nf(p5.millis() / 1000, 2, 0), 20, 200);
 };
