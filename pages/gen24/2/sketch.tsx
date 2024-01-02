@@ -65,12 +65,15 @@ const every = (
     options: EveryOptions,
     action: () => void,
 ) => {
-    let s = 1;
-    if (options.s) s = options.s;
-    if (options.seconds) s = options.seconds;
-    const t = p5.millis();
-    const ms = s * 1000;
-    if (p5.abs(t - ms) < 1) action();
+    // frameRate doesn't return a value until the first frame is drawn
+    const fps = p5.frameRate() ?? 60;
+    if ((p5.frameCount % fps) === 0) action();
+
+    // let s = 1;
+    // if (options.s) s = options.s;
+    // if (options.seconds) s = options.seconds;
+
+    // if (p5.abs(t - s) < 0.1) action();
 };
 
 const drawGrid: GridShader = ({ p5 }) => {
