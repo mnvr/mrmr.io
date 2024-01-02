@@ -2,6 +2,7 @@ import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
 import { every } from "p5/every";
 import { ensure } from "utils/ensure";
+import { mod } from "utils/math";
 import {
     Cell,
     CellShader,
@@ -47,28 +48,29 @@ interface MovePhotonsParams {
 }
 
 const movePhotons = ({ p5, grid, state }: MovePhotonsParams) => {
-    const { photons } = state;
-
-    const isOutOfBounds = (vec: P5.Vector) => {
-        const [x, y] = [vec.x, vec.y];
-        return x < 0 || y < 0 || x >= grid.colCount || y >= grid.rowCount;
-    };
+    const { photons, boundsVec } = state;
 
     for (let i = 0; i < 3; i++) {
         let pi = ensure(photons[i]);
         pi.position.add(pi.velocity);
-        if (isOutOfBounds(pi.position)) {
-            pi.velocity.mult(-1);
-            pi.position.add(pi.velocity);
-        }
+        pi.position = vecMod(p5, pi.position, boundsVec);
     }
 };
+
+/**
+ * Return the modulo `mod(v, q)` component-wise on the given vectors.
+ *
+ * This uses the {@link mod} function that returns the arithmetic modulo.
+ */
+const vecMod = (p5: P5CanvasInstance, v: P5.Vector, q: P5.Vector): P5.Vector =>
+    p5.createVector(mod(v.x, q.x), mod(v.y, q.y));
 
 const hasPosition = ({ position }: Photon, x: number, y: number) =>
     position.x === x && position.y == y;
 
 interface State {
     photons: Photon[];
+    boundsVec: P5.Vector;
     maxDist: number;
 }
 
@@ -81,11 +83,11 @@ const makeState = ({ p5, grid }: MakeStateParams) => {
     let { rowCount, colCount } = grid;
 
     const photons = makePhotons({ p5 });
-    const gv = p5.createVector(colCount, rowCount);
+    const boundsVec = p5.createVector(colCount, rowCount);
 
-    const maxDist = gv.dist(p5.createVector(0, 0));
+    const maxDist = boundsVec.dist(p5.createVector(0, 0));
 
-    return { photons, maxDist };
+    return { photons, boundsVec, maxDist };
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
