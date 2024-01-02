@@ -1,7 +1,7 @@
 import { type P5CanvasInstance } from "@p5-wrapper/react";
 import type * as P5 from "p5";
 import { ensure } from "utils/ensure";
-import { CellShader, gridSketch, type GridShader, Cell } from "../grid";
+import { Cell, CellShader, gridSketch, type GridShader } from "../grid";
 
 const debug = true;
 
@@ -23,16 +23,55 @@ interface Photon {
 
 const makePhotons = ({ p5 }: { p5: P5CanvasInstance }): Photon[] => {
     return [
-        { position: p5.createVector(2, 2), velocity: p5.createVector() },
+        { position: p5.createVector(2, 2), velocity: p5.createVector(1, 0) },
         { position: p5.createVector(10, 8), velocity: p5.createVector() },
         { position: p5.createVector(5, 5), velocity: p5.createVector() },
     ];
+};
+
+const movePhotons = ({ p5 }: { p5: P5CanvasInstance }) => {
+    for (let i = 0; i < 3; i++) {
+        let pi = ensure(photons[i]);
+        pi.position.add(pi.velocity);
+    }
 };
 
 const hasPosition = ({ position }: Photon, x: number, y: number) =>
     position.x === x && position.y == y;
 
 let photons: Photon[] = [];
+
+/**
+ * Specify the time between actions perform by {@link every}.
+ *
+ * All the values are optional. When specifying durations, specify using only
+ * one unit (the behaviour is undefined otherwise).
+ */
+interface EveryOptions {
+    /** Alias for {@link seconds} */
+    s?: number;
+    /** Do the action every `seconds` second. */
+    seconds?: number;
+}
+
+/**
+ * Perform an action once per second (customizable).
+ *
+ * The `options` parameter allows us to specify the time duration between
+ * invocations of the function `action` that is passed to us.
+ */
+const every = (
+    p5: P5CanvasInstance,
+    options: EveryOptions,
+    action: () => void,
+) => {
+    let s = 1;
+    if (options.s) s = options.s;
+    if (options.seconds) s = options.seconds;
+    const t = p5.millis();
+    const ms = s * 1000;
+    if (p5.abs(t - ms) < 1) action();
+};
 
 const drawGrid: GridShader = ({ p5 }) => {
     if (photons.length === 0) {
@@ -43,8 +82,12 @@ const drawGrid: GridShader = ({ p5 }) => {
     if (debug) {
         p5.textFont("monospace");
         p5.textSize(12);
-        p5.textAlign(p5.LEFT, p5.TOP)
+        p5.textAlign(p5.LEFT, p5.TOP);
     }
+
+    every(p5, { seconds: 1 }, () => {
+        movePhotons({p5});
+    });
 };
 
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
@@ -86,7 +129,7 @@ const print = (p5: P5CanvasInstance, x: number, y: number, cell: Cell) => {
     p5.text(`${bp.x} ${bp.x}`, x + 1, y + 31);
 
     p5.pop();
-}
+};
 
 export const sketch = gridSketch({
     drawGrid,
