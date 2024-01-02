@@ -41,41 +41,6 @@ const hasPosition = ({ position }: Photon, x: number, y: number) =>
 
 let photons: Photon[] = [];
 
-/**
- * Specify the time between actions perform by {@link every}.
- *
- * All the values are optional. When specifying durations, specify using only
- * one unit (the behaviour is undefined otherwise).
- */
-interface EveryOptions {
-    /** Alias for {@link seconds} */
-    s?: number;
-    /** Do the action every `seconds` second. */
-    seconds?: number;
-}
-
-/**
- * Perform an action once per second (customizable).
- *
- * The `options` parameter allows us to specify the time duration between
- * invocations of the function `action` that is passed to us.
- */
-const every = (
-    p5: P5CanvasInstance,
-    options: EveryOptions,
-    action: () => void,
-) => {
-    // frameRate doesn't return a value until the first frame is drawn
-    const fps = p5.frameRate() ?? 60;
-    if ((p5.frameCount % fps) === 0) action();
-
-    // let s = 1;
-    // if (options.s) s = options.s;
-    // if (options.seconds) s = options.seconds;
-
-    // if (p5.abs(t - s) < 0.1) action();
-};
-
 const drawGrid: GridShader = ({ p5 }) => {
     if (photons.length === 0) {
         photons = makePhotons({ p5 });
@@ -89,7 +54,7 @@ const drawGrid: GridShader = ({ p5 }) => {
     }
 
     every(p5, { seconds: 1 }, () => {
-        movePhotons({p5});
+        movePhotons({ p5 });
     });
 };
 
@@ -138,3 +103,47 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
 });
+
+// --- Move out
+
+/**
+ * Specify the time between actions perform by {@link every}.
+ *
+ * All the values are optional. When specifying durations, specify using only
+ * one unit (the behaviour is undefined otherwise).
+ */
+interface EveryOptions {
+    /** Alias for {@link seconds} */
+    s?: number;
+    /** Do the action every `seconds` second. */
+    seconds?: number;
+}
+
+/**
+ * Perform an action once per second (customizable).
+ *
+ * The `options` parameter allows us to specify the time duration between
+ * invocations of the function `action` that is passed to us.
+ */
+const every = (
+    p5: P5CanvasInstance,
+    options: EveryOptions,
+    action: () => void,
+) => {
+    // frameRate doesn't return a value until the first frame is drawn
+    // const fps = p5.frameRate() ?? 60;
+    // frameRate is the actual frame rate, and is non-integral. What we actually
+    // need is the integral frame rate that P5 is trying to achieve.
+    //
+    // Unfortunately, it seems that there isn't a type definition for this
+    // method yet.
+    const fps = p5.getTargetFrameRate() ?? 60;
+    if (p5.frameCount % fps === 0) action();
+
+    // TODO: Handle arbitrary seconds
+    // let s = 1;
+    // if (options.s) s = options.s;
+    // if (options.seconds) s = options.seconds;
+
+    // if (p5.abs(t - s) < 0.1) action();
+};
