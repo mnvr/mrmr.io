@@ -62,7 +62,10 @@ const movePhotons = ({ p5, grid }: MovePhotonsParams) => {
 
 const collidePhotons = ({ p5, grid }: MovePhotonsParams) => {
     const randomishVelocity = () =>
-        p5.createVector(p5.random() > 0.5 ? 1 : 0, p5.floor(p5.random() * 2 + 1));
+        p5.createVector(
+            p5.random() > 0.5 ? 1 : 0,
+            p5.floor(p5.random() * 2 + 1),
+        );
 
     const nearBounds = (vec: P5.Vector) => {
         const [x, y] = [vec.x, vec.y];
@@ -80,7 +83,11 @@ const collidePhotons = ({ p5, grid }: MovePhotonsParams) => {
             if (nearBounds(ppi)) continue;
             if (nearBounds(ppj)) continue;
             const th = 1;
-            if (p5.abs(ppi.x - ppj.x) < th && p5.abs(ppi.y - ppj.y) < th && p5.random() < 0.3) {
+            if (
+                p5.abs(ppi.x - ppj.x) < th &&
+                p5.abs(ppi.y - ppj.y) < th &&
+                p5.random() < 0.3
+            ) {
                 // Collide always
                 let v = pi.velocity;
                 pj.velocity = pi.velocity;
@@ -131,7 +138,7 @@ const drawGrid: GridShader = ({ p5, grid }) => {
 
 const drawCell: CellShader = ({ p5, x, y, s, cell }) => {
     let { row, col } = cell;
-return;
+    return;
     let cv = p5.createVector(col, row);
 
     const rp = ensure(photons[0]).position;
@@ -283,14 +290,14 @@ const every = (
     // method yet.
     const fps = p5.getTargetFrameRate() ?? 60;
     // Normalized frame count
-    const nfc = (p5.frameCount % fps);
+    const nfc = p5.frameCount % fps;
     if (true || debug) {
         p5.textFont("monospace");
         p5.textSize(12);
         p5.textAlign(p5.LEFT, p5.TOP);
         p5.fill(0);
-        p5.text(p5.nf(nfc), 100, 100);
-        console.log(p5.nf(nfc))
+        p5.text(p5.nf(nfc, 2), 100, 100);
+        console.log(p5.nf(nfc, 2));
     }
     s = 10;
     const scaledFC = s * p5.frameCount;
