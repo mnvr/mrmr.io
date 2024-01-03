@@ -18,6 +18,8 @@ export const Content: React.FC = () => {
             <E10 />
             <E11 />
             <E12 />
+            <E13 />
+            <E14 />
         </Content_>
     );
 };
@@ -55,6 +57,15 @@ const Bordered = styled.div`
         padding: 10px;
     }
 `;
+
+const C2: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
+    return (
+        <div {...props}>
+            <div>One</div>
+            <div>Two</div>
+        </div>
+    );
+};
 
 const C6: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => {
     return (
@@ -332,5 +343,73 @@ const MaxContentFlex = styled(C6)`
     }
     div {
         flex-grow: 1;
+    }
+`;
+
+const E13: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                Child elements of a grid can overlap. If multiple children are
+                placed in the same grid area, then they'll be laid out layered
+                on top of each other.
+            </p>
+            <Overlap />
+            <p>
+                The grid area in which a child is placed is set by using its{" "}
+                <i>grid-area</i> CSS property, which is a shorthand for{" "}
+                <i>
+                    grid-row-start / grid-column-start / grid-row-end /
+                    grid-column-end
+                </i>
+                . All of these individual properties default to <i>auto</i>. To
+                have a grid with a single row and column, and get all of its
+                children to stack onto the same area, we can give them all the
+                grid-area <i>1 / 1</i>.
+            </p>
+        </Bordered>
+    );
+};
+
+const Overlap = styled(C2)`
+    display: grid;
+    div {
+        grid-area: 1 / 1;
+    }
+`;
+
+const E14: React.FC = () => {
+    return (
+        <Bordered>
+            <p>
+                By default, grid items stack in the source order. Here the first
+                child is hidden because the second child has a background color.
+            </p>
+            <OverlapBG />
+            <p>
+                But we can bring the first child to the fore by giving it a{" "}
+                <i>z-index</i>. Overlapping elements with a larger z-index cover
+                those with a smaller one (default z-index can be thought of as{" "}
+                <i>0</i> (sort-of), so use positive integers to stack things on
+                top of the default stacking context).
+            </p>
+            <OverlapBGZ />
+        </Bordered>
+    );
+};
+
+const OverlapBG = styled(C2)`
+    display: grid;
+    div {
+        grid-area: 1 / 1;
+    }
+    div:nth-child(2) {
+        background-color: var(--mrmr-highlight-color);
+    }
+`;
+
+const OverlapBGZ = styled(OverlapBG)`
+    div:nth-child(1) {
+        z-index: 1;
     }
 `;

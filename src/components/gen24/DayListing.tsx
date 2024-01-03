@@ -39,6 +39,8 @@ const Card_ = styled.div`
     background-color: aliceblue;
     padding: 1rem;
     max-width: 30rem;
+
+    display: grid;
 `;
 
 const CardContent: React.FC = () => {
@@ -47,15 +49,20 @@ const CardContent: React.FC = () => {
 
 const CardContent_ = styled.div`
     background-color: rgba(255, 0, 0, 0.2);
+    grid-area: 1 / 1;
 `;
 
 const Image: React.FC = () => {
     const is = images();
     console.log("got", is);
     const gatsbyImageData = ensure(is[0]?.childImageSharp?.gatsbyImageData);
-    return <GatsbyImage image={gatsbyImageData} alt="" />;
+    return <Image_><GatsbyImage image={gatsbyImageData} alt="" /></Image_>;
     // return <div>Image</div>;
 };
+
+const Image_ = styled.div`
+    grid-area: 1 / 1;
+`;
 
 const images = () => {
     const data = useStaticQuery<Queries.Gen24PreviewImagesQuery>(graphql`
