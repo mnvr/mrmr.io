@@ -94,7 +94,10 @@ const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
         <Link to={`${day.day}`}>
             <DayCard_ color={day.color}>
                 <DayDescription {...day} />
-                <DayCardPreviewImage imageData={previewImageData} />
+                <DayCardTrailing>
+                    <DayCardPreviewImage imageData={previewImageData} />
+                    <HiArrowRight />
+                </DayCardTrailing>
             </DayCard_>
         </Link>
     );
@@ -109,6 +112,14 @@ const DayCard_ = styled.div<{ color: string }>`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    picture {
+        opacity: 0.7;
+    }
+
+    &:hover picture {
+        opacity: 1;
+    }
 
     &:hover {
         color: ${(props) => props.color};
@@ -129,9 +140,15 @@ const DayDescription: React.FC<Day> = ({ day, prompt, color }) => {
     );
 };
 
+const DayCardTrailing = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+`;
+
 const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
     imageData,
 }) => {
     const image = imageData ? getImage(imageData) : undefined;
-    return image ? <GatsbyImage image={image} alt="" /> : <HiArrowRight />;
+    return image ? <GatsbyImage image={image} alt="" /> : <div />;
 };
