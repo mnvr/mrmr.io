@@ -1,5 +1,10 @@
 import { graphql, useStaticQuery } from "gatsby";
-import { GatsbyImage, type ImageDataLike, getImage } from "gatsby-plugin-image";
+import {
+    GatsbyImage,
+    getImage,
+    getSrc,
+    type ImageDataLike,
+} from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
@@ -26,19 +31,30 @@ const Page: React.FC = () => {
 export default Page;
 
 const Card: React.FC = () => {
+    const is = images();
+    console.log("got", is);
+    const gatsbyImageData = ensure(getImage(ensure(is[0])));
+    const imageURL = ensure(getSrc(ensure(is[0])));
+    console.log({ imageURL });
+
     return (
-        <Card_>
-            <Image />
+        <Card_ $imageURL={imageURL}>
+            {/* <Image /> */}
             <CardContent />
         </Card_>
     );
 };
 
-const Card_ = styled.div`
+interface Card_Props {
+    $imageURL: string;
+}
+const Card_ = styled.div<Card_Props>`
     margin: 1rem;
     background-color: aliceblue;
     padding: 1rem;
     max-width: 30rem;
+
+    background-image: url(${(props) => props.$imageURL});
 
     display: grid;
 `;
@@ -57,6 +73,8 @@ const Image: React.FC = () => {
     const is = images();
     console.log("got", is);
     const gatsbyImageData = ensure(getImage(ensure(is[0])));
+    const imageURL = ensure(getSrc(ensure(is[0])));
+    console.log({ imageURL });
     return (
         <Image_>
             <GatsbyImage image={gatsbyImageData} alt="" />
