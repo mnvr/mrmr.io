@@ -34,7 +34,7 @@ export const useDayPreviewImages = (): Record<string, ImageDataLike> => {
                     childImageSharp {
                         gatsbyImageData(
                             layout: FIXED,
-                            height: 50,
+                            height: 101,
                             placeholder: NONE
                         )
                     }

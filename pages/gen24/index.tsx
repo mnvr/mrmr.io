@@ -1,6 +1,11 @@
 import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
-import { GatsbyImage, ImageDataLike, getImage } from "gatsby-plugin-image";
+import {
+    GatsbyImage,
+    ImageDataLike,
+    getImage,
+    getSrc,
+} from "gatsby-plugin-image";
 import * as React from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import styled from "styled-components";
@@ -90,22 +95,35 @@ type DayCardProps = {
 };
 
 const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
+    const previewImageSrc = previewImageData
+        ? getSrc(previewImageData)
+        : undefined;
+
     return (
         <Link to={`${day.day}`}>
-            <DayCard_ color={day.color}>
+            <DayCard_ color={day.color} $previewImageSrc={previewImageSrc}>
                 <DayCardLeading>
                     <DayDescription {...day} />
                     <HiOutlineChevronRight />
                 </DayCardLeading>
-                <DayCardPreviewImage imageData={previewImageData} />
+                {/* <DayCardPreviewImage imageData={previewImageData} /> */}
             </DayCard_>
         </Link>
     );
 };
 
-const DayCard_ = styled.div<{ color: string }>`
+interface DayCardProps_ {
+    color: string;
+    $previewImageSrc?: string;
+}
+
+const DayCard_ = styled.div<DayCardProps_>`
     border: 1px solid ${(props) => props.color};
 
+    background-image: linear-gradient(to right, black, black, transparent),
+        url(${(props) => props.$previewImageSrc});
+    background-position: top right;
+    /* background-repeat: no-repeat; */
     padding-block: 1rem;
     padding-inline-start: 1.5rem;
     padding-inline-end: 1.4rem;
