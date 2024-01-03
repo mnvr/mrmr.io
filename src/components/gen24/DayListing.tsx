@@ -28,11 +28,21 @@ export default Page;
 const Card: React.FC = () => {
     return (
         <Card_>
-            <CardContent />
             <Image />
+            <CardContentBottom />
+            <CardContent />
         </Card_>
     );
 };
+
+const CardContentBottom: React.FC = () => {
+    return <CardContentBottom_>Bellloeuth</CardContentBottom_>;
+};
+
+const CardContentBottom_ = styled.div`
+    background-color: blanchedalmond;
+    grid-area: 1 / 1;
+`;
 
 const Card_ = styled.div`
     margin: 1rem;
@@ -56,7 +66,11 @@ const Image: React.FC = () => {
     const is = images();
     console.log("got", is);
     const gatsbyImageData = ensure(is[0]?.childImageSharp?.gatsbyImageData);
-    return <Image_><GatsbyImage image={gatsbyImageData} alt="" /></Image_>;
+    return (
+        <Image_>
+            <GatsbyImage image={gatsbyImageData} alt="" />
+        </Image_>
+    );
     // return <div>Image</div>;
 };
 
