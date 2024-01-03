@@ -9,8 +9,9 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  * This component really should be local to `pages/gen24`, it is not needed
  * anywhere else. However, we need to perform a static GraphQL query to get the
  * list of preview images, and Gatsby does not support using `useStaticQuery`
- * outside of the src folder. There might be some convoluted way, but it is
- * simpler to just relocate this component into the src folder.
+ * outside of the src folder [1].
+ *
+ * [1]: https://www.gatsbyjs.com/docs/how-to/querying-data/use-static-query/#must-be-in-src-directory
  */
 const Page: React.FC = () => {
     return (
