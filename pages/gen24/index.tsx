@@ -121,9 +121,13 @@ const DayCard_ = styled.div<DayCardProps_>`
         /* Nothing seems to break if url is undefined */
             url(${(props) => props.$previewImageSrc});
     background-position: top right;
-    padding-block: 1.1rem;
-    padding-inline-start: 1.5rem;
-    padding-inline-end: 1.4rem;
+
+    box-sizing: border-box;
+    /* The fixed height of the preview images (in the Static GraphQL query
+     * defined in 'preview-images.tsx') is 101px. Add 2px for the borders. */
+    min-height: 103px;
+
+    padding-inline: 1.5rem;
 
     display: flex;
     align-items: center;
