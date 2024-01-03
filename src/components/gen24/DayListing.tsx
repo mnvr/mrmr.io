@@ -101,7 +101,7 @@ const images = (): readonly ImageDataLike[] => {
                 nodes {
                     relativeDirectory
                     childImageSharp {
-                        gatsbyImageData
+                        gatsbyImageData(layout: FIXED, height: 200)
                     }
                 }
             }
