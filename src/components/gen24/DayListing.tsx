@@ -29,20 +29,10 @@ const Card: React.FC = () => {
     return (
         <Card_>
             <Image />
-            <CardContentBottom />
             <CardContent />
         </Card_>
     );
 };
-
-const CardContentBottom: React.FC = () => {
-    return <CardContentBottom_>Bellloeuth</CardContentBottom_>;
-};
-
-const CardContentBottom_ = styled.div`
-    background-color: blanchedalmond;
-    grid-area: 1 / 1;
-`;
 
 const Card_ = styled.div`
     margin: 1rem;
@@ -60,6 +50,7 @@ const CardContent: React.FC = () => {
 const CardContent_ = styled.div`
     background-color: rgba(255, 0, 0, 0.2);
     grid-area: 1 / 1;
+    z-index: 1;
 `;
 
 const Image: React.FC = () => {
