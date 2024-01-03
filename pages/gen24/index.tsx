@@ -95,7 +95,6 @@ const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
             <DayCard_ color={day.color}>
                 <DayDescription {...day} />
                 <DayCardPreviewImage imageData={previewImageData} />
-                <HiArrowRight />
             </DayCard_>
         </Link>
     );
@@ -134,5 +133,5 @@ const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
     imageData,
 }) => {
     const image = imageData ? getImage(imageData) : undefined;
-    return image ? <GatsbyImage image={image} alt="" /> : <div />;
+    return image ? <GatsbyImage image={image} alt="" /> : <HiArrowRight />;
 };
