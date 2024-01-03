@@ -2,7 +2,7 @@ import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
 import { GatsbyImage, ImageDataLike, getImage } from "gatsby-plugin-image";
 import * as React from "react";
-import { HiArrowRight } from "react-icons/hi";
+import { HiOutlineChevronRight } from "react-icons/hi";
 import styled from "styled-components";
 import * as C from "./components";
 import { sketch } from "./cover";
@@ -96,7 +96,7 @@ const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
                 <DayDescription {...day} />
                 <DayCardTrailing>
                     <DayCardPreviewImage imageData={previewImageData} />
-                    <HiArrowRight />
+                    <HiOutlineChevronRight />
                 </DayCardTrailing>
             </DayCard_>
         </Link>
@@ -107,26 +107,24 @@ const DayCard_ = styled.div<{ color: string }>`
     border: 1px solid ${(props) => props.color};
 
     padding-block: 1rem;
-    padding-inline: 1.5rem;
+    padding-inline-start: 1.5rem;
+    padding-inline-end: 1.4rem;
 
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    picture {
+    /** This is the className we pass to GatsbyImage in DayCardPreviewImage  */
+    .preview-image-wrapper {
         opacity: 0.7;
     }
 
-    &:hover picture {
+    &:hover .preview-image-wrapper {
         opacity: 1;
     }
 
     &:hover {
         color: ${(props) => props.color};
-    }
-
-    svg {
-        font-size: 1.2rem;
     }
 `;
 
@@ -143,12 +141,16 @@ const DayDescription: React.FC<Day> = ({ day, prompt, color }) => {
 const DayCardTrailing = styled.div`
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.4rem;
 `;
 
 const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
     imageData,
 }) => {
     const image = imageData ? getImage(imageData) : undefined;
-    return image ? <GatsbyImage image={image} alt="" /> : <div />;
+    return image ? (
+        <GatsbyImage className="preview-image-wrapper" image={image} alt="" />
+    ) : (
+        <div />
+    );
 };
