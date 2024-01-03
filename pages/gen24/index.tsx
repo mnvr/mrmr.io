@@ -45,10 +45,13 @@ const Description2: React.FC = () => {
     return (
         <>
             <p>
-                I've also created a <Link to="cover">demonstration</Link> to
-                show how much can be done just by simple, basic grids - I start
-                with the simplest possible grid, and derive the cover art that
-                you see at the top.
+                I've also created{" "}
+                <Link to="cover">
+                    a demonstration to show how much can be done just by simple,
+                    basic grids
+                </Link>{" "}
+                - I start with the simplest possible grid, and derive the cover
+                art that you see at the top.
             </p>
             <p>Have a great and inspiring 2024.</p>
         </>
