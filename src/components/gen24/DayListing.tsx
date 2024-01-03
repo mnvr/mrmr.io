@@ -1,5 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby";
-import { GatsbyImage } from "gatsby-plugin-image";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
@@ -56,7 +56,7 @@ const CardContent_ = styled.div`
 const Image: React.FC = () => {
     const is = images();
     console.log("got", is);
-    const gatsbyImageData = ensure(is[0]?.childImageSharp?.gatsbyImageData);
+    const gatsbyImageData = ensure(getImage(ensure(is[0])));
     return (
         <Image_>
             <GatsbyImage image={gatsbyImageData} alt="" />
