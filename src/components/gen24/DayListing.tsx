@@ -1,6 +1,8 @@
 import { graphql, useStaticQuery } from "gatsby";
+import { GatsbyImage } from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
+import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
@@ -50,8 +52,9 @@ const CardContent_ = styled.div`
 const Image: React.FC = () => {
     const is = images();
     console.log("got", is);
-    const image = is[0];
-    return <div>Image</div>;
+    const gatsbyImageData = ensure(is[0]?.childImageSharp?.gatsbyImageData);
+    return <GatsbyImage image={gatsbyImageData} alt="" />;
+    // return <div>Image</div>;
 };
 
 const images = () => {
