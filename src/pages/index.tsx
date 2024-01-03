@@ -142,7 +142,11 @@ export const query = graphql`
             nodes {
                 relativeDirectory
                 childImageSharp {
-                    gatsbyImageData(aspectRatio: 2)
+                    gatsbyImageData(
+                        layout: FIXED
+                        width: 200
+                        placeholder: NONE
+                    )
                 }
             }
         }

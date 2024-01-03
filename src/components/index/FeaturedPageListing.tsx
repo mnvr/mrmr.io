@@ -1,5 +1,10 @@
 import { Link } from "gatsby";
-import { GatsbyImage, getImage, type ImageDataLike } from "gatsby-plugin-image";
+import {
+    GatsbyImage,
+    getImage,
+    getSrc,
+    type ImageDataLike,
+} from "gatsby-plugin-image";
 import { ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
@@ -35,14 +40,28 @@ export const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
                     onMouseEnter={() => setHoverPage(page)}
                     onMouseLeave={() => setHoverPage(undefined)}
                 >
-                    <PageItem
-                        $backgroundColor={page.colors?.backgroundColor1}
-                        $color={page.colors?.color1}
+                    <PageItemBackground
+                        $backgroundColor={page.colors?.backgroundColor1Transparent}
+                        $backgroundImage={
+                            page.previewImage
+                                ? getSrc(page.previewImage)
+                                : undefined
+                        }
                     >
-                        <PageItemP>{page.title.toLowerCase()}</PageItemP>
-                        <PageItemCount>{n - i}</PageItemCount>
-                        <BackgroundImage page={page} />
-                    </PageItem>
+                        <PageItem
+                            $backgroundColor={page.colors?.backgroundColor1Transparent}
+                            $backgroundImage={
+                                page.previewImage
+                                    ? getSrc(page.previewImage)
+                                    : undefined
+                            }
+                            $color={page.colors?.color1}
+                        >
+                            <PageItemP>{page.title.toLowerCase()}</PageItemP>
+                            <PageItemCount>{n - i}</PageItemCount>
+                            {/* <BackgroundImage page={page} /> */}
+                        </PageItem>
+                    </PageItemBackground>
                 </Link>
             ))}
         </PageGrid>
@@ -110,13 +129,38 @@ const PageGrid = styled.div`
     }
 `;
 
+interface PageItemBackgroundProps {
+    $backgroundColor?: string;
+    $backgroundImage?: string;
+}
+
+const PageItemBackground = styled.div<PageItemBackgroundProps>`
+    /* opacity: 0.8; */
+    background-image: linear-gradient(
+            ${(props) => props.$backgroundColor ?? "inherit"},
+            transparent
+        ),
+        /* linear-gradient(to right, rgba(255,255,255, 0.7) 0 100%), */
+        url(${(props) => props.$backgroundImage});
+
+    p {
+        opacity: 1 !important;
+    }
+`;
+
 interface PageItemProps {
     $backgroundColor?: string;
+    $backgroundImage?: string;
     $color?: string;
 }
 
 const PageItem = styled.div<PageItemProps>`
-    background-color: ${(props) => props.$backgroundColor ?? "inherit"};
+    /* background-color: ${(props) => props.$backgroundColor ?? "inherit"}; */
+    /* background-image: linear-gradient(
+            ${(props) => props.$backgroundColor ?? "inherit"},
+            transparent
+        ),
+        url(${(props) => props.$backgroundImage}); */
     color: ${(props) => props.$color ?? "inherit"};
     width: 13.7ch;
     height: 9.7ch;

@@ -27,5 +27,6 @@ export const FooterHomePageLogo: React.FC = () => {
     const imageData = ensure(file?.childImageSharp);
     const image = ensure(getImage(imageData));
 
-    return <GatsbyImage image={image} alt={""} />;
+    // Use an empty alt since this is a decorative background image
+    return <GatsbyImage image={image} alt="" />;
 };
