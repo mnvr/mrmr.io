@@ -63,7 +63,7 @@ const DayList: React.FC = () => {
             {days.map((day, i) => (
                 <li key={i}>
                     <DayCard
-                        {...day}
+                        day={day}
                         previewImageData={dayPreviewImages[day.day]}
                     />
                 </li>
@@ -84,36 +84,21 @@ const DayUL = styled.ul`
     }
 `;
 
-type DayCardProps = Day & {
+type DayCardProps = {
+    day: Day;
     previewImageData?: ImageDataLike;
 };
 
-const DayCard: React.FC<DayCardProps> = ({
-    day,
-    prompt,
-    color,
-    previewImageData,
-}) => {
+const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
     return (
-        <Link to={`${day}`}>
-            <DayCard_ color={color}>
-                <p>
-                    <b>{`Day ${day}`}</b>
-                    <span style={{ color }}> · </span>
-                    <i>{prompt}</i>
-                </p>
+        <Link to={`${day.day}`}>
+            <DayCard_ color={day.color}>
+                <DayDescription {...day} />
                 <DayCardPreviewImage imageData={previewImageData} />
                 <HiArrowRight />
             </DayCard_>
         </Link>
     );
-};
-
-const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
-    imageData,
-}) => {
-    const image = imageData ? getImage(imageData) : undefined;
-    return image ? <GatsbyImage image={image} alt="" /> : <div />;
 };
 
 const DayCard_ = styled.div<{ color: string }>`
@@ -134,3 +119,20 @@ const DayCard_ = styled.div<{ color: string }>`
         font-size: 1.2rem;
     }
 `;
+
+const DayDescription: React.FC<Day> = ({ day, prompt, color }) => {
+    return (
+        <p>
+            <b>{`Day ${day}`}</b>
+            <span style={{ color }}> · </span>
+            <i>{prompt}</i>
+        </p>
+    );
+};
+
+const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
+    imageData,
+}) => {
+    const image = imageData ? getImage(imageData) : undefined;
+    return image ? <GatsbyImage image={image} alt="" /> : <div />;
+};
