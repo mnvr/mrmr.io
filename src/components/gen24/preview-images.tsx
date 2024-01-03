@@ -32,7 +32,11 @@ export const useDayPreviewImages = (): Record<string, ImageDataLike> => {
                 nodes {
                     relativeDirectory
                     childImageSharp {
-                        gatsbyImageData(layout: FIXED, height: 60)
+                        gatsbyImageData(
+                            layout: FIXED,
+                            height: 50,
+                            placeholder: NONE
+                        )
                     }
                 }
             }
