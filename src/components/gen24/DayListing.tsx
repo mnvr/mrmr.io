@@ -1,6 +1,7 @@
 import { graphql, useStaticQuery } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
+import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /**
  * A listing of links to all the days under gen24.
@@ -45,20 +46,26 @@ const CardContent_ = styled.div`
     background-color: rgba(255, 0, 0, 0.2);
 `;
 
-export const Image: React.FC = () => {
-    const data = useStaticQuery(graphql`
-        query MyQuery {
+const Image: React.FC = () => {
+    const is = images();
+    console.log("got", is);
+    const image = is[0];
+    return <div>Image</div>;
+};
+
+const images = () => {
+    const data = useStaticQuery<Queries.Gen24PreviewImagesQuery>(graphql`
+        query Gen24PreviewImages {
             allFile(
                 filter: {
+                    sourceInstanceName: { eq: "pages" }
+                    ext: { regex: "/\\.(jpg|png)/" }
                     name: { eq: "preview" }
                     relativeDirectory: { glob: "gen24/*" }
                 }
             ) {
                 nodes {
-                    id
-                    name
                     relativeDirectory
-                    relativePath
                     childImageSharp {
                         gatsbyImageData
                     }
@@ -66,6 +73,6 @@ export const Image: React.FC = () => {
             }
         }
     `);
-    console.log("data", data);
-    return <div>Image</div>;
+    const allFile = replaceNullsWithUndefineds(data.allFile);
+    return allFile.nodes;
 };
