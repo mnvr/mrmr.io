@@ -1,11 +1,6 @@
 import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
-import {
-    GatsbyImage,
-    ImageDataLike,
-    getImage,
-    getSrc,
-} from "gatsby-plugin-image";
+import { ImageDataLike, getSrc } from "gatsby-plugin-image";
 import * as React from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import styled from "styled-components";
@@ -102,11 +97,8 @@ const DayCard: React.FC<DayCardProps> = ({ day, previewImageData }) => {
     return (
         <Link to={`${day.day}`}>
             <DayCard_ color={day.color} $previewImageSrc={previewImageSrc}>
-                <DayCardLeading>
-                    <DayDescription {...day} />
-                    <HiOutlineChevronRight />
-                </DayCardLeading>
-                {/* <DayCardPreviewImage imageData={previewImageData} /> */}
+                <DayDescription {...day} />
+                <HiOutlineChevronRight />
             </DayCard_>
         </Link>
     );
@@ -120,26 +112,22 @@ interface DayCardProps_ {
 const DayCard_ = styled.div<DayCardProps_>`
     border: 1px solid ${(props) => props.color};
 
-    background-image: linear-gradient(to right, black, black, transparent),
-        url(${(props) => props.$previewImageSrc});
+    background-image:
+        linear-gradient(
+            to right,
+            var(--mrmr-background-color-1) 50%,
+            transparent
+        ),
+        /* Nothing seems to break if url is undefined */
+            url(${(props) => props.$previewImageSrc});
     background-position: top right;
-    /* background-repeat: no-repeat; */
-    padding-block: 1rem;
+    padding-block: 1.1rem;
     padding-inline-start: 1.5rem;
     padding-inline-end: 1.4rem;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
-
-    /** This is the className we pass to GatsbyImage in DayCardPreviewImage  */
-    .preview-image-wrapper {
-        opacity: 0.7;
-    }
-
-    &:hover .preview-image-wrapper {
-        opacity: 1;
-    }
+    gap: 0.7rem;
 
     svg {
         color: var(--mrmr-color-3);
@@ -147,6 +135,7 @@ const DayCard_ = styled.div<DayCardProps_>`
 
     &:hover {
         color: ${(props) => props.color};
+
         svg {
             color: ${(props) => props.color};
         }
@@ -160,22 +149,5 @@ const DayDescription: React.FC<Day> = ({ day, prompt, color }) => {
             <span style={{ color }}> · </span>
             <i>{prompt}</i>
         </p>
-    );
-};
-
-const DayCardLeading = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-`;
-
-const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
-    imageData,
-}) => {
-    const image = imageData ? getImage(imageData) : undefined;
-    return image ? (
-        <GatsbyImage className="preview-image-wrapper" image={image} alt="" />
-    ) : (
-        <div />
     );
 };
