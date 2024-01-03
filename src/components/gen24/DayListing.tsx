@@ -1,5 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby";
-import { GatsbyImage, getImage } from "gatsby-plugin-image";
+import { GatsbyImage, type ImageDataLike, getImage } from "gatsby-plugin-image";
 import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
@@ -69,7 +69,7 @@ const Image_ = styled.div`
     grid-area: 1 / 1;
 `;
 
-const images = () => {
+const images = (): readonly ImageDataLike[] => {
     const data = useStaticQuery<Queries.Gen24PreviewImagesQuery>(graphql`
         query Gen24PreviewImages {
             allFile(
