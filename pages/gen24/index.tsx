@@ -1,4 +1,6 @@
+import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
+import { GatsbyImage, ImageDataLike, getImage } from "gatsby-plugin-image";
 import * as React from "react";
 import { HiArrowRight } from "react-icons/hi";
 import styled from "styled-components";
@@ -54,11 +56,16 @@ const Description2: React.FC = () => {
 };
 
 const DayList: React.FC = () => {
+    const dayPreviewImages = useDayPreviewImages();
+
     return (
         <DayUL>
             {days.map((day, i) => (
                 <li key={i}>
-                    <DayCard {...day} />
+                    <DayCard
+                        {...day}
+                        previewImageData={dayPreviewImages[day.day]}
+                    />
                 </li>
             ))}
         </DayUL>
@@ -77,7 +84,16 @@ const DayUL = styled.ul`
     }
 `;
 
-const DayCard: React.FC<Day> = ({ day, prompt, color }) => {
+type DayCardProps = Day & {
+    previewImageData?: ImageDataLike;
+};
+
+const DayCard: React.FC<DayCardProps> = ({
+    day,
+    prompt,
+    color,
+    previewImageData,
+}) => {
     return (
         <Link to={`${day}`}>
             <DayCard_ color={color}>
@@ -86,10 +102,18 @@ const DayCard: React.FC<Day> = ({ day, prompt, color }) => {
                     <span style={{ color }}> · </span>
                     <i>{prompt}</i>
                 </p>
+                <DayCardPreviewImage imageData={previewImageData} />
                 <HiArrowRight />
             </DayCard_>
         </Link>
     );
+};
+
+const DayCardPreviewImage: React.FC<{ imageData?: ImageDataLike }> = ({
+    imageData,
+}) => {
+    const image = imageData ? getImage(imageData) : undefined;
+    return image ? <GatsbyImage image={image} alt="" /> : <div />;
 };
 
 const DayCard_ = styled.div<{ color: string }>`
