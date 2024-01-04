@@ -11,7 +11,7 @@ import {
     type GridShader,
 } from "../grid";
 
-const debug = true;
+const debug = false;
 
 /**
  * Sketch description
@@ -107,11 +107,14 @@ interface MakeStateParams {
 }
 
 const makeState = ({ p5, grid }: MakeStateParams) => {
-    const photons = makePhotons({ p5 });
-
     const { rowCount, colCount } = grid;
     const boundsVec = p5.createVector(colCount, rowCount);
     const maxDist = boundsVec.dist(p5.createVector(0, 0));
+
+    // Wrap the starting positions of the photons to ensure that they lie on the
+    // currently displayed grid.
+    const photons = makePhotons({ p5 });
+    photons.forEach((p) => (p.position = vecMod(p5, p.position, boundsVec)));
 
     return { photons, boundsVec, maxDist };
 };
