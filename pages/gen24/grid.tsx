@@ -88,9 +88,13 @@ export interface CellShaderParams<S> {
      */
     h: number;
     /**
-     * Data about the cell itself.
+     * Data about the cell being drawn.
      */
     cell: Cell;
+    /**
+     * Data about the entire grid.
+     */
+    grid: Grid;
     /**
      * Arbitrary, sketch dependent state passed to all the drawCall calls.
      *
@@ -105,17 +109,35 @@ export interface CellShaderParams<S> {
     state?: S;
 }
 
-/** A two tuple represeting the location of a particular grid cell */
-export type GridCoordinate = Cell;
+/** A two tuple represeting a location */
+export interface Coordinate {
+    x: number;
+    y: number;
+}
 
 /**
- * A 4 tuple representing a rectangular area of the grid. By convention, the
- * bounds are inclusive.
+ * A 4 tuple representing a rectangular area.
+ *
+ * By convention, the bounds are inclusive.
  */
-export interface GridRect {
-    topLeft: GridCoordinate;
-    bottomRight: GridCoordinate;
+export interface CoordinateRect {
+    topLeft: Coordinate;
+    bottomRight: Coordinate;
 }
+
+/**
+ * Return true if the given `coordinate` falls within `rect`.
+ *
+ * The bounds of the rect are considered inclusive.
+ */
+export const isCoordinateInRect = (
+    { x, y }: Coordinate,
+    rect: CoordinateRect,
+) =>
+    x >= rect.topLeft.x &&
+    y >= rect.topLeft.y &&
+    x <= rect.bottomRight.x &&
+    y <= rect.bottomRight.y;
 
 /**
  * Data representing the grid itself.
@@ -143,7 +165,7 @@ export interface Grid {
      * This is a rectangle covering the area from the first (fully) visible cell
      * to the last (fully) visible one.
      */
-    visibleRect: GridRect;
+    visibleRect: CoordinateRect;
 }
 
 /**
@@ -589,24 +611,27 @@ export function gridSketch<S = DefaultState>(
         p5.pop();
     };
 
-    const computeVisibleRect = (p5: P5CanvasInstance): GridRect => {
-        let firstVisible: GridCoordinate | undefined;
-        let lastVisible: GridCoordinate | undefined;
+    const computeVisibleRect = (p5: P5CanvasInstance): CoordinateRect => {
+        let firstVisible: Coordinate | undefined;
+        let lastVisible: Coordinate | undefined;
 
         const { w, h } = cellSize;
-
-        const [width, height] = [p5.width, p5.height];
-        const [mx, my] = [width - w, height - h];
+        const gridRect = {
+            topLeft: { x: 0, y: 0 },
+            bottomRight: { x: p5.width - w, y: p5.height - h },
+        };
 
         let py = cellOffset.y;
         for (let y = 0; y < gridSize.rowCount; y++, py += h) {
             let px = cellOffset.x;
             if (staggered && y % 2 === 0) px -= w / 2;
             for (let x = 0; x < gridSize.colCount; x++, px += w) {
-                if (x >= 0 && y >= 0 && x <= mx && y <= my) {
-                    const coordinate = { row: y, col: x };
-                    if (firstVisible === undefined) firstVisible = coordinate;
-                    lastVisible = coordinate;
+                const pixelCoordinate = { x: px, y: py };
+                if (isCoordinateInRect(pixelCoordinate, gridRect)) {
+                    const cellCoordinate = { x: x, y: y };
+                    if (firstVisible === undefined)
+                        firstVisible = cellCoordinate;
+                    lastVisible = cellCoordinate;
                 }
             }
         }
@@ -635,7 +660,7 @@ export function gridSketch<S = DefaultState>(
             for (let x = 0; x < gridSize.colCount; x++, px += w) {
                 const cell = { row: y, col: x };
                 const s = p5.max(w, h);
-                drawCell({ p5, x: px, y: py, s, w, h, cell, state });
+                drawCell({ p5, x: px, y: py, s, w, h, cell, grid, state });
             }
         }
 

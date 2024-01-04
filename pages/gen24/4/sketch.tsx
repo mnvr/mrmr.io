@@ -1,4 +1,9 @@
-import { CellShader, gridSketch } from "../grid";
+import {
+    CellShader,
+    GridShader,
+    gridSketch,
+    isCoordinateInRect,
+} from "../grid";
 
 const debug = true;
 
@@ -11,17 +16,32 @@ const debug = true;
  */
 const words = ["Be", "Do"];
 
-const drawCell: CellShader = ({ p5, x, y, cell }) => {
+const drawGrid: GridShader = ({ p5, grid }) => {
+    const { visibleRect } = grid;
+    console.log(visibleRect);
+
+    p5.clear();
+};
+
+const drawCell: CellShader = ({ p5, x, y, cell, grid }) => {
     const { row, col } = cell;
+    const { visibleRect } = grid;
 
     if (debug) {
         p5.textFont("monospace");
         p5.textAlign(p5.LEFT, p5.TOP);
-        p5.text(`${col} ${row}`, x + 1, y + 2);
+        p5.fill(
+            isCoordinateInRect({ x: col, y: row }, visibleRect)
+                ? "red"
+                : "black",
+        );
+        p5.text(`${col} ${row}`, x, y);
     }
 };
 
 export const sketch = gridSketch({
+    drawGrid: drawGrid,
     drawCell: drawCell,
     noLoop: true,
+    showGuides: debug,
 });
