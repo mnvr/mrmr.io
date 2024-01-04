@@ -11,7 +11,7 @@ import {
     type GridShader,
 } from "../grid";
 
-const debug = false;
+const debug = true;
 
 /**
  * Sketch description

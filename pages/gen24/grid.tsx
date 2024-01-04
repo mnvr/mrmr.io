@@ -3,8 +3,6 @@ import {
     type P5CanvasInstance,
     type Sketch,
 } from "@p5-wrapper/react";
-import type * as P5 from "p5";
-import { ensure } from "utils/ensure";
 
 type DefaultState = undefined;
 
@@ -110,63 +108,24 @@ export interface CellShaderParams<S> {
     state?: S;
 }
 
-/** A two tuple represeting a location */
-export interface Coordinate {
-    x: number;
-    y: number;
-}
-
-/**
- * A 4 tuple representing a rectangular area.
- *
- * By convention, the bounds are inclusive.
- */
-export interface CoordinateRect {
-    topLeft: Coordinate;
-    bottomRight: Coordinate;
-}
-
-/**
- * Return true if the given `coordinate` falls within `rect`.
- *
- * The bounds of the rect are considered inclusive.
- */
-export const isCoordinateInRect = (
-    { x, y }: Coordinate,
-    rect: CoordinateRect,
-) =>
-    x >= rect.topLeft.x &&
-    y >= rect.topLeft.y &&
-    x <= rect.bottomRight.x &&
-    y <= rect.bottomRight.y;
-
 /**
  * Data representing the grid itself.
  *
- * A grid has `cols` * `rows` {@link Cell}s.
+ * A grid has `colCount` * `rowCount` {@link Cell}s.
  */
 export interface Grid {
     /**
      * The number of rows in the grid (vertical indexes).
      *
-     * Note that not all the cells might be fully visible. At the edges, some of
-     * them might even be completely occluded.
+     * Note that at cells at the edges will only be partially visible.
      */
     rowCount: number;
     /**
      * The number of columns in the grid (horizontal indexes).
      *
-     * Note that not all the cells might be fully visible. At the edges, some of
-     * them might even be completely occluded.
+     * Note that at cells at the edges will only be partially visible.
      */
     colCount: number;
-    /**
-     * The visible area of the grid
-     *
-     * This is a rectangle covering the area from the first (fully) visible cell
-     * to the last (fully) visible one.
-     */
-    visibleRect: CoordinateRect;
 }
 
 /**
@@ -258,12 +217,16 @@ export interface GridSketchParams<S> {
      * This is the number of rows, and the number of columns, in the grid.
      *
      * We might not end up showing all of these - the sizing algorithm when
-     * showing our sketch on the canvas is a "size to fill" (and we also require
-     * some minimum overflow), which means that there may be that cells that lie
-     * completely outside the canvas and do not get shown.
+     * showing our sketch on the canvas is a "size to fill", which means that
+     * the actual number of cells might be less than this in one or both
+     * dimensions.
      *
-     * We will also show one more than this on alternate rows when we're drawing
-     * in the staggered configuration.
+     * Note that we set things up so that the cells at the edges are always
+     * partially shown, never fully shown (this is part of the shenanigans we do
+     * to ensure that the grid looks "cenetered" within the canvas).
+     *
+     * We could also potentially show one more than this on alternate rows when
+     * we're drawing in the staggered configuration.
      *
      * Default is 13.
      */
@@ -324,7 +287,6 @@ export interface GridSketchParams<S> {
  * default p5 stroke.
  */
 function defaultCellShader<S>({ p5, x, y, s }: CellShaderParams<S>) {
-    // const defaultCellShader: CellShader = ({ p5, x, y, s }) => {
     p5.fill(160);
     p5.rect(x, y, s, s);
 }
@@ -333,7 +295,6 @@ function defaultCellShader<S>({ p5, x, y, s }: CellShaderParams<S>) {
  * A default implementation for {@link drawGrid} that clears the canvas.
  */
 function defaultGridShader<S = DefaultState>({ p5 }: GridShaderParams<S>) {
-    // function defaultGridShader<S>: GridShader = ({ p5 }) => {
     p5.clear();
     return undefined;
 }
@@ -426,6 +387,10 @@ export function gridSketch<S = DefaultState>(
      * number of colums may be more than {@link n}. So this value is also
      * computed at the same time when we're computing the cell sizes, in the
      * `updateSizes` function below.
+     *
+     * This will be a tight-ish fit: We will only draw the number of rows and
+     * columns that are needed to fill the canvas. However, the cells at the
+     * edges will only be partially visible.
      */
     let gridSize: GridSize = { rowCount: 0, colCount: 0 };
 
@@ -440,8 +405,8 @@ export function gridSketch<S = DefaultState>(
     /**
      * Offset (negative) from the canvas edge to where we start drawing cells.
      *
-     * `cellSize * gridSize` will generally not cover the entire canvas, for a
-     * few reasons:
+     * `cellSize * gridSize` will generally exceed the size of the entire
+     * canvas, for a few reasons:
      *
      * - `cellSize` is integral, but the width (or height) divided by the
      *   gridSize might not be integral.
@@ -645,8 +610,10 @@ export function gridSketch<S = DefaultState>(
         const isVisible = (x: number, y: number) =>
             x >= 0 && y >= 0 && x <= p5.width && y <= p5.height;
 
-        let firstVisible: P5.Vector | undefined;
-        let lastVisible: P5.Vector | undefined;
+        let minRow = rowCount,
+            minCol = colCount,
+            maxRow = 0,
+            maxCol = 0;
 
         const { w, h } = cellSize;
 
@@ -658,41 +625,16 @@ export function gridSketch<S = DefaultState>(
             for (let x = 0; x < colCount; x++, px += w) {
                 // If either end of the cell is visible
                 if (isVisible(px, py) || isVisible(px + w, py + h)) {
-                    const cv = p5.createVector(x, y);
-                    if (firstVisible === undefined) firstVisible = cv;
-                    lastVisible = cv;
-                } else {
-                    console.log("not visible", x, y);
+                    minRow = p5.min(minRow, y);
+                    minCol = p5.min(minCol, x);
+                    maxRow = p5.max(maxRow, y);
+                    maxCol = p5.max(maxCol, x);
                 }
             }
         }
 
-        let topLeft = ensure(firstVisible);
-        let bottomRight = ensure(lastVisible);
-
-        bottomRight.sub(topLeft);
-
-        const gs = { rowCount, colCount };
-        // +1 since the topLeft should be inclusive
-        // +1 since the bottomLeft should be inclusive
-        // +1 since we're returning counts
-        const gs2 = {
-            rowCount: bottomRight.y + 1,
-            colCount: bottomRight.x + 1,
-        };
-        console.log({ gs, gs2, topLeft, bottomRight });
-        return gs2;
-
-        console.log({ topLeft, zz: bottomRight.array() });
-        console.log(bottomRight.x, bottomRight.y);
-        // The portion of the grid from topLeft to bottomRight is enough to
-        // cover the canvas, so truncate to just that.
-        let z = bottomRight.sub(topLeft);
-        console.log({ topLeft, zz: bottomRight.array() });
-        console.log({ topLeft, bottomRight, z });
-        console.log(bottomRight.x, bottomRight.y);
-
-        return { rowCount: bottomRight.y + 1, colCount: bottomRight.x };
+        // +1 since we're returning counts, not indexes
+        return { rowCount: maxRow - minRow + 1, colCount: maxCol - minCol + 1};
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
@@ -728,10 +670,8 @@ export function gridSketch<S = DefaultState>(
         console.log("drawing grid", grid);
         state = drawGrid({ p5, env, grid, state });
 
-        // Achtung.
-        //
-        // Changes to this nested loop might also require changes to the
-        // `computeVisibleRect` function.
+        // Achtung. Changes to this nested loop might also require changes to
+        // the `pruneToVisibleCells` function above.
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
