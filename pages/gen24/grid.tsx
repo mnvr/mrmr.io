@@ -465,8 +465,14 @@ export function gridSketch<S = DefaultState>(
      * can't test things out there, I'll go with a more hammer-on approach that
      * should work in all such situations - just ignore any new window sizes
      * that have the same width as the previous window size we encountered.
+     *
+     * This unfortunately leaves the case where someone is genuinely resizing
+     * the window on a desktop browser. One option is to disregard this case: it
+     * ain't happening too frequently, and any cleverness we do might cause the
+     * mobile workaround to stop working (which is a bigger issue in practice).
+     * For now, we consider any height changes of more than 150 px "real".
      */
-    let previousWindowSize = { width: 0 };
+    let previousWindowSize = { width: 0, height: 0 };
 
     /**
      * The environment.
@@ -484,6 +490,7 @@ export function gridSketch<S = DefaultState>(
 
     const setup = (p5: P5CanvasInstance) => {
         previousWindowSize.width = p5.windowWidth;
+        previousWindowSize.height = p5.windowHeight;
         p5.createCanvas(...sketchSize(p5));
         updateSizes(p5);
         if (noLoop) p5.noLoop();
@@ -500,8 +507,14 @@ export function gridSketch<S = DefaultState>(
     /** See: [Handling "spurious" window resizes on mobile browsers] */
     const shouldIgnoreWindowResizedEvent = (p5: P5CanvasInstance) => {
         const width = p5.windowWidth;
-        if (width === previousWindowSize.width) return true;
+        const height = p5.windowHeight;
+        if (width === previousWindowSize.width) {
+            // If width is the same, and height change is less than 150, ignore
+            // this "spurious" resize.
+            if (p5.abs(height - previousWindowSize.height) < 150) return true;
+        }
         previousWindowSize.width = width;
+        previousWindowSize.height = height;
         return false;
     };
 
