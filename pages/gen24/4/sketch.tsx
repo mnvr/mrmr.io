@@ -11,6 +11,13 @@ const debug = true;
  */
 const words = ["Be", "Do"];
 
+const patternB = `
+.●●●..
+.●..●.
+.●●●..
+.●..●.
+.●●●..
+`
 const drawGrid: GridShader = ({ p5, grid, env }) => {
     p5.clear();
     p5.fill(env.isDarkMode ? 220 : 0);
