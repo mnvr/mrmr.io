@@ -3,6 +3,7 @@ import {
     type P5CanvasInstance,
     type Sketch,
 } from "@p5-wrapper/react";
+import type * as P5 from "p5";
 import { ensure } from "utils/ensure";
 
 type DefaultState = undefined;
@@ -398,6 +399,11 @@ export function gridSketch<S = DefaultState>(
      */
     let state = initialState;
 
+    interface GridSize {
+        rowCount: number;
+        colCount: number;
+    }
+
     /**
      * The number of rows and columns in the grid.
      *
@@ -411,7 +417,7 @@ export function gridSketch<S = DefaultState>(
      * computed at the same time when we're computing the cell sizes, in the
      * `updateSizes` function below.
      */
-    let gridSize = { rowCount: 0, colCount: 0 };
+    let gridSize: GridSize = { rowCount: 0, colCount: 0 };
 
     /**
      * The size of an individual cell in the grid.
@@ -595,36 +601,66 @@ export function gridSketch<S = DefaultState>(
         let remainingX = p5.width - cellSize.w * gridSize.colCount;
         let remainingY = p5.height - cellSize.h * gridSize.rowCount;
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
+
+        gridSize = pruneToVisibleCells(p5, gridSize, cellSize, cellOffset);
     };
 
-    const drawGuides = (p5: P5CanvasInstance) => {
-        p5.push();
+    /**
+     * Return a new grid size that would be enough to cover the canvas.
+     *
+     * This function takes a `gridSize` that provides an upper bound on the
+     * number of rows and columns of cells that are needed to cover the canvas
+     * using the given `cellSize` and `cellOffset` values.
+     *
+     * It then computes the reduced bounds consisting of cells that would
+     * actually be (either partially or fully) visible. And it returns a new
+     * grid size reflecting these reduced bounds - if we draw only these many
+     * rows and columns of cells, the canvas would still be covered.
+     */
+    const pruneToVisibleCells = (
+        p5: P5CanvasInstance,
+        gridSize: GridSize,
+        cellSize: { w: number; h: number },
+        cellOffset: { x: number; y: number },
+    ): GridSize => {
+        // True if the given pixel falls within the canvas bounds.
+        const isVisible = (x: number, y: number) =>
+            x >= 0 && y >= 0 && x <= p5.width && y <= p5.height;
 
-        p5.stroke(240, 200 /* alpha, 0 - 255 */);
-        p5.strokeWeight(1);
+        let firstVisible: P5.Vector | undefined;
+        let lastVisible: P5.Vector | undefined;
 
         const { w, h } = cellSize;
 
-        for (let y = cellOffset.y; y < p5.height; y += h) {
-            p5.line(0, y, p5.width, y);
-        }
-        for (let x = cellOffset.x; x < p5.width; x += w) {
-            p5.line(x, 0, x, p5.height);
-        }
-
-        p5.stroke("blue");
-        p5.strokeWeight(4);
-
-        for (let y = cellOffset.y + h / 2; y < p5.height; y += h) {
-            for (let x = cellOffset.x + w / 2; x < p5.width; x += w) {
-                p5.point(x, y);
+        // Same loop as what drives the the actual `drawCell` calls.
+        let py = cellOffset.y;
+        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
+            let px = cellOffset.x;
+            if (staggered && y % 2 === 0) px -= w / 2;
+            for (let x = 0; x < gridSize.colCount; x++, px += w) {
+                // If either end of the cell is visible
+                if (isVisible(px, py) || isVisible(px + w, py + h)) {
+                    const cv = p5.createVector(x, y);
+                    if (firstVisible === undefined) firstVisible = cv;
+                    lastVisible = cv;
+                }
             }
         }
 
-        p5.pop();
+        const topLeft = ensure(firstVisible);
+        const bottomRight = ensure(lastVisible);
+
+        // The portion of the grid from topLeft to bottomRight is enough to
+        // cover the canvas, so truncate to just that.
+        bottomRight.sub(topLeft);
+        return { rowCount: bottomRight.y, colCount: bottomRight.x };
     };
 
-    const computeVisibleRect = (p5: P5CanvasInstance): CoordinateRect => {
+    const computeVisibleRect = (
+        p5: P5CanvasInstance,
+        rowCount: number,
+        colCount: number,
+    ): CoordinateRect => {
         let firstVisible: Coordinate | undefined;
         let lastVisible: Coordinate | undefined;
 
@@ -653,6 +689,33 @@ export function gridSketch<S = DefaultState>(
             topLeft: ensure(firstVisible),
             bottomRight: ensure(lastVisible),
         };
+    };
+
+    const drawGuides = (p5: P5CanvasInstance) => {
+        p5.push();
+
+        p5.stroke(240, 200 /* alpha, 0 - 255 */);
+        p5.strokeWeight(1);
+
+        const { w, h } = cellSize;
+
+        for (let y = cellOffset.y; y < p5.height; y += h) {
+            p5.line(0, y, p5.width, y);
+        }
+        for (let x = cellOffset.x; x < p5.width; x += w) {
+            p5.line(x, 0, x, p5.height);
+        }
+
+        p5.stroke("blue");
+        p5.strokeWeight(4);
+
+        for (let y = cellOffset.y + h / 2; y < p5.height; y += h) {
+            for (let x = cellOffset.x + w / 2; x < p5.width; x += w) {
+                p5.point(x, y);
+            }
+        }
+
+        p5.pop();
     };
 
     const draw = (p5: P5CanvasInstance) => {
