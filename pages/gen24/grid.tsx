@@ -482,6 +482,7 @@ export function gridSketch<S = DefaultState>(
      */
     const updateWithProps = (p5: P5CanvasInstance, props: GridSketchProps) => {
         env.isDarkMode = props.isDarkMode ?? false;
+        if (noLoop) p5.redraw();
     };
 
     const setup = (p5: P5CanvasInstance) => {
