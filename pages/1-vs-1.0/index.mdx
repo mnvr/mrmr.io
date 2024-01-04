@@ -1,0 +1,125 @@
+---
+title: 1 vs 1.0
+date: 2024-01-04
+description: And the difference between structural & nominal type systems.
+theme: paper
+layout: text
+tags:
+    - tag: programming
+    - tag: haskell
+related:
+    - "/typescript-and-haskell"
+---
+
+1 != 1.0
+How Haskell gets them right, but so does JavaScript
+
+Real numbers and integers are entirely different things. They’re incorrectly equated because both are plotted on the same number line.
+
+I used to think that I understood the difference, but I didn’t, actually. This false comprehension was because there two different differences at play here:
+
+- The difference between real numbers and integers
+- The difference between floating point numbers and reals.
+
+I understood the second one, but not the first, until recently. This understanding doesn’t have great practical benefit, but it did bring me great intellectual joy, so I thought I’ll share my realisation.
+
+—-
+
+So I knew that there were natural numbers, and from them arose integers, and then from that folks made rational numbers, and from that folks made real numbers, and some folks didn’t just stop there, because why not, and they made complex numbers.
+
+The thing I didn’t understand was that the jump from rational numbers to real numbers was not just a jump in quantity, it was a jump in kind too. Real numbers are fundamentally a different thing than integers, and there is nothing they have in common except the fact that both can be plotted on the same high-school number line.
+
+As mathematicians (or even non-mathematicians who paid attention in their set theory classes) would say, they are different sets.
+
+When programming, one (generally) doesn’t care about these minutiae of mathematics. Of course, sometimes one does need to care, say when dealing with monetary amounts, but I mean generally in day-to-day code these differences are more like irritants, dealt with by inserting casts from say int to double here and there to shut the compiler up.
+
+Doing so makes the code quite often not work in edge cases, but then one sits down and figures out the math and inserts the proper ceil or floor instead of doing a default rounding or truncating cast. And all’s good in the world again.
+
+The thing that doesn’t work is comparing double values for equality. A vintage 1.0, travelling through a series of calculations, often ends back from its journey a battered 0.999. This is a surprise the first time, but then one reads What Every Programmer Must Know About Floating Point Numbers (or some Stack Overflow answer that summarises it to a sentence), and figures out that floating point values are inexact, operation-order-dependent, representations of the actual, underlying, real number. Some times, say with a number like 𝜋, there aren’t enough bits in the universe to represent the underlying real number, but that’s fine, 64 bits ought to be enough for anybody.
+
+This is the second difference I mentioned above - the difference between floating point numbers and reals. I’d understood this, and this was my go to gotcha (that I never got to use) for unsuspecting noobs, asking them why a for loop summing up an array of floating point values returned different results if I reversed the array first.
+
+—
+
+Living life as a programmer with such understanding, I came across Haskell many years ago.
+
+And did Haskell frustrate me. Integral, Int, Floating, Fractional, fromIntegral, Double, Natural, Num - there was a seemingly endless supply of number related concepts that didn’t seem to play well with each other.
+
+I must admit, in my moments of weakness, I wondered why not just throw all this complexity away and do what JavaScript did - everything is just a “number” (a double). No integers or casting to take care of it. Simple, pragmatic and often more efficient (due to reduced conversions) code.
+
+But I kept my fantasies to myself, and trundled on, inserting a fromIntegral here, a toRational there, to get GHCi to accept my meagre offerings of code.
+
+Years later on, when I had a bit of time, I actually sat down and read through the docs for all the Num instances, and found myself agreeing to the premises. The Num hierarchy made sense. I was overjoyed when I realized that Integers are arbitrary precision, and loved Haskell for having first class support of such BigInts. I even found this comment in GHC source, acknowledging the kerfuffle:
+
+
+Note [Optimising conversions between numeric types]
+
+So what we do instead is that we use the Integer type (signed, unbounded) as a
+passthrough type to perform every conversion. Hence we only need to define two
+functions per numeric type:
+
+Clever.
+
+But deep inside, it all seemed rather over engineered to me still. As in, yes, I see how they are different categories, but I just want a number mate.
+
+—-
+
+My moment of realization came when (don’t ask me why) I was doing this thought experiment:
+
+How long will it take for me to pick an integer if I keep picking random real numbers?
+
+The answer is - never! Integers are not a part of real numbers!
+
+The realisation itself dawned in two phases. First was the immediate one: there are so infinitely many real numbers that if we randomly keep picking from them, there is never the chance of us hitting on a real number with the special property that it is also a nice round integer.
+
+This sounds a bit weird when put to words - surely theoretically there is a, miniscule as it is, chance of us hitting on, say 1, if we keep picking real numbers between, say 0.9 and 1.1? I don’t have the mathematical wherewithal (or certainty) to prove this, I think the framework that deals with such question is probability theory, in particular the concept of a “measure”, but it seems to me now, as an obvious truth, that this probability is 0, even theoretically. It is not a mathematical trick, I think it is rather to do with the nature of these infinities. There are infinitely more real numbers than there are integers. Our minds are, or can be trained, to deal with the infinity of integers, but dealing with the infinity of real numbers, is beyond the grasp of most of us, it led even Cantor to insanity.
+
+But later on, as the slow burner, came the second realisation - that the probability 0 is not just because of measure theory, but because the integers just aren’t there!
+
+Given any integer, we can construct a real number as close to that integer on the number line as we want. That’s the sense in which integers and real numbers are, (maybe this isn’t the best word), “comparable” - that’s why they can be put on the same number line. But they are not equatable. I can get arbitrarily close, but I cannot ever reconstruct the integer, when I’m in the land of the reals.
+
+—-
+
+Apologies if all this sounds rather long winded. I tried to mention afront that this was just my personal realisation. I’m sure I still have some of the technicalities wrong, and I’m certain that there are better expositions of what I’m trying to say out there. In fact, it is possible that most people already know this from the get go, that took me such a long time to comprehend.
+
+So what happened after I figured this. Well, first of all I thanked the universe that there were people who knew more than me that had been tasked with creating and maintaining Haskell. They knew that integers and reals were different sets, and they shouldn’t be mixed, especially in a language that is trying to stand on the firm grounds of set theory (as firm a ground as it can provide).
+
+Now that I see why Haskell has this intricate Num hierarchy, I find myself in a better mood when dealing with the artifacts of the how.
+
+Practically, there is nothing I want to change. I’m sure over time Haskell will evolve simpler ways of representing the Num hierarchy than what it currently has - even after this rendition of praises for the Haskell gods I still find myself muttering blasphemies when I open GHCi after a gap of time away from Haskell and want myself wanting to evaluate a simple mathematical expression and the errors start piling in. But in practice, this isn’t much of a problem.
+
+I actually wondered why, and I think the answer has to do with two things:
+
+In a real program, I usually provide types for the top level expressions. This tends to sort things out on its own.
+
+But more importantly, the real issue here is not the Num hierarchy, it is the incomprehensibility of the error messages that GHC throws at the beginner (or me, when I reopen GHCi after having forgotten everything from my last affair with it). I think, bar none, GHC is the most helpful, solid, compiler I have encountered, and its error messages are exemplary. The problem is that the beginner mind doesn’t have the requisite knowledge to understand what GHC is saying in plain sight.
+
+The solution, of course, as is with many things in Haskell, is to _get gud_, but the problem is compounded by the fact that both these factors combine. A beginner is the one who is more likely to enter toy mathematical expressions in a GHCi prompt without any accompanying type bindings, and it is the beginner who is least qualified to understand what’s going on when GHC rebukes it for underspecifying what they want.
+
+As I said, practically, when writing larger programs, I have rarely encountered the need to use fromIntegral etc, the problem sort of sorts itself out.
+
+Things can be better, of course, but it is no reason to throw away this important distinction between integers and reals like JavaScript does.
+
+On the flip side, do I think that JavaScript (or other similarly stanced languages) should incorporate this distinction? No, what they have is fine, and better suited for the kind of work I do in them.
+
+I’m happy that both exist, and have retained their differences.
+
+—-
+
+Curiously enough, real numbers are not “closed”. There are “primitive” operations I can perform on real numbers that will give me back a thing that is not in the set of real numbers.
+
+Let’s start by adding two numbers. Some smart ass would soon get bored of adding them again and again, and would say, hey why don’t we call this repeated addition as multiplication, and here’s a formula to do it in one shot.
+
+Elated, the rest of us would get back to multiplying these numbers again and again, until the next smarter ass turns up and says, hey why don’t we call this repeated multiplication as exponentiation, and here’s a formula to do it in one shot.
+
+The curious bit is, if I take one real number, and exponentiate it using another, negative, real number, I get back something that is not a real number. It is a pair of real numbers.
+
+These pairs of real numbers are called complex numbers.
+
+I actually find it even more curious that complex numbers are closed. It is like finding a hardcoded magic constant — it’s  like god wrote that 2 dimensional real numbers are the first dimension of real numbers that are closed. Why not 3 dimensional? Wouldn’t it have been less “hardcoded” if there was no specific N-dimensional real numbers that were closed under primitive operations, and they would’ve continued on generating new and new numbers?
+
+While I could continue pondering on topics that I don’t understand ™️, this aside reminds me of some thing that I would indeed want changed: Complex Int in Haskell. I found myself needing complex numbers once, but those with discrete integral components. These (as was the point of this entire post) are not the same thing as the actual, real valued, complex numbers, but they’re quite useful. They also have a name: like everything else in maths, they’re named after Gauss, and are called Gaussian numbers.
+
+So with glee I saw in my local Haddock that GHC indeed ships with a Num a => Complex a type in the standard installation. Alright! A frustrating hour later though, I realized that Complex Int is useless. So after all these words, if there is something practical I get to wish for, it is that someone who understands more mathematics than I do fixes up the instances so that Complex Int is not just a glue-sticked mantelpiece.
+
+If you’re still reading, thanks! and I hope you enjoyed it.
