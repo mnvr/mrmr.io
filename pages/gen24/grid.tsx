@@ -404,6 +404,16 @@ export function gridSketch<S = DefaultState>(
         colCount: number;
     }
 
+    interface CellSize {
+        w: number;
+        h: number;
+    }
+
+    interface CellOffset {
+        x: number;
+        y: number;
+    }
+
     /**
      * The number of rows and columns in the grid.
      *
@@ -425,7 +435,7 @@ export function gridSketch<S = DefaultState>(
      * This value will be computed based on the actual canvas size and
      * {@link gridSize}.
      */
-    let cellSize = { w: 0, h: 0 };
+    let cellSize: CellSize = { w: 0, h: 0 };
 
     /**
      * Offset (negative) from the canvas edge to where we start drawing cells.
@@ -447,7 +457,7 @@ export function gridSketch<S = DefaultState>(
      * half of the extra space. This way, there is a similar half-drawn cell at
      * both ends, and the grid overall looks (uniformly) clipped and centered.
      */
-    let cellOffset = { x: 0, y: 0 };
+    let cellOffset: CellOffset = { x: 0, y: 0 };
 
     /**
      * Note: [Handling "spurious" window resizes on mobile browsers]
@@ -595,22 +605,32 @@ export function gridSketch<S = DefaultState>(
         const maxDimension = p5.max(p5.width, p5.height);
         const s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        gridSize = { rowCount: cy, colCount: cx + (staggered ? 1 : 0) };
+        // Compute cell size
         cellSize = { w: s * sw, h: s * sh };
 
+        // Compute tentative grid size
+        gridSize = { rowCount: cy, colCount: cx + (staggered ? 1 : 0) };
+
+        // Use tentative grid size to compute tentative cell offset
         let remainingX = p5.width - cellSize.w * gridSize.colCount;
         let remainingY = p5.height - cellSize.h * gridSize.rowCount;
         cellOffset = { x: remainingX / 2, y: remainingY / 2 };
 
-        gridSize = pruneToVisibleCells(p5, gridSize, cellSize, cellOffset);
+        // Compute final grid size by removing fully occluded rows and colums.
+        gridSize = pruneToVisibleCells(p5, gridSize);
+
+        // Compute final grid offset
+        remainingX = p5.width - cellSize.w * gridSize.colCount;
+        remainingY = p5.height - cellSize.h * gridSize.rowCount;
+        cellOffset = { x: remainingX / 2, y: remainingY / 2 };
     };
 
     /**
-     * Return a new grid size that would be enough to cover the canvas.
+     * Compute a new grid size by removing fully occluded rows and columns.
      *
      * This function takes a `gridSize` that provides an upper bound on the
      * number of rows and columns of cells that are needed to cover the canvas
-     * using the given `cellSize` and `cellOffset` values.
+     * using the current `cellSize` and `cellOffset` values.
      *
      * It then computes the reduced bounds consisting of cells that would
      * actually be (either partially or fully) visible. And it returns a new
@@ -619,9 +639,7 @@ export function gridSketch<S = DefaultState>(
      */
     const pruneToVisibleCells = (
         p5: P5CanvasInstance,
-        gridSize: GridSize,
-        cellSize: { w: number; h: number },
-        cellOffset: { x: number; y: number },
+        { rowCount, colCount }: GridSize,
     ): GridSize => {
         // True if the given pixel falls within the canvas bounds.
         const isVisible = (x: number, y: number) =>
@@ -634,61 +652,47 @@ export function gridSketch<S = DefaultState>(
 
         // Same loop as what drives the the actual `drawCell` calls.
         let py = cellOffset.y;
-        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
+        for (let y = 0; y < rowCount; y++, py += h) {
             let px = cellOffset.x;
             if (staggered && y % 2 === 0) px -= w / 2;
-            for (let x = 0; x < gridSize.colCount; x++, px += w) {
+            for (let x = 0; x < colCount; x++, px += w) {
                 // If either end of the cell is visible
                 if (isVisible(px, py) || isVisible(px + w, py + h)) {
                     const cv = p5.createVector(x, y);
                     if (firstVisible === undefined) firstVisible = cv;
                     lastVisible = cv;
+                } else {
+                    console.log("not visible", x, y);
                 }
             }
         }
 
-        const topLeft = ensure(firstVisible);
-        const bottomRight = ensure(lastVisible);
+        let topLeft = ensure(firstVisible);
+        let bottomRight = ensure(lastVisible);
 
+        bottomRight.sub(topLeft);
+
+        const gs = { rowCount, colCount };
+        // +1 since the topLeft should be inclusive
+        // +1 since the bottomLeft should be inclusive
+        // +1 since we're returning counts
+        const gs2 = {
+            rowCount: bottomRight.y + 1,
+            colCount: bottomRight.x + 1,
+        };
+        console.log({ gs, gs2, topLeft, bottomRight });
+        return gs2;
+
+        console.log({ topLeft, zz: bottomRight.array() });
+        console.log(bottomRight.x, bottomRight.y);
         // The portion of the grid from topLeft to bottomRight is enough to
         // cover the canvas, so truncate to just that.
-        bottomRight.sub(topLeft);
-        return { rowCount: bottomRight.y, colCount: bottomRight.x };
-    };
+        let z = bottomRight.sub(topLeft);
+        console.log({ topLeft, zz: bottomRight.array() });
+        console.log({ topLeft, bottomRight, z });
+        console.log(bottomRight.x, bottomRight.y);
 
-    const computeVisibleRect = (
-        p5: P5CanvasInstance,
-        rowCount: number,
-        colCount: number,
-    ): CoordinateRect => {
-        let firstVisible: Coordinate | undefined;
-        let lastVisible: Coordinate | undefined;
-
-        const { w, h } = cellSize;
-        const gridRect = {
-            topLeft: { x: 0, y: 0 },
-            bottomRight: { x: p5.width - w, y: p5.height - h },
-        };
-
-        let py = cellOffset.y;
-        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
-            let px = cellOffset.x;
-            if (staggered && y % 2 === 0) px -= w / 2;
-            for (let x = 0; x < gridSize.colCount; x++, px += w) {
-                const pixelCoordinate = { x: px, y: py };
-                if (isCoordinateInRect(pixelCoordinate, gridRect)) {
-                    const cellCoordinate = { x: x, y: y };
-                    if (firstVisible === undefined)
-                        firstVisible = cellCoordinate;
-                    lastVisible = cellCoordinate;
-                }
-            }
-        }
-
-        return {
-            topLeft: ensure(firstVisible),
-            bottomRight: ensure(lastVisible),
-        };
+        return { rowCount: bottomRight.y + 1, colCount: bottomRight.x };
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
@@ -719,8 +723,9 @@ export function gridSketch<S = DefaultState>(
     };
 
     const draw = (p5: P5CanvasInstance) => {
-        const grid = { ...gridSize, visibleRect: computeVisibleRect(p5) };
+        const grid = { ...gridSize };
 
+        console.log("drawing grid", grid);
         state = drawGrid({ p5, env, grid, state });
 
         // Achtung.
