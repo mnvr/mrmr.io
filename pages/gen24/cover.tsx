@@ -21,6 +21,7 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
     staggered: true,
+    overdraw: { rowCount: 1, colCount: 0 },
     noLoop: true,
     cellAspectRatio: 1.33,
 });

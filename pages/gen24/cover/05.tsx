@@ -18,4 +18,5 @@ const drawCell: CellShader = ({ p5, x, y, s }) => {
 export const sketch = gridSketch({
     drawGrid,
     drawCell,
+    overdraw: { rowCount: 1, colCount: 0 },
 });

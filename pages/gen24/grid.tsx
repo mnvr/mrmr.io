@@ -109,11 +109,15 @@ export interface CellShaderParams<S> {
 }
 
 /**
- * Data representing the grid itself.
+ * A 2-tuple representing the number of rows and columns.
  *
- * A grid has `colCount` * `rowCount` {@link Cell}s.
+ * The main purpose of this is to represent the actual grid size (see the
+ * {@link Grid} type below), but this is also kept around as an independent type
+ * declaration for other places where we need to represent just the 2 values - a
+ * row and a column count (e.g. in the {@link overdraw} property of
+ * {@link GridSketchParams}).
  */
-export interface Grid {
+export interface GridSize {
     /**
      * The number of rows in the grid (vertical indexes).
      *
@@ -127,6 +131,13 @@ export interface Grid {
      */
     colCount: number;
 }
+
+/**
+ * Data representing the grid itself.
+ *
+ * A grid has `colCount` * `rowCount` {@link Cell}s.
+ */
+export type Grid = GridSize;
 
 /**
  * A function that is called once (per frame) for doing any background drawing
@@ -245,6 +256,23 @@ export interface GridSketchParams<S> {
     staggered?: boolean;
 
     /**
+     * If specified, we draw these many extra rows and columns.
+     *
+     * The visible cell computation that we do to keep the size of the grid
+     * minimal assumes that the cells have a rectangular bound. However, cells
+     * are actually free to draw outside their bounds.
+     *
+     * This overdraw property allows a sketch to specify a number of extra rows
+     * and colums that should be drawn in addition to the computed grid size.
+     * This way, the sktech can ensure that there is no leftover space at the
+     * bottom and/or right edges when the individual cells have non-rectangular
+     * drawings.
+     *
+     * Default in no-overdraw, i.e. { 0, 0 }.
+     */
+    overdraw?: GridSize;
+
+    /**
      * If true, then we disable animations. The cells don't update after being
      * drawn once (unless the canvas is resized).
      *
@@ -335,6 +363,7 @@ export function gridSketch<S = DefaultState>(
         drawGrid: defaultGridShader,
         n: 13,
         staggered: false,
+        overdraw: { rowCount: 0, colCount: 0 },
         noLoop: false,
         cellAspectRatio: 1,
         showGuides: false,
@@ -350,6 +379,7 @@ export function gridSketch<S = DefaultState>(
         drawGrid,
         n,
         staggered,
+        overdraw,
         noLoop,
         cellAspectRatio,
         showGuides,
@@ -359,21 +389,6 @@ export function gridSketch<S = DefaultState>(
      * The sketch specific state.
      */
     let state = initialState;
-
-    interface GridSize {
-        rowCount: number;
-        colCount: number;
-    }
-
-    interface CellSize {
-        w: number;
-        h: number;
-    }
-
-    interface CellOffset {
-        x: number;
-        y: number;
-    }
 
     /**
      * The number of rows and columns in the grid.
@@ -400,7 +415,7 @@ export function gridSketch<S = DefaultState>(
      * This value will be computed based on the actual canvas size and
      * {@link gridSize}.
      */
-    let cellSize: CellSize = { w: 0, h: 0 };
+    let cellSize = { w: 0, h: 0 };
 
     /**
      * Offset (negative) from the canvas edge to where we start drawing cells.
@@ -422,7 +437,7 @@ export function gridSketch<S = DefaultState>(
      * half of the extra space. This way, there is a similar half-drawn cell at
      * both ends, and the grid overall looks (uniformly) clipped and centered.
      */
-    let cellOffset: CellOffset = { x: 0, y: 0 };
+    let cellOffset = { x: 0, y: 0 };
 
     /**
      * Note: [Handling "spurious" window resizes on mobile browsers]
@@ -555,16 +570,8 @@ export function gridSketch<S = DefaultState>(
         } else if (r > 1) {
             // cell w >= cell h, landscape cells, so we'll need more per column.
             ny = p5.floor(n * r);
-            // Because I'm doing math I don't understand, I need to add an extra
-            // row here, otherwise on certain sketch sizes there is empty space
-            // at the bottom.
-            //
-            // It has something to do with me using `p5.floor`, but `p5.ceil`
-            // has the other issue - there is extra leftover space to the right.
-            // Hence, for time being, we just duct tape a +1 to fend off any
-            // potential leftover areas at the bottom.
-            cy = ny + 1;
             sw = r;
+            cy = ny;
         }
 
         const maxDimension = p5.max(p5.width, p5.height);
@@ -583,6 +590,13 @@ export function gridSketch<S = DefaultState>(
 
         // Compute final grid size by removing fully occluded rows and colums.
         gridSize = pruneToVisibleCells(p5, gridSize);
+
+        // If we were asked to overdraw extra cells, do so in addition to the
+        // visible gridSize that we computed.
+        gridSize = {
+            rowCount: gridSize.rowCount + overdraw.rowCount,
+            colCount: gridSize.colCount + overdraw.colCount,
+        };
 
         // Compute final grid offset
         remainingX = p5.width - cellSize.w * gridSize.colCount;
@@ -634,7 +648,7 @@ export function gridSketch<S = DefaultState>(
         }
 
         // +1 since we're returning counts, not indexes
-        return { rowCount: maxRow - minRow + 1, colCount: maxCol - minCol + 1};
+        return { rowCount: maxRow - minRow + 1, colCount: maxCol - minCol + 1 };
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
