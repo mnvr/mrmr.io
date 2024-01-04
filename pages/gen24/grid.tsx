@@ -3,6 +3,7 @@ import {
     type P5CanvasInstance,
     type Sketch,
 } from "@p5-wrapper/react";
+import { ensure } from "utils/ensure";
 
 type DefaultState = undefined;
 
@@ -104,6 +105,18 @@ export interface CellShaderParams<S> {
     state?: S;
 }
 
+/** A two tuple represeting the location of a particular grid cell */
+export type GridCoordinate = Cell;
+
+/**
+ * A 4 tuple representing a rectangular area of the grid. By convention, the
+ * bounds are inclusive.
+ */
+export interface GridRect {
+    topLeft: GridCoordinate;
+    bottomRight: GridCoordinate;
+}
+
 /**
  * Data representing the grid itself.
  *
@@ -124,6 +137,13 @@ export interface Grid {
      * them might even be completely occluded.
      */
     colCount: number;
+    /**
+     * The visible area of the grid
+     *
+     * This is a rectangle covering the area from the first (fully) visible cell
+     * to the last (fully) visible one.
+     */
+    visibleRect: GridRect;
 }
 
 /**
@@ -569,10 +589,43 @@ export function gridSketch<S = DefaultState>(
         p5.pop();
     };
 
+    const computeVisibleRect = (p5: P5CanvasInstance): GridRect => {
+        let firstVisible: GridCoordinate | undefined;
+        let lastVisible: GridCoordinate | undefined;
+
+        const { w, h } = cellSize;
+
+        const [width, height] = [p5.width, p5.height];
+        const [mx, my] = [width - w, height - h];
+
+        let py = cellOffset.y;
+        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
+            let px = cellOffset.x;
+            if (staggered && y % 2 === 0) px -= w / 2;
+            for (let x = 0; x < gridSize.colCount; x++, px += w) {
+                if (x >= 0 && y >= 0 && x <= mx && y <= my) {
+                    const coordinate = { row: y, col: x };
+                    if (firstVisible === undefined) firstVisible = coordinate;
+                    lastVisible = coordinate;
+                }
+            }
+        }
+
+        return {
+            topLeft: ensure(firstVisible),
+            bottomRight: ensure(lastVisible),
+        };
+    };
+
     const draw = (p5: P5CanvasInstance) => {
-        const grid = gridSize;
+        const grid = { ...gridSize, visibleRect: computeVisibleRect(p5) };
 
         state = drawGrid({ p5, env, grid, state });
+
+        // Achtung.
+        //
+        // Changes to this nested loop might also require changes to the
+        // `computeVisibleRect` function.
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
