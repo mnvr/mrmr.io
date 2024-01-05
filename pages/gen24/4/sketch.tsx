@@ -82,8 +82,10 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     });
 
     if (!isEnough) {
+        const sa = JSON.stringify(safeAreaSize);
+        const md = JSON.stringify(minDisplaySize);
         console.error(
-            `Safe area ${safeAreaSize} is not enough to contain the rendered display of size ${minDisplaySize}`,
+            `Safe area ${sa} is not enough to contain the rendered display of size ${md}`,
         );
 
         coloredCellIndices.add(cellIndex(midpointCell(grid), grid));
