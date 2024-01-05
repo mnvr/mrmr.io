@@ -689,11 +689,11 @@ export function gridSketch<S = DefaultState>(
 
         const { w, h } = cellSize;
         let py = cellOffset.y;
-        for (let y = 0; y < gridSize.rowCount; y++, py += h) {
+        for (let row = 0; row < gridSize.rowCount; row++, py += h) {
             let px = cellOffset.x;
-            if (staggered && y % 2 === 0) px -= w / 2;
-            for (let x = 0; x < gridSize.colCount; x++, px += w) {
-                const cell = { row: y, col: x };
+            if (staggered && row % 2 === 0) px -= w / 2;
+            for (let col = 0; col < gridSize.colCount; col++, px += w) {
+                const cell = { row, col };
                 const s = p5.max(w, h);
                 drawCell({ p5, x: px, y: py, s, w, h, cell, grid, state });
             }
