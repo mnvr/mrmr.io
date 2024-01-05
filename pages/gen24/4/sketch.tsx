@@ -9,17 +9,17 @@ import {
     type GridSize,
 } from "../grid";
 import {
+    areEqualSizes,
     canContainSize,
     cellRectSize,
     containsCell,
     expandSize,
     makeRect,
-    midpointCell,
     multiplySize,
     subtractSize,
     type CellRect,
 } from "../grid-geometry";
-import { computeMinimumGridSize, isGlyphCoordinateLit, makeGlyph, makeGlyph2 } from "../grid-glyph";
+import { isGlyphCoordinateLit, makeGlyph, type Glyph } from "../grid-glyph";
 
 const debug = true;
 
@@ -33,13 +33,46 @@ const debug = true;
 const glyphs = [makeGlyph("B", "E"), makeGlyph("B", "E")];
 const glyph = glyphs[0];
 
-const minimumGridSize = computeMinimumGridSize(glyphs);
+/**
+ * Ensure that all the given glyph are of the same size, and return this size.
+ */
+export const ensureEqualSizedGlyphs = (glyphs: Glyph[]) => {
+    const glyphSize = ensure(glyphs[0]).size;
+    for (const glyph of glyphs) {
+        if (!areEqualSizes(glyph.size, glyphSize)) {
+            const ss = JSON.stringify([glyph.size, glyphSize]);
+            throw new Error(
+                `Unequal glyph sizes are not supported. The sizes were ${ss}`,
+            );
+        }
+    }
+    return glyphSize;
+};
+
+/** The size of any (and all) of the glyphs that we cycle through. */
+const glyphSize = ensureEqualSizedGlyphs(glyphs);
+/**
+ * The minimum grid size is obtained by expanding {@link glyphSize} size by 1
+ * cell in each directions to ensure that we don't draw outside the safe area.
+ */
+const minimumGridSize = expandSize(glyphSize, 1);
 
 interface State {
-    coloredCellIndices: Set<number>;
+    /** One set of cell indices for each glyph in {@link glyphs} */
+    glyphsCellIndices: Set<number>[];
+    /**
+     * The index of the glyph (from amongst {@link glyphs}) currently being
+     * shown.
+     */
+    glyphIndex: number;
+    /**
+     * Some values that we compute when computing the glyphCellIndices. This is
+     * not needed for the actual sketch, but we keep these around for debugging
+     * purposes.
+     */
     safeArea: CellRect;
-    drawRect?: CellRect;
-    startCellIndex?: number;
+    drawRect: CellRect;
+    startCellIndex: number;
 }
 
 interface RenderGlyphsParams {
@@ -52,7 +85,7 @@ interface RenderGlyphsParams {
  * the character patterns that we want to show on the grid.
  */
 const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
-    const coloredCellIndices = new Set<number>();
+    const glyphsCellIndices = glyphs.map((_) => new Set<number>());
 
     // The safe area is the area consisting of grid cells that are fully
     // visible. We can light up these cells knowing for sure that they'll not
@@ -67,37 +100,27 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
         bottomRight: { row: grid.rowCount - 2, col: grid.colCount - 2 },
     };
 
-    // If the safe area is too small, just draw a cell at the center to indicate
-    // an error.
-    //
-    // This shouldn't really happen though - we should've set the number of
-    // cells in the grid such that we always have enough space even in small
-    // sized grids. So also log an error to the console.
+    // The safe area being too small to render the glyphs even at scale 1 should
+    // not happen because we have passed an appropriate {@link minimumGridSize}
+    // when creating the grid sketch. Check for it though, and throw an error.
 
-    const minDisplaySize = glyph.size;
     const safeAreaSize = cellRectSize(safeArea);
 
-    let isEnough = canContainSize({
-        containerSize: safeAreaSize,
-        elementSize: minDisplaySize,
-    });
-
-    if (!isEnough) {
+    if (
+        !canContainSize({ containerSize: safeAreaSize, elementSize: glyphSize })
+    ) {
         const sa = JSON.stringify(safeAreaSize);
-        const md = JSON.stringify(minDisplaySize);
-        console.error(
+        const md = JSON.stringify(glyphSize);
+        throw new Error(
             `Safe area ${sa} is not enough to contain the rendered display of size ${md}`,
         );
-
-        coloredCellIndices.add(cellIndex(midpointCell(grid), grid));
-        return { coloredCellIndices, safeArea };
     }
 
     // Try to scale up the glyph the biggest it will go.
 
     let size: GridSize;
     let scale = 1;
-    let newSize = minDisplaySize;
+    let newSize = glyphSize;
     let newScale = 1;
     do {
         size = newSize;
@@ -126,17 +149,29 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
             // suitable for indexing into the glyph.
             const gr = Math.floor((row - startCell.row) / scale);
             const gc = Math.floor((col - startCell.col) / scale);
-            if (isGlyphCoordinateLit(glyph, { row: gr, col: gc })) {
-                coloredCellIndices.add(cellIndex({ row, col }, grid));
+            let i = 0;
+            for (const glyph of glyphs) {
+                if (isGlyphCoordinateLit(glyph, { row: gr, col: gc })) {
+                    glyphsCellIndices[i]?.add(cellIndex({ row, col }, grid));
+                }
+                i += 1;
             }
         }
     }
 
-    // Starting from this offset, color any cell which is lit up in the
-    // corresponding glyph position.
-
+    // Keep the starting cell index in state, useful for debugging.
     const startCellIndex = cellIndex(startCell, grid);
-    return { coloredCellIndices, safeArea, drawRect, startCellIndex };
+
+    // Start by showing the glyph at index 0
+    const glyphIndex = 0;
+
+    return {
+        glyphsCellIndices,
+        glyphIndex,
+        safeArea,
+        drawRect,
+        startCellIndex,
+    };
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
@@ -148,8 +183,13 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { row, col, index } = cell;
-    const { coloredCellIndices, safeArea, drawRect, startCellIndex } =
-        ensure(state);
+    const {
+        glyphsCellIndices,
+        glyphIndex,
+        safeArea,
+        drawRect,
+        startCellIndex,
+    } = ensure(state);
 
     if (debug) {
         p5.push();
@@ -175,16 +215,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
         p5.pop();
     }
 
-    if (coloredCellIndices.has(index)) {
+    if (glyphsCellIndices[glyphIndex]?.has(index)) {
         p5.fill(20, 20, 240, 200);
         p5.rect(x, y, s, s);
     }
 };
 
 export const sketch = gridSketch<State>({
-    drawGrid: drawGrid,
-    drawCell: drawCell,
-    minimumGridSize: minimumGridSize,
+    drawGrid,
+    drawCell,
+    minimumGridSize,
     noLoop: true,
     showGuides: debug,
 });
