@@ -1,12 +1,12 @@
-import { type Cell, type GridSize } from "./grid";
+import { type CellCoordinate, type GridSize } from "./grid";
 
 /**
  * A rectangular region of the grid, starting from (and including) the `topLeft`
- * cell and going up to (and including) the `bottomRight` one.
+ * cell coordinate and going up to (and including) the `bottomRight` one.
  */
 export interface CellRect {
-    topLeft: Cell;
-    bottomRight: Cell;
+    topLeft: CellCoordinate;
+    bottomRight: CellCoordinate;
 }
 
 /**
@@ -21,8 +21,14 @@ export const cellRectSize = ({ topLeft, bottomRight }: CellRect): GridSize => {
     };
 };
 
-/** Return the cell that is the midpoint of a grid of the given size. */
-export const midpointCell = ({ rowCount, colCount }: GridSize): Cell => {
+/**
+ * Return the cell coordinate that lies at the midpoint of a grid with the given
+ * size.
+ */
+export const midpointCell = ({
+    rowCount,
+    colCount,
+}: GridSize): CellCoordinate => {
     return {
         row: Math.floor(rowCount / 2),
         col: Math.floor(colCount / 2),
@@ -31,7 +37,7 @@ export const midpointCell = ({ rowCount, colCount }: GridSize): Cell => {
 
 export interface ContainsCellParams {
     rect: CellRect;
-    cell: Cell;
+    cell: CellCoordinate;
 }
 
 /** Return true if the given {@link rect} contains the given {@link cell} */

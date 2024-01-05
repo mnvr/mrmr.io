@@ -18,11 +18,15 @@ export type CellShader<S = DefaultState> = (
 ) => void;
 
 /**
- * Data representing each cell.
+ * A 2-tuple representing the a particular row and column in the grid.
  *
- * A cell has a fixed position in the grid, which can be read off from here.
+ * The main purpose of this type is represent the position of a cell (see the
+ * {@link Cell} type below), but this is also kept around as an independent type
+ * declaration for other places where we need to represent just the 2 values - a
+ * row and a column, without tying it to the other data that a cell might
+ * contain.
  */
-export interface Cell {
+export interface CellCoordinate {
     /**
      * The vertical index of the cell
      *
@@ -36,6 +40,28 @@ export interface Cell {
      */
     col: number;
 }
+
+/**
+ * Data representing each cell.
+ *
+ * A cell has a fixed position in the grid, which can be read off from here. It
+ * also has a unique index (relative to the current grid).
+ */
+export type Cell = CellCoordinate & {
+    /**
+     * A unique index of the cell within the grid.
+     *
+     * This value can be used as a key when storing cell specific data in the
+     * sketch state.
+     *
+     * Note that it is tied to a particular grid size. When the size of the grid
+     * changes, all the previous indexes will become invalid. However, since the
+     * state anyways needs to be recreated when the grid size changes, this is
+     * not something that needs to be taken care of separately. This note is
+     * just for information.
+     */
+    index: number;
+};
 
 /**
  * Parameters passed to the {@link CellShader} when invoking it during
@@ -633,23 +659,27 @@ export function gridSketch<S = DefaultState>(
         const { w, h } = cellSize;
 
         // Same loop as what drives the the actual `drawCell` calls.
-        let py = cellOffset.y;
-        for (let y = 0; y < rowCount; y++, py += h) {
-            let px = cellOffset.x;
-            if (staggered && y % 2 === 0) px -= w / 2;
-            for (let x = 0; x < colCount; x++, px += w) {
+        let y = cellOffset.y;
+        for (let row = 0; row < rowCount; row++, y += h) {
+            let x = cellOffset.x;
+            if (staggered && row % 2 === 0) x -= w / 2;
+            for (let col = 0; col < colCount; col++, x += w) {
                 // If either end of the cell is visible
-                if (isVisible(px, py) || isVisible(px + w, py + h)) {
-                    minRow = p5.min(minRow, y);
-                    minCol = p5.min(minCol, x);
-                    maxRow = p5.max(maxRow, y);
-                    maxCol = p5.max(maxCol, x);
+                if (isVisible(x, y) || isVisible(x + w, y + h)) {
+                    minRow = p5.min(minRow, row);
+                    minCol = p5.min(minCol, col);
+                    maxRow = p5.max(maxRow, row);
+                    maxCol = p5.max(maxCol, col);
                 }
             }
         }
 
         // +1 since we're returning counts, not indexes
         return { rowCount: maxRow - minRow + 1, colCount: maxCol - minCol + 1 };
+    };
+
+    const withIndex = ({ row, col }: CellCoordinate): Cell => {
+        return { index: gridSize.colCount * col + row, row, col };
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
@@ -688,14 +718,14 @@ export function gridSketch<S = DefaultState>(
         // the `pruneToVisibleCells` function above.
 
         const { w, h } = cellSize;
-        let py = cellOffset.y;
-        for (let row = 0; row < gridSize.rowCount; row++, py += h) {
-            let px = cellOffset.x;
-            if (staggered && row % 2 === 0) px -= w / 2;
-            for (let col = 0; col < gridSize.colCount; col++, px += w) {
-                const cell = { row, col };
+        let y = cellOffset.y;
+        for (let row = 0; row < gridSize.rowCount; row++, y += h) {
+            let x = cellOffset.x;
+            if (staggered && row % 2 === 0) x -= w / 2;
+            for (let col = 0; col < gridSize.colCount; col++, x += w) {
+                const cell = withIndex({ row, col });
                 const s = p5.max(w, h);
-                drawCell({ p5, x: px, y: py, s, w, h, cell, grid, state });
+                drawCell({ p5, x, y, s, w, h, cell, grid, state });
             }
         }
 

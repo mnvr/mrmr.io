@@ -1,8 +1,8 @@
 import { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
 import {
+    CellCoordinate,
     gridSketch,
-    type Cell,
     type CellShader,
     type Grid,
     type GridShader,
@@ -54,9 +54,9 @@ const glyphSize = (glyph: Glyph): GridSize => {
 };
 
 interface State {
-    coloredCells: Set<Cell>;
+    coloredCells: Set<CellCoordinate>;
     safeArea: CellRect;
-    startCell?: Cell;
+    startCell?: CellCoordinate;
 }
 
 interface RenderGlyphsParams {
@@ -69,7 +69,7 @@ interface RenderGlyphsParams {
  * the character patterns that we want to show on the grid.
  */
 const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
-    const coloredCells = new Set<Cell>();
+    const coloredCells = new Set<CellCoordinate>();
 
     // The safe area is the area consisting of grid cells that are fully
     // visible. We can light up these cells knowing for sure that they'll not
