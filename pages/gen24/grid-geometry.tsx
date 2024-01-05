@@ -66,17 +66,12 @@ export const canContainSize = ({
     elementSize.rowCount <= containerSize.rowCount &&
     elementSize.colCount <= containerSize.colCount;
 
-export interface MultiplySizeParams {
-    size: GridSize;
-    scale: number;
-}
-
 /**
- * Multiply the components of `size` by the given `scale` factor.
+ * Multiply the components of `size` by the given scalar `scale` factor.
  *
  * @returns The new, scaled, size (the original is not modified).
  */
-export const multiplySize = ({ size, scale }: MultiplySizeParams): GridSize => {
+export const multiplySize = (size: GridSize, scale: number): GridSize => {
     return { rowCount: size.rowCount * scale, colCount: size.colCount * scale };
 };
 
@@ -98,8 +93,24 @@ export const makeRect = ({ topLeft, size }: MakeRectParams): CellRect => {
     };
 };
 
+/** Return true if the two given sizes are component-wise equal. */
+export const areEqualSizes = (s1: GridSize, s2: GridSize) =>
+    s1.rowCount === s2.rowCount && s1.colCount === s2.colCount;
+
 /**
- * Subtract the second parameter from the first parameter, componentwise.
+ * Add the two sizes component-wise, returning a new size.
+ *
+ * @returns The new size (the original is not modified).
+ */
+export const addSizes = (s1: GridSize, s2: GridSize): GridSize => {
+    return {
+        rowCount: s1.rowCount + s2.rowCount,
+        colCount: s1.colCount + s2.colCount,
+    };
+};
+
+/**
+ * Subtract the second parameter from the first parameter, component-wise.
  *
  * @returns The new size (the original is not modified).
  */
@@ -109,3 +120,11 @@ export const subtractSize = (s1: GridSize, s2: GridSize): GridSize => {
         colCount: s1.colCount - s2.colCount,
     };
 };
+
+/**
+ * Expand size by `n` cells in all directions.
+ *
+ * @returns The new size (the original is not modified).
+ */
+export const expandSize = (s: GridSize, n: number): GridSize =>
+    addSizes(s, { rowCount: n + n, colCount: n + n });

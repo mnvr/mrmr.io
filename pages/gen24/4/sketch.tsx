@@ -12,13 +12,14 @@ import {
     canContainSize,
     cellRectSize,
     containsCell,
+    expandSize,
     makeRect,
     midpointCell,
     multiplySize,
     subtractSize,
     type CellRect,
 } from "../grid-geometry";
-import { isGlyphCoordinateLit, makeGlyph } from "../grid-glyph";
+import { computeMinimumGridSize, isGlyphCoordinateLit, makeGlyph, makeGlyph2 } from "../grid-glyph";
 
 const debug = true;
 
@@ -27,12 +28,12 @@ const debug = true;
  * ------------------
  *
  * Consider the visible part of the grid as an array of pixels. Show a message
- * cycling between two possible two letter words: "Do", and "Be".
+ * cycling between two two-letter words: "DO", and "BE".
  */
-const words = ["Be", "Do"];
+const glyphs = [makeGlyph("B", "E"), makeGlyph("B", "E")];
+const glyph = glyphs[0];
 
-// Parse the glyph we want to show.
-const glyph = makeGlyph("B", "E");
+const minimumGridSize = computeMinimumGridSize(glyphs);
 
 interface State {
     coloredCellIndices: Set<number>;
@@ -101,7 +102,7 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     do {
         size = newSize;
         scale = newScale;
-        newSize = multiplySize({ size: size, scale: 2 });
+        newSize = multiplySize(size, 2);
         newScale *= 2;
     } while (
         canContainSize({ containerSize: safeAreaSize, elementSize: newSize })
@@ -183,7 +184,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 export const sketch = gridSketch<State>({
     drawGrid: drawGrid,
     drawCell: drawCell,
-    minimumGridSize: { colCount: 12 + 2 },
+    minimumGridSize: minimumGridSize,
     noLoop: true,
     showGuides: debug,
 });

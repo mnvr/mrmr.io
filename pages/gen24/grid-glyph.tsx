@@ -1,5 +1,6 @@
 import { ensure } from "utils/ensure";
 import { type CellCoordinate, type GridSize } from "./grid";
+import { areEqualSizes, expandSize } from "./grid-geometry";
 
 /**
  * A {@link Glyph} is a multiline dot-matrix rendition of a character or symbol
@@ -118,6 +119,35 @@ export const makeGlyph = (c1: string, c2: string): Glyph =>
         parseGlyph(ensure(glyphStringForCharacter[c1])),
         parseGlyph(ensure(glyphStringForCharacter[c2])),
     );
+
+/**
+ * Determine the minimum size of the grid needed to show the given glyphs.
+ *
+ * All the glyphs must be of the same size. This function checks that this
+ * precondition holds, and throws an error if any of the glyphs have a different
+ * size from the others.
+ *
+ * Otherwise, it returns a size value suitable to be passed to the
+ * {@link gridSketch} function telling it of the minimum sized grid that is
+ * needed.
+ *
+ * The algorithm is trivial: the size of the biggest glyph (in this case, since
+ * all are equal, any of them will do) determines the minimum grid size that we
+ * need. The actual value is obtained by expanding the glyph size by 1 cell in
+ * each directions to ensure that we don't try to draw outside the safe area.
+ */
+export const computeMinimumGridSize = (glyphs: Glyph[]) => {
+    const glyphSize = ensure(glyphs[0]).size;
+    for (const glyph of glyphs) {
+        if (!areEqualSizes(glyph.size, glyphSize)) {
+            const ss = JSON.stringify([glyph.size, glyphSize]);
+            throw new Error(
+                `Unequal glyph sizes are not supported. The sizes were ${ss}`,
+            );
+        }
+    }
+    return expandSize(glyphSize, 1);
+};
 
 /** Return true if the matrix position at the given glyph coordinate is lit */
 export const isGlyphCoordinateLit = (
