@@ -22,7 +22,7 @@ import {
 } from "../grid-geometry";
 import { isGlyphCoordinateLit, makeGlyph, type Glyph } from "../grid-glyph";
 
-const debug = true;
+const debug = false;
 
 /**
  * Sketch Description
@@ -33,13 +33,13 @@ const debug = true;
  */
 const glyphs = [
     makeGlyph("B", "E"),
-    makeGlyph("B", " "),
-    makeGlyph("_", " "),
-    makeGlyph("D", " "),
+    // makeGlyph("B", " "),
+    // makeGlyph(" ", " "),
+    // makeGlyph("D", " "),
     makeGlyph("D", "O"),
-    makeGlyph("D", " "),
-    makeGlyph("_", " "),
-    makeGlyph("B", " "),
+    // makeGlyph("D", " "),
+    // makeGlyph(" ", " "),
+    // makeGlyph("B", " "),
 ];
 
 /**
@@ -190,10 +190,11 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     };
 };
 
-const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
+const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const newState = state ?? renderGlyphs({ p5, grid });
     p5.clear();
-    p5.fill(env.isDarkMode ? 220 : 0);
+    p5.background("lime");
+    // p5.strokeWeight(0);
     every(p5, { seconds: 2.5 }, () => {
         newState.glyphIndex = nextGlyphIndexInState(newState);
     });
@@ -213,6 +214,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     if (debug) {
         p5.push();
         p5.textFont("monospace");
+        p5.textSize(8);
         p5.textAlign(p5.LEFT, p5.TOP);
         p5.text(`${col} ${row}`, x, y);
 
@@ -235,8 +237,10 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     }
 
     if (glyphsCellIndices[glyphIndex]?.has(index)) {
-        p5.fill(20, 20, 240, 200);
+        p5.fill("rebeccapurple");
+        p5.stroke("forestgreen");
         p5.rect(x, y, s, s);
+        // p5.circle(x + s / 2, y + s / 2, s);
     }
 };
 
