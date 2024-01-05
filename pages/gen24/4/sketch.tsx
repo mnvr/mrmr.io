@@ -18,12 +18,7 @@ import {
     subtractSize,
     type CellRect,
 } from "../grid-geometry";
-import {
-    combineGlyphs,
-    glyphStringB,
-    isGlyphCoordinateLit,
-    parseGlyph,
-} from "../grid-glyph";
+import { isGlyphCoordinateLit, makeGlyph } from "../grid-glyph";
 
 const debug = true;
 
@@ -35,6 +30,9 @@ const debug = true;
  * cycling between two possible two letter words: "Do", and "Be".
  */
 const words = ["Be", "Do"];
+
+// Parse the glyph we want to show.
+const glyph = makeGlyph("B", "E");
 
 interface State {
     coloredCellIndices: Set<number>;
@@ -67,11 +65,6 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
         // -1 to convert from count to index, and another -1 to discount the edge.
         bottomRight: { row: grid.rowCount - 2, col: grid.colCount - 2 },
     };
-
-    // Parse the glyph we want to show.
-    const glyphB = parseGlyph(glyphStringB);
-
-    const glyph = combineGlyphs(glyphB, glyphB);
 
     // If the safe area is too small, just draw a cell at the center to indicate
     // an error.
@@ -152,7 +145,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     return newState;
 };
 
-const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
+const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { row, col, index } = cell;
     const { coloredCellIndices, safeArea, drawRect, startCellIndex } =
         ensure(state);
@@ -190,7 +183,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 export const sketch = gridSketch<State>({
     drawGrid: drawGrid,
     drawCell: drawCell,
-    minimumGridSize: { colCount: 14 },
+    minimumGridSize: { colCount: 12 + 2 },
     noLoop: true,
     showGuides: debug,
 });

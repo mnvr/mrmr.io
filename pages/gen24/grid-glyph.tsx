@@ -19,6 +19,34 @@ export const glyphStringB = `
 .●●●..
 `;
 
+const glyphStringE = `
+.●●●..
+.●....
+.●●●..
+.●....
+.●●●..
+`;
+
+const glyphStringSpace = `
+......
+......
+......
+......
+......
+`;
+
+/**
+ * A mapping of characters to {@link GlyphString}s representing them
+ *
+ * This is far from exhaustive, it only contains mappings for the characters
+ * that we've needed so far.
+ */
+const glyphStringForCharacter: Record<string, GlyphString> = {
+    B: glyphStringB,
+    E: glyphStringE,
+    " ": glyphStringSpace,
+};
+
 /** A parsed representation of a {@link GlyphString} for fast indexing */
 export interface Glyph {
     /**
@@ -77,6 +105,19 @@ export const combineGlyphs = (g1: Glyph, g2: Glyph): Glyph => {
         },
     };
 };
+
+/**
+ * Create and return a new combined glyph that represents the given two
+ * characters.
+ *
+ * It is an error to pass a character which does not yet have an entry in the
+ * `glyphStringForCharacter` table.
+ */
+export const makeGlyph = (c1: string, c2: string): Glyph =>
+    combineGlyphs(
+        parseGlyph(ensure(glyphStringForCharacter[c1])),
+        parseGlyph(ensure(glyphStringForCharacter[c2])),
+    );
 
 /** Return true if the matrix position at the given glyph coordinate is lit */
 export const isGlyphCoordinateLit = (
