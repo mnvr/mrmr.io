@@ -80,6 +80,7 @@ const isGlyphCoordinateLit = ({ lines }: Glyph, { row, col }: CellCoordinate) =>
 interface State {
     coloredCellIndices: Set<number>;
     safeArea: CellRect;
+    drawRect?: CellRect;
     startCellIndex?: number;
 }
 
@@ -155,20 +156,33 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // not count in the safe area.
 
     const remainingSize = subtractSize(safeAreaSize, size);
-    console.log({ safeAreaSize, size, remainingSize, minDisplaySize, scale });
     const offsetCell = {
         row: p5.ceil(remainingSize.rowCount / 2) + 1,
         col: p5.ceil(remainingSize.colCount / 2) + 1,
     };
 
-    const rect = makeRect({ topLeft: offsetCell, size }); /* drawRect */
-    for (let row = rect.topLeft.row; row <= rect.bottomRight.row; row += 1) {
+    const drawRect = makeRect({ topLeft: offsetCell, size });
+    for (
+        let row = drawRect.topLeft.row;
+        row <= drawRect.bottomRight.row;
+        row += 1
+    ) {
         for (
-            let col = rect.topLeft.col;
-            col <= rect.bottomRight.col;
+            let col = drawRect.topLeft.col;
+            col <= drawRect.bottomRight.col;
             col += 1
         ) {
-            coloredCellIndices.add(cellIndex({ row, col }, grid));
+            // Translate the coordinate of the drawing area into a coordinate
+            // suitable for indexing into the glyph.
+            console.assert(
+                scale === 1,
+                "Currently only implemented for scale 1",
+            );
+            const gr = row - drawRect.topLeft.row;
+            const gc = col - drawRect.topLeft.col;
+            if (isGlyphCoordinateLit(glyph, { row: gr, col: gc })) {
+                coloredCellIndices.add(cellIndex({ row, col }, grid));
+            }
         }
     }
 
@@ -176,7 +190,7 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // corresponding glyph position.
 
     const startCellIndex = cellIndex(offsetCell, grid);
-    return { coloredCellIndices, safeArea, startCellIndex };
+    return { coloredCellIndices, safeArea, drawRect, startCellIndex };
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
@@ -188,7 +202,8 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const { row, col, index } = cell;
-    const { coloredCellIndices, safeArea, startCellIndex } = ensure(state);
+    const { coloredCellIndices, safeArea, drawRect, startCellIndex } =
+        ensure(state);
 
     if (debug) {
         p5.push();
@@ -197,12 +212,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
         p5.text(`${col} ${row}`, x, y);
 
         if (containsCell({ rect: safeArea, cell })) {
-            p5.fill(240, 240, 0, 100);
+            p5.fill(240, 240, 0, 80);
             p5.rect(x, y, s, s);
         }
 
-        if (coloredCellIndices.has(index)) {
-            p5.fill(0, 240, 240, 100);
+        if (drawRect && containsCell({ rect: drawRect, cell })) {
+            p5.fill(0, 240, 240, 80);
             p5.rect(x, y, s, s);
         }
 
@@ -211,8 +226,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
             p5.rect(x, y, s, s);
         }
 
-        // if (cell ==)
         p5.pop();
+    }
+
+    if (coloredCellIndices.has(index)) {
+        p5.fill(20, 20, 240, 200);
+        p5.rect(x, y, s, s);
     }
 };
 
