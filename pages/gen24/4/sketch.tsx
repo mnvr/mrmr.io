@@ -3,7 +3,6 @@ import { ensure } from "utils/ensure";
 import {
     cellIndex,
     gridSketch,
-    type CellCoordinate,
     type CellShader,
     type Grid,
     type GridShader,
@@ -19,6 +18,7 @@ import {
     subtractSize,
     type CellRect,
 } from "../grid-geometry";
+import { glyphStringB, isGlyphCoordinateLit, parseGlyph } from "../grid-glyph";
 
 const debug = true;
 
@@ -30,52 +30,6 @@ const debug = true;
  * cycling between two possible two letter words: "Do", and "Be".
  */
 const words = ["Be", "Do"];
-
-/**
- * A {@link Glyph} is a multiline dot-matrix rendition of a character or symbol
- * that we want to display on the grid.
- *
- * Its string representation of it has a line per row, and a character per
- * column. The period / dot ('.') character is blank space, and everything else
- * causes the cell to be filled.
- */
-type GlyphString = string;
-
-const glyphStringB = `
-.●●●..
-.●..●.
-.●●●..
-.●..●.
-.●●●..
-`;
-
-/** A parsed representation of a {@link GlyphString} for fast indexing */
-interface Glyph {
-    /**
-     * The size of the grid (i.e. the number of rows and columns) spanned by the
-     * {@link GlyphString} at its original scale (1).
-     */
-    size: GridSize;
-    /**
-     * The {@link GlyphString} itself, but split into lines for faster indexing.
-     */
-    lines: string[];
-}
-
-const parseGlyph = (glyphString: GlyphString): Glyph => {
-    const lines = glyphString.split("\n").filter((s) => !!s);
-
-    const size = {
-        rowCount: lines.length,
-        colCount: ensure(lines[0]).length,
-    };
-
-    return { lines, size };
-};
-
-/** Return true if the matrix position at the given glyph coordinate is lit */
-const isGlyphCoordinateLit = ({ lines }: Glyph, { row, col }: CellCoordinate) =>
-    lines[row]![col] !== ".";
 
 interface State {
     coloredCellIndices: Set<number>;
