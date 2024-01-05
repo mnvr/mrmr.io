@@ -682,7 +682,6 @@ export function gridSketch<S = DefaultState>(
     const draw = (p5: P5CanvasInstance) => {
         const grid = { ...gridSize };
 
-        console.log("drawing grid", grid);
         state = drawGrid({ p5, env, grid, state });
 
         // Achtung. Changes to this nested loop might also require changes to

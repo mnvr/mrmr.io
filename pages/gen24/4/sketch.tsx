@@ -46,6 +46,8 @@ const glyphSize = (glyph: Glyph): GridSize => {
 
 interface State {
     coloredCells: Set<Cell>;
+    safeArea: CellRect;
+    startCell?: Cell;
 }
 
 /**
@@ -77,7 +79,22 @@ const midpointCell = ({ rowCount, colCount }: GridSize): Cell => {
     };
 };
 
-interface CanContainSizeProps {
+interface ContainsCellParams {
+    rect: CellRect;
+    cell: Cell;
+}
+
+/** Return true if the given {@link rect} contains the given {@link cell} */
+const containsCell = ({
+    rect: { topLeft, bottomRight },
+    cell: { row, col },
+}: ContainsCellParams) =>
+    row >= topLeft.row &&
+    col >= topLeft.col &&
+    row <= bottomRight.row &&
+    col <= bottomRight.col;
+
+interface CanContainSizeParams {
     containerSize: GridSize;
     elementSize: GridSize;
 }
@@ -86,11 +103,11 @@ interface CanContainSizeProps {
  * Return `true` if the {@link containerSize} large enough to contain a grid
  * rect of {@link elementSize}.
  */
-const canContainSize = ({ containerSize, elementSize }: CanContainSizeProps) =>
+const canContainSize = ({ containerSize, elementSize }: CanContainSizeParams) =>
     elementSize.rowCount <= containerSize.rowCount &&
     elementSize.colCount <= containerSize.colCount;
 
-interface MultiplySizeProps {
+interface MultiplySizeParams {
     size: GridSize;
     scale: number;
 }
@@ -100,7 +117,7 @@ interface MultiplySizeProps {
  *
  * @returns The new, scaled, size (the original is not modified).
  */
-const multiplySize = ({ size, scale }: MultiplySizeProps): GridSize => {
+const multiplySize = ({ size, scale }: MultiplySizeParams): GridSize => {
     return { rowCount: size.rowCount * scale, colCount: size.colCount * scale };
 };
 
@@ -116,7 +133,7 @@ const subtractSize = (s1: GridSize, s2: GridSize): GridSize => {
     };
 };
 
-interface DeduceColoredCellsParams {
+interface RenderGlyphsParams {
     p5: P5CanvasInstance;
     grid: Grid;
 }
@@ -125,7 +142,7 @@ interface DeduceColoredCellsParams {
  * Try to figure out which cells in the grid should be lit up so as to render
  * the character patterns that we want to show on the grid.
  */
-const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
+const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     const coloredCells = new Set<Cell>();
 
     // The safe area is the area consisting of grid cells that are fully
@@ -137,7 +154,8 @@ const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
 
     const safeArea: CellRect = {
         topLeft: { row: 1, col: 1 },
-        bottomRight: { row: grid.rowCount - 1, col: grid.colCount - 1 },
+        // -1 to convert from count to index, and another -1 to discount the edge.
+        bottomRight: { row: grid.rowCount - 2, col: grid.colCount - 2 },
     };
 
     // If the safe area is too small, just draw a cell at the center to indicate
@@ -161,7 +179,7 @@ const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
         );
 
         coloredCells.add(midpointCell(grid));
-        return { coloredCells };
+        return { coloredCells, safeArea };
     }
 
     // Try to scale up the glyph the biggest it will go.
@@ -187,24 +205,37 @@ const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
 
     // Starting from this offset, color any cell which is lit up in the
     // corresponding glyph position.
+
+    return { coloredCells, safeArea, startCell: offsetCell };
 };
 
-const drawGrid: GridShader = ({ p5, grid, env }) => {
+const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
+    const newState = state ?? renderGlyphs({ p5, grid });
     p5.clear();
     p5.fill(env.isDarkMode ? 220 : 0);
+    return newState;
 };
 
-const drawCell: CellShader = ({ p5, x, y, cell, grid }) => {
+const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const { row, col } = cell;
+    const { safeArea } = ensure(state);
 
     if (debug) {
+        p5.push();
         p5.textFont("monospace");
         p5.textAlign(p5.LEFT, p5.TOP);
         p5.text(`${col} ${row}`, x, y);
+
+        if (containsCell({ rect: safeArea, cell })) {
+            p5.fill(240, 240, 0, 100);
+            p5.rect(x, y, s, s);
+        }
+        // if (cell ==)
+        p5.pop();
     }
 };
 
-export const sketch = gridSketch({
+export const sketch = gridSketch<State>({
     drawGrid: drawGrid,
     drawCell: drawCell,
     noLoop: true,
