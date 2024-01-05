@@ -137,12 +137,8 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
         ) {
             // Translate the coordinate of the drawing area into a coordinate
             // suitable for indexing into the glyph.
-            console.assert(
-                scale === 1,
-                "Currently only implemented for scale 1",
-            );
-            const gr = row - drawRect.topLeft.row;
-            const gc = col - drawRect.topLeft.col;
+            const gr = Math.floor((row - drawRect.topLeft.row) / scale);
+            const gc = Math.floor((col - drawRect.topLeft.col) / scale);
             if (isGlyphCoordinateLit(glyph, { row: gr, col: gc })) {
                 coloredCellIndices.add(cellIndex({ row, col }, grid));
             }
@@ -201,7 +197,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 export const sketch = gridSketch<State>({
     drawGrid: drawGrid,
     drawCell: drawCell,
-    minimumGridSize: { colCount: 12 },
+    minimumGridSize: { colCount: 14 },
     noLoop: true,
     showGuides: debug,
 });
