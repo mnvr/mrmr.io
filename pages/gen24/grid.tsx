@@ -321,6 +321,17 @@ export interface GridSketchParams<S> {
     noLoop?: boolean;
 
     /**
+     * Set the minimum number of rows and colums that the sketch needs.
+     *
+     * If this minimum size is set, then we ensure that the grid has at least
+     * that many rows and columns.
+     *
+     * If the specified minimum row or column count is zero or undefined then
+     * that dimension is ignored.
+     */
+    minimumGridSize?: Partial<GridSize>;
+
+    /**
      * The aspect ratio of each cell.
      *
      * This is the ratio between width and height of each cell.
@@ -401,6 +412,7 @@ export function gridSketch<S = DefaultState>(
         n: 13,
         staggered: false,
         overdraw: { rowCount: 0, colCount: 0 },
+        minimumGridSize: { rowCount: 0, colCount: 0 },
         noLoop: false,
         cellAspectRatio: 1,
         showGuides: false,
@@ -418,6 +430,7 @@ export function gridSketch<S = DefaultState>(
         staggered,
         overdraw,
         noLoop,
+        minimumGridSize,
         cellAspectRatio,
         showGuides,
     } = paramsOrDefault;
@@ -613,34 +626,67 @@ export function gridSketch<S = DefaultState>(
         }
 
         const maxDimension = p5.max(p5.width, p5.height);
-        const s = p5.ceil(maxDimension / p5.max(nx, ny));
+        let s = p5.ceil(maxDimension / p5.max(nx, ny));
 
-        // Compute cell size
-        cellSize = { w: s * sw, h: s * sh };
+        // Keep doing this, reducing the cell size factor `s`, until we are able
+        // to satisfy the minimum size requested.
+        while (true) {
+            // Compute cell size
+            cellSize = { w: s * sw, h: s * sh };
 
-        // Compute tentative grid size
-        gridSize = { rowCount: cy, colCount: cx + (staggered ? 1 : 0) };
+            // Compute tentative grid size
+            gridSize = { rowCount: cy, colCount: cx + (staggered ? 1 : 0) };
 
-        // Use tentative grid size to compute tentative cell offset
-        let remainingX = p5.width - cellSize.w * gridSize.colCount;
-        let remainingY = p5.height - cellSize.h * gridSize.rowCount;
-        cellOffset = { x: remainingX / 2, y: remainingY / 2 };
+            // Use tentative grid size to compute tentative cell offset
+            let remainingX = p5.width - cellSize.w * gridSize.colCount;
+            let remainingY = p5.height - cellSize.h * gridSize.rowCount;
+            cellOffset = { x: remainingX / 2, y: remainingY / 2 };
 
-        // Compute final grid size by removing fully occluded rows and colums.
-        gridSize = pruneToVisibleCells(p5, gridSize);
+            // Compute final grid size by removing fully occluded rows and
+            // columns.
+            gridSize = pruneToVisibleCells(p5, gridSize);
 
-        // If we were asked to overdraw extra cells, do so in addition to the
-        // visible gridSize that we computed.
-        gridSize = {
-            rowCount: gridSize.rowCount + overdraw.rowCount,
-            colCount: gridSize.colCount + overdraw.colCount,
-        };
+            // If we were asked to overdraw extra cells, do so in addition to
+            // the visible gridSize that we computed.
+            gridSize = {
+                rowCount: gridSize.rowCount + overdraw.rowCount,
+                colCount: gridSize.colCount + overdraw.colCount,
+            };
 
-        // Compute final grid offset
-        remainingX = p5.width - cellSize.w * gridSize.colCount;
-        remainingY = p5.height - cellSize.h * gridSize.rowCount;
-        cellOffset = { x: remainingX / 2, y: remainingY / 2 };
+            // Compute final grid offset
+            remainingX = p5.width - cellSize.w * gridSize.colCount;
+            remainingY = p5.height - cellSize.h * gridSize.rowCount;
+            cellOffset = { x: remainingX / 2, y: remainingY / 2 };
+
+            if (s < 10) {
+                // Something's wrong, things are getting too small, bail out.
+                const ms = JSON.stringify(minimumGridSize)
+                console.error(`Unable to satisfy minimum cell size ${ms}`);
+                break;
+            }
+
+            if (satisifesMinimumGridSize()) break;
+
+            // Reduce the cell size scale factor by half, double the number
+            // of rows and colums, and try again to see if we satisify the
+            // minimum grid size with these updated parameters.
+            s = p5.floor(s / 2);
+            cx *= 2;
+            cy *= 2;
+        }
     };
+
+    /**
+     * Return true if the current {@link gridSize} satisfies
+     * {@link minimumGridSize}.
+     */
+    const satisifesMinimumGridSize = () => {
+        const mr = minimumGridSize.rowCount ?? 0
+        const mc = minimumGridSize.colCount ?? 0
+        if (mr > 0 && gridSize.rowCount < mr) return false;
+        if (mc > 0 && gridSize.colCount < mc) return false;
+        return true;
+    }
 
     /**
      * Compute a new grid size by removing fully occluded rows and columns.

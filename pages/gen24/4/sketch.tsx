@@ -201,6 +201,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 export const sketch = gridSketch<State>({
     drawGrid: drawGrid,
     drawCell: drawCell,
+    minimumGridSize: { colCount: 12 },
     noLoop: true,
     showGuides: debug,
 });
