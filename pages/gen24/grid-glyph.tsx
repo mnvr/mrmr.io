@@ -37,9 +37,9 @@ const glyphStringE = `
 
 const glyphStringO = `
 ..●●..
+.●.●●.
 .●..●.
-.●..●.
-.●..●.
+.●●.●.
 ..●●..
 `;
 
