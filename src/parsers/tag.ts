@@ -1,6 +1,6 @@
 import { graphql } from "gatsby";
 import { ensure } from "utils/ensure";
-import { RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
+import { type RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
 import { parseColor } from "./colors";
 
 /**

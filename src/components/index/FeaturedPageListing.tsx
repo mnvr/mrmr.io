@@ -1,6 +1,6 @@
 import { Link } from "gatsby";
 import { GatsbyImage, getImage, type ImageDataLike } from "gatsby-plugin-image";
-import { ColorPalette } from "parsers/colors";
+import { type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
 

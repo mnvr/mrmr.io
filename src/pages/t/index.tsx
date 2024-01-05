@@ -2,7 +2,7 @@ import { Column } from "components/Column";
 import { DefaultHead } from "components/Head";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
-import { Link, PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
 import { parseTagData, type Tag } from "parsers/tag";
 import * as React from "react";
 import styled from "styled-components";

@@ -1,6 +1,6 @@
 import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
-import { ImageDataLike, getSrc } from "gatsby-plugin-image";
+import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import * as React from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import styled from "styled-components";

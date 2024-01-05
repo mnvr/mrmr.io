@@ -1,5 +1,5 @@
 import { DefaultHead } from "components/Head";
-import { HeadFC, PageProps, graphql, navigate } from "gatsby";
+import { graphql, navigate, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
 import { ensure } from "utils/ensure";
 import { randomItem } from "utils/random";

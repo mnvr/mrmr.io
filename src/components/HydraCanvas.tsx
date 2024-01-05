@@ -4,7 +4,7 @@ import { resizeIfNeeded } from "hydra/resize";
 import Engine from "raf-loop";
 import * as React from "react";
 import styled from "styled-components";
-import { HydraVis } from "types";
+import { type HydraVis } from "types";
 import { ensure } from "utils/ensure";
 
 interface HydraCanvasProps {

@@ -1,4 +1,4 @@
-import { ColorPalette, parseColorPalette } from "parsers/colors";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import { ensure } from "utils/ensure";
 
 /**

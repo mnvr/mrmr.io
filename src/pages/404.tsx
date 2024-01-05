@@ -1,6 +1,6 @@
 import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
-import { HeadFC, Link, PageProps } from "gatsby";
+import { Link, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
 import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";

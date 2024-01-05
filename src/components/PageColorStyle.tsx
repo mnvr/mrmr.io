@@ -1,4 +1,4 @@
-import { ColorPalette } from "parsers/colors";
+import { type ColorPalette } from "parsers/colors";
 import { createGlobalStyle } from "styled-components";
 
 /**

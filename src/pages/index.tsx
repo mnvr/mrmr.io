@@ -5,11 +5,11 @@ import {
 } from "components/PageColorStyle";
 import {
     BodyBackgroundColorTransitionStyle,
-    FeaturedPage,
     FeaturedPageListing,
+    type FeaturedPage,
 } from "components/index/FeaturedPageListing";
 import { ParsedLinkButtons } from "components/index/ParsedLinkButtons";
-import { Link, PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette } from "parsers/colors";
 import { parseLinks } from "parsers/links";

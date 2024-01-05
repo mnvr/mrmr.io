@@ -3,7 +3,7 @@ import PageListingContent, {
     parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
-import { Link, PageProps, graphql, type HeadFC } from "gatsby";
+import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";

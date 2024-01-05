@@ -1,8 +1,4 @@
-import {
-    SketchProps,
-    type P5CanvasInstance,
-    type Sketch,
-} from "@p5-wrapper/react";
+import type { P5CanvasInstance, Sketch, SketchProps } from "@p5-wrapper/react";
 
 type DefaultState = undefined;
 

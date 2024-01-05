@@ -1,7 +1,7 @@
 import {
     ReactP5Wrapper,
-    SketchProps,
     type P5WrapperProps,
+    type SketchProps,
 } from "@p5-wrapper/react";
 import * as React from "react";
 import { CSSTransition } from "react-transition-group";

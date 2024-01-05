@@ -1,14 +1,8 @@
-import { P5CanvasInstance } from "@p5-wrapper/react";
+import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { every } from "p5/every";
 import { ensure } from "utils/ensure";
-import {
-    cellIndex,
-    gridSketch,
-    type CellShader,
-    type Grid,
-    type GridShader,
-    type GridSize,
-} from "../grid";
+import type { CellShader, Grid, GridShader, GridSize } from "../grid";
+import { cellIndex, gridSketch } from "../grid";
 import {
     areEqualSizes,
     canContainSize,

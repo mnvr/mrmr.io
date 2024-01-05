@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ensure } from "utils/ensure";
-import { Sequencer } from "webaudio/audio";
+import { type Sequencer } from "webaudio/audio";
 
 type UseWebAudioPlaybackReturn = {
     /** If playback is currently active */

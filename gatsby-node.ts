@@ -1,7 +1,7 @@
 import type { GatsbyNode } from "gatsby";
 import { createFilePath } from "gatsby-source-filesystem";
 import path from "path";
-import { PageTemplateContext } from "types/gatsby";
+import { type PageTemplateContext } from "types/gatsby";
 
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.

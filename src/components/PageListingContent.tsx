@@ -8,7 +8,7 @@ import { paperDarkTheme } from "themes/themes";
 import { filterDefined } from "utils/array";
 import { isBumped, isHindiContent } from "utils/attributes";
 import { ensure } from "utils/ensure";
-import { RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
+import { type RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
 
 interface PageListingContentProps {
     /** The ordered list of pages to show */

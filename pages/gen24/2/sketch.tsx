@@ -3,13 +3,8 @@ import type * as P5 from "p5";
 import { every } from "p5/every";
 import { ensure } from "utils/ensure";
 import { mod } from "utils/math";
-import {
-    Cell,
-    CellShader,
-    gridSketch,
-    type Grid,
-    type GridShader,
-} from "../grid";
+import type { Cell, CellShader, Grid, GridShader } from "../grid";
+import { gridSketch } from "../grid";
 
 const debug = false;
 

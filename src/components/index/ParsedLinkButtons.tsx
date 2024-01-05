@@ -1,5 +1,5 @@
 import { ExternalLink } from "components/ExternalLink";
-import { ParsedLink } from "parsers/links";
+import { type ParsedLink } from "parsers/links";
 import * as React from "react";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { FiGithub, FiLink } from "react-icons/fi";

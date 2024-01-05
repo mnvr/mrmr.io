@@ -5,7 +5,7 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
 import { ensure, ensureNumber } from "utils/ensure";
 import { randomInt, randomItem } from "utils/random";
-import { ParsedQuotes, parseQuotes } from "./parse";
+import { parseQuotes, type ParsedQuotes } from "./parse";
 import { quotes } from "./quotes";
 
 export const Content: React.FC = () => {
