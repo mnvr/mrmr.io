@@ -46,7 +46,7 @@ const glyphB = `
 
 /** Return the number of rows and columns spanned by the given {@link Glyph}. */
 const glyphSize = (glyph: Glyph): GridSize => {
-    const lines = glyph.split("\n");
+    const lines = glyph.split("\n").filter((s) => !!s);
 
     return {
         rowCount: lines.length,
@@ -112,12 +112,12 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // Try to scale up the glyph the biggest it will go.
 
     let size: GridSize;
-    let size2 = minDisplaySize;
+    let newSize = minDisplaySize;
     do {
-        size = size2;
-        size2 = multiplySize({ size: size, scale: 2 });
+        size = newSize;
+        newSize = multiplySize({ size: size, scale: 2 });
     } while (
-        canContainSize({ containerSize: safeAreaSize, elementSize: size2 })
+        canContainSize({ containerSize: safeAreaSize, elementSize: newSize })
     );
 
     // Distribute the remaining space towards the edges so that the result looks
