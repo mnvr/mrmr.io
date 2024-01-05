@@ -128,8 +128,8 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     const remainingSize = subtractSize(safeAreaSize, size);
     console.log({ safeAreaSize, size, remainingSize, minDisplaySize });
     const offsetCell = {
-        row: p5.floor(remainingSize.rowCount / 2) + 1,
-        col: p5.floor(remainingSize.colCount / 2) + 1,
+        row: p5.ceil(remainingSize.rowCount / 2) + 1,
+        col: p5.ceil(remainingSize.colCount / 2) + 1,
     };
 
     const rect = makeRect({ topLeft: offsetCell, size }); /* drawRect */
