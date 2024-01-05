@@ -1,4 +1,5 @@
 import { P5CanvasInstance } from "@p5-wrapper/react";
+import { every } from "p5/every";
 import { ensure } from "utils/ensure";
 import {
     cellIndex,
@@ -30,8 +31,7 @@ const debug = true;
  * Consider the visible part of the grid as an array of pixels. Show a message
  * cycling between two two-letter words: "DO", and "BE".
  */
-const glyphs = [makeGlyph("B", "E"), makeGlyph("B", "E")];
-const glyph = glyphs[0];
+const glyphs = [makeGlyph("B", "E"), makeGlyph("B", " "), makeGlyph(" ", " ")];
 
 /**
  * Ensure that all the given glyph are of the same size, and return this size.
@@ -74,6 +74,13 @@ interface State {
     drawRect: CellRect;
     startCellIndex: number;
 }
+
+/**
+ * Return the index of the next glyph, cycling back to the first one when we
+ * reach the end of {@link glyphsCellIndices}.
+ */
+const nextGlyphIndexInState = ({ glyphsCellIndices, glyphIndex }: State) =>
+    (glyphIndex + 1) % glyphsCellIndices.length;
 
 interface RenderGlyphsParams {
     p5: P5CanvasInstance;
@@ -178,6 +185,9 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     const newState = state ?? renderGlyphs({ p5, grid });
     p5.clear();
     p5.fill(env.isDarkMode ? 220 : 0);
+    every(p5, { seconds: 2.5 }, () => {
+        newState.glyphIndex = nextGlyphIndexInState(newState);
+    });
     return newState;
 };
 
@@ -225,6 +235,5 @@ export const sketch = gridSketch<State>({
     drawGrid,
     drawCell,
     minimumGridSize,
-    noLoop: true,
     showGuides: debug,
 });
