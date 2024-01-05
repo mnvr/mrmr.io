@@ -82,4 +82,4 @@ export const combineGlyphs = (g1: Glyph, g2: Glyph): Glyph => {
 export const isGlyphCoordinateLit = (
     { lines }: Glyph,
     { row, col }: CellCoordinate,
-) => lines[row]![col] !== ".";
+) => lines[row]![col]! !== ".";

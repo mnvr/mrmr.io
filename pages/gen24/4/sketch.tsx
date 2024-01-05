@@ -125,20 +125,13 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     };
 
     const drawRect = makeRect({ topLeft: offsetCell, size });
-    for (
-        let row = drawRect.topLeft.row;
-        row <= drawRect.bottomRight.row;
-        row += 1
-    ) {
-        for (
-            let col = drawRect.topLeft.col;
-            col <= drawRect.bottomRight.col;
-            col += 1
-        ) {
+    const { topLeft: startCell, bottomRight: endCell } = drawRect;
+    for (let row = startCell.row; row <= endCell.row; row += 1) {
+        for (let col = startCell.col; col <= endCell.col; col += 1) {
             // Translate the coordinate of the drawing area into a coordinate
             // suitable for indexing into the glyph.
-            const gr = Math.floor((row - drawRect.topLeft.row) / scale);
-            const gc = Math.floor((col - drawRect.topLeft.col) / scale);
+            const gr = Math.floor((row - startCell.row) / scale);
+            const gc = Math.floor((col - startCell.col) / scale);
             if (isGlyphCoordinateLit(glyph, { row: gr, col: gc })) {
                 coloredCellIndices.add(cellIndex({ row, col }, grid));
             }
@@ -148,7 +141,7 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // Starting from this offset, color any cell which is lit up in the
     // corresponding glyph position.
 
-    const startCellIndex = cellIndex(offsetCell, grid);
+    const startCellIndex = cellIndex(startCell, grid);
     return { coloredCellIndices, safeArea, drawRect, startCellIndex };
 };
 
