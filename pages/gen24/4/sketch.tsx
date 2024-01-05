@@ -1,7 +1,7 @@
 import { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
 import {
-    CellCoordinate,
+    cellIndex,
     gridSketch,
     type CellShader,
     type Grid,
@@ -30,8 +30,9 @@ const debug = true;
 const words = ["Be", "Do"];
 
 /**
- * A Glyph is a multiline Unicode, dot-matrix, rendition of a character or
- * symbol that we want to display on the grid.
+ * A Glyph is a multiline dot-matrix rendition of a character or symbol that we
+ * want to display on the grid. The period / dot ('.') character is blank space,
+ * and everything else causes the cell to be filled.
  */
 type Glyph = string;
 
@@ -54,9 +55,9 @@ const glyphSize = (glyph: Glyph): GridSize => {
 };
 
 interface State {
-    coloredCells: Set<CellCoordinate>;
+    coloredCellIndices: Set<number>;
     safeArea: CellRect;
-    startCell?: CellCoordinate;
+    startCellIndex?: number;
 }
 
 interface RenderGlyphsParams {
@@ -69,7 +70,7 @@ interface RenderGlyphsParams {
  * the character patterns that we want to show on the grid.
  */
 const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
-    const coloredCells = new Set<CellCoordinate>();
+    const coloredCellIndices = new Set<number>();
 
     // The safe area is the area consisting of grid cells that are fully
     // visible. We can light up these cells knowing for sure that they'll not
@@ -104,8 +105,8 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
             `Safe area ${safeAreaSize} is not enough to contain the rendered display of size ${minDisplaySize}`,
         );
 
-        coloredCells.add(midpointCell(grid));
-        return { coloredCells, safeArea };
+        coloredCellIndices.add(cellIndex(midpointCell(grid), grid));
+        return { coloredCellIndices, safeArea };
     }
 
     // Try to scale up the glyph the biggest it will go.
@@ -132,7 +133,8 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // Starting from this offset, color any cell which is lit up in the
     // corresponding glyph position.
 
-    return { coloredCells, safeArea, startCell: offsetCell };
+    const startCellIndex = cellIndex(offsetCell, grid);
+    return { coloredCellIndices, safeArea, startCellIndex };
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
@@ -143,8 +145,8 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
-    const { row, col } = cell;
-    const { safeArea } = ensure(state);
+    const { row, col, index } = cell;
+    const { safeArea, startCellIndex } = ensure(state);
 
     if (debug) {
         p5.push();
@@ -156,6 +158,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
             p5.fill(240, 240, 0, 100);
             p5.rect(x, y, s, s);
         }
+
+        if (index == startCellIndex) {
+            p5.fill("pink");
+            p5.rect(x, y, s, s);
+        }
+
         // if (cell ==)
         p5.pop();
     }

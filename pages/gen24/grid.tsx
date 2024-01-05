@@ -166,6 +166,17 @@ export interface GridSize {
 export type Grid = GridSize;
 
 /**
+ * Compute the unique index for the given cell coordinate in the given grid.
+ *
+ * The returned index will be the same index that will be passed to
+ * {@link drawCell} when drawing the corresponding cell.
+ */
+export const cellIndex = (
+    { row, col }: CellCoordinate,
+    { colCount }: GridSize,
+): number => colCount * col + row;
+
+/**
  * A function that is called once (per frame) for doing any background drawing
  * or clearing before we start drawing each cell.
  *
@@ -679,6 +690,7 @@ export function gridSketch<S = DefaultState>(
     };
 
     const withIndex = ({ row, col }: CellCoordinate): Cell => {
+        // Inline the calculation that we do in `cellIndex` above.
         return { index: gridSize.colCount * col + row, row, col };
     };
 
