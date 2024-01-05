@@ -125,10 +125,17 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // not count in the safe area.
 
     const remainingSize = subtractSize(safeAreaSize, size);
+    console.log({ safeAreaSize, size, remainingSize, minDisplaySize });
     const offsetCell = {
         row: p5.floor(remainingSize.rowCount / 2) + 1,
         col: p5.floor(remainingSize.colCount / 2) + 1,
     };
+
+    for (let row = offsetCell.row; row < size.rowCount; row += 1) {
+        for (let col = offsetCell.col; col < size.colCount; col += 1) {
+            coloredCellIndices.add(cellIndex({ row, col }, grid));
+        }
+    }
 
     // Starting from this offset, color any cell which is lit up in the
     // corresponding glyph position.
@@ -146,7 +153,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const { row, col, index } = cell;
-    const { safeArea, startCellIndex } = ensure(state);
+    const { coloredCellIndices, safeArea, startCellIndex } = ensure(state);
 
     if (debug) {
         p5.push();
@@ -156,6 +163,11 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 
         if (containsCell({ rect: safeArea, cell })) {
             p5.fill(240, 240, 0, 100);
+            p5.rect(x, y, s, s);
+        }
+
+        if (coloredCellIndices.has(index)) {
+            p5.fill(0, 240, 240, 100);
             p5.rect(x, y, s, s);
         }
 
