@@ -90,6 +90,32 @@ const canContainSize = ({ containerSize, elementSize }: CanContainSizeProps) =>
     elementSize.rowCount <= containerSize.rowCount &&
     elementSize.colCount <= containerSize.colCount;
 
+interface MultiplySizeProps {
+    size: GridSize;
+    scale: number;
+}
+
+/**
+ * Multiply the components of `size` by the given `scale` factor.
+ *
+ * @returns The new, scaled, size (the original is not modified).
+ */
+const multiplySize = ({ size, scale }: MultiplySizeProps): GridSize => {
+    return { rowCount: size.rowCount * scale, colCount: size.colCount * scale };
+};
+
+/**
+ * Subtract the second parameter from the first parameter, componentwise.
+ *
+ * @returns The new size (the original is not modified).
+ */
+const subtractSize = (s1: GridSize, s2: GridSize): GridSize => {
+    return {
+        rowCount: s1.rowCount - s2.rowCount,
+        colCount: s1.colCount - s2.colCount,
+    };
+};
+
 interface DeduceColoredCellsParams {
     p5: P5CanvasInstance;
     grid: Grid;
@@ -124,7 +150,7 @@ const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
     const minDisplaySize = glyphSize(glyphB);
     const safeAreaSize = cellRectSize(safeArea);
 
-    const isEnough = canContainSize({
+    let isEnough = canContainSize({
         containerSize: safeAreaSize,
         elementSize: minDisplaySize,
     });
@@ -137,6 +163,30 @@ const deduceColoredCells = ({ p5, grid }: DeduceColoredCellsParams) => {
         coloredCells.add(midpointCell(grid));
         return { coloredCells };
     }
+
+    // Try to scale up the glyph the biggest it will go.
+
+    let size: GridSize;
+    let size2 = minDisplaySize;
+    do {
+        size = size2;
+        size2 = multiplySize({ size: size, scale: 2 });
+    } while (
+        canContainSize({ containerSize: safeAreaSize, elementSize: size2 })
+    );
+
+    // Distribute the remaining space towards the edges so that the result looks
+    // centered. Add a +1 to account for the borders (edge cells) that we did
+    // not count in the safe area.
+
+    const remainingSize = subtractSize(safeAreaSize, size);
+    const offsetCell = {
+        row: p5.floor(remainingSize.rowCount / 2) + 1,
+        col: p5.floor(remainingSize.colCount / 2) + 1,
+    };
+
+    // Starting from this offset, color any cell which is lit up in the
+    // corresponding glyph position.
 };
 
 const drawGrid: GridShader = ({ p5, grid, env }) => {
