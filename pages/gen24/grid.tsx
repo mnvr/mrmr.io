@@ -174,7 +174,7 @@ export type Grid = GridSize;
 export const cellIndex = (
     { row, col }: CellCoordinate,
     { colCount }: GridSize,
-): number => colCount * col + row;
+): number => colCount * row + col;
 
 /**
  * A function that is called once (per frame) for doing any background drawing
@@ -660,7 +660,7 @@ export function gridSketch<S = DefaultState>(
 
             if (s < 10) {
                 // Something's wrong, things are getting too small, bail out.
-                const ms = JSON.stringify(minimumGridSize)
+                const ms = JSON.stringify(minimumGridSize);
                 console.error(`Unable to satisfy minimum cell size ${ms}`);
                 break;
             }
@@ -681,12 +681,12 @@ export function gridSketch<S = DefaultState>(
      * {@link minimumGridSize}.
      */
     const satisifesMinimumGridSize = () => {
-        const mr = minimumGridSize.rowCount ?? 0
-        const mc = minimumGridSize.colCount ?? 0
+        const mr = minimumGridSize.rowCount ?? 0;
+        const mc = minimumGridSize.colCount ?? 0;
         if (mr > 0 && gridSize.rowCount < mr) return false;
         if (mc > 0 && gridSize.colCount < mc) return false;
         return true;
-    }
+    };
 
     /**
      * Compute a new grid size by removing fully occluded rows and columns.
@@ -737,7 +737,7 @@ export function gridSketch<S = DefaultState>(
 
     const withIndex = ({ row, col }: CellCoordinate): Cell => {
         // Inline the calculation that we do in `cellIndex` above.
-        return { index: gridSize.colCount * col + row, row, col };
+        return { index: gridSize.colCount * row + col, row, col };
     };
 
     const drawGuides = (p5: P5CanvasInstance) => {
