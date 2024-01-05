@@ -18,7 +18,12 @@ import {
     subtractSize,
     type CellRect,
 } from "../grid-geometry";
-import { glyphStringB, isGlyphCoordinateLit, parseGlyph } from "../grid-glyph";
+import {
+    combineGlyphs,
+    glyphStringB,
+    isGlyphCoordinateLit,
+    parseGlyph,
+} from "../grid-glyph";
 
 const debug = true;
 
@@ -65,6 +70,9 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
 
     // Parse the glyph we want to show.
     const glyph = parseGlyph(glyphStringB);
+
+    const gTest = combineGlyphs(glyph, glyph);
+    console.log(gTest);
 
     // If the safe area is too small, just draw a cell at the center to indicate
     // an error.
