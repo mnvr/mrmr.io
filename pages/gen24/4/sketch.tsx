@@ -194,8 +194,6 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const newState = state ?? renderGlyphs({ p5, grid });
     p5.clear();
     p5.background("lime");
-    p5.background("black");
-    // p5.strokeWeight(0);
     every(p5, { seconds: 2.5 }, () => {
         newState.glyphIndex = nextGlyphIndexInState(newState);
     });
@@ -239,18 +237,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
 
     p5.push();
-        p5.fill(30);
+        p5.fill("palegreen");
         p5.strokeWeight(0);//("forestgreen");
-        p5.circle(x + s / 2, y + s / 2, 10);
+        p5.circle(x + s / 2, y + s / 2, 3);
         p5.pop();
 
 
     if (glyphsCellIndices[glyphIndex]?.has(index)) {
-        p5.fill("rebeccapurple");
-        p5.stroke("forestgreen");
-        p5.fill("lime");
-        p5.stroke("crimson");
-        p5.fill("red");
+        p5.fill("black");
+        // p5.strokeWeight(2);
+        // p5.stroke("lime");
         p5.rect(x, y, s, s);
         // p5.circle(x + s / 2, y + s / 2, s);
     }
