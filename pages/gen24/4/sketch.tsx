@@ -3,6 +3,7 @@ import { ensure } from "utils/ensure";
 import {
     cellIndex,
     gridSketch,
+    type CellCoordinate,
     type CellShader,
     type Grid,
     type GridShader,
@@ -31,13 +32,16 @@ const debug = true;
 const words = ["Be", "Do"];
 
 /**
- * A Glyph is a multiline dot-matrix rendition of a character or symbol that we
- * want to display on the grid. The period / dot ('.') character is blank space,
- * and everything else causes the cell to be filled.
+ * A {@link Glyph} is a multiline dot-matrix rendition of a character or symbol
+ * that we want to display on the grid.
+ *
+ * Its string representation of it has a line per row, and a character per
+ * column. The period / dot ('.') character is blank space, and everything else
+ * causes the cell to be filled.
  */
-type Glyph = string;
+type GlyphString = string;
 
-const glyphB = `
+const glyphStringB = `
 .●●●..
 .●..●.
 .●●●..
@@ -45,15 +49,33 @@ const glyphB = `
 .●●●..
 `;
 
-/** Return the number of rows and columns spanned by the given {@link Glyph}. */
-const glyphSize = (glyph: Glyph): GridSize => {
-    const lines = glyph.split("\n").filter((s) => !!s);
+/** A parsed representation of a {@link GlyphString} for fast indexing */
+interface Glyph {
+    /**
+     * The size of the grid (i.e. the number of rows and columns) spanned by the
+     * {@link GlyphString} at its original scale (1).
+     */
+    size: GridSize;
+    /**
+     * The {@link GlyphString} itself, but split into lines for faster indexing.
+     */
+    lines: string[];
+}
 
-    return {
+const parseGlyph = (glyphString: GlyphString): Glyph => {
+    const lines = glyphString.split("\n").filter((s) => !!s);
+
+    const size = {
         rowCount: lines.length,
         colCount: ensure(lines[0]).length,
     };
+
+    return { lines, size };
 };
+
+/** Return true if the matrix position at the given glyph coordinate is lit */
+const isGlyphCoordinateLit = ({ lines }: Glyph, { row, col }: CellCoordinate) =>
+    lines[row]![col] !== ".";
 
 interface State {
     coloredCellIndices: Set<number>;
@@ -86,6 +108,9 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
         bottomRight: { row: grid.rowCount - 2, col: grid.colCount - 2 },
     };
 
+    // Parse the glyph we want to show.
+    const glyph = parseGlyph(glyphStringB);
+
     // If the safe area is too small, just draw a cell at the center to indicate
     // an error.
     //
@@ -93,7 +118,7 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // cells in the grid such that we always have enough space even in small
     // sized grids. So also log an error to the console.
 
-    const minDisplaySize = glyphSize(glyphB);
+    const minDisplaySize = glyph.size;
     const safeAreaSize = cellRectSize(safeArea);
 
     let isEnough = canContainSize({
@@ -113,10 +138,14 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // Try to scale up the glyph the biggest it will go.
 
     let size: GridSize;
+    let scale = 1;
     let newSize = minDisplaySize;
+    let newScale = 1;
     do {
         size = newSize;
+        scale = newScale;
         newSize = multiplySize({ size: size, scale: 2 });
+        newScale *= 2;
     } while (
         canContainSize({ containerSize: safeAreaSize, elementSize: newSize })
     );
@@ -126,7 +155,7 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     // not count in the safe area.
 
     const remainingSize = subtractSize(safeAreaSize, size);
-    console.log({ safeAreaSize, size, remainingSize, minDisplaySize });
+    console.log({ safeAreaSize, size, remainingSize, minDisplaySize, scale });
     const offsetCell = {
         row: p5.ceil(remainingSize.rowCount / 2) + 1,
         col: p5.ceil(remainingSize.colCount / 2) + 1,
@@ -134,7 +163,11 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
 
     const rect = makeRect({ topLeft: offsetCell, size }); /* drawRect */
     for (let row = rect.topLeft.row; row <= rect.bottomRight.row; row += 1) {
-        for (let col = rect.topLeft.col; col <= rect.bottomRight.col; col += 1) {
+        for (
+            let col = rect.topLeft.col;
+            col <= rect.bottomRight.col;
+            col += 1
+        ) {
             coloredCellIndices.add(cellIndex({ row, col }, grid));
         }
     }
