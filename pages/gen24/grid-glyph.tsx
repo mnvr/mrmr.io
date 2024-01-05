@@ -54,13 +54,28 @@ export const parseGlyph = (glyphString: GlyphString): Glyph => {
  * glyphs.
  */
 export const combineGlyphs = (g1: Glyph, g2: Glyph): Glyph => {
-    if (g1.size.rowCount === g2.size.rowCount) {
+    const rowCount = g1.size.rowCount;
+    if (rowCount !== g2.size.rowCount) {
         const gs = JSON.stringify([g1, g2]);
         throw new Error(
             `Attempting to combine two glyphs that do not have the same height. The glyphs were ${gs}`,
         );
     }
-    return g1;
+
+    const lines: string[] = [];
+    for (let row = 0; row < rowCount; row += 1) {
+        const l1 = ensure(g1.lines[row]);
+        const l2 = ensure(g2.lines[row]);
+        lines.push(l1 + l2);
+    }
+
+    return {
+        lines,
+        size: {
+            rowCount,
+            colCount: ensure(lines[0]).length,
+        },
+    };
 };
 
 /** Return true if the matrix position at the given glyph coordinate is lit */

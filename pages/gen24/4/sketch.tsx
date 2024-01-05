@@ -69,10 +69,9 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
     };
 
     // Parse the glyph we want to show.
-    const glyph = parseGlyph(glyphStringB);
+    const glyphB = parseGlyph(glyphStringB);
 
-    const gTest = combineGlyphs(glyph, glyph);
-    console.log(gTest);
+    const glyph = combineGlyphs(glyphB, glyphB);
 
     // If the safe area is too small, just draw a cell at the center to indicate
     // an error.
