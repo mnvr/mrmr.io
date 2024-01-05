@@ -12,6 +12,7 @@ import {
     canContainSize,
     cellRectSize,
     containsCell,
+    makeRect,
     midpointCell,
     multiplySize,
     subtractSize,
@@ -131,8 +132,9 @@ const renderGlyphs = ({ p5, grid }: RenderGlyphsParams): State => {
         col: p5.floor(remainingSize.colCount / 2) + 1,
     };
 
-    for (let row = offsetCell.row; row < size.rowCount; row += 1) {
-        for (let col = offsetCell.col; col < size.colCount; col += 1) {
+    const rect = makeRect({ topLeft: offsetCell, size }); /* drawRect */
+    for (let row = rect.topLeft.row; row <= rect.bottomRight.row; row += 1) {
+        for (let col = rect.topLeft.col; col <= rect.bottomRight.col; col += 1) {
             coloredCellIndices.add(cellIndex({ row, col }, grid));
         }
     }

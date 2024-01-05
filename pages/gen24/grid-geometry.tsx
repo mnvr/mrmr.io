@@ -16,8 +16,8 @@ export interface CellRect {
  */
 export const cellRectSize = ({ topLeft, bottomRight }: CellRect): GridSize => {
     return {
-        rowCount: bottomRight.row - topLeft.row,
-        colCount: bottomRight.col - topLeft.col,
+        rowCount: bottomRight.row - topLeft.row + 1,
+        colCount: bottomRight.col - topLeft.col + 1,
     };
 };
 
@@ -78,6 +78,24 @@ export interface MultiplySizeParams {
  */
 export const multiplySize = ({ size, scale }: MultiplySizeParams): GridSize => {
     return { rowCount: size.rowCount * scale, colCount: size.colCount * scale };
+};
+
+interface MakeRectParams {
+    topLeft: CellCoordinate;
+    size: GridSize;
+}
+/**
+ * Create a new {@link CellRect} starting from {@link topLeft} and spanning the
+ * given {@link size} {@link GridSize}.
+ */
+export const makeRect = ({ topLeft, size }: MakeRectParams): CellRect => {
+    return {
+        topLeft: topLeft,
+        bottomRight: {
+            row: topLeft.row + size.rowCount - 1,
+            col: topLeft.col + size.colCount - 1,
+        },
+    };
 };
 
 /**
