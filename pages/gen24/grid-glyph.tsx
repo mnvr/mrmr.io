@@ -19,12 +19,28 @@ export const glyphStringB = `
 .●●●..
 `;
 
+export const glyphStringD = `
+.●●●..
+.●..●.
+.●..●.
+.●..●.
+.●●●..
+`;
+
 const glyphStringE = `
 .●●●..
 .●....
 .●●●..
 .●....
 .●●●..
+`;
+
+const glyphStringO = `
+..●●..
+.●..●.
+.●..●.
+.●..●.
+..●●..
 `;
 
 const glyphStringSpace = `
@@ -35,6 +51,14 @@ const glyphStringSpace = `
 ......
 `;
 
+const glyphStringUnderscore = `
+......
+......
+......
+......
+.●●●●.
+`;
+
 /**
  * A mapping of characters to {@link GlyphString}s representing them
  *
@@ -43,8 +67,11 @@ const glyphStringSpace = `
  */
 const glyphStringForCharacter: Record<string, GlyphString> = {
     B: glyphStringB,
+    D: glyphStringD,
     E: glyphStringE,
+    O: glyphStringO,
     " ": glyphStringSpace,
+    _: glyphStringUnderscore,
 };
 
 /** A parsed representation of a {@link GlyphString} for fast indexing */

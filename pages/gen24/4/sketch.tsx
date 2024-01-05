@@ -31,7 +31,16 @@ const debug = true;
  * Consider the visible part of the grid as an array of pixels. Show a message
  * cycling between two two-letter words: "DO", and "BE".
  */
-const glyphs = [makeGlyph("B", "E"), makeGlyph("B", " "), makeGlyph(" ", " ")];
+const glyphs = [
+    makeGlyph("B", "E"),
+    makeGlyph("B", " "),
+    makeGlyph("_", " "),
+    makeGlyph("D", " "),
+    makeGlyph("D", "O"),
+    makeGlyph("D", " "),
+    makeGlyph("_", " "),
+    makeGlyph("B", " "),
+];
 
 /**
  * Ensure that all the given glyph are of the same size, and return this size.
