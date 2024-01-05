@@ -31,16 +31,7 @@ const debug = false;
  * Consider the visible part of the grid as an array of pixels. Show a message
  * cycling between two two-letter words: "DO", and "BE".
  */
-const glyphs = [
-    makeGlyph("B", "E"),
-    // makeGlyph("B", " "),
-    // makeGlyph(" ", " "),
-    // makeGlyph("D", " "),
-    makeGlyph("D", "O"),
-    // makeGlyph("D", " "),
-    // makeGlyph(" ", " "),
-    // makeGlyph("B", " "),
-];
+const glyphs = [makeGlyph("B", "E"), makeGlyph("D", "O")];
 
 /**
  * Ensure that all the given glyph are of the same size, and return this size.
@@ -194,6 +185,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const newState = state ?? renderGlyphs({ p5, grid });
     p5.clear();
     p5.background("lime");
+    p5.strokeWeight(0);
     every(p5, { seconds: 2.5 }, () => {
         newState.glyphIndex = nextGlyphIndexInState(newState);
     });
@@ -212,18 +204,20 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
     if (debug) {
         p5.push();
+
+        p5.fill("darkgreen");
         p5.textFont("monospace");
         p5.textSize(8);
         p5.textAlign(p5.LEFT, p5.TOP);
         p5.text(`${col} ${row}`, x, y);
 
         if (containsCell({ rect: safeArea, cell })) {
-            p5.fill(240, 240, 0, 80);
+            p5.fill(240, 240, 0, 180);
             p5.rect(x, y, s, s);
         }
 
         if (drawRect && containsCell({ rect: drawRect, cell })) {
-            p5.fill(0, 240, 240, 80);
+            p5.fill(0, 240, 240, 180);
             p5.rect(x, y, s, s);
         }
 
@@ -235,20 +229,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
         p5.pop();
     }
 
-
-    p5.push();
-        p5.fill("palegreen");
-        p5.strokeWeight(0);//("forestgreen");
-        p5.circle(x + s / 2, y + s / 2, 3);
-        p5.pop();
-
+    p5.fill("palegreen");
+    p5.circle(x + s / 2, y + s / 2, 3);
 
     if (glyphsCellIndices[glyphIndex]?.has(index)) {
         p5.fill("black");
-        // p5.strokeWeight(2);
-        // p5.stroke("lime");
         p5.rect(x, y, s, s);
-        // p5.circle(x + s / 2, y + s / 2, s);
     }
 };
 
