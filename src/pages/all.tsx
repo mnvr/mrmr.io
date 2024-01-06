@@ -11,7 +11,7 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 /** A listing of posts in the "/all" feed */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
-    const extraLink = <Link to={"/notes"}>Notes</Link>;
+    const extraLink = <Link to={"/t"}>Tags</Link>;
 
     return (
         <PageListingContent {...{ pages, extraLink }}>

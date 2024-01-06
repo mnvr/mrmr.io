@@ -110,6 +110,9 @@ export const Footer: React.FC = () => {
                 <Link to={"/poems"}>Poems</Link>
             </div>
             <div>
+                <Link to={"/notes"}>Notes</Link>
+            </div>
+            <div>
                 <Link to={"/"}>Home</Link>
             </div>
         </Footer_>
