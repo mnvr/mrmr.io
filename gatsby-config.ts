@@ -120,13 +120,8 @@ const config: GatsbyConfig = {
                                 }
                             }
                         `,
-                        serialize: (so) => {
-                            console.log("yyy");
-                            console.log(so);
-                            const { query: { site, allMdx } } = so;
-
-                            return rssItemOptions(site, allMdx.nodes);
-                        },
+                        serialize: ({ query }: { query: unknown }) =>
+                            serializeFeedQuery(query),
                     },
                 ],
             },
@@ -137,14 +132,21 @@ const config: GatsbyConfig = {
 /**
  * Construct RSS itemOptions [1] from the site metadata and the
  * {@link PageListingPageData} fragments produced by the "AllPageFeed" GraphQL
- * query. It is called by "gatsby-plugin-feed" when it is constructing the RSS
- * feed for our site.
+ * query.
+ *
+ * We pass this as the serialize argument to the "gatsby-plugin-feed". The
+ * plugin will call it when it is constructing the RSS feed for our site, and
+ * it'll pass it an query object with the following shape
+ *
+ *     query: { site: { siteMetadata: [Object] }, allMdx: { nodes: [Array] } }
+ *
+ * Unfortunately, I haven't found a way to get the GraphQL TypeScript typegen to
+ * work in this context, so this code does a bit of manual parsing.
  *
  * [1]: https://www.npmjs.com/package/rss#itemoptions
  */
-export const rssItemOptions = (
-    site: Queries.Site,
-    nodes_: Queries.PageListingPageDataFragment[],
+export const serializeFeedQuery = (
+    query: unknown,
 ): Record<string, string>[] => {
     const nodes = replaceNullsWithUndefineds(nodes_);
 
