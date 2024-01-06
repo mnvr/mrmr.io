@@ -76,4 +76,5 @@ export const quotes: string[] = [
     "Never approach stories one at a time. If one writes a story at time, one can end up writing the same story until one dies. It is best to write them three, or five at a time. More if you have the energy. Don't write two at a time either: their interplay, like lovers' mirrors,  produces melancholy.",
     "Sphinx of black quartz, judge my vow",
     "If one says 'red' and there are 50 people listening, one can be sure that there will arise 50 different reds in the 50 different minds",
+    "Maybe they have to be crazy. How else can you stare at an empty canvas and see a work of art?",
 ];
