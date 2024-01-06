@@ -358,18 +358,18 @@ export interface GridSketchParams<S> {
  * the entire cell and fills it with a shade of gray. This square also has the
  * default p5 stroke.
  */
-function defaultCellShader<S>({ p5, x, y, s }: CellShaderParams<S>) {
+const defaultCellShader = <S>({ p5, x, y, s }: CellShaderParams<S>) => {
     p5.fill(160);
     p5.rect(x, y, s, s);
-}
+};
 
 /**
  * A default implementation for {@link drawGrid} that clears the canvas.
  */
-function defaultGridShader<S = DefaultState>({ p5 }: GridShaderParams<S>) {
+const defaultGridShader = <S>({ p5 }: GridShaderParams<S>) => {
     p5.clear();
     return undefined;
-}
+};
 
 /**
  * Properties (browser state etc) passed to the Sketch by the the React
