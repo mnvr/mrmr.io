@@ -40,7 +40,7 @@ export const quotes: string[] = [
     `Much of what people do is for regulating or soothing their feelings. I think this comes first, you know when you're not regulated and calmed down, not much else matters really. You need to get there before you can do just about anything. Well, you could still perform in a "dysregulated" condition, it's just a lot harder behaving sensibly when you are upset. Rule #1 - DON'T PANIC`,
     "To exist is to be consistent with oneself",
     "Fantastic Beasts and Where to Find Them",
-    `What has been central to my work is the fact that the work itself is the experiment, rather than what seems to me to be a more common practice of exploring/experimenting before the work, with the composition appearing as a statement or answer or at least provisional conclusion.`,
+    `My work itself is the experiment, rather than the more common practice of exploring/experimenting before the work, with the composition appearing as a statement or answer, or at least provisional conclusion.`,
     "A throw of the dice will never abolish chance",
     `"He was unwilling to commit," Taravangian said. "He wasn't seeking justice, but to assuage his own conscience."`,
     `Concretization is an attempt to reduce uncertainity, which we abhor. But when we concretize something, we close it off to life, and it ceases to unfold in ways that are alive.`,
