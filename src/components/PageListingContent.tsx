@@ -1,4 +1,4 @@
-import { Column } from "components/Column";
+import { WideColumn } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
 import { Link, graphql } from "gatsby";
@@ -43,13 +43,13 @@ const PageListingContent: React.FC<
     return (
         <main>
             <PageColorStyle {...paperDarkTheme} />
-            <Column>
+            <WideColumn>
                 <Title>{children}</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
                     <Footer>{extraLink}</Footer>
                 </LinkStyleUnderlined>
-            </Column>
+            </WideColumn>
         </main>
     );
 };
@@ -138,6 +138,10 @@ const PageListing_ = styled.ul`
         border-bottom-width: 2px;
         font-weight: 600;
     }
+
+    li {
+        margin-block-end: 0.25rem;
+    }
 `;
 
 const SectionHeader = styled.h4`
@@ -156,8 +160,10 @@ const PageItem: React.FC<PageListingPage> = (page) => {
     return (
         <li>
             <Link to={slug}>{title}</Link>
-            {". "}
-            <Description>{description}</Description>
+            <Description>
+                {" – "}
+                {description}
+            </Description>
         </li>
     );
 };
@@ -172,22 +178,16 @@ const HindiPageItem: React.FC<PageListingPage> = (page) => {
     // macOS at least.
     const lineHeight = "1.6rem";
 
-    // Also override the font size 1.05rem in the `Description` element.
-    const fontSize = "1rem";
-
     return (
         <li style={{ lineHeight }}>
             <Link to={slug}>{title}</Link>
             {"। "}
-            <Description style={{ fontSize }}>{description}</Description>
+            <Description>{description}</Description>
         </li>
     );
 };
 
 const Description = styled.span`
-    font-family: serif;
-    font-style: italic;
-    font-size: 1.05rem;
     color: var(--mrmr-color-3);
 `;
 
