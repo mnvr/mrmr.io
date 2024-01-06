@@ -1,4 +1,7 @@
+# yarn
 node_modules/
+
+# macOS
 .DS_Store
 
 # Gatsby
