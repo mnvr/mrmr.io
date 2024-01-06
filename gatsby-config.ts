@@ -97,7 +97,12 @@ const config: GatsbyConfig = {
                     {
                         output: "/rss.xml",
                         title: "All posts on mrmr.io",
-                        // Same query as the AllPage query used by /all
+                        // Same query as the AllPage query used by /all, except
+                        // the date format string is empty to get moment.js to
+                        // emit RFC 2822 dates.
+                        //
+                        // The RSS spec requires a RFC 822 date. RFC 2822
+                        // supercedes RFC 822.
                         query: `
                             query AllPageFeed {
                                 allMdx(
@@ -111,7 +116,7 @@ const config: GatsbyConfig = {
                                         frontmatter {
                                             title
                                             description
-                                            formattedDateMY: date(formatString: "MMM YYYY")
+                                            date(formatString: "")
                                             attributes
                                         }
                                         fields {
@@ -186,8 +191,8 @@ export const serializeFeedQuery = (
                 ? frontmatter.description
                 : undefined;
 
-        assert("formattedDateMY" in frontmatter);
-        const formattedDateMY = E.ensureString(frontmatter.formattedDateMY);
+        assert("date" in frontmatter);
+        const date = E.ensureString(frontmatter.date);
 
         assert("fields" in node);
         const fields = E.ensureObject(node.fields);
@@ -197,12 +202,7 @@ export const serializeFeedQuery = (
 
         const url = `${siteURL}${slug}`;
 
-        return {
-            title,
-            description,
-            url,
-            date: formattedDateMY,
-        };
+        return { title, description, url, date };
     });
 };
 
