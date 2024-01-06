@@ -157,10 +157,12 @@ const PageItem: React.FC<PageListingPage> = (page) => {
     return (
         <PageItemLI>
             <Link to={slug}>{title}</Link>
-            <Description>
-                {" – "}
-                {description}
-            </Description>
+            {description && (
+                <Description>
+                    {" – "}
+                    {description}
+                </Description>
+            )}
         </PageItemLI>
     );
 };
