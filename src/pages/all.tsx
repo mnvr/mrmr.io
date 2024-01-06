@@ -12,9 +12,10 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
     const extraLink = <Link to={"/t"}>Tags</Link>;
+    const showRSSLink = true;
 
     return (
-        <PageListingContent {...{ pages, extraLink }}>
+        <PageListingContent {...{ pages, extraLink, showRSSLink }}>
             <Title_>all posts</Title_>
         </PageListingContent>
     );
