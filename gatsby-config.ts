@@ -3,6 +3,8 @@ import type { GatsbyConfig } from "gatsby";
 // These need to be a relative paths (similar to how we need to use relative
 // paths in `gatsby-node.ts`).
 import { replaceNullsWithUndefineds } from "./src/utils/replace-nulls";
+import * as E from "utils/ensure";
+import { assert } from "utils/assert";
 
 const config: GatsbyConfig = {
     siteMetadata: {
@@ -146,8 +148,12 @@ const config: GatsbyConfig = {
  * [1]: https://www.npmjs.com/package/rss#itemoptions
  */
 export const serializeFeedQuery = (
-    query: unknown,
+    query_: unknown,
 ): Record<string, string>[] => {
+    const query = E.ensureObject(query_);
+    assert("site" in query);
+    
+    const s = query["site"];
     const nodes = replaceNullsWithUndefineds(nodes_);
 
     return nodes.map((node) => {
