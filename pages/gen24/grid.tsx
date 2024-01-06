@@ -60,6 +60,37 @@ export type Cell = CellCoordinate & {
 };
 
 /**
+ * A 2-tuple representing the number of rows and columns.
+ *
+ * The main purpose of this is to represent the actual grid size (see the
+ * {@link Grid} type below), but this is also kept around as an independent type
+ * declaration for other places where we need to represent just the 2 values - a
+ * row and a column count (e.g. in the {@link overdraw} property of
+ * {@link GridSketchParams}).
+ */
+export interface GridSize {
+    /**
+     * The number of rows in the grid (vertical indexes).
+     *
+     * Note that at cells at the edges will only be partially visible.
+     */
+    rowCount: number;
+    /**
+     * The number of columns in the grid (horizontal indexes).
+     *
+     * Note that at cells at the edges will only be partially visible.
+     */
+    colCount: number;
+}
+
+/**
+ * Data representing the grid itself.
+ *
+ * A grid has `colCount` * `rowCount` {@link Cell}s.
+ */
+export type Grid = GridSize;
+
+/**
  * Parameters passed to the {@link CellShader} when invoking it during
  * {@link drawCell}.
  *
@@ -129,37 +160,6 @@ export interface CellShaderParams<S> {
      */
     state?: S;
 }
-
-/**
- * A 2-tuple representing the number of rows and columns.
- *
- * The main purpose of this is to represent the actual grid size (see the
- * {@link Grid} type below), but this is also kept around as an independent type
- * declaration for other places where we need to represent just the 2 values - a
- * row and a column count (e.g. in the {@link overdraw} property of
- * {@link GridSketchParams}).
- */
-export interface GridSize {
-    /**
-     * The number of rows in the grid (vertical indexes).
-     *
-     * Note that at cells at the edges will only be partially visible.
-     */
-    rowCount: number;
-    /**
-     * The number of columns in the grid (horizontal indexes).
-     *
-     * Note that at cells at the edges will only be partially visible.
-     */
-    colCount: number;
-}
-
-/**
- * Data representing the grid itself.
- *
- * A grid has `colCount` * `rowCount` {@link Cell}s.
- */
-export type Grid = GridSize;
 
 /**
  * Compute the unique index for the given cell coordinate in the given grid.
