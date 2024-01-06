@@ -152,7 +152,7 @@ export const serializeFeedQuery = (
 ): Record<string, string>[] => {
     const query = E.ensureObject(query_);
     assert("site" in query);
-    
+
     const s = query["site"];
     const nodes = replaceNullsWithUndefineds(nodes_);
 
