@@ -2,9 +2,8 @@ import type { GatsbyConfig } from "gatsby";
 
 // These need to be a relative paths (similar to how we need to use relative
 // paths in `gatsby-node.ts`).
-import { replaceNullsWithUndefineds } from "./src/utils/replace-nulls";
-import * as E from "utils/ensure";
-import { assert } from "utils/assert";
+import { assert } from "./src/utils/assert";
+import * as E from "./src/utils/ensure";
 
 const config: GatsbyConfig = {
     siteMetadata: {
@@ -90,7 +89,7 @@ const config: GatsbyConfig = {
         // Generate an RSS feed (mirroring /all) at /rss.xml
         //
         // Note that this file is only generated when running in production mode
-        // (`yarn build`).
+        // (i.e. when doing `yarn build`).
         {
             resolve: "gatsby-plugin-feed",
             options: {
@@ -149,26 +148,61 @@ const config: GatsbyConfig = {
  */
 export const serializeFeedQuery = (
     query_: unknown,
-): Record<string, string>[] => {
+): Record<string, unknown>[] => {
     const query = E.ensureObject(query_);
+
+    // This is silly, but oh well, I don't yet know how to abstract this. Of
+    // course, I could stop caring about the types and use an any to force the
+    // compiler's hand (esp since only runs at build time), but hey, where's the
+    // fun in that.
+
     assert("site" in query);
+    const site = E.ensureObject(query.site);
 
-    const s = query["site"];
-    const nodes = replaceNullsWithUndefineds(nodes_);
+    assert("siteMetadata" in site);
+    const siteMetadata = E.ensureObject(site.siteMetadata);
 
-    return nodes.map((node) => {
+    assert("siteUrl" in siteMetadata);
+    const siteURL = E.ensureString(siteMetadata.siteUrl);
+
+    assert("allMdx" in query);
+    const allMdx = E.ensureObject(query.allMdx);
+
+    assert("nodes" in allMdx);
+    const nodes = E.ensureArray(allMdx.nodes);
+
+    return nodes.map((node_) => {
+        const node = E.ensureObject(node_);
+
+        assert("frontmatter" in node);
+        const frontmatter = E.ensureObject(node.frontmatter);
+
+        assert("title" in frontmatter);
+        const title = E.ensureString(frontmatter.title);
+
+        assert("description" in frontmatter);
+        const description =
+            typeof frontmatter.description === "string"
+                ? frontmatter.description
+                : undefined;
+
+        assert("formattedDateMY" in frontmatter);
+        const formattedDateMY = E.ensureString(frontmatter.formattedDateMY);
+
+        assert("fields" in node);
+        const fields = E.ensureObject(node.fields);
+
+        assert("slug" in fields);
+        const slug = E.ensureString(fields.slug);
+
+        const url = `${siteURL}${slug}`;
+
         return {
-            test: "test",
+            title,
+            description,
+            url,
+            date: formattedDateMY,
         };
-        // const { frontmatter, fields } = node;
-        // const slug = ensure(fields?.slug);
-
-        // const title = ensure(frontmatter?.title);
-        // const description = frontmatter?.description;
-        // const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        // // const attributes = filterDefined(frontmatter?.attributes);
-
-        // return { slug, title, description, formattedDateMY };
     });
 };
 

@@ -30,8 +30,18 @@ export const ensureString = (x: unknown): string => {
 export const ensureObject = (x: unknown): object => {
     if (typeof x !== "object") {
         throw new Error(
-            `Expected a object, but instead got a ${typeof x}: ${x}`,
+            `Expected an object, but instead got a ${typeof x}: ${x}`,
         );
     }
     return ensure(x);
+};
+
+/** Throw if the given value is not an array */
+export const ensureArray = (x: unknown): unknown[] => {
+    if (!Array.isArray(x)) {
+        throw new Error(
+            `Expected an array, but instead got a ${typeof x}: ${x}`,
+        );
+    }
+    return x;
 };
