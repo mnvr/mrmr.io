@@ -107,7 +107,15 @@ const config: GatsbyConfig = {
                                     ]
                                 ) {
                                     nodes {
-                                        ...PageListingPageData
+                                        frontmatter {
+                                            title
+                                            description
+                                            formattedDateMY: date(formatString: "MMM YYYY")
+                                            attributes
+                                        }
+                                        fields {
+                                            slug
+                                        }
                                     }
                                 }
                             }
