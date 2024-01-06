@@ -253,7 +253,7 @@ const RecentPageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.3;
+    line-height: 1.4rem;
 
     a {
         text-decoration: none;
@@ -277,8 +277,13 @@ const RecentPageListing_ = styled.ul`
 const RecentPageItem: React.FC<RecentPage> = ({ title, description, slug }) => {
     return (
         <li>
-            <Link to={slug}>{title}</Link>.{" "}
-            <RecentPageDescription>{description}</RecentPageDescription>
+            <Link to={slug}>{title}</Link>
+            {description && (
+                <RecentPageDescription>
+                    {" – "}
+                    {description}
+                </RecentPageDescription>
+            )}
         </li>
     );
 };
@@ -286,15 +291,14 @@ const RecentPageItem: React.FC<RecentPage> = ({ title, description, slug }) => {
 const RecentPageDescription = styled.span`
     font-family: serif;
     font-style: italic;
-    font-size: 1.05rem;
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-color-4);
 `;
 
 const Poem: React.FC = () => {
     return (
         <Poem_>
             <i>
-                <b>murmur</b>
+                <b>mrmr</b>
             </i>{" "}
             to me softly
             <br />
@@ -310,8 +314,8 @@ const Poem: React.FC = () => {
 const Poem_ = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
-    line-height: 1.2;
-    color: var(--mrmr-color-3);
+    line-height: 1.4;
+    color: var(--mrmr-color-4);
 `;
 
 const ExternalLinks: React.FC = () => {
