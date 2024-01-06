@@ -161,9 +161,9 @@ cannot ever reconstruct the integer, when I’m in the land of the reals.
 
 Apologies if all this sounds rather long winded. I tried to mention afront that
 this was just my personal journey of understanding. I’m sure I still have some,
-maybe even all, of the technicalities wrong, and even if my conclusions are
-somehow correct I’m certain that there are better expositions out there of what
-I’m trying to say here.
+maybe all, of the technicalities wrong. And even if my conclusions are correct
+I’m certain that there are better expositions out there of what I’m trying to
+say here.
 
 So what happened after I figured this?
 
@@ -264,7 +264,8 @@ after Gauss, and are called _Gaussian Integers_.
 So it was with glee I saw in my local Haddock that GHC indeed ships with a `Num
 a => Complex a` type in the standard installation. It took a frustrating hour
 for this glee to turn into a sigh as I figured that `Complex Int` is useless
-when we actually try to do any operations on it.
+when we actually try to do any operations on it (because the `Num` instance of
+`Complex Int` has a `RealFloat` constraint).
 
 Hence, after all these words, if there is something practical I get to wish for,
 it is that someone who understands more maths than I do fixes up the instances
