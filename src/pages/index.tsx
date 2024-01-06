@@ -59,14 +59,7 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const previewImagePath = getSrc(ensure(file));
 
     return (
-        <DefaultHead {...{ description, canonicalPath, previewImagePath }}>
-            <link
-                rel="alternate"
-                type="application/rss+xml"
-                title="RSS feed - mrmr.io"
-                href="/rss.xml"
-            />
-        </DefaultHead>
+        <DefaultHead {...{ description, canonicalPath, previewImagePath }} />
     );
 };
 
