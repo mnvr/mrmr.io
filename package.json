@@ -27,6 +27,7 @@
         "file-saver": "^2.0.5",
         "gatsby": "^5.13.0",
         "gatsby-plugin-catch-links": "^5.13.0",
+        "gatsby-plugin-feed": "^5.13.0",
         "gatsby-plugin-image": "^3.13.0",
         "gatsby-plugin-manifest": "^5.13.0",
         "gatsby-plugin-mdx": "^5.13.0",

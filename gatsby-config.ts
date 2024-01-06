@@ -1,5 +1,9 @@
 import type { GatsbyConfig } from "gatsby";
 
+// These need to be a relative paths (similar to how we need to use relative
+// paths in `gatsby-node.ts`).
+import { replaceNullsWithUndefineds } from "./src/utils/replace-nulls";
+
 const config: GatsbyConfig = {
     siteMetadata: {
         title: "mrmr.io",
@@ -80,7 +84,76 @@ const config: GatsbyConfig = {
         // The contents of top level arrays, say 'foo', defined a .yaml file
         // located in `src/data` will be available in GraphQL as `dataYaml.foo`.
         "gatsby-transformer-yaml",
+
+        // Generate an RSS feed (mirroring /all) at /rss.xml
+        //
+        // Note that this file is only generated when running in production mode
+        // (`yarn build`).
+        {
+            resolve: "gatsby-plugin-feed",
+            options: {
+                feeds: [
+                    {
+                        output: "/rss.xml",
+                        title: "All posts on mrmr.io",
+                        // Same query as the AllPage query used by /all
+                        query: `
+                            query AllPageFeed {
+                                allMdx(
+                                    filter: { fields: { feed: { eq: "/all" } } }
+                                    sort: [
+                                        { frontmatter: { date: DESC } }
+                                        { frontmatter: { title: ASC } }
+                                    ]
+                                ) {
+                                    nodes {
+                                        ...PageListingPageData
+                                    }
+                                }
+                            }
+                        `,
+                        serialize: (so) => {
+                            console.log("yyy");
+                            console.log(so);
+                            const { query: { site, allMdx } } = so;
+
+                            return rssItemOptions(site, allMdx.nodes);
+                        },
+                    },
+                ],
+            },
+        },
     ],
+};
+
+/**
+ * Construct RSS itemOptions [1] from the site metadata and the
+ * {@link PageListingPageData} fragments produced by the "AllPageFeed" GraphQL
+ * query. It is called by "gatsby-plugin-feed" when it is constructing the RSS
+ * feed for our site.
+ *
+ * [1]: https://www.npmjs.com/package/rss#itemoptions
+ */
+export const rssItemOptions = (
+    site: Queries.Site,
+    nodes_: Queries.PageListingPageDataFragment[],
+): Record<string, string>[] => {
+    const nodes = replaceNullsWithUndefineds(nodes_);
+
+    return nodes.map((node) => {
+        return {
+            test: "test",
+        };
+        // const { frontmatter, fields } = node;
+        // const slug = ensure(fields?.slug);
+
+        // const title = ensure(frontmatter?.title);
+        // const description = frontmatter?.description;
+        // const formattedDateMY = ensure(frontmatter?.formattedDateMY);
+        // // const attributes = filterDefined(frontmatter?.attributes);
+
+        // return { slug, title, description, formattedDateMY };
+    });
 };
 
 export default config;
