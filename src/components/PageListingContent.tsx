@@ -132,39 +132,53 @@ const PageListing_ = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
-    line-height: 1.3;
-
     a {
         border-bottom-width: 2px;
         font-weight: 600;
     }
 
     li {
-        margin-block-end: 0.25rem;
+        line-height: 1.6rem;
     }
 `;
 
-const SectionHeader = styled.h4`
+const SectionHeader = styled.li`
     font-style: italic;
     font-weight: 300;
     font-size: 0.7rem;
-    line-height: 1.9;
     opacity: 0.33;
-    margin-block-end: 0rem;
+
+    /* Empty space before each date to give a section-ed feeling  */
+    margin-block-start: 2rem;
 `;
 
 const PageItem: React.FC<PageListingPage> = (page) => {
     const { title, description, slug } = page;
     return (
-        <li>
+        <PageItemLI>
             <Link to={slug}>{title}</Link>
             <Description>
                 {" – "}
                 {description}
             </Description>
-        </li>
+        </PageItemLI>
     );
 };
+
+const PageItemLI = styled.li`
+    /* Add 2px of bottom margin to visually account for the 2px bottom-border
+     * of the links.
+     *
+     * This works fine if two items are such that their link + description fit
+     * in one line. However, in case the description goes over into a second
+     * line, then this visually causes such items to have "too much" of a gap
+     * below them. I haven't yet thought of a non-hacky way to selectively
+     * introduce this extra margin only for the former case (where the link +
+     * description fit in one line, which causes that line itself to have the 2
+     * px bottom-border for the link).
+     */
+    margin-bottom: 2px;
+`;
 
 const Description = styled.span`
     color: var(--mrmr-color-3);
