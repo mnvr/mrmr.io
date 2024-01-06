@@ -60,33 +60,4 @@ export const query = graphql`
 `;
 
 const parsePages = (data: Queries.NotesPageQuery): PageListingPage[] =>
-    replaceNullsWithUndefineds(data.allMdx)
-        .nodes.map(parsePageListingPageData)
-        .map(modifyDescription);
-
-const modifyDescription = (page: PageListingPage): PageListingPage => {
-    const { description, attributes } = page;
-    const newDescription = attributes.includes("hindi")
-        ? pruneHindiDescription(description)
-        : pruneDescription(description);
-
-    return { ...page, description: newDescription };
-};
-
-/**
- * Strip off "A poem" from the end of a the description field.
- *
- * The description field in poems usually ends with ". A poem\." (the first dot
- * stands for any character, the second dot is literal).
- *
- * This is fine in the context where such pages are listed otherwise, or shown
- * as a preview off-site, but in this page we already have mentioned that we are
- * just listing poems, so it is just noise (or worse even, the proliferation of
- * the word poem is bordering on an cognital infestation).
- */
-const pruneDescription = (description?: string) =>
-    description?.replace(/. A poem\.$/, ".");
-
-/** Variant of {@link pruneDescription} but for hindi poems */
-const pruneHindiDescription = (description?: string) =>
-    description?.replace(/एक कविता।$/, "");
+    replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPageData);
