@@ -178,14 +178,21 @@ const TitleAndSubtitle_ = styled.div`
     h2 {
         margin-block-end: 0;
         font-size: 1.7rem;
+        /* For visual alignment (or, alternatively, to keep the wannabe designer
+           in me happy), shift the title and subtitle (below) around by a pixel
+           but in opposite directions.
+
+           The intent is to get this title + subtitle block to _look_ better
+           aligned with the text that follows. */
+        margin-inline: -1px;
         color: var(--mrmr-color-2);
     }
 
     p {
         margin-block: 0.3rem;
+        margin-inline: 1px;
         font-size: 0.9rem;
         color: var(--mrmr-color-3);
-        font-style: italic;
     }
 `;
 
