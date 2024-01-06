@@ -305,7 +305,7 @@ export const Footer: React.FC = () => {
 
 const LinkContainer = styled.div`
     /** Add a bit of extra margin to account for the underline under links */
-    margin-block-end: 8px;
+    margin-block-end: 10px;
 `;
 
 /**
@@ -374,7 +374,7 @@ const Tags: React.FC<TagsProps> = (props) => {
 };
 
 const Tags_ = styled.div`
-    margin-block-end: 8px;
+    margin-block-end: 10px;
 `;
 
 const TagsTitle = styled.span`
@@ -413,14 +413,14 @@ interface RelatedPostsProps {
 
 const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
-        <RelatedPosts_>
+        <FooterSection_>
             <FooterListTitle>Related posts</FooterListTitle>
             <RelatedPostsList {...props} />
-        </RelatedPosts_>
+        </FooterSection_>
     );
 };
 
-const RelatedPosts_ = styled.div`
+const FooterSection_ = styled.div`
     /* Similar but not the same as Tags_. There is a visual abstraction that I'm
        missing that would give the footer vertical rhythm, and am just manually
        tottering about for now, adding these paddings here and there. */
@@ -429,7 +429,6 @@ const RelatedPosts_ = styled.div`
 
 const FooterListTitle = styled.div`
     /* Snuggle just a bit with the list items to provide a sectioning effect */
-    margin-block-end: -1px;
     color: var(--mrmr-color-3);
 `;
 
@@ -456,9 +455,9 @@ const RelatedPostsList: React.FC<RelatedPostsProps> = ({ links }) => {
 
 const LinkedFromPosts: React.FC<RelatedPostsProps> = (props) => {
     return (
-        <div>
+        <FooterSection_>
             <FooterListTitle>Linked from</FooterListTitle>
             <RelatedPostsList {...props} />
-        </div>
+        </FooterSection_>
     );
 };
