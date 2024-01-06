@@ -196,6 +196,18 @@ const TitleAndSubtitle_ = styled.div`
     }
 `;
 
+/** A H1, but styled like the other titles used by the components in this set */
+export const T1 = styled.h1`
+    /* Counteract the extra margin we give to the container on larger displays,
+       and make this title sit closer to the edge */
+    @media (min-width: 600px) {
+        margin-block-start: -2rem;
+    }
+
+    /* Same color as other titles */
+    color: var(--mrmr-color-2);
+`;
+
 /**
  * A simple H3 containing the page description.
  *
