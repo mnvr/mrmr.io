@@ -31,6 +31,10 @@ interface HeadProps {
      * It is useful to let search engines know what this page it about. It is
      * also used as the subtitle by various apps / sites to generate the preview
      * "card" when a link to this page is shared.
+     *
+     * If a description is not provided, then the site's own description
+     * (specified in the `siteMetadata` field in `gatsby-config.ts`) will be
+     * used as the fallback.
      */
     description?: string;
 
@@ -102,6 +106,7 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
             site {
                 siteMetadata {
                     title
+                    description
                     siteUrl
                 }
             }
@@ -112,8 +117,11 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     const siteURL = ensure(site?.siteMetadata?.siteUrl);
 
     const siteTitle = site?.siteMetadata?.title;
+    const siteDescription = site?.siteMetadata?.description;
+
     const pageTitle =
         title ?? [titlePrefix, siteTitle].filter(isDefined).join(" · ");
+    const pageDescription = description ?? siteDescription;
 
     let canonicalURL: string | undefined;
     if (canonicalPath === "") {
@@ -157,9 +165,11 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
             <title>{pageTitle}</title>
             <meta name="og:title" content={pageTitle} />
             <meta name="og:type" content="website" />
-            {description && <meta name="description" content={description} />}
-            {description && (
-                <meta name="og:description" content={description} />
+            {pageDescription && (
+                <>
+                    <meta name="description" content={pageDescription} />
+                    <meta name="og:description" content={pageDescription} />
+                </>
             )}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
             {noIndex && <meta name="robots" content="noindex" />}

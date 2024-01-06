@@ -182,8 +182,8 @@ export interface Page {
     title: string;
     /** An (optional) subtitle for the page */
     subtitle?: string;
-    /** A description (explicitly specified, or auto-generated) for the page */
-    description: string;
+    /** The (frontmatter) description of the page */
+    description?: string;
     /** The date from the frontmatter, formatted as "Feb 2023" */
     formattedDateMY?: string;
     /** The date from the frontmatter, formatted as "17 February 2023" */
@@ -324,7 +324,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const slug = ensure(mdx?.fields?.slug);
     const feed = parseFeedType(mdx?.fields?.feed);
 
-    const description = descriptionOrFallback(frontmatter?.description);
+    const description = frontmatter?.description;
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
 
@@ -375,15 +375,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         images: pageImages,
         mp3s: pageMP3s,
     };
-};
-
-/**
- * If the given page-like object has a description, return that. Otherwise
- * create and return a fallback description.
- */
-const descriptionOrFallback = (description?: string) => {
-    if (description) return description;
-    return `Words, music and art by Manav`;
 };
 
 /**
