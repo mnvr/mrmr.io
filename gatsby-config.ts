@@ -3,6 +3,7 @@ import type { GatsbyConfig } from "gatsby";
 const config: GatsbyConfig = {
     siteMetadata: {
         title: "mrmr.io",
+        description: "Words, music and art by Manav",
         siteUrl: "https://mrmr.io",
     },
     graphqlTypegen: true,
