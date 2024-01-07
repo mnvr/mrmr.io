@@ -41,6 +41,16 @@ const makeState = (): Omit<State, "cellIndex"> => {
     return { z: 0.4 };
 };
 
+const nextZ = (z: number) => {
+    console.log(z);
+    if (z === 0) return Math.random();
+    let nz = z * (1 - z);
+    if (nz < 0.01) {
+        nz *= 100;
+    }
+    return nz;
+};
+
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const cellIndexForZ = (z: number) => {
         assert(z >= 0 && z <= 1);
@@ -50,7 +60,8 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     };
 
     const { z } = state ?? makeState();
-    const newState = { z, cellIndex: cellIndexForZ(z) };
+    const nz = nextZ(z);
+    const newState = { z: nz, cellIndex: cellIndexForZ(nz) };
 
     p5.clear();
 
@@ -60,7 +71,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { cellIndex } = ensure(state);
 
-    if (cellIndex === cell.index){
+    if (cellIndex === cell.index) {
         p5.rect(x, y, s, s);
     }
 };
