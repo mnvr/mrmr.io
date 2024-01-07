@@ -64,8 +64,9 @@ const nextZ = (z: number) => {
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const cellIndexForZ = (z: number) => {
         assert(z >= 0 && z <= 1);
-        const row = Math.floor(p5.map(z, 0, 1, 0, grid.rowCount));
-        const col = Math.floor(p5.map(z, 0, 1, 0, grid.colCount));
+        // Draw only in the safe area (i.e. exclude 1 cell from each boundary).
+        const row = Math.floor(p5.map(z, 0, 1, 1, grid.rowCount - 1));
+        const col = Math.floor(p5.map(z, 0, 1, 1, grid.colCount - 1));
         return cellIndex({ row, col }, grid);
     };
 
