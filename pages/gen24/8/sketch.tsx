@@ -34,6 +34,16 @@ const debug = false;
  * - However, if the more the number of individuals, the harder it is to survive
  *   (e.g. there will be increased competition for food). The `(1 - x)` term
  *   captures this.
+ *
+ * The behaviour of this equation depends on the value of r:
+ *
+ * - For r < 3, the population obtained from this equation settles down to some
+ *   fixed value.
+ * - For r between 3 and ~3.44, it oscillates between two values.
+ * - For r between 3.44 and ~3.54, it oscillates between three values.
+ * - Increasing r this way, this equation keeps oscillating between an
+ *   increasing number of values.
+ * - At r = ~3.56, there is onset of chaotic behaviour.
  */
 interface State {
     /**
