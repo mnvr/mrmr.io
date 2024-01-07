@@ -179,11 +179,21 @@ const TitleAndSubtitle_ = styled.div`
         margin-block-end: 0;
         font-size: 1.7rem;
         /* For visual alignment (or, alternatively, to keep the wannabe designer
-           in me happy), shift the title and subtitle (below) around by a pixel
-           but in opposite directions.
+           in me happy[1]), shift the title and subtitle (below) around by a
+           pixel but in opposite directions.
 
            The intent is to get this title + subtitle block to _look_ better
-           aligned with the text that follows. */
+           aligned with the text that follows.
+
+           [1]: Later I found this article that highlights that it's just not me
+           hallucinating these issues, but indeed corrected left alignment of
+           headlines is a real task typesetters do.
+           https://medium.engineering/typography-is-impossible-5872b0c7f891
+
+           That said, I still don't know how to solve this is a manner that
+           works on all pages (and perhaps that's the point, it can't be done
+           independent of content).
+           */
         margin-inline: -1px;
         color: var(--mrmr-color-2);
     }
