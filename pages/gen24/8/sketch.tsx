@@ -1,3 +1,4 @@
+import { every } from "p5/every";
 import { assert } from "utils/assert";
 import { ensure } from "utils/ensure";
 import {
@@ -104,10 +105,10 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 
     let { z, zs } = state ?? makeState();
 
-    if (p5.frameCount % 4 === 1) {
+    every(p5, { s: 4 / 60 }, () => {
         z = nextZ(z);
         zs = [z, ...zs.slice(0, 50)];
-    }
+    });
 
     const zIndex = cellIndexForZ(z);
     let cellIntensity: Record<number, number> = {};
