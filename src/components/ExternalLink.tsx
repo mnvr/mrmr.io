@@ -25,6 +25,8 @@ export const ExternalLink: React.FC<
  * This is a variant of {@link ExternalLink} that shows an outward (top right)
  * facing arrow icon after the children to indicate that the link will open in a
  * new tab.
+ *
+ * There is also a shorter alias, {@link ELink}.
  * */
 export const ExternalLinkWithIcon: React.FC<
     React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
@@ -36,3 +38,6 @@ export const ExternalLinkWithIcon: React.FC<
         </a>
     );
 };
+
+/** An alias for {@link ExternalLinkWithIcon} */
+export const ELink = ExternalLinkWithIcon;

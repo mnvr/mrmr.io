@@ -1,5 +1,5 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
-import { ExternalLinkWithIcon } from "components/ExternalLink";
+import { ELink } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Signoff } from "components/text/components";
 import { Link } from "gatsby";
@@ -191,12 +191,8 @@ const Footer_ = styled.div`
     }
 `;
 
-/**
- * This is as alias for {@link ExternalLinkWithIcon}, just reexported with a
- * shorter name for convenience and avoiding requiring another import in the MDX
- * file.
- */
-export const ELink = ExternalLinkWithIcon;
+/** Rexport to avoiding requiring another import in the MDX file. */
+export { ELink };
 
 interface SourceLinkProps {
     day: number;
