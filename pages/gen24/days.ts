@@ -15,4 +15,5 @@ export const days: Day[] = [
     { day: 1, prompt: "Particles", color: "tomato" },
     { day: 2, prompt: "No palettes", color: "rgb(70, 194, 161)" },
     { day: 4, prompt: "Pixels", color: "limegreen" },
+    { day: 8, prompt: "Chaotic system", color: "silver" },
 ];
