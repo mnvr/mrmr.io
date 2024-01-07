@@ -57,27 +57,17 @@ interface State {
      */
     zs: number[];
     /**
-     * The indicies of the cell which should be lit, mapped to the intensity
-     * with which they should be lit.
+     * The indicies of the cell which should be lit, mapped to the color that
+     * should be used to fill it.
      *
-     * There is one entry for each item in `zs`.
-     *
-     * Each intensity is between 0 and 1.
+     * There is one entry for each item in `zs`. Each value is an integer
+     * between 0-255 (inclusive), representing a color value that can be
+     * directly passed to `p5.fill`.
      */
-    cellIntensity: Record<number, number>;
-    /**
-     * The base color to use for filling.
-     *
-     * An integer between 0-255 (inclusive).
-     *
-     * This is part of state so that it can be parameterized depending on the
-     * current env, in particular, if we're in dark mode. In light mode, this
-     * will be 255 (so the cell intensity, when subtracted)
-     */
-    fill: number;
+    cellFill: Record<number, number>;
 }
 
-const makeState = (): Omit<State, "zIndex" | "cellIntensity"> => {
+const makeState = (): Omit<State, "cellFill"> => {
     // Arbitrary starting value
     //
     // It doesn't matter for the chaotic behaviour where we start. I just picked
@@ -109,35 +99,43 @@ const drawGrid: GridShader<State> = ({ p5, grid, state, env }) => {
         return cellIndex({ row, col }, grid);
     };
 
+    /** Intensity should be between 0 and 1 (inclusive) */
+    const colorForIntensity = (intensity: number) =>
+        env.isDarkMode
+            ? p5.map(intensity, 0, 1, 0, 255)
+            : // Start from a dark gray instead of pure black (in light mode)
+              p5.map(1 - intensity, 0, 1, 40, 255);
+
     let { z, zs } = state ?? makeState();
 
-    every(p5, { s: 400 / 60 }, () => {
+    every(p5, { s: 4 / 60 }, () => {
         z = nextZ(z);
         zs = [z, ...zs.slice(0, 50)];
     });
 
     const zIndex = cellIndexForZ(z);
-    let cellIntensity: Record<number, number> = {};
+    let cellFill: Record<number, number> = {};
     zs.forEach((z, i) => {
-        cellIntensity[cellIndexForZ(z)] = p5.constrain(i / 10, 0, 1);
+        cellFill[cellIndexForZ(z)] = colorForIntensity(
+            p5.constrain(i / 10, 0, 1),
+        );
     });
-    // Special case for z itself. Commenting this next line leads to a sketch
-    // with a calmer behaviour.
-    cellIntensity[cellIndexForZ(z)] = 1;
+    // Special case for z itself. Comment it out for a sketch with a calmer
+    // behaviour.
+    cellFill[cellIndexForZ(z)] = colorForIntensity(1);
 
-    // const fill = env.isDarkMode ? 0 :
     p5.clear();
     p5.strokeWeight(0);
 
-    return { z, zs, zIndex, cellIntensity };
+    return { z, zs, zIndex, cellFill };
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const { zIndex, cellIntensity } = ensure(state);
+    const { cellFill } = ensure(state);
 
-    const op = cellIntensity[cell.index];
-    if (op) {
-        p5.fill(255 * op);
+    const fill = cellFill[cell.index];
+    if (fill !== undefined) {
+        p5.fill(fill);
         p5.rect(x, y, s, s);
     }
 };
