@@ -113,7 +113,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const zIndex = cellIndexForZ(z);
     let cellIntensity: Record<number, number> = {};
     zs.forEach((z, i) => {
-        cellIntensity[cellIndexForZ(z)] = i / 10;
+        cellIntensity[cellIndexForZ(z)] = p5.constrain(i / 10, 0, 1);
     });
 
     p5.clear();
@@ -133,7 +133,6 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
     const op = cellIntensity[cell.index];
     if (op) {
-        // console.log(op);
         p5.fill(255 * op);
         p5.rect(x, y, s, s);
     }
