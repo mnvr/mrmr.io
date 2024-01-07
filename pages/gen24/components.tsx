@@ -143,7 +143,8 @@ const Description_ = styled.div`
     pre {
         color: var(--mrmr-color-3);
         /* See: Note: [Styling markdown code blocks] */
-        padding: 0.5rem;
+        padding-inline: 1rem;
+        padding-block: 0.5rem;
         border-radius: 5px;
         background-color: oklch(90% 0 0 / 0.1);
         overflow-x: scroll;
