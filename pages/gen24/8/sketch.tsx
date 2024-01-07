@@ -75,7 +75,7 @@ const makeState = (): Omit<State, "cellIndex" | "cellOpacity"> => {
 
 const nextZ = (z: number) => {
     console.log(z);
-    const r = 3.6;
+    const r = 3.93;
     if (z < 0.0001) return Math.random();
     let nz = r * z * (1 - z);
     return nz;
@@ -86,9 +86,10 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
         assert(z >= 0 && z <= 1);
         // Draw only in the safe area (i.e. exclude 1 cell from each boundary).
         const row = Math.floor(p5.map(z, 0, 1, 1, grid.rowCount - 1));
-        const col = Math.floor(
+        let col = Math.floor(
             p5.map(p5.fract(z * 10), 0, 1, 1, grid.colCount - 1),
         );
+        // col = row;
         return cellIndex({ row, col }, grid);
     };
 
