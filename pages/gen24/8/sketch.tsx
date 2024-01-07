@@ -7,8 +7,6 @@ import {
     type GridShader,
 } from "../grid";
 
-const debug = false;
-
 /**
  * Sketch description
  * ------------------
@@ -48,13 +46,13 @@ const debug = false;
 interface State {
     /**
      * The last value we obtained from the iterated application of the equation
-     * `z' = z * (1 - z)`.
+     * `z' = r * z * (1 - z)`.
      *
      * This number is guaranteed to be between 0 and 1 (inclusive).
      */
     z: number;
     /**
-     * Previous 10 z values, most recent one first.
+     * The last 50 z values, most recent one first.
      */
     zs: number[];
     /**
@@ -63,33 +61,42 @@ interface State {
     cellIndex: number;
     /**
      * The indicies of the cell which should be lit, mapped to the intensity
-     * (opacity) with which they should be lit.
+     * with which they should be lit.
+     *
+     * Each intensity is between 0 and 1.
      */
-    cellOpacity: Record<number, number>;
+    cellIntensity: Record<number, number>;
 }
 
-const makeState = (): Omit<State, "cellIndex" | "cellOpacity"> => {
+const makeState = (): Omit<State, "cellIndex" | "cellIntensity"> => {
+    // Arbitrary starting value
+    //
+    // It doesn't matter for the chaotic behaviour where we start. I just picked
+    // something here - this can be thought of as the seed for our sketch
+    // (alongwith the grid size).
     const z = 0.4;
-    return { z: z, zs: [z] };
+    return { z, zs: [z] };
 };
 
 const nextZ = (z: number) => {
-    console.log(z);
+    // We can pick any r > ~3.56 to witness the chaotic behaviour. However, not
+    // all values span the entire space from 0-1. This value I picked, 3.93, is
+    // the first one I found (by randomly flittering about) that covers the
+    // entire region 0-1 (not uniformly, but it does visit them all the buckets
+    // between 0 and 1).
     const r = 3.93;
-    if (z < 0.0001) return Math.random();
-    let nz = r * z * (1 - z);
-    return nz;
+
+    return r * z * (1 - z);
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const cellIndexForZ = (z: number) => {
         assert(z >= 0 && z <= 1);
         // Draw only in the safe area (i.e. exclude 1 cell from each boundary).
-        const row = Math.floor(p5.map(z, 0, 1, 1, grid.rowCount - 1));
-        let col = Math.floor(
+        const row = p5.floor(p5.map(z, 0, 1, 1, grid.rowCount - 1));
+        const col = p5.floor(
             p5.map(p5.fract(z * 10), 0, 1, 1, grid.colCount - 1),
         );
-        // col = row;
         return cellIndex({ row, col }, grid);
     };
 
@@ -102,16 +109,16 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
         nzs = [nz, ...zs.slice(0, 50)];
     }
     const nci = cellIndexForZ(nz);
-    let cellOpacity: Record<number, number> = {};
+    let cellIntensity: Record<number, number> = {};
     for (let i = 0; i < nzs.length; i += 1) {
         const ci = cellIndexForZ(ensure(nzs[i]));
-        cellOpacity[ci] = i / 10;
+        cellIntensity[ci] = i / 10;
     }
     const newState = {
         z: nz,
         zs: nzs,
         cellIndex: nci,
-        cellOpacity,
+        cellIntensity,
     };
 
     p5.clear();
@@ -121,18 +128,19 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const { cellIndex, cellOpacity } = ensure(state);
+    const { cellIndex, cellIntensity } = ensure(state);
 
     if (cellIndex === cell.index) {
+        p5.fill(255);
+        // Comment the next line for a calmer behaviour
         p5.rect(x, y, s, s);
     }
 
-    const op = cellOpacity[cell.index];
+    const op = cellIntensity[cell.index];
     if (op) {
-        p5.push();
+        // console.log(op);
         p5.fill(255 * op);
         p5.rect(x, y, s, s);
-        p5.pop();
     }
 };
 
