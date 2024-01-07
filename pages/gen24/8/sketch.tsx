@@ -18,10 +18,22 @@ const debug = false;
  * "systematic yet random" behaviour that arises from a deterministic system.
  *
  * For this sketch, we take (probably) the simplest such equation - the so
- * called linear map:
+ * called logistic map:
  *
- *     x' = x * (1 - x)
+ *     x' = r * x * (1 - x)
  *
+ * This non-linear equation arose in Biology where it was intended as a simple
+ * model of a biological system. x denotes the population of a species. The
+ * equation pulls in two opposite directions (as does the biological system it
+ * is trying to emulate):
+ *
+ * - The population increases by some reproduction rate "r" at every step, and
+ *   the actual increase will be proportional to the current population. The
+ *   term `r * x` captures this.
+ *
+ * - However, if the more the number of individuals, the harder it is to survive
+ *   (e.g. there will be increased competition for food). The `(1 - x)` term
+ *   captures this.
  */
 interface State {
     /**
@@ -43,8 +55,9 @@ const makeState = (): Omit<State, "cellIndex"> => {
 
 const nextZ = (z: number) => {
     console.log(z);
+    const r = 3.7;
     if (z < 0.0001) return Math.random();
-    let nz = z * (1 - z) + 0.5;
+    let nz = r * z * (1 - z);
     return nz;
 };
 
