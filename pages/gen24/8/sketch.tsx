@@ -58,17 +58,19 @@ interface State {
     /**
      * The (index of the) cell which should be lit to show `z`.
      */
-    cellIndex: number;
+    zIndex: number;
     /**
      * The indicies of the cell which should be lit, mapped to the intensity
      * with which they should be lit.
+     *
+     * There is one entry for each item in `zs`.
      *
      * Each intensity is between 0 and 1.
      */
     cellIntensity: Record<number, number>;
 }
 
-const makeState = (): Omit<State, "cellIndex" | "cellIntensity"> => {
+const makeState = (): Omit<State, "zIndex" | "cellIntensity"> => {
     // Arbitrary starting value
     //
     // It doesn't matter for the chaotic behaviour where we start. I just picked
@@ -100,37 +102,29 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
         return cellIndex({ row, col }, grid);
     };
 
-    const { z, zs } = state ?? makeState();
+    let { z, zs } = state ?? makeState();
 
-    let nz = z;
-    let nzs = zs;
     if (p5.frameCount % 4 === 1) {
-        nz = nextZ(z);
-        nzs = [nz, ...zs.slice(0, 50)];
+        z = nextZ(z);
+        zs = [z, ...zs.slice(0, 50)];
     }
-    const nci = cellIndexForZ(nz);
+
+    const zIndex = cellIndexForZ(z);
     let cellIntensity: Record<number, number> = {};
-    for (let i = 0; i < nzs.length; i += 1) {
-        const ci = cellIndexForZ(ensure(nzs[i]));
-        cellIntensity[ci] = i / 10;
-    }
-    const newState = {
-        z: nz,
-        zs: nzs,
-        cellIndex: nci,
-        cellIntensity,
-    };
+    zs.forEach((z, i) => {
+        cellIntensity[cellIndexForZ(z)] = i / 10;
+    });
 
     p5.clear();
     p5.strokeWeight(0);
 
-    return newState;
+    return { z, zs, zIndex, cellIntensity };
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const { cellIndex, cellIntensity } = ensure(state);
+    const { zIndex, cellIntensity } = ensure(state);
 
-    if (cellIndex === cell.index) {
+    if (zIndex === cell.index) {
         p5.fill(255);
         // Comment the next line for a calmer behaviour
         p5.rect(x, y, s, s);
