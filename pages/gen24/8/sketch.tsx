@@ -57,10 +57,6 @@ interface State {
      */
     zs: number[];
     /**
-     * The (index of the) cell which should be lit to show `z`.
-     */
-    zIndex: number;
-    /**
      * The indicies of the cell which should be lit, mapped to the intensity
      * with which they should be lit.
      *
@@ -69,6 +65,16 @@ interface State {
      * Each intensity is between 0 and 1.
      */
     cellIntensity: Record<number, number>;
+    /**
+     * The base color to use for filling.
+     *
+     * An integer between 0-255 (inclusive).
+     *
+     * This is part of state so that it can be parameterized depending on the
+     * current env, in particular, if we're in dark mode. In light mode, this
+     * will be 255 (so the cell intensity, when subtracted)
+     */
+    fill: number;
 }
 
 const makeState = (): Omit<State, "zIndex" | "cellIntensity"> => {
@@ -92,7 +98,7 @@ const nextZ = (z: number) => {
     return r * z * (1 - z);
 };
 
-const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
+const drawGrid: GridShader<State> = ({ p5, grid, state, env }) => {
     const cellIndexForZ = (z: number) => {
         assert(z >= 0 && z <= 1);
         // Draw only in the safe area (i.e. exclude 1 cell from each boundary).
@@ -105,7 +111,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 
     let { z, zs } = state ?? makeState();
 
-    every(p5, { s: 4 / 60 }, () => {
+    every(p5, { s: 400 / 60 }, () => {
         z = nextZ(z);
         zs = [z, ...zs.slice(0, 50)];
     });
@@ -115,7 +121,11 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     zs.forEach((z, i) => {
         cellIntensity[cellIndexForZ(z)] = p5.constrain(i / 10, 0, 1);
     });
+    // Special case for z itself. Commenting this next line leads to a sketch
+    // with a calmer behaviour.
+    cellIntensity[cellIndexForZ(z)] = 1;
 
+    // const fill = env.isDarkMode ? 0 :
     p5.clear();
     p5.strokeWeight(0);
 
@@ -124,12 +134,6 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { zIndex, cellIntensity } = ensure(state);
-
-    if (zIndex === cell.index) {
-        p5.fill(255);
-        // Comment the next line for a calmer behaviour
-        p5.rect(x, y, s, s);
-    }
 
     const op = cellIntensity[cell.index];
     if (op) {
