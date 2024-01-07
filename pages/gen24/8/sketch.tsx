@@ -54,13 +54,23 @@ interface State {
      */
     z: number;
     /**
+     * Previous 10 z values, most recent one first.
+     */
+    zs: number[];
+    /**
      * The (index of the) cell which should be lit to show `z`.
      */
     cellIndex: number;
+    /**
+     * The indicies of the cell which should be lit, mapped to the intensity
+     * (opacity) with which they should be lit.
+     */
+    cellOpacity: Record<number, number>;
 }
 
-const makeState = (): Omit<State, "cellIndex"> => {
-    return { z: 0.4 };
+const makeState = (): Omit<State, "cellIndex" | "cellOpacity"> => {
+    const z = 0.4;
+    return { z: z, zs: [z] };
 };
 
 const nextZ = (z: number) => {
@@ -80,15 +90,25 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
         return cellIndex({ row, col }, grid);
     };
 
-    const { z } = state ?? makeState();
+    const { z, zs } = state ?? makeState();
 
     let nz = z;
+    let nzs = zs;
     if (p5.frameCount % 60 === 1) {
         nz = nextZ(z);
+        nzs = [nz, ...zs.slice(0, 10)];
+    }
+    const nci = cellIndexForZ(nz);
+    let cellOpacity: Record<number, number> = {};
+    for (let i = 0; i < nzs.length; i += 1) {
+        const ci = cellIndexForZ(ensure(nzs[i]));
+        cellOpacity[ci] = i / 10;
     }
     const newState = {
         z: nz,
-        cellIndex: cellIndexForZ(nz),
+        zs: nzs,
+        cellIndex: nci,
+        cellOpacity,
     };
 
     p5.clear();
