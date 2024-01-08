@@ -513,5 +513,33 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
  * snippet of content as a custom component instead of in Markdown. MDX only
  * transforms raw markdown content, so links in any regular non-markdown React
  * components, even if they're then used within the MDX, remain unaffected.
+ *
+ * ---
+ *
+ * An unrelated issue is the TypeScript type for `customA`. Ideally, we should
+ * be able to write
+ *
+ *     const customA = ExternalLinkWithIcon
+ *
+ * In fact, we wouldn't even need this separate customA component then (though
+ * it still might be useful as a place to put the above documentation).
+ *
+ * However, the above causes TypeScript to complain about the types. I don't
+ * quite understand the error it pointing at - the types seem to mostly match
+ * except for an extra undefined. It _seems_ to me that the error is related to
+ * this issue:
+ *
+ * https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18051
+ *
+ * Which also I don't fully understand. However, the workaround mentioned in
+ * some of the comments there - explicitly typing the props instead of using
+ * React.FC - works for us too, and makes tsc happy.
  */
-const customA = ExternalLinkWithIcon;
+const customA = (
+    props: React.DetailedHTMLProps<
+        React.AnchorHTMLAttributes<HTMLAnchorElement>,
+        HTMLAnchorElement
+    >,
+) => {
+    return <ExternalLinkWithIcon {...props} />;
+};
