@@ -7,12 +7,13 @@ import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
+import TextNoteLayout from "layouts/text-note";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
 import { filterDefined } from "utils/array";
-import { isHindiContent } from "utils/attributes";
+import { isHindiContent, isNote } from "utils/attributes";
 import { ensure } from "utils/ensure";
 import {
     replaceNullsWithUndefineds,
@@ -473,6 +474,8 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
         case "text":
             return isHindiContent(page) ? (
                 <TextHindiLayout>{children}</TextHindiLayout>
+            ) : isNote(page) ? (
+                <TextNoteLayout>{children}</TextNoteLayout>
             ) : (
                 <TextLayout>{children}</TextLayout>
             );
