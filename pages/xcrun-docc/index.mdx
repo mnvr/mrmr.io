@@ -115,8 +115,9 @@ If I go back to Xcode, and `Product > Build Documentation` action, it builds
 documentation for the symbols in my actual code and shows them nicely. So it is
 just misconfiguration somewhere.
 
-From the [Swift-DocC announcement post on Swift
-Forums](https://forums.swift.org/t/announcing-swift-docc/52797)
+From the <ELink
+href="https://forums.swift.org/t/announcing-swift-docc/52797">Swift-DocC
+announcement post on Swift Forums</ELink>:
 
 > At its core, the Swift-DocC compiler accepts two kinds of inputs:
 >
@@ -152,16 +153,19 @@ What am I doing wrong?
 I think I need to give in trying to follow the documentation for using DocC, an
 irony I was trying to avoid, and instead search around on the internet.
 
-Sure enough, I get [this result in the Swift
-forums](https://forums.swift.org/t/standalone-docc-compile/52832), someone
-hitting the similar roadblocks, and this encouraging reply:
+Sure enough, I get <ELink
+href="https://forums.swift.org/t/standalone-docc-compile/52832">this result in
+the Swift forums</ELink>, someone hitting the similar roadblocks, and this
+encouraging reply:
 
 > Swift-DocC does indeed support building standalone documentation catalogs
 > without an associated Swift module.
 
-And they (the same person it seems who announced Swift-DocC) give a link to [an
-example](https://github.com/apple/swift-docc/tree/main/Tests/SwiftDocCTests/Test%20Bundles/BundleWithTechnologyRoot.docc)
-in the swift-docc repo, under Test fixtures. Let's give it a shot:
+And they (the same person it seems who announced Swift-DocC) give a link to
+<ELink
+href="https://github.com/apple/swift-docc/tree/main/Tests/SwiftDocCTests/Test%20Bundles/BundleWithTechnologyRoot.docc">an
+example</ELink> in the swift-docc repo, under Test fixtures. Let's give it a
+shot:
 
 ```sh
 git clone https://github.com/apple/swift-docc.git
@@ -172,8 +176,9 @@ xcrun docc preview BundleWithTechnologyRoot.docc
 Nope, still the unknown error.
 
 Finally, let me do what I should've done what as the first step - go to
-StackOverflow. And, indeed, [there we find the
-solution](https://stackoverflow.com/questions/76645803/unable-to-build-documentaion-using-docc-preview-file-docc):
+StackOverflow. And, indeed, <ELink
+href="https://stackoverflow.com/questions/76645803/unable-to-build-documentaion-using-docc-preview-file-docc">there
+we find the solution</ELink>:
 
 > DocC does not provide a "template" on its own. It expects it installed at a
 > certain path, that you don't have. To solve that, you need to fetch the
