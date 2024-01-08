@@ -510,9 +510,11 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
  * like those in the footer etc remain unaffected.
  *
  * There currently isn't a good escape hatch, except writing that particular
- * snippet of content as a custom component instead of in Markdown. MDX only
- * transforms raw markdown content, so links in any regular non-markdown React
- * components, even if they're then used within the MDX, remain unaffected.
+ * snippet of content as a custom component instead of in as a Markdown link
+ * (importing and using the {@link Link} component from "gatsby" is one handy
+ * way to do this). MDX only transforms raw markdown content, so links in any
+ * regular non-markdown React components, even if they're then used within the
+ * MDX, remain unaffected.
  *
  * ---
  *

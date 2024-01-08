@@ -10,7 +10,7 @@ tags:
     - label: Swift
 ---
 
-import { ELink } from "components/ExternalLink";
+import { RefLink } from "components/text/extra";
 
 Swift-DocC is a CLI tool to build HTML rendered documentation. It's goal is more
 than just reference documentation, but also long-form subjective content:
@@ -26,24 +26,22 @@ xcrun docc
 
 Links:
 
--   Swift blog - <ELink
-    href="https://www.swift.org/blog/swift-docc/">DocC open-sourced</ELink>
+-   Swift blog - [DocC open-sourced](https://www.swift.org/blog/swift-docc/)
 
--   Swift blog - <ELink
-    href="https://www.swift.org/blog/tspl-on-docc/">DocC builds the Swift book</ELink>
+-   Swift blog - [DocC builds the Swift
+    book](https://www.swift.org/blog/tspl-on-docc/)
 
-Coming back to the workflow. Apple's documentation for <ELink
-href="https://developer.apple.com/documentation/xcode/writing-documentation">Writing
-Documentation</ELink> covers all sorts of things, but it talks of a
-"documentation catalog". The `docc` CLI tool also has a lot of juicy commands,
-however they seem to operate on this documentation catalog, but how do we create
-one?
+Coming back to the workflow. Apple's documentation for [Writing
+Documentation](https://developer.apple.com/documentation/xcode/writing-documentation)
+covers all sorts of things, but it talks of a "documentation catalog". The
+`docc` CLI tool also has a lot of juicy commands, however they seem to operate
+on this documentation catalog, but how do we create one?
 
-Looking at the <ELink href="https://github.com/apple/swift-book">source for the
-Swift Book</ELink>, we can see that a documentation catalog is just (I think) a
-folder with a `.docc` extension. It also seems to have an `Info.plist` file
-(because of course it does, this is Apple). So maybe it is easier if we create
-this catalog using Xcode itself.
+Looking at the [source for the Swift Book](https://github.com/apple/swift-book),
+we can see that a documentation catalog is just (I think) a folder with a
+`.docc` extension. It also seems to have an `Info.plist` file (because of course
+it does, this is Apple). So maybe it is easier if we create this catalog using
+Xcode itself.
 
 In our Xcode project, use the create new file dialog <kbd>⌘ N</kbd>, press
 tab <kbd>⇥</kbd> to focus the search field, type "doc", and select the
@@ -85,9 +83,9 @@ the same error. Worse, docc has even stopped complaining about anything in the
 Terminal, it is just silently ignoring us. Maybe we do need that `Info.plist`
 after all?
 
-Let's copy paste the <ELink
-href="https://github.com/apple/swift-book/blob/main/TSPL.docc/Info.plist">Info.plist
-from the Swift Book</ELink> into `Documentation/Info.plist`. Still nothing.
+Let's copy paste the Info.plist from the Swift Book <RefLink
+href="https://github.com/apple/swift-book/blob/main/TSPL.docc/Info.plist" />
+into `Documentation/Info.plist`. Still nothing.
 
 Let's see if there's a way to get `docc` to talk to us about what's wrong.
 
@@ -115,9 +113,8 @@ If I go back to Xcode, and `Product > Build Documentation` action, it builds
 documentation for the symbols in my actual code and shows them nicely. So it is
 just misconfiguration somewhere.
 
-From the <ELink
-href="https://forums.swift.org/t/announcing-swift-docc/52797">Swift-DocC
-announcement post on Swift Forums</ELink>:
+From the Swift-DocC announcement post on Swift Forums <RefLink
+href="https://forums.swift.org/t/announcing-swift-docc/52797" />:
 
 > At its core, the Swift-DocC compiler accepts two kinds of inputs:
 >
@@ -151,18 +148,16 @@ What am I doing wrong?
 I think I need to give in trying to follow the documentation for using DocC, an
 irony I was trying to avoid, and instead search around on the internet.
 
-Sure enough, I get <ELink
-href="https://forums.swift.org/t/standalone-docc-compile/52832">this result in
-the Swift forums</ELink>, someone hitting the similar roadblocks, and this
-encouraging reply:
+Sure enough, I get [this result in the Swift
+forums](https://forums.swift.org/t/standalone-docc-compile/52832), someone
+hitting the similar roadblocks, and this encouraging reply:
 
 > Swift-DocC does indeed support building standalone documentation catalogs
 > without an associated Swift module.
 
-And they (the same person it seems who announced Swift-DocC) give a link
-to <ELink
-href="https://github.com/apple/swift-docc/tree/main/Tests/SwiftDocCTests/Test%20Bundles/BundleWithTechnologyRoot.docc">
-an example</ELink> in the swift-docc repo, under Test fixtures. Let's give it a shot:
+And they (the same person it seems who announced Swift-DocC) give a link to [an
+example](https://github.com/apple/swift-docc/tree/main/Tests/SwiftDocCTests/Test%20Bundles/BundleWithTechnologyRoot.docc)
+in the swift-docc repo, under Test fixtures. Let's give it a shot:
 
 ```sh
 git clone https://github.com/apple/swift-docc.git
@@ -173,9 +168,8 @@ xcrun docc preview BundleWithTechnologyRoot.docc
 Nope, still the unknown error.
 
 Finally, let me do what I should've done what as the first step - go to
-StackOverflow. And, indeed, <ELink
-href="https://stackoverflow.com/questions/76645803/unable-to-build-documentaion-using-docc-preview-file-docc">there
-we find the solution</ELink>:
+StackOverflow. And, indeed, [there we find the
+solution](https://stackoverflow.com/questions/76645803/unable-to-build-documentaion-using-docc-preview-file-docc):
 
 > DocC does not provide a "template" on its own. It expects it installed at a
 > certain path, that you don't have. To solve that, you need to fetch the
@@ -187,16 +181,17 @@ Let's follow the helpful instructions from the rest of the answer:
 cd -
 git clone https://github.com/apple/swift-docc-render-artifact
 export DOCC_HTML_DIR=$(pwd)/swift-docc-render-artifact/dist
+
 cd -
 xcrun docc preview BundleWithTechnologyRoot.docc
 ```
 
-Yay! It didn't work, but the error changed
+It didn't work, but the error changed
 
 > The page you're looking for can't be found.
 
-Sure enough, when I look more closely, the preview URL that `docc` printed on
-the Terminal now has an additional path component. If I open
+When I look more closely, the preview URL that `docc` printed on the Terminal
+now changed, and now has an additional path component. If I open
 _http://localhost:8080/documentation/technologyx_ instead, it works!
 
 Let's try this on our original file too. Let's go back to our project, delete
@@ -241,11 +236,11 @@ that was giving me trouble – that issue is for folks who're directly running
 that I was missing the `@TechnologyRoot`.
 
 Further, it looks like this problem (requiring `@TechnologyRoot`) has already
-been fixed on GitHub, just <ELink
-href="https://github.com/apple/swift-docc/pull/778">4 days ago</ELink>! But
-that's on Swift-DocC mainline, and I'm using the docc that comes with Xcode, so
-the fix will take a while to get around to me. The good part is that future
-people will not to go about this whole roundabout.
+been fixed on GitHub, just [4 days
+ago](https://github.com/apple/swift-docc/pull/778)! But that's on Swift-DocC
+mainline, and I'm using the docc that comes with Xcode, so the fix will take a
+while to get around to me. The good part is that future people will not to go
+about this whole roundabout.
 
 So this post is mostly pointless for posterity. It just stands testament to yet
 another hour that I just let be.
