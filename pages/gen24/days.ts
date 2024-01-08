@@ -9,6 +9,10 @@ export interface Day {
      * This'll be a string that CSS can understand.
      */
     color: string;
+    /**
+     * An optional string that overrides {@link color} when in dark mode.
+     */
+    darkColor?: string;
 }
 
 export const days: Day[] = [
