@@ -1,3 +1,5 @@
+import { MDXProvider } from "@mdx-js/react";
+import { ExternalLinkWithIcon } from "components/ExternalLink";
 import { DefaultHead } from "components/Head";
 import {
     PageColorStyle,
@@ -34,7 +36,11 @@ const PageTemplate: React.FC<
     return (
         <main>
             <PageColorStyle {...colorPalettes} />
-            <Layout page={page}>{children}</Layout>
+            <Layout page={page}>
+                <MDXProvider components={{ a: customA }}>
+                    {children}
+                </MDXProvider>
+            </Layout>
         </main>
     );
 };
@@ -483,3 +489,29 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
             return <>{children}</>;
     }
 };
+
+/**
+ * The custom anchor (`<a>`) tag that is used for links in the mdx content.
+ *
+ * This a tag is provide to MDX via the MDXProvider. MDX then uses this tag
+ * instead of the default a tag whenever it needs one. This gives us a hook to
+ * customize the generated links in the rendered HTML.
+ *
+ * In particular, we use this to convert (all) links to our custome external
+ * links component. This component converts the links to open in a new tag, and
+ * adds an appropriate arrow icon too.
+ *
+ * Why all links? As in, doing this for external only links is one option.
+ * However, even internal links break the flow of the reader. While I try to use
+ * them sparingly thus, sometimes they're still needed, so to avoid breaking the
+ * reading flow they too get the external treatment.
+ *
+ * Since this only acts on links in the MDX content, normal navigation links
+ * like those in the footer etc remain unaffected.
+ *
+ * There currently isn't a good escape hatch, except writing that particular
+ * snippet of content as a custom component instead of in Markdown. MDX only
+ * transforms raw markdown content, so links in any regular non-markdown React
+ * components, even if they're then used within the MDX, remain unaffected.
+ */
+const customA = ExternalLinkWithIcon;
