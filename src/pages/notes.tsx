@@ -3,7 +3,7 @@ import PageListingContent, {
     parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
-import { graphql, type HeadFC, type PageProps } from "gatsby";
+import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -20,9 +20,10 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  */
 const NotesPage: React.FC<PageProps<Queries.NotesPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
+    const extraLink = <Link to={"/all"}>Other posts</Link>;
 
     return (
-        <PageListingContent pages={pages}>
+        <PageListingContent {...{ pages, extraLink }}>
             <Title_>
                 notes <span>& playgrounds</span>
             </Title_>

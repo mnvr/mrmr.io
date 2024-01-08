@@ -297,7 +297,7 @@ export const Footer: React.FC = () => {
                         <Link to={"/notes"}>All notes</Link>
                     </LinkContainer>
                     <LinkContainer>
-                        <Link to={"/all"}>Other posts</Link>
+                        <Link to={"/all"}>All posts</Link>
                     </LinkContainer>
                 </>
             ) : (
