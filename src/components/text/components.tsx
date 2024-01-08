@@ -40,10 +40,18 @@ const Content_ = styled(LinkStyleUnderlined)`
     line-height: 1.5;
 
     blockquote {
-        font-family: serif;
-        font-style: italic;
         color: var(--mrmr-color-3);
-        margin-inline: 1.3rem;
+        /* Reset the margin. We'll instead use the padding, so that our border
+           appears flush to the left, and the padding in between before the
+           blockquote's content starts. */
+        margin-inline: 0em;
+        padding-inline: 1.3em;
+    }
+
+    /* Exclude the Quote and AttributedQuote components below from the default
+       left border styling */
+    blockquote:not(.bq-quote) {
+        border-left: 1px solid currentColor;
     }
 
     ul {
@@ -229,6 +237,69 @@ export const DescAsTitle: React.FC = () => {
 
     return <Title_>{description}</Title_>;
 };
+
+/**
+ * A blockquote suitable for displaying a quotes without inline attribution
+ * (e.g. we might've already cited in the surrounding text who said this).
+ *
+ * Designed for use within the text content of a post.
+ *
+ * Within the HTML it renders a blockquote with a styling different from the
+ * styling that is otherwise applied to blockquotes
+ *
+ * @see {@link AttributedQuote} for a variation that displays the attribution
+ * inline within the blockquote.
+ */
+export const Quote: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return <Quote_>{children}</Quote_>;
+};
+
+interface AttributedQuoteProps {
+    attribution: string;
+}
+
+/**
+ * A blockquote suitable for displaying attributed quotes.
+ *
+ * Designed for use within the text content of a post.
+ */
+export const AttributedQuote: React.FC<
+    React.PropsWithChildren<AttributedQuoteProps>
+> = ({ attribution, children }) => {
+    return (
+        <Quote_>
+            <>
+                {children}
+                <Attribution_>{"– " + attribution}</Attribution_>
+            </>
+        </Quote_>
+    );
+};
+
+/**
+ * This React component only exists so that we can attach the "bq-quote" class
+ * name to a blockquote. Such blockquotes are then excluded from the left border
+ * styling that we do globally in {@link Content_} above. */
+const BQQuote: React.FC<React.BlockquoteHTMLAttributes<HTMLElement>> = ({
+    className,
+    children,
+}) => {
+    return (
+        <blockquote className={`bq-quote ${className ?? ""}`}>
+            {children}
+        </blockquote>
+    );
+};
+
+const Quote_ = styled(BQQuote)`
+    font-family: serif;
+    font-style: italic;
+`;
+
+const Attribution_ = styled.p`
+    font-size: smaller;
+    margin-inline-start: 2rem;
+`;
 
 /**
  * Author and date in subdued, small text.
