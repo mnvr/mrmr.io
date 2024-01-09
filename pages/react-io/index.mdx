@@ -1,0 +1,151 @@
+---
+title: React and the IO Monad
+date: 2024-01-10
+description: The essence
+theme: paper
+layout: text
+tags:
+    - tag: programming
+related:
+    - "/typescript-and-haskell"
+---
+
+The IO monad in Haskell, and declarative style of UI programming popularized by React, have the same essence: instead of writing the program does what we want, write a program that writes the program that does what we want.
+
+In both these contexts, the same essence was arrived at from almost opposite directions - in Haskell from the mathematics of Category theory, in React from the Jungle of JavaScript praxis.
+
+—
+
+Let’s start with React. I feel React is under-appreciated. Every year there is someone who goes out and announces that React is dead. Every year React goes stronger. In fact, its influence is so pervasive that the people who’re often dissing React don’t realize that they themselves are using a framework which is a (usually half-assed) copy of React.
+
+The basic insight of React was - instead of writing the UI directly, we will write a description of the UI. The oldest trick in the programming book - solving a problem by adding another level of indirection.
+
+The unique bit with React is that our description is not meant as a DSL that simplifies writing the UI itself (though React also does that with JSX). What it simplifies is handling state. The most important part of our description is explicitly tell the framework which UI element depends on which “source of truth”.
+
+The framework then takes our description and creates the actual UI. e.g. on the web, it’ll create the actual DOM HTML elements that show things on the web site. So there are two trees
+
+- the view tree (what we wrote)
+- the render tree (what the framework constructs from the view tree)
+
+Since we explicitly told React what element in our view tree depends on which state, when the state changes, it knows exactly which part of the render tree it needs to update.
+
+The thing we get out of all this is composability. Every experienced programmer tries to architect their code such that it is composable, because they know that once they have elements that can be composed without thinking of the combinatorial explosion of the interaction between individual parts of the composition, the we can build arbitrarily complex structures (in this case arbitrary complex websites) without things breaking down under the complexity, like what happened to the tower of Babel.
+
+So this is quite elementary. The issue is - composability is really, really, hard to get in practice. That is why over engineering happens - experienced programmers have experienced the power of composition, and want to recreate that in their own architecture	, but they end up designing something that doesn’t _quite_ compose, there is that leaky abstraction somewhere, and the end result is an over engineered mess that nobody apart from them can understand.
+
+What React was able to do was achieve this composability in practice.
+
+The proof of the pudding is in the pie. Not only has React taken over the web world completely (even most React alternatives in the web dev world are at least philosophically inspired by it), it has also taken over Mobile. Flutter and SwiftUI are copies of React. They have branched out yes, gaining their own personalities, but fundamentally they’re just copies.
+
+Here is hello world in React
+
+And here it is in SwiftUI
+
+
+And here in Flutter.
+
+
+Maybe you can see what I meant by the sadly worse bit above.
+
+To be clear, there are many problems with React, the library. But React, the idea, has absolutely stood the test of time. In fact, a lot of the problems in the JS ecosystem are because of the power of React (the idea) - because of the composability it offers, people are now building bigger and bigger things, and the React the library is often left far behind the state of the art in what people are getting React the idea to do.
+
+—
+
+As an aside, React didn’t click for me until I saw this talk by Dan . My mind was blown when I saw this - Watching it, I felt like I had gained a superpower, and that I could now build any UI that I wanted. While they’re continuation of the same thought, there was something smothering about the class based approach, and I feel it is only with the function components did React (the idea) finally come to its full light.
+
+There are traces of this division in the copies too. Flutter forked React _before_ function components were the vibe, and so it still lives on in the class based (and in my opinion, inferior) approach. SwiftUI forked after function components, and that’s the gene it reflects. At the surface level, SwiftUI might look like it uses the class based approach, but that’s not the case - the SwiftUI structs are actually stateless, and can be thought of as equivalent to the JavaScript functions that form current day React components.
+
+A big eye opener for me was when someone I greatly admire, and who is much more productive than me, said that they still prefer the class based React components. They said they find them simpler to understand.
+
+I still don’t know what to make of it. It goes against the point of this whole article really - that correct abstractions are priceless, and rare. I thought I’ll just mention that what I’m saying is far from a universally held opinion.
+
+—-
+
+Haskell had a problem. How do you do IO in a purely functional language?
+
+To some, it might seem like an insolvable problem. Some people, including past me, thought it was an insolvable problem even after having come into contact with Haskell. I thought that with all the IO monad shonad shenanigans, Haskellers were just trying to pull one on me. After all, how on earth can a purely functional program deal with a non-pure operation like IO? So it doesn’t, and the IO monad stuff is just obfuscation to hide this inability.
+
+I was wrong. There is a way a purely functional program can deal with IO. It is the same way React deals with state. We don’t write a program that does IO. We write a program that writes a program that does IO.
+
+You see, Haskell is actually two languages (just like how React was two - view and render - trees). There is Haskell, the pure language, and then there is a Haskell runtime that is a normal C like imperative language. When we do any IO operation, the pure language remains pure, the dirty impure work of doing the actual IO is done by the generated program that runs in the second language. This is similar to how we write a React view tree, and at runtime React manages a render tree for us. We write a Haskell program in a pure language (what we know as Haskell), and at runtime Haskell runs another, imperative program on our behalf.
+
+Consider listing the contents of a directory. Does the ls command contain the contents of the directory? No, of course not. When we run the ls command, it goes and gets the current contents the directory, but the ls command itself doesn’t have this data in it. The ls command is a function we have to call to get the data, and calling it again and again might return different results.
+
+In Haskell, this is modelled as a function. ls is akin to like this Hypothetical function.
+
+ls :: RealWorld -> ([String], RealWorld)
+
+In Javascript notation (that more people might be familiar with)
+
+func ls(realWorld) -> (Array<String>, RealWorld)
+
+We can use this function in our pure functional program, no issues. Let us say we want to write another function that counts the number of files in a directory. To do this, we might try doing
+
+lsCount = let filesArray = ls in length filesArray
+
+Equivalent-ish syntax
+
+func lsCount()  {
+   let files = ls()
+   return length(files)
+}
+
+That’s actually how it is done in most programming languages. but the above code won’t work in Haskell. Because ls takes an argument, which we’re not passing to it. So the actual ls function will be like
+
+func lsCount(realWorld) {
+    let files = ls(realWorld)
+    return length(files)
+}
+
+As you can imagine, passing this realWorld around becomes cumbersome, to the point of impractical, very soon. Which is why most programming languages just have a ls() function, or a random() function that you can call from anywhere.
+
+That’s where the monads come into the picture. The monad tutorial fallacy really is real, so I won’t even try to explain monads here. I’ll just leave it at - you can think of them as an elaborate macro system for passing this realWorld around (this is a completly incorrect description, but I didn’t want to fall in the common trap of highlighting the monad tutorial fallacy and then going to try and do a mini tutorial).
+
+In fact, that’s another similarity to React! React can be, and used to be, written by hand, but it gets cumbersome quite soon, so a part of the practical popularity of React comes because of JSX, which is an elaborate macro system too on top of JavaScript implemented using compilers like Babel that take the code that you write into the actual JovaScirpt code.
+
+This same pattern happened in SwiftUI. Since around Swift 4, the main driving force behind the priority log of language features (and I don’t think Apple will admit this publicly) has been changing the language itself so that SwiftUI can be expressed in it. A big part of this was something called “ViewBuilders”, which as you can think of, are analogous to the JSX babel thing React had going on.
+
+Similarly, Haskell special cases the IO monad too, adding language features like the do notation that make it simpler to write chains of monadic IO operations (I personally find that these make the code harder to read - the beauty of Haskell is that everything, literally, is an expression - IO too is an expression, it just needs to be evaluated before we can do anything with it).
+
+—
+
+This composability is not infinite. There are higher level patterns that are hard to copture in React (and by extension, in Flutter and SwiftUI). The most prominent one is navigation. Of course, people have built abstractions in React to make navigation more composable, and some work better than others (Flutter and SwiftUI are still struggling with it, since they’re reinventing the wheel), but nothing fully composes. That was my point that these abstractions are really reallly hard to find. It is very rare that programmers as a community happen to chance upon a truly composable abstraction. React was one of them, which is why I feel it is undeappreacetide.
+
+In the haskell world, this rears its head in the fact that monads are not composable (for the pitchforking Haskellers about to impale me - I mean monads are not composable the same way that two functors are). This leads to all sorts of attempts at composability - Monad Transformers, Effects - and some work better than others (depending on who you ask too), but nothing has the same sweetness that moggi provided to the Haskell community when he discovered that Monads can be used to capture effects, including IO.
+
+I’m not aware of React’s history, but as someone looking from outside, it has seemed to me that React has evolved, by experimentation and lots of real world use, to the state (pun intended) it is in today. On the other hand, with Haskell, while there was indubitable an element of experimental use involved, my understanding is the concept of monad arose from the mathematics of category theory.
+
+—-
+
+I don’t have a conclusion to draw. I like Haskell, I like how everything is a pure, lazily evaluated pure expression. To me, Haskell is the best lisp. SICP should be taught in Haskell at MIT. I also like React, and especially when used with Typescript, I love the sense of power it infuses me with - that I can build as arbitrarily complex UIs as I want without them folding under the weight of their combinatorialy explosion of their complexity.
+
+By highlighting the connection that I see between them, I hope I can get more people to appreciate both of them. They’re not the end all and be all of programming, but they’re rather special still indeed.
+
+If you’ve read all the way to the end, thank you!, and I hope you enjoyed reading.
+
+
+—
+
+
+
+
+
+
+
+
+——
+
+
+
+In this post, I will describe this connection. If you are already familiar with both Haskell and React, you might’ve already figured out what I’m talking about. However, the Venn diagram intersection of such people is (relatively speaking) very small, so I’ll try to elaborate on this connection.
+
+I admire Haskell for the way it does IO, and while much appreciated amongst experience Haskellers, I feel it is relatively less known about outside that community. I admire React for the simplicity of the ideas it brought, and while well know almost across the board in the web community, I feel it is relatively under appreciated, almost taken for granted, for what it is.
+
+So my goal is to make the Haskell IO methodology more well known, and (hopefully) get people to appreciate React more. Since I’m targeting all sorts of folks, I’ll have to build up a bit of background, so this post might be a bit longer than what I’d have liked, but I hope you find it enjoyable to read.
+
+
+
+
+ and before I understood what was going on, I used to think it is
+
+ goal in elaborating on this connection in more detail is to (a) popularise the (I think) brilliant way in which Haskell handles IO, and (b)
