@@ -1,13 +1,11 @@
 ---
-title: React and the IO monad
+title: React, SwiftUI, and the IO monad
 date: 2024-01-10
 description: Their common essence
 theme: paper
 layout: text
 tags:
     - tag: programming
-related:
-    - "/typescript-and-haskell"
 ---
 
 The IO monad in Haskell, and declarative style of UI programming popularized by
@@ -24,31 +22,30 @@ Let’s start with React. I feel React is under-appreciated. Every year there is
 someone who goes out and announces that React is dead. Every year React goes
 stronger. Its influence is so pervasive, almost transparent at this point, so
 much so that the people who’re dissing React often don’t realize that they
-themselves are using a framework which is also a (sometimes even WIP) copy of
+themselves are using a framework which is also a (sometimes WIP) copy of
 React.
 
-The basic insight of React is the oldest trick in the programming book - solving
-a problem by adding another level of indirection. Instead of writing the UI, let
-us write a description that'll then be used to generate the UI.
+The basic insight of React is the good old programming trick: solving a problem
+by adding a level of indirection. Instead of writing the UI, let us write a
+description that'll then be used to generate the UI.
 
 The unique bit with React is that our description is not meant as a DSL that
-simplifies writing the UI itself (though React does that too, with JSX). What it
-simplifies is managing state. The most important part of our description is the
-part where we explicitly tell React which UI element depends on which “source of
-truth”.
+simplifies writing the UI itself (though it also does that). What it simplifies
+is managing state. The most important part of our description is where we
+explicitly tell React which UI element depends on which “source of truth”.
 
 React then takes our description and creates the actual UI shown to the user. If
 we consider the UI as a tree of nested components, there are now _two_ trees:
 
-- the view tree (what we wrote)
-- the render tree (what React constructs from the view tree)
+-   the view tree (what we wrote)
+-   the render tree (what React constructs from the view tree)
 
 Since we explicitly told React what element in our view tree depends on which
 state, when the state changes, it knows exactly which part of the render tree it
 needs to update. Interestingly, the view tree doesn't change! (we'll see how
 this is similar to the Haskell way of doing IO).
 
-The thing we get out of all this roundaboutness is *composability*.
+The thing we get out of all this roundaboutness is _composability_.
 
 Many experienced programmers try to architect their code such that it is
 composable, because they know that once they have elements that can be composed
@@ -56,7 +53,7 @@ without thinking of the combinatorial explosion of the interaction between
 individual parts of the composition, they can build arbitrarily complex
 structures.
 
-So it is quite elementary, wanting composability. The issue is - composability
+So it is quite elementary, wanting composability. The issue is – composability
 is really, really, hard to get in practice. Seeking composability backfires
 often, and is one of the reasons why over-engineering happens — experienced
 programmers have experienced the power of composition, and want to recreate that
@@ -65,13 +62,12 @@ _quite_ compose, there is that leaky abstraction somewhere, and the end result
 is an over-engineered mess compared to what they could've written if they had
 eschewed the abstraction.
 
-What React was able to do was achieve this composability in practice.
+What React was able to do was achieve this composability in practice. And the
+proof of the pudding is the pie. The "React way" has not only consumed the web
+world, the two main ways of writing mobile UIs, SwiftUI and Flutter, are copies
+of React.
 
-The proof of the pudding is in the pie. The "React way" has not only consumed
-the web world, the two main ways of writing mobile UIs, SwiftUI and Flutter, are
-copies of React.
-
-Here is Hello world in React
+Here is hello world in React:
 
 {/* prettier-ignore */}
 ```js
@@ -82,7 +78,7 @@ function Counter() {
 }
 ```
 
-And here it is in SwiftUI
+In SwiftUI:
 
 ```swift
 struct Counter: View {
@@ -93,7 +89,7 @@ struct Counter: View {
 }
 ```
 
-And here in Flutter
+And in Flutter:
 
 ```dart
 class Counter extends StatefulWidget {
@@ -116,27 +112,32 @@ class _CounterState extends State<Counter> {
 Maybe you can see what I meant by the _WIP_ quip earlier.
 
 To be clear, there are many problems with React, the _library_, and great
-reasons to use an alternative. But React, the _idea_, has absolutely been
-revolutionary. In fact, React has been its own enemy in a sense - because of the
-composability it offers, people have been building bigger things with it at a
-faster rate than the surrounding ecosystem can provide the tools to handle.
+reasons to use an alternative. But React, the _idea_, has been revolutionary. In
+fact, React has been its own enemy in a sense - because of the composability it
+offers, people have been building bigger things with it at a faster rate than
+the surrounding ecosystem can provide the tools to handle, leading to programmer
+frustration.
+
+React, _the idea_, has a problem too - its simplicity is beguiling. Those of you
+who've been in shot at by well meaning but clueless consistency police with
+their state management silver bullets would know what I mean.
 
 ---
 
 As an aside, React didn’t click for me until I saw [this talk by Dan
 Abramov](https://www.youtube.com/watch?v=dpw9EHDh2bM&t=687). My mind was blown
-when I saw it: Watching it, as it sank it, I felt like I had gained a
+when I saw it. Watching it, as it sank in, I felt like I had gained a
 superpower, and that I could now build any UI that I wanted without worrying
 about it collapsing under its own combinatorial complexity.
 
-While hooks and function components are an evolution of the same library, to me
-there was something smothering about the class based approach. I feel it is only
-with function components that React, the idea, finally come to its full
-frutition.
+While hooks and function components are an evolution of the same concept, there
+was something smothering about the class based approach for me. I feel it is
+only with function components that React, the idea, finally come to its full
+fruition.
 
-There are traces of this division in the copies too. Flutter forked React before
-function components were the vibe, and so it still lives on in the class based
-(and in my opinion, inferior) approach. SwiftUI forked after function
+There are traces of this evolution in the copies too. Flutter forked React
+before function components were the vibe, and so it still lives on in the class
+based (and in my opinion, inferior) approach. SwiftUI forked after function
 components, and that’s the DNA it reflects.
 
 > At the surface level, SwiftUI might look like it uses the class based
@@ -146,31 +147,27 @@ components, and that’s the DNA it reflects.
 > thought of as equivalent to the stateless JavaScript functions that form
 > current day React components.
 
-All that said, a big shock for me was when someone I admire, and who is much
-more productive than me, said that they prefer the class based React components.
+All that said, a big shock for me was when someone I admire, and who is more
+productive than me, told me that they prefer the class based React components.
 They said they find those simpler to understand.
 
-I still don’t know what to make of it. It sort of undermines the core point of
-this whole article really - that great abstractions are priceless. I thought
-I’ll mention that anecdote to acknowledge that whatever I’m saying is far from a
-universally held opinion.
+I still don’t know what to make of it. It sort of undermines the point of my
+post really - that great abstractions are priceless. I thought I’ll mention that
+anecdote to acknowledge that whatever I’m saying is far from a universally held
+opinion.
 
 ---
 
 Haskell had a problem. How do you even do I/O in a purely functional language?
 
-To some, this might seem like an unsolvable problem. So much so that some
-people, including past me, thought it was an unsolvable problem even after
-having come into contact with Haskell - I thought that with all the IO monad
-shonad shenanigans, Haskellers were just trying to pull one on me.
+To some, and I was one of them, this might seem like an unsolvable problem.
+There just isn't a way to do referentially opaque IO operations in a pure
+language, right? So for the longest time I thought the IO monad shonad
+shenanigans are just obfuscation to hide this inability.
 
-After all, there just isn't a way to do a non-referentially-transparent IO
-operations in a pure language, right? So for the longest time I thought the IO
-monad stuff is just obfuscation to hide this inability.
-
-I was wrong. There is a way a purely functional program can deal with IO nicely.
-It is the same way React deals with state. We don’t write a program that does
-IO. We write a program that describes a second program that does the actual IO.
+I was wrong. There is a way a purely functional program can deal with IO. It is
+the same way React deals with state. Don’t write a program that does IO, write a
+program that describes a second program that does the actual IO.
 
 You see, Haskell is actually two languages, just like how React was two trees -
 a (pure) view tree and an (imperative) render tree. There is Haskell itself, the
@@ -180,12 +177,13 @@ Haskell compiler is smart enough to directly compile to machine code, but
 conceptually we can think of the Haskell program we write as driving the actions
 in a second, imperative program that actually gets executed.
 
-Consider listing the contents of a directory (thanks to #haskell IRC for this
-example). Does the ls command contain the contents of the directory? No, of
-course not. When we run the ls command, it goes and gets the current contents
-the directory, but the ls command itself doesn’t have this data in it. The ls
-command is a function we have to call to get the data, and calling it again and
-again might return different results.
+Consider listing the contents of a directory (shoutout to
+[/r/haskell](https://www.reddit.com/r/haskell/comments/18vkivp/comment/kfu9cfx/)
+for this example). Does the ls command contain the contents of the directory?
+No, of course not. When we run the ls command, it goes and gets the current
+contents the directory, but the ls command itself doesn’t have this data in it.
+The ls command is a thus like a function we have to call to get the data, and
+calling it again and again might return different results.
 
 In Haskell, this is modelled as the following (hypothetical) function, ls:
 
@@ -193,8 +191,8 @@ In Haskell, this is modelled as the following (hypothetical) function, ls:
 ls :: RealWorld -> ([String], RealWorld)
 ```
 
-Haskell notation might be unfamiliar to some of you, and the notation itself is
-not the focus here, so let me write it in a form that might be similar to the
+Haskell notation might be unfamiliar to some of you, and since the notation
+itself is not the focus here, let me write that in a form that is similar to the
 more conventional languages:
 
 ```
@@ -242,36 +240,35 @@ around.
 > want to fall in the common trap of highlighting the monad tutorial fallacy and
 > then going on to try and do a mini tutorial anyway.
 
-In fact, that’s another similarity to React. React can be written in full by
+In fact, that’s another similarity to React. React can be written out in full by
 hand, but it gets cumbersome quite soon, so a part of the practical popularity
 of React comes because of JSX, which is an elaborate macro system built on top
 of JavaScript. The "React-y code" we write, JSX, is transformed by compilers
 like Babel into the actual JavaScript that gets sent to the browser.
 
-This same pattern also happened in SwiftUI. Since around Swift 4, the main
-driving force behind the priority log of Swift language features (and I don’t
-think Apple will admit this publicly) has been changing the language enough so
-that SwiftUI can be expressed in it. For example, out of nowhere (it seemed at
-the time they were introduced), the Swift team added support for something
-called “ViewBuilders” which are (practically) necessary for writing SwiftUI in
-Swift, similar to how React practically needs JSX transformers.
+This same pattern also happened in SwiftUI. I feel that, since around Swift 4,
+the main driving force behind the priority log of Swift language features has
+been changing the language enough so that SwiftUI can be expressed in it. For
+example, out of nowhere (it seemed at the time they were introduced), the Swift
+team added support for something called “ViewBuilders” which were (practically)
+necessary for writing SwiftUI in Swift, similar to how React practically needs
+JSX transformers.
 
 ---
 
 This applicability of these concepts is not infinite. Certain higher level
 patterns, e.g. navigation, are hard to capture in React (and by extension, in
-Flutter and SwiftUI). Of course, people have come up with solutions, but it's
+SwiftUI and Flutter). Of course, people have come up with solutions, but it's
 not always entirely obvious how to go about it if one just uses the primitives
 that React offers.
 
 Similarly, in the Haskell world, such a limit rears its head in the fact that
-while monads enable composability, monads themselves are not composable (for any
-pitchforking Haskellers about to impale me - I mean monads are not composable
-the same way that two functors are). There have been all sorts of attempts at
-fixing this - Monad Transformers, Effect systems - and some work better than
-others (depending on who you ask too), but nothing really with the same "click"
-that Eugenio Moggi provided to the Haskell community when he discovered that
-Monads can be used to model effects like IO.
+while monads enable composability, monads _themselves_ are not composable (for
+any pitchforking Haskellers about to impale me: I mean monads are not composable
+the same way that, say, two functors, are). And here too, people have have come
+up with solutions - Monad Transformers, Effect systems - and some work better
+than others (depending on who you ask too), but they are extensions to the base
+simplicity with which monads model IO, not evolutions of it.
 
 Ending this post, I don’t have a conclusion to draw. I like Haskell, and to me,
 it is the best Lisp around today (even though it is not a Lisp); it is the
