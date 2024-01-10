@@ -56,6 +56,10 @@ const Content_ = styled(LinkStyleUnderlined)`
 
     ul {
         padding-inline-start: 2rem;
+        /* By default, uls are bulleted by filled discs. Use hollow circles
+           instead to reduce visual emphasis on them (probably not a good idea
+           always too, but maybe a better default for our content). */
+        list-style: circle;
     }
 
     hr {
