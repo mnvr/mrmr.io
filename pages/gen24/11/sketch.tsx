@@ -64,11 +64,8 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { cellState } = ensure(state);
 
-    const fill = cellState[cell.index];
-    if (fill === undefined) {
-        p5.fill("blue");
-    }
-    switch (fill) {
+    const cs = cellState[cell.index];
+    switch (cs) {
         case "black-up":
             p5.fill(color.black);
             p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
@@ -85,12 +82,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
             p5.fill(color.cream);
             p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
             break;
-        default:
-            p5.fill("transparent");
     }
 };
 
 export const sketch = gridSketch({
     drawCell,
     drawGrid,
+    staggered: true,
+    noLoop: true,
 });
