@@ -16,7 +16,7 @@ import {
  *
  * The grid is a staggered one, and each cell can be thought of as a rotated
  * square, half of which is drawn. Which half (upper, lower, or none) is drawn,
- * and in what color (black or grey) are properties of each cell.
+ * and in what color (black or cream) are properties of each cell.
  */
 interface State {
     /** The state of each cell (index) */
@@ -25,24 +25,23 @@ interface State {
 
 const color = {
     background: [215, 204, 180],
-    fillBlack: [20, 20, 17],
-    fillWarm: [196, 184, 163],
+    black: [20, 20, 17],
+    cream: [196, 184, 163],
 };
 
-type CellState = "none" | "black-down" | "black-up" | "grey-down" | "grey-up";
+type CellState = "none" | "black-down" | "black-up" | "cream-down" | "cream-up";
 
 const allCellStates: CellState[] = [
-    "none",
     "black-down",
     "black-up",
-    "grey-down",
-    "grey-up",
+    "cream-down",
+    "cream-up",
 ];
 
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     p5.randomSeed(5348);
     const randomCellState = () => {
-        const ri = p5.floor(p5.random() * allCellStates.length);
+        const ri = p5.floor(p5.random(allCellStates.length));
         return ensure(allCellStates[ri]);
     };
     const cellState: Record<number, CellState> = {};
@@ -57,8 +56,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
 
     p5.clear();
     p5.strokeWeight(0);
-    // p5.background(...color.background);
-    p5.background(...[215, 204, 180]);
+    p5.background(color.background);
 
     return newState;
 };
@@ -71,13 +69,25 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
         p5.fill("blue");
     }
     switch (fill) {
+        case "black-up":
+            p5.fill(color.black);
+            p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+            break;
         case "black-down":
-            p5.fill([20, 20, 17]);
+            p5.fill(color.black);
+            p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
+            break;
+        case "cream-up":
+            p5.fill(color.cream);
+            p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+            break;
+        case "cream-down":
+            p5.fill(color.cream);
+            p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
             break;
         default:
-            p5.fill("trasparent");
+            p5.fill("transparent");
     }
-    p5.rect(x, y, s, s);
 };
 
 export const sketch = gridSketch({
