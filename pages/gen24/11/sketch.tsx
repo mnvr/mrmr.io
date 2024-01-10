@@ -89,5 +89,6 @@ export const sketch = gridSketch({
     drawCell,
     drawGrid,
     staggered: true,
+    cellAspectRatio: 2,
     noLoop: true,
 });
