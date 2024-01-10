@@ -119,16 +119,16 @@ the surrounding ecosystem can provide the tools to handle, leading to programmer
 frustration.
 
 React, _the idea_, has a problem too - its simplicity is beguiling. Those of you
-who've been in shot at by well meaning but clueless consistency police with
-their state management silver bullets would know what I mean.
+who've been shot by well meaning but clueless consistency police with their
+state management silver bullets would know what I mean.
 
 ---
 
 As an aside, React didn’t click for me until I saw [this talk by Dan
-Abramov](https://www.youtube.com/watch?v=dpw9EHDh2bM&t=687). My mind was blown
-when I saw it. Watching it, as it sank in, I felt like I had gained a
-superpower, and that I could now build any UI that I wanted without worrying
-about it collapsing under its own combinatorial complexity.
+Abramov](https://www.youtube.com/watch?v=dpw9EHDh2bM&t=687). As it sank in, I
+felt like I had gained a superpower, and that I could now build any UI that I
+wanted without worrying about it collapsing under its own combinatorial
+complexity.
 
 While hooks and function components are an evolution of the same concept, there
 was something smothering about the class based approach for me. I feel it is
@@ -177,7 +177,7 @@ Haskell compiler is smart enough to directly compile to machine code, but
 conceptually we can think of the Haskell program we write as driving the actions
 in a second, imperative program that actually gets executed.
 
-Consider listing the contents of a directory (shoutout to
+Consider listing the contents of a directory (shout-out to
 [/r/haskell](https://www.reddit.com/r/haskell/comments/18vkivp/comment/kfu9cfx/)
 for this example). Does the ls command contain the contents of the directory?
 No, of course not. When we run the ls command, it goes and gets the current
@@ -220,21 +220,23 @@ func lsCount(realWorld) {
 }
 ```
 
-> And what even is this real world? If you're interested in more details, there
-> is a much better explanation of what's going on with Haskell IO [in this
-> excellent post](http://www.chriswarbo.net/blog/2017-07-13-state_in_fp.html)
+> And what even is this real world? Nothing! It is just an empty placeholder
+> type to ensure that the compiler sequences IO operations in the correct order.
+>
+> If you're interested, there is a much better explanation of what's going on
+> with Haskell IO [in this excellent
+> post](http://www.chriswarbo.net/blog/2017-07-13-state_in_fp.html)
 
 As you can imagine, passing this `realWorld` around becomes cumbersome, to the
 point of impractical, very soon. Which is why most programming languages just
 have a `ls()` function (or, say, a `random()`) function that you can call from
 anywhere without giving it any input, and can still expecting a different output
-(those are not pure functions thus).
+(and that is why those are not pure functions).
 
 That’s where monads come into the picture. [The monad tutorial
 fallacy](https://byorgey.wordpress.com/2009/01/12/abstraction-intuition-and-the-monad-tutorial-fallacy/)
-really is real, so I won’t try to explain monads here. I’ll just leave it at -
-you can think of them as an elaborate macro system for passing this `realWorld`
-around.
+is real, so I won’t try to explain monads here. I’ll just leave it at - you can
+think of them as an elaborate macro system for passing this `realWorld` around.
 
 > This is an incorrect description of monads in more ways than one, but I didn’t
 > want to fall in the common trap of highlighting the monad tutorial fallacy and
@@ -250,7 +252,7 @@ This same pattern also happened in SwiftUI. I feel that, since around Swift 4,
 the main driving force behind the priority log of Swift language features has
 been changing the language enough so that SwiftUI can be expressed in it. For
 example, out of nowhere (it seemed at the time they were introduced), the Swift
-team added support for something called “ViewBuilders” which were (practically)
+team added support for something called “ViewBuilders” which were practically
 necessary for writing SwiftUI in Swift, similar to how React practically needs
 JSX transformers.
 
@@ -263,7 +265,7 @@ not always entirely obvious how to go about it if one just uses the primitives
 that React offers.
 
 Similarly, in the Haskell world, such a limit rears its head in the fact that
-while monads enable composability, monads _themselves_ are not composable (for
+_while_ monads enable composability, monads _themselves_ are not composable (for
 any pitchforking Haskellers about to impale me: I mean monads are not composable
 the same way that, say, two functors, are). And here too, people have have come
 up with solutions - Monad Transformers, Effect systems - and some work better
