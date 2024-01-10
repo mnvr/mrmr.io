@@ -526,16 +526,15 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
  * In fact, we wouldn't even need this separate customA component then (though
  * it still might be useful as a place to put the above documentation).
  *
- * However, the above causes TypeScript to complain about the types. I don't
- * quite understand the error it pointing at - the types seem to mostly match
- * except for an extra undefined. It _seems_ to me that the error is related to
- * this issue:
+ * However, the above causes TypeScript to complain about the types. The issue
+ * is that React.FC does not return a ReactNode:
  *
  * https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18051
  *
- * Which also I don't fully understand. However, the workaround mentioned in
- * some of the comments there - explicitly typing the props instead of using
- * React.FC - works for us too, and makes tsc happy.
+ * I don't fully understand how that's playing out here, but the workaround
+ * mentioned in some of the comments there - explicitly typing the props instead
+ * of using React.FC - works. Another workaround mentioned there that would've
+ * alternatively used was to wrap the return value of `customA` in a fragment.
  */
 const customA = (
     props: React.DetailedHTMLProps<
