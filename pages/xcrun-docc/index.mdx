@@ -190,9 +190,13 @@ It didn't work, but the error changed
 
 > The page you're looking for can't be found.
 
+<div style={{wordBreak: "break-all"}}>
+
 When I look more closely, the preview URL that `docc` printed on the Terminal
 now changed, and now has an additional path component. If I open
 _http://localhost:8080/documentation/technologyx_ instead, it works!
+
+</div>
 
 Let's try this on our original file too. Let's go back to our project, delete
 the `Documentation.docc` that we were tinkering with, and recreate it from
