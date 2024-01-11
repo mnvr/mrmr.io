@@ -1,7 +1,7 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
 import type { CellShader, Grid, GridShader } from "../grid";
-import { cellIndex, gridSketch } from "../grid";
+import { cellIndex, gridSketch, maybeCellIndex } from "../grid";
 
 /**
  * Sketch description
@@ -53,9 +53,10 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     /* DRXVII */
     p5.randomSeed(17);
 
-    const randomCellState = () => {
-        const ri = p5.floor(p5.random(allCellStates.length));
-        return ensure(allCellStates[ri]);
+    const randomCellState = (): CellState | undefined => {
+        // Index beyond the array size, we don't want all cells to be filled.
+        const ri = p5.floor(p5.random(allCellStates.length + 1));
+        return allCellStates[ri];
     };
 
     const cellState: Record<number, CellState> = {};
@@ -63,19 +64,21 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     for (let row = 2; row < grid.rowCount - 1; row += 1) {
         for (let col = 2; col < grid.colCount - 2; col += 1) {
             let cs = randomCellState();
-            // Increase the probability of facing the same direction as one of
-            // the cells (diagonally) above us.
-            // TODO: Remove this?
-            if (p5.random() < 0.0) {
-                // const ul = maybeCellIndex({ row: row - 2, col: col }, grid);
-                // if (ul) {
-                //     const upLeft = cellState[ul];
-                //     if (upLeft) {
-                //         cs.direction = upLeft.direction;
-                //     }
-                // }
+            if (cs) {
+                // We don't want two opposite facing triangles to join up and
+                // form a square. So if we find that we're facing the opposite
+                // direction of the cell exactly above us, don't use this cell.
+                const pi = maybeCellIndex({ row: row - 1, col: col }, grid);
+                if (pi !== undefined) {
+                    const ps = cellState[pi];
+                    if (ps !== undefined) {
+                        if (ps.direction !== cs.direction) {
+                            cs = undefined;
+                        }
+                    }
+                }
             }
-            cellState[cellIndex({ row, col }, grid)] = cs;
+            if (cs) cellState[cellIndex({ row, col }, grid)] = cs;
         }
     }
 
