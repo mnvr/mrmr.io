@@ -187,20 +187,22 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     // half a cell width to the right.
     let ax = isStaggeredRow(cell.row) ? x + w / 2 : x;
     let aw = w;
-    if (j1 < 4) ax += 1;
+    if (j1 < 1) ax += 1;
     if (j1 > 8) ax -= 1;
-    if (j2 < 4) aw += 1;
+    if (j2 > 8) aw -= 2;
+    if (j2 < 4) aw += 2;
 
-    let ay = y;
-    if (j1 > 8) ay += 1;
-    if (j2 < 5) ay -= 1;
+    const ay = y;
+    let ah = h;
+    if (j1 > 8) ah += 1;
+    if (j2 < 5) ah -= 1;
 
     if (direction === "up") {
-        p5.triangle(ax, ay + h, ax + aw / 2, ay, ax + aw, ay + h);
+        p5.triangle(ax, ay + ah, ax + aw / 2, ay, ax + aw, ay + ah);
     }
 
     if (direction === "down") {
-        p5.triangle(ax, ay, ax + aw / 2, ay + h, ax + aw, ay);
+        p5.triangle(ax, ay, ax + aw / 2, ay + ah, ax + aw, ay);
     }
 };
 
