@@ -10,8 +10,9 @@ import { cellIndex, gridSketch } from "../grid";
  * A recreation of Anni Albers' DRXVII.
  *
  * The grid is a staggered one, and each cell can be thought of as a rotated
- * square, half of which is drawn. Which half (upper, lower, or none) is drawn,
- * and in what color (black or cream) are properties of each cell.
+ * square, in half of which a triangle is drawn. Which half (upper, lower),
+ * facing which direction (up, down), and in what color (black or cream): these
+ * are properties of each cell.
  *
  * The properties of the cells are randomly picked but with a fixed seed. We
  * also increase the chances of a cell facing the same direction as one of the
@@ -29,18 +30,27 @@ const color = {
 };
 
 interface CellState {
-    quadrant: Quadrant;
+    /** Which half of the cell are we drawing the  */
+    half: Half;
+    /** Which direction is the triangle pointing */
+    direction: Direction;
+    /** The color to fill the triangle in (one of {@link color} values) */
     color: number[];
 }
 
-type Quadrant = "E" | "W" | "N" | "S";
-const allQuadrants: Quadrant[] = ["E", "W", "N", "S"];
+type Half = "top" | "bottom";
+const allHalfs: Half[] = ["top", "bottom"];
+
+type Direction = "up" | "down";
+const allDirections: Direction[] = ["up", "down"];
 
 const allCellStates: CellState[] = (() => {
     let result: CellState[] = [];
-    for (const q of allQuadrants) {
-        for (const c of [color.black, color.cream]) {
-            result.push({ quadrant: q, color: c });
+    for (const h of allHalfs) {
+        for (const d of allDirections) {
+            for (const c of [color.black, color.cream]) {
+                result.push({ half: h, direction: d, color: c });
+            }
         }
     }
     return result;
@@ -95,27 +105,32 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const cs = cellState[cell.index];
     if (cs === undefined) return;
 
-    p5.fill(cs.color);
+    const { half, direction, color } = cs;
+    p5.fill(color);
 
-    switch (cs.quadrant) {
-        case "E":
-            break;
-        case "W":
-            break;
-        case "N":
-            p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
-            break;
-        case "S":
-            p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
-            break;
+    if (half === "top" && direction === "up") {
+        p5.triangle(x, y + h / 2, x + w / 2, y, x + w, y + h / 2);
+    }
+
+    if (half === "bottom" && direction === "up") {
+        p5.triangle(x, y + h, x + w / 2, y + h / 2, x + w, y + h);
+    }
+
+    if (half === "top" && direction === "down") {
+        p5.triangle(x, y, x + w / 2, y + h / 2, x + w, y);
+    }
+
+    if (half === "bottom" && direction === "down") {
+        p5.triangle(x, y + h / 2, x + w / 2, y + h, x + w, y + h / 2);
     }
 };
 
 export const sketch = gridSketch({
     drawCell,
     drawGrid,
-    staggered: true,
+    // staggered: true,
     // rug cells are 65 x 71
     cellAspectRatio: 0.91,
     noLoop: true,
+    // showGuides: true,
 });
