@@ -61,26 +61,36 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     return newState;
 };
 
-const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
+const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const { cellState } = ensure(state);
 
     const cs = cellState[cell.index];
+    if (cell.index === 0) {
+        console.log(s, w, h);
+    }
+
+    /* turtle */
+    const black = () => p5.fill(color.black);
+    const cream = () => p5.fill(color.cream);
+    const up = () => p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+    const down = () => p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
+
     switch (cs) {
         case "black-up":
-            p5.fill(color.black);
-            p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+            black();
+            up();
             break;
         case "black-down":
-            p5.fill(color.black);
-            p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
+            black();
+            down();
             break;
         case "cream-up":
-            p5.fill(color.cream);
-            p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+            cream();
+            up();
             break;
         case "cream-down":
-            p5.fill(color.cream);
-            p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
+            cream();
+            down();
             break;
     }
 };
