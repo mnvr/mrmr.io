@@ -35,23 +35,22 @@ interface CellState {
     direction: Direction;
     /** The color to fill the triangle in (one of {@link color} values) */
     color: number[];
+    /** A random jitter associated with the cell */
+    jitter: number;
 }
 
 type Direction = "up" | "down";
 const allDirections: Direction[] = ["up", "down"];
 
 const allCellStates: CellState[] = (() => {
+    const cb = color.black;
+    const cc = color.cream;
+
     let result: CellState[] = [];
     for (const d of allDirections) {
         // Increase the probability of a cream
-        for (const c of [
-            color.black,
-            color.cream,
-            color.black,
-            color.cream,
-            color.cream,
-        ]) {
-            result.push({ direction: d, color: c });
+        for (const c of [cb, cc, cb, cc, cc]) {
+            result.push({ direction: d, color: c, jitter: 0 });
         }
     }
     return result;
@@ -82,7 +81,9 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
      */
     const randomCellState = (): CellState => {
         const ri = p5.floor(p5.random(allCellStates.length));
-        return ensure(allCellStates[ri]);
+        const cs = ensure(allCellStates[ri]);
+        // Add jitter
+        return { ...cs, jitter: p5.random() };
     };
 
     const cellState: Record<number, CellState> = {};
@@ -176,19 +177,30 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const cs = cellState[cell.index];
     if (cs === undefined) return;
 
-    // Adjust the x value for all cells on a staggered row, shifting them by
-    // half a cell width to the right.
-    const ax = isStaggeredRow(cell.row) ? x + w / 2 : x;
-
-    const { direction, color } = cs;
+    const { direction, color, jitter } = cs;
     p5.fill(color);
 
+    const j1 = Math.floor(jitter * 10);
+    const j2 = Math.floor((jitter * 100) % 10);
+
+    // Adjust the x value for all cells on a staggered row, shifting them by
+    // half a cell width to the right.
+    let ax = isStaggeredRow(cell.row) ? x + w / 2 : x;
+    let aw = w;
+    if (j1 < 4) ax += 1;
+    if (j1 > 8) ax -= 1;
+    if (j2 < 4) aw += 1;
+
+    let ay = y;
+    if (j1 > 8) ay += 1;
+    if (j2 < 5) ay -= 1;
+
     if (direction === "up") {
-        p5.triangle(ax, y + h, ax + w / 2, y, ax + w, y + h);
+        p5.triangle(ax, ay + h, ax + aw / 2, ay, ax + aw, ay + h);
     }
 
     if (direction === "down") {
-        p5.triangle(ax, y, ax + w / 2, y + h, ax + w, y);
+        p5.triangle(ax, ay, ax + aw / 2, ay + h, ax + aw, ay);
     }
 };
 
