@@ -72,8 +72,9 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     /* turtle */
     const black = () => p5.fill(color.black);
     const cream = () => p5.fill(color.cream);
-    const up = () => p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
-    const down = () => p5.triangle(x, y, x + s, y, x + s / 2, y + s / 2);
+    // const up = () => p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
+    const up = () => p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
+    const down = () => p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
 
     switch (cs) {
         case "black-up":
@@ -99,6 +100,6 @@ export const sketch = gridSketch({
     drawCell,
     drawGrid,
     staggered: true,
-    cellAspectRatio: 2,
+    cellAspectRatio: 0.9,
     noLoop: true,
 });
