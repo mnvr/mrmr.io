@@ -178,10 +178,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     if (cs === undefined) return;
 
     const { direction, color, jitter } = cs;
-    p5.fill(color);
 
     const j1 = Math.floor(jitter * 10);
     const j2 = Math.floor((jitter * 100) % 10);
+
+    let ac = color;
+    if (j2 < 3) {
+        ac = color.map((c) => c - 4);
+    }
+
+    p5.fill(ac);
 
     // Adjust the x value for all cells on a staggered row, shifting them by
     // half a cell width to the right.
