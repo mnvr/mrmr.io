@@ -1,7 +1,7 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
 import type { CellShader, Grid, GridShader } from "../grid";
-import { cellIndex, gridSketch, maybeCellIndex } from "../grid";
+import { cellIndex, gridSketch } from "../grid";
 
 /**
  * Sketch description
@@ -29,16 +29,22 @@ const color = {
 };
 
 interface CellState {
-    direction: "up" | "down";
+    quadrant: Quadrant;
     color: number[];
 }
 
-const allCellStates: CellState[] = [
-    { direction: "up", color: color.black },
-    { direction: "down", color: color.black },
-    { direction: "up", color: color.cream },
-    { direction: "down", color: color.cream },
-];
+type Quadrant = "E" | "W" | "N" | "S";
+const allQuadrants: Quadrant[] = ["E", "W", "N", "S"];
+
+const allCellStates: CellState[] = (() => {
+    let result: CellState[] = [];
+    for (const q of allQuadrants) {
+        for (const c of [color.black, color.cream]) {
+            result.push({ quadrant: q, color: c });
+        }
+    }
+    return result;
+})();
 
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     /* DRXVII */
@@ -58,13 +64,13 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
             // the cells (diagonally) above us.
             // TODO: Remove this?
             if (p5.random() < 0.0) {
-                const ul = maybeCellIndex({ row: row - 1, col: col + 1 }, grid);
-                if (ul) {
-                    const upLeft = cellState[ul];
-                    if (upLeft) {
-                        cs.direction = upLeft.direction;
-                    }
-                }
+                // const ul = maybeCellIndex({ row: row - 2, col: col }, grid);
+                // if (ul) {
+                //     const upLeft = cellState[ul];
+                //     if (upLeft) {
+                //         cs.direction = upLeft.direction;
+                //     }
+                // }
             }
             cellState[cellIndex({ row, col }, grid)] = cs;
         }
@@ -91,10 +97,17 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
 
     p5.fill(cs.color);
 
-    if (cs.direction === "up") {
-        p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
-    } else if (cs.direction === "down") {
-        p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
+    switch (cs.quadrant) {
+        case "E":
+            break;
+        case "W":
+            break;
+        case "N":
+            p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
+            break;
+        case "S":
+            p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
+            break;
     }
 };
 
