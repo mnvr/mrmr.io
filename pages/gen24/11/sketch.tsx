@@ -50,18 +50,23 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
 
     const cellState: Record<number, CellState> = {};
 
-    for (let row = 0; row < grid.rowCount; row += 1) {
-        for (let col = 0; col < grid.colCount; col += 1) {
+    // We don't want to draw in the (partially visible) edges, so skip the 0th
+    // and the last values for row and col.
+    for (let row = 1; row < grid.rowCount - 1; row += 1) {
+        for (let col = 1; col < grid.colCount - 1; col += 1) {
             let cs = randomCellState();
             // Increase the probability of facing the same direction as one of
             // the cells (diagonally) above us.
-            if (p5.random() < 0.05) {
-                const upLeft = maybeCellIndex({ row: row - 1, col: col + 1 }, grid);
-                if (upLeft) {
-                    cs.direction = ensure(cellState[upLeft]).direction
+            if (p5.random() < 0.03) {
+                const ul = maybeCellIndex({ row: row - 1, col: col + 1 }, grid);
+                if (ul) {
+                    const upLeft = cellState[ul];
+                    if (upLeft) {
+                        cs.direction = upLeft.direction;
+                    }
                 }
             }
-            cellState[cellIndex({ row, col }, grid)] = cs
+            cellState[cellIndex({ row, col }, grid)] = cs;
         }
     }
 
