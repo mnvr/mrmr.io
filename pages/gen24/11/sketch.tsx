@@ -49,6 +49,19 @@ const allCellStates: CellState[] = (() => {
     return result;
 })();
 
+/**
+ * Instead of a fixed staggering pattern where we stagger alternate rows, do a
+ * more unpredictable staggering.
+ *
+ * These (zero-based) indexes are is taken from the rug itself, and need to be
+ * adjusted for the fact that we don't start drawing from the edges, but leave
+ * some initial rows empty.
+ */
+const staggeredRows = [1, 6, 9, 11, 13, 17, 19, 22, 25];
+
+const startRow = 2;
+const isStaggeredRow = (row: number) => staggeredRows.includes(row - startRow);
+
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     /* DRXVII */
     p5.randomSeed(17);
@@ -61,19 +74,33 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
 
     const cellState: Record<number, CellState> = {};
 
-    for (let row = 2; row < grid.rowCount - 1; row += 1) {
+    for (let row = startRow; row < grid.rowCount - 1; row += 1) {
         for (let col = 2; col < grid.colCount - 2; col += 1) {
             let cs = randomCellState();
             if (cs) {
                 // We don't want two opposite facing triangles to join up and
                 // form a square. So if we find that we're facing the opposite
                 // direction of the cell exactly above us, don't use this cell.
-                const pi = maybeCellIndex({ row: row - 1, col: col }, grid);
+
+                // Which cell to check depends on if we're staggered
+                const pc = isStaggeredRow(row) ? col - 1 : col;
+                let pi = maybeCellIndex({ row: row - 1, col: pc }, grid);
                 if (pi !== undefined) {
                     const ps = cellState[pi];
                     if (ps !== undefined) {
                         if (ps.direction !== cs.direction) {
                             cs = undefined;
+                        }
+                    }
+                }
+                if (cs || false) {
+                    pi = maybeCellIndex({ row: row - 1, col: col - 1 }, grid);
+                    if (pi !== undefined) {
+                        const ps = cellState[pi];
+                        if (ps !== undefined) {
+                            if (ps.direction !== cs.direction) {
+                                cs = undefined;
+                            }
                         }
                     }
                 }
@@ -101,16 +128,20 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const cs = cellState[cell.index];
     if (cs === undefined) return;
 
+    // Adjust the x value for all cells on a staggered row, shifting them by
+    // half a cell width to the right.
+    const ax = isStaggeredRow(cell.row) ? x + w / 2 : x;
+
     console.log(s, w, h);
     const { direction, color } = cs;
     p5.fill(color);
 
     if (direction === "up") {
-        p5.triangle(x, y + h, x + w / 2, y, x + w, y + h);
+        p5.triangle(ax, y + h, ax + w / 2, y, ax + w, y + h);
     }
 
     if (direction === "down") {
-        p5.triangle(x, y, x + w / 2, y + h, x + w, y);
+        p5.triangle(ax, y, ax + w / 2, y + h, ax + w, y);
     }
 };
 
