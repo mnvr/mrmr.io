@@ -1,12 +1,7 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
-import {
-    cellIndex,
-    gridSketch,
-    type CellShader,
-    type Grid,
-    type GridShader,
-} from "../grid";
+import type { CellShader, Grid, GridShader } from "../grid";
+import { cellIndex, gridSketch } from "../grid";
 
 /**
  * Sketch description
@@ -17,9 +12,13 @@ import {
  * The grid is a staggered one, and each cell can be thought of as a rotated
  * square, half of which is drawn. Which half (upper, lower, or none) is drawn,
  * and in what color (black or cream) are properties of each cell.
+ *
+ * The properties of the cells are randomly picked but with a fixed seed. We
+ * also increase the chances of a cell facing the same direction as one of the
+ * cells above it.
  */
 interface State {
-    /** The state of each cell (index) */
+    /** The state of each cell, indexed by the cell's index */
     cellState: Record<number, CellState>;
 }
 
@@ -43,11 +42,14 @@ const allCellStates: CellState[] = [
 
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     p5.randomSeed(5348);
+
     const randomCellState = () => {
         const ri = p5.floor(p5.random(allCellStates.length));
         return ensure(allCellStates[ri]);
     };
+
     const cellState: Record<number, CellState> = {};
+
     for (let row = 0; row < grid.rowCount; row += 1) {
         for (let col = 0; col < grid.colCount; col += 1) {
             cellState[cellIndex({ row, col }, grid)] = randomCellState();
@@ -55,6 +57,7 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
             // the cells (diagonally) above us.
         }
     }
+
     return { cellState };
 };
 
@@ -72,28 +75,14 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const { cellState } = ensure(state);
 
     const cs = cellState[cell.index];
-    if (cell.index === 0) {
-        console.log(s, w, h);
-    }
+    if (cs === undefined) return;
 
-    /* turtle */
-    const black = () => p5.fill(color.black);
-    const cream = () => p5.fill(color.cream);
-    // const up = () => p5.triangle(x, y, x + s / 2, y - s / 2, x + s, y);
-    const up = () => p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
-    const down = () => p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
+    p5.fill(cs.color);
 
-    if (cs?.color !== undefined) {
-        p5.fill(cs.color);
-    }
-
-    switch (cs?.direction) {
-        case "up":
-            up();
-            break;
-        case "down":
-            down();
-            break;
+    if (cs.direction === "up") {
+        p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
+    } else if (cs.direction === "down") {
+        p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
     }
 };
 
