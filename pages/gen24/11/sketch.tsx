@@ -1,4 +1,5 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
+import { assert } from "utils/assert";
 import { ensure } from "utils/ensure";
 import type { CellCoordinate, CellShader, Grid, GridShader } from "../grid";
 import { cellIndex, gridSketch, maybeCellIndex } from "../grid";
@@ -89,7 +90,7 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
      * the cell above us. In such cases we'll not create a new cell then, to
      * avoid the clash.
      */
-    const skip = (cell: CellCoordinate, direction: Direction) => {
+    const isClashing = (cell: CellCoordinate, direction: Direction) => {
         let i = maybeCellIndex(cell, grid);
         if (i === undefined) return false;
         const s = cellState[i];
@@ -100,24 +101,50 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     };
 
     for (let row = startRow; row < grid.rowCount - 1; row += 1) {
+        // true if the current row is staggered.
+        const sc = isStaggeredRow(row);
+        // true if the previous row is staggered.
+        const sp = isStaggeredRow(row - 1);
+
         for (let col = 2; col < grid.colCount - 2; col += 1) {
             let cs: CellState | undefined = randomCellState();
             const d = cs.direction;
 
             // We don't want two opposite facing triangles to join up.
-            //
+
+            // A convenience function to avoid specifying parameters in full.
+            const skip = (c: number) => isClashing({ row: row - 1, col: c }, d);
+
             // Which cells to check for a clash (due to an opposite facing
             // triangle) depends on if we're staggered or our predecessor is
             // staggered. No fancy insight here, just enumerate the scenarios.
-            const pc = isStaggeredRow(row)
-                ? col + 1
-                : isStaggeredRow(row - 1)
-                  ? col - 1
-                  : col;
 
-            if (skip({ row: row - 1, col: pc }, d)) {
-                cs = undefined;
+            // If neither of us nor previous is staggered, check only for the
+            // exact cell above us.
+            if (!sc && !sp) {
+                if (skip(col)) cs = undefined;
             }
+
+            // If we staggered, but the previous one is not staggered, check for
+            // the cells to our left (which'll have the same col as us) and to
+            // our right (which'll have col + 1).
+            if (sc && !sp) {
+                if (skip(col)) cs = undefined;
+                if (skip(col + 1)) cs = undefined;
+            }
+
+            // If we're not staggered, but the previous one is staggered, check
+            // for the cells to our left (which'll have col - 1) and to our
+            // right (which'll have the same col as us).
+            if (!sc && sp) {
+                if (skip(col - 1)) cs = undefined;
+                if (skip(col)) cs = undefined;
+            }
+
+            // Both of us being staggered is not going to happen in the current
+            // setup, as we manually specify the staggered rows and none of them
+            // are contiguous.
+            assert(!(sc && sp));
 
             if (cs) cellState[cellIndex({ row, col }, grid)] = cs;
         }
