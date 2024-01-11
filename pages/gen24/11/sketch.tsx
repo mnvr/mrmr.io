@@ -43,7 +43,14 @@ const allDirections: Direction[] = ["up", "down"];
 const allCellStates: CellState[] = (() => {
     let result: CellState[] = [];
     for (const d of allDirections) {
-        for (const c of [color.black, color.cream]) {
+        // Increase the probability of a cream
+        for (const c of [
+            color.black,
+            color.cream,
+            color.black,
+            color.cream,
+            color.cream,
+        ]) {
             result.push({ direction: d, color: c });
         }
     }
@@ -100,13 +107,13 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
         return s.direction !== direction;
     };
 
-    for (let row = startRow; row < grid.rowCount - 1; row += 1) {
+    for (let row = startRow; row < grid.rowCount - 2; row += 1) {
         // true if the current row is staggered.
         const sc = isStaggeredRow(row);
         // true if the previous row is staggered.
         const sp = isStaggeredRow(row - 1);
 
-        for (let col = 2; col < grid.colCount - 2; col += 1) {
+        for (let col = 1; col < grid.colCount - 1; col += 1) {
             let cs: CellState | undefined = randomCellState();
             const d = cs.direction;
 
@@ -173,7 +180,6 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     // half a cell width to the right.
     const ax = isStaggeredRow(cell.row) ? x + w / 2 : x;
 
-    console.log(s, w, h);
     const { direction, color } = cs;
     p5.fill(color);
 
@@ -189,9 +195,8 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
 export const sketch = gridSketch({
     drawCell,
     drawGrid,
-    // staggered: true,
+    n: 15,
     // Cells on the rug are (around, not exactly) 66 x 33
     cellAspectRatio: 2,
     noLoop: true,
-    // showGuides: true,
 });
