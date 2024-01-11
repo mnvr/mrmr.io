@@ -1,7 +1,7 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
 import type { CellShader, Grid, GridShader } from "../grid";
-import { cellIndex, gridSketch } from "../grid";
+import { cellIndex, gridSketch, maybeCellIndex } from "../grid";
 
 /**
  * Sketch description
@@ -52,9 +52,16 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
 
     for (let row = 0; row < grid.rowCount; row += 1) {
         for (let col = 0; col < grid.colCount; col += 1) {
-            cellState[cellIndex({ row, col }, grid)] = randomCellState();
+            let cs = randomCellState();
             // Increase the probability of facing the same direction as one of
             // the cells (diagonally) above us.
+            if (p5.random() < 0.05) {
+                const upLeft = maybeCellIndex({ row: row - 1, col: col + 1 }, grid);
+                if (upLeft) {
+                    cs.direction = ensure(cellState[upLeft]).direction
+                }
+            }
+            cellState[cellIndex({ row, col }, grid)] = cs
         }
     }
 

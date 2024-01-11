@@ -166,11 +166,29 @@ export interface CellShaderParams<S> {
  *
  * The returned index will be the same index that will be passed to
  * {@link drawCell} when drawing the corresponding cell.
+ *
+ * @see {@link maybeCellIndex} for a variant that checks the bounds.
  */
 export const cellIndex = (
     { row, col }: CellCoordinate,
     { colCount }: GridSize,
 ): number => colCount * row + col;
+
+/**
+ * A variant of {@link cellIndex} that first checks to see if the given cell is
+ * inside the bounds of the grid.
+ *
+ * @returns `undefined` if the cell index is out of bounds. Otherwise returns
+ * the same index that {@link cellIndex} would've returned.
+ */
+export const maybeCellIndex = (
+    { row, col }: CellCoordinate,
+    { rowCount, colCount }: GridSize,
+): number | undefined => {
+    if (row < 0 || row >= rowCount || col < 0 || col >= colCount)
+        return undefined;
+    return colCount * row + col;
+};
 
 /**
  * A function that is called once (per frame) for doing any background drawing
