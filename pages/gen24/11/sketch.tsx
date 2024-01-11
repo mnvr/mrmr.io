@@ -1,6 +1,6 @@
 import type { P5CanvasInstance } from "@p5-wrapper/react";
 import { ensure } from "utils/ensure";
-import type { CellShader, Grid, GridShader } from "../grid";
+import type { CellCoordinate, CellShader, Grid, GridShader } from "../grid";
 import { cellIndex, gridSketch, maybeCellIndex } from "../grid";
 
 /**
@@ -66,13 +66,39 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     /* DRXVII */
     p5.randomSeed(17);
 
+    /**
+     * Return a randomly initialized cell
+     *
+     * The function is marked as returning an optional, but the current
+     * implementation always returns a cell state - we leave it to the direction
+     * pruning rules to create the gaps.
+     */
     const randomCellState = (): CellState | undefined => {
-        // Index beyond the array size, we don't want all cells to be filled.
-        const ri = p5.floor(p5.random(allCellStates.length + 1));
+        const ri = p5.floor(p5.random(allCellStates.length));
         return allCellStates[ri];
     };
 
     const cellState: Record<number, CellState> = {};
+
+    /**
+     * Return `true` if the (already filled-in) cell state corresponding to the
+     * given `cell` has the opposite to the given `direction`, and would
+     * therefore cause a clash.
+     *
+     * We don't want two opposite facing triangles to join up and form a square.
+     * So this check is used to find if we're facing the opposite direction of
+     * the cell above us. In such cases we'll not create a new cell then, to
+     * avoid the clash.
+     */
+    const isClashing = (cell: CellCoordinate, direction: Direction) => {
+        let i = maybeCellIndex(cell, grid);
+        if (i === undefined) return false;
+        const s = cellState[i];
+        if (s === undefined) return false;
+        // They clash if they have opposite directions. Since there are only two
+        // directions, we can just check for inequality.
+        return s.direction !== direction;
+    };
 
     for (let row = startRow; row < grid.rowCount - 1; row += 1) {
         for (let col = 2; col < grid.colCount - 2; col += 1) {
@@ -83,26 +109,14 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
                 // direction of the cell exactly above us, don't use this cell.
 
                 // Which cell to check depends on if we're staggered
-                const pc = isStaggeredRow(row) ? col - 1 : col;
-                let pi = maybeCellIndex({ row: row - 1, col: pc }, grid);
-                if (pi !== undefined) {
-                    const ps = cellState[pi];
-                    if (ps !== undefined) {
-                        if (ps.direction !== cs.direction) {
-                            cs = undefined;
-                        }
-                    }
-                }
-                if (cs || false) {
-                    pi = maybeCellIndex({ row: row - 1, col: col - 1 }, grid);
-                    if (pi !== undefined) {
-                        const ps = cellState[pi];
-                        if (ps !== undefined) {
-                            if (ps.direction !== cs.direction) {
-                                cs = undefined;
-                            }
-                        }
-                    }
+                const pc = isStaggeredRow(row)
+                    ? col + 1
+                    : isStaggeredRow(row - 1)
+                      ? col - 1
+                      : col;
+
+                if (isClashing({ row: row - 1, col: pc }, cs.direction)) {
+                    cs = undefined;
                 }
             }
             if (cs) cellState[cellIndex({ row, col }, grid)] = cs;
