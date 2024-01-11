@@ -29,13 +29,16 @@ const color = {
     cream: [196, 184, 163],
 };
 
-type CellState = "none" | "black-down" | "black-up" | "cream-down" | "cream-up";
+interface CellState {
+    direction: "up" | "down";
+    color: number[];
+}
 
 const allCellStates: CellState[] = [
-    "black-down",
-    "black-up",
-    "cream-down",
-    "cream-up",
+    { direction: "up", color: color.black },
+    { direction: "down", color: color.black },
+    { direction: "up", color: color.cream },
+    { direction: "down", color: color.cream },
 ];
 
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
@@ -45,9 +48,13 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
         return ensure(allCellStates[ri]);
     };
     const cellState: Record<number, CellState> = {};
-    for (let row = 0; row < grid.rowCount; row += 1)
-        for (let col = 0; col < grid.colCount; col += 1)
+    for (let row = 0; row < grid.rowCount; row += 1) {
+        for (let col = 0; col < grid.colCount; col += 1) {
             cellState[cellIndex({ row, col }, grid)] = randomCellState();
+            // Increase the probability of facing the same direction as one of
+            // the cells (diagonally) above us.
+        }
+    }
     return { cellState };
 };
 
@@ -76,21 +83,15 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, w, h, cell, state }) => {
     const up = () => p5.triangle(x, y, x + w / 2, y - h / 2, x + w, y);
     const down = () => p5.triangle(x, y, x + w, y, x + w / 2, y + h / 2);
 
-    switch (cs) {
-        case "black-up":
-            black();
+    if (cs?.color !== undefined) {
+        p5.fill(cs.color);
+    }
+
+    switch (cs?.direction) {
+        case "up":
             up();
             break;
-        case "black-down":
-            black();
-            down();
-            break;
-        case "cream-up":
-            cream();
-            up();
-            break;
-        case "cream-down":
-            cream();
+        case "down":
             down();
             break;
     }
