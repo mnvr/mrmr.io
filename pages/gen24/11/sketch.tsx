@@ -41,7 +41,8 @@ const allCellStates: CellState[] = [
 ];
 
 const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
-    p5.randomSeed(5348);
+    /* DRXVII */
+    p5.randomSeed(17);
 
     const randomCellState = () => {
         const ri = p5.floor(p5.random(allCellStates.length));
@@ -55,7 +56,8 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
             let cs = randomCellState();
             // Increase the probability of facing the same direction as one of
             // the cells (diagonally) above us.
-            if (p5.random() < 0.03) {
+            // TODO: Remove this?
+            if (p5.random() < 0.0) {
                 const ul = maybeCellIndex({ row: row - 1, col: col + 1 }, grid);
                 if (ul) {
                     const upLeft = cellState[ul];
@@ -100,6 +102,7 @@ export const sketch = gridSketch({
     drawCell,
     drawGrid,
     staggered: true,
-    cellAspectRatio: 0.9,
+    // rug cells are 65 x 71
+    cellAspectRatio: 0.91,
     noLoop: true,
 });
