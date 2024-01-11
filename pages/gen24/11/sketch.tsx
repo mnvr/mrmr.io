@@ -50,10 +50,8 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
 
     const cellState: Record<number, CellState> = {};
 
-    // We don't want to draw in the (partially visible) edges, so skip the 0th
-    // and the last values for row and col.
-    for (let row = 1; row < grid.rowCount - 1; row += 1) {
-        for (let col = 1; col < grid.colCount - 1; col += 1) {
+    for (let row = 2; row < grid.rowCount - 1; row += 1) {
+        for (let col = 2; col < grid.colCount - 2; col += 1) {
             let cs = randomCellState();
             // Increase the probability of facing the same direction as one of
             // the cells (diagonally) above us.
