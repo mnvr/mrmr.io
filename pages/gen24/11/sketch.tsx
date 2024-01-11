@@ -69,13 +69,12 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
     /**
      * Return a randomly initialized cell
      *
-     * The function is marked as returning an optional, but the current
-     * implementation always returns a cell state - we leave it to the direction
+     * We always return a cell state from here, and leave it to the direction
      * pruning rules to create the gaps.
      */
-    const randomCellState = (): CellState | undefined => {
+    const randomCellState = (): CellState => {
         const ri = p5.floor(p5.random(allCellStates.length));
-        return allCellStates[ri];
+        return ensure(allCellStates[ri]);
     };
 
     const cellState: Record<number, CellState> = {};
@@ -90,7 +89,7 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
      * the cell above us. In such cases we'll not create a new cell then, to
      * avoid the clash.
      */
-    const isClashing = (cell: CellCoordinate, direction: Direction) => {
+    const skip = (cell: CellCoordinate, direction: Direction) => {
         let i = maybeCellIndex(cell, grid);
         if (i === undefined) return false;
         const s = cellState[i];
@@ -102,23 +101,24 @@ const makeState = (p5: P5CanvasInstance, grid: Grid): State => {
 
     for (let row = startRow; row < grid.rowCount - 1; row += 1) {
         for (let col = 2; col < grid.colCount - 2; col += 1) {
-            let cs = randomCellState();
-            if (cs) {
-                // We don't want two opposite facing triangles to join up and
-                // form a square. So if we find that we're facing the opposite
-                // direction of the cell exactly above us, don't use this cell.
+            let cs: CellState | undefined = randomCellState();
+            const d = cs.direction;
 
-                // Which cell to check depends on if we're staggered
-                const pc = isStaggeredRow(row)
-                    ? col + 1
-                    : isStaggeredRow(row - 1)
-                      ? col - 1
-                      : col;
+            // We don't want two opposite facing triangles to join up.
+            //
+            // Which cells to check for a clash (due to an opposite facing
+            // triangle) depends on if we're staggered or our predecessor is
+            // staggered. No fancy insight here, just enumerate the scenarios.
+            const pc = isStaggeredRow(row)
+                ? col + 1
+                : isStaggeredRow(row - 1)
+                  ? col - 1
+                  : col;
 
-                if (isClashing({ row: row - 1, col: pc }, cs.direction)) {
-                    cs = undefined;
-                }
+            if (skip({ row: row - 1, col: pc }, d)) {
+                cs = undefined;
             }
+
             if (cs) cellState[cellIndex({ row, col }, grid)] = cs;
         }
     }
