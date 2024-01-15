@@ -78,4 +78,5 @@ export const quotes: string[] = [
     "If one says 'red' and there are 50 people listening, one can be sure that there will arise 50 different reds in the 50 different minds",
     "Maybe they have to be crazy. How else can you stare at an empty canvas and see a work of art?",
     "There is no medium that cannot serve art",
+    "People misinterpret complexity as sophistication, which is baffling – the incomprehensible should cause suspicion rather than admiration",
 ];
