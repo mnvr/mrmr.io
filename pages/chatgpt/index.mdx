@@ -1,6 +1,6 @@
 ---
 title: Chatting with GPT
-date: 2024-01-10
+date: 2024-01-16
 description: A recipe for an existential crisis
 theme: paper
 layout: text
@@ -20,23 +20,22 @@ should consider providing interfaces other than natural language:
 3. Talking to a non-sentient intelligence is creepy
 
 Luckily for me, I don't need to convince anyone about my points, because reason
-1 is already well understood, and is already driving non natural language
-interfaces to language models.
+1 is is already driving non natural language interfaces to language models.
 
 > When Alexa first came to the scene, many, including me, thought that all apps
-> will become a conversational UI. Time, as it usually does, prove me wrong.
+> will get a conversational UI. Time, as it usually does, prove me wrong.
 >
-> People have learnt from that, and now they know that specialized interfaces,
-> with specialized prompts, are going to form the bulk of interactions with
-> LLMs, and that’s what they’re building.
+> People have learnt from that and know that specialized interfaces, with
+> specialized prompts, will form the bulk of interactions with LLMs, and that’s
+> what they’re building.
 
 What I haven’t come across is talk (_sic_) about reasons 2 and 3. So I wrote
 this post.
 
 Reasons 2 and 3 are subjective, and I guess most people don't have these issues.
 So most of you might be wondering what's this guy on about. Think of this then
-as a UX review – if you're building interfaces on top of LLMs, you might find it
-interesting to hear about experiences like mine, and maybe even cater for it.
+as a UX user review – if you're building interfaces on top of LLMs, you might
+find it interesting to hear about experiences like mine.
 
 ---
 
@@ -55,8 +54,8 @@ So that’s reason 2.
 
 ---
 
-Reason 3 is the new pattern I recognized after a recent episode, and it's the
-one that triggered me writing this post.
+Reason 3 is the new pattern I recognized after a recent episode; it's the one
+that triggered me writing this post.
 
 I was making a [Mastodon theme generator](https://mnvr.github.io/mast/), and had
 a bunch of CSS that I wanted to clean up. And by a bunch I mean a big bunch.
@@ -71,8 +70,8 @@ answers. I tried searching on StackOverflow etc, but since it was a specific
 problem there weren’t any good solutions for it.
 
 Then dawned awareness that I'm again in the common trap I sometimes fall into -
-getting too caught up in writing code bit. Programming is one level up: problems
-can sometimes be solved directly too.
+getting too caught up in writing code bit. Programming is one level up, but
+problems can (and should) sometimes be solved directly too.
 
 So instead of figuring out how to programmatically transform the CSS the way I
 wanted, I could just manually fix it. It’s 14 thousand lines long, and it’ll
@@ -111,7 +110,7 @@ human, the cursor moved. And ChatGPT said:
 
 > YES
 
-Haha! So I gave it the file. Or part of it. I wasn’t sure how much the context
+Haha! So I gave it the file. Or part of it. I wasn’t sure how much the input
 limit was, so I gave it the first 1000 lines. Slowly the displayed scrolled as
 it typed out the cleaned up CSS.
 
@@ -121,23 +120,24 @@ the task at hand, or they might. And in either case it'll need to a lot of
 manual proofreading to finally use the CSS it gave me. So much so that it might
 not justify this entire effort.
 
-But that’s not the point of my post. I’m sure there already exist better
+But that’s not the point of my post. I’m think there already exist better
 versions of ChatGPT that can follow these instructions unblemished, and have a
-context limit large enough that I don’t need to split my task into chunks. The
-problem is not that it didn't do a perfect job.
+context window large enough that I don’t need to split my task into chunks. And
+even if they don't already exist, they soon will.
 
 The problem slowly dawned on me, as one after the other, I gave it the 14
 chunks. Again, maybe I could’ve used an API endpoint with a bigger input size,
 the chunking is not the issue I'm talking of. The problem is that splitting the
-input and watching it do the same thing over and over again gave me an
+input and watching it do the same thing over and over again gave _me_ an
 existential crisis.
 
 <C.Quote>Here it comes</C.Quote>
 
-As the display scrolled with lines and lines unending CSS, and time after time,
-14 times, I repeated the prompt so that it doesn't forget, each time it answered
-YES. Sometimes a cheerful, immediate _YES_, sometimes a delayed, disgruntled
-_Yes_, but never (yet) a _NO_. And all this gave me a sinking feeling.
+As the display scrolled with lines and lines of unending CSS, and time after
+time, 14 times, I repeated the prompt so that it doesn't forget, each time it
+answered YES. Sometimes a cheerful, immediate _YES_, sometimes a delayed,
+disgruntled _Yes_, but never (yet) a _NO_. And all this gave me a sinking
+feeling.
 
 <C.Quote>Here it comes</C.Quote>
 
@@ -157,14 +157,14 @@ disgusted.
     Here comes my nineteenth nervous breakdown
 </C.AttributedQuote>
 
-I started wondering if there really was any difference in what I was doing to
-ChatGPT, and what my subconscious was doing to me. I was sat there, trying to
-clean up some CSS for some reason that a thought had risen in me that I should
-do it as part of some other goal that had arisen in me. I don’t know how those
-goals arise. I can give post-hoc explanations, sure, but I fundamentally don’t
-know at whose commands, nature, genetics or a malevolent god, I am doing the
-things I am doing.
+And then I started wondering if there really was any difference in what I was
+doing to ChatGPT, and what my subconscious was doing to me. I was sat there,
+trying to clean up some CSS because for some reason a thought had risen in me
+that I should do it as part of some other goal that had earlier arisen in me. I
+don’t know how those goals arise. I can give post-hoc explanations, sure, but I
+fundamentally don’t know at whose commands, nature, genetics or a malevolent
+god, I am doing the things I am doing.
 
 Having had nineteen existential crises before it, I knew it would pass, and it
-did. But it did get me thinking. Maybe talking really isn't the best way to
-communicate with LLMs.
+did. But it did get me thinking. Maybe talking isn't the best way to communicate
+with ChatGPT.
