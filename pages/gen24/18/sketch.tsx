@@ -49,7 +49,7 @@ const darkModeShapeColors: ShapeColors = {
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     type OnlyShape = Omit<State, "shapeColors">;
     const makeState = () => {
-        p5.randomSeed(1919);
+        p5.randomSeed(1921);
 
         // Randomly pick a shape for each cell
         const cellShape: Record<number, Shape> = {};
