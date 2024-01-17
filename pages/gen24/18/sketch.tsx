@@ -16,6 +16,13 @@ import { cellIndex, gridSketch } from "../grid";
 interface State {
     /** The shape for each cell, indexed by the cell index */
     cellShape: Record<number, Shape>;
+    /**
+     * The set of colors to use for filling each shape
+     *
+     * This is mode dependent (i.e. it'll change depending on whether we're in
+     * light or dark mode.
+     */
+    shapeColors: ShapeColors;
 }
 
 type Shape = "circle" | "triangle" | "square";
@@ -24,14 +31,23 @@ const allShapes: Shape[] = ["circle", "triangle", "square"];
 /** Anything that p5 recognizes as a color */
 type Color = string | number[];
 
-const shapeColor: Record<Shape, Color> = {
+type ShapeColors = Record<Shape, Color>;
+
+const lightModeShapeColors: ShapeColors = {
+    triangle: [255, 224, 5] /* yellow */,
+    circle: [2, 121, 181] /* blue */,
+    square: "red", //[255, 0, 0] /* red */
+};
+
+const darkModeShapeColors: ShapeColors = {
     // triangle: [255, 224, 5] /* yellow */,
     triangle: "yellow", //[255, 255, 0] /* yellow */,
     circle: [2, 121, 255] /* blue */,
-    square: "red", //[255, 0, 0] /* red */,
+    square: "red", //[255, 0, 0] /* red */
 };
 
-const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
+const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
+    type OnlyShape = Omit<State, "shapeColors">;
     const makeState = () => {
         p5.randomSeed(1919);
 
@@ -50,19 +66,26 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
         return { cellShape };
     };
 
-    const newState = state ?? makeState();
+    let newState: OnlyShape = state ?? makeState();
+
+    const shapeColors = env.isDarkMode
+        ? darkModeShapeColors
+        : lightModeShapeColors;
 
     p5.clear();
     p5.strokeWeight(0);
 
-    return newState;
+    return { ...newState, shapeColors };
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const { cellShape } = ensure(state);
+    const { cellShape, shapeColors } = ensure(state);
     const shape = ensure(cellShape[cell.index]);
 
-    p5.fill(shapeColor[shape]);
+    // TypeScript currently does not recognize that our union type is matching
+    // one of the overloads.
+    // https://github.com/microsoft/TypeScript/issues/14107
+    p5.fill(shapeColors[shape]);
 
     const r = p5.max(s - 10, 10);
 
