@@ -80,4 +80,7 @@ export const quotes: string[] = [
     "There is no medium that cannot serve art",
     "People misinterpret complexity as sophistication, which is baffling – the incomprehensible should cause suspicion rather than admiration",
     "There’s lots of ways to be, as a person. And some people express their deep appreciation in different ways. But one of the ways that I believe people express their appreciation to the rest of humanity is to make something wonderful and put it out there",
+    "You can’t connect the dots looking forward; you can only connect them looking backwards.Believing that the dots will connect down the road will give you the confidence you need to follow your heart.",
+    "“If today were the last day of my life, would I want to do what I am about to do today?” And whenever the answer has been “No” for too many days in a row, I know I need to change something",
+    "There is no reason not to follow your heart. Your time is limited, don’t waste it living someone else’s life. Don’t let the noise of others’ opinions drown out your own inner voice. Have the courage to follow your heart and intuition. They somehow already know what you truly want to become.",
 ];
