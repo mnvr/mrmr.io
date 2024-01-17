@@ -11,7 +11,7 @@ import { cellIndex, gridSketch } from "../grid";
  * and Square.
  *
  * Color each of the three primary forms in the primary color that Vassily
- * Kandinksky believed they corresponded to - triangle to yellow, circle to blue
+ * Kandinsky believed they corresponded to - triangle to yellow, circle to blue
  * and square to red (Vassily was apparently a synaesthese too).
  */
 interface State {

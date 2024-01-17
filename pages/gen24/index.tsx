@@ -46,9 +46,9 @@ const Description2: React.FC = () => {
     return (
         <>
             <p>
-                For Day 14, I created a{" "}
+                For <b>Day 14</b>, I created a{" "}
                 <C.ELink href="https://mnvr.github.io/gm1k">
-                    generative piece of music in 470 bytes of JS
+                    generative piece of music in 410 bytes of JS
                 </C.ELink>
                 .
             </p>
