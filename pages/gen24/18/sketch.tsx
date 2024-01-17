@@ -10,8 +10,9 @@ import { cellIndex, gridSketch } from "../grid";
  * Preliminary course on Form and Color at the Bauhaus school): Triangle, Circle
  * and Square.
  *
- * Color each of the three primary forms in the color that Vassily Kandinksky
- * believed they corresponded to (Vassily was a synaesthese).
+ * Color each of the three primary forms in the primary color that Vassily
+ * Kandinksky believed they corresponded to - triangle to yellow, circle to blue
+ * and square to red (Vassily was apparently a synaesthese too).
  */
 interface State {
     /** The shape for each cell, indexed by the cell index */
@@ -29,21 +30,20 @@ type Shape = "circle" | "triangle" | "square";
 const allShapes: Shape[] = ["circle", "triangle", "square"];
 
 /** Anything that p5 recognizes as a color */
-type Color = string | number[];
+type Color = number[];
 
 type ShapeColors = Record<Shape, Color>;
 
 const lightModeShapeColors: ShapeColors = {
     triangle: [255, 224, 5] /* yellow */,
     circle: [2, 121, 181] /* blue */,
-    square: "red", //[255, 0, 0] /* red */
+    square: [236, 67, 0] /* red */,
 };
 
 const darkModeShapeColors: ShapeColors = {
-    // triangle: [255, 224, 5] /* yellow */,
-    triangle: "yellow", //[255, 255, 0] /* yellow */,
+    triangle: [255, 255, 0] /* yellow */,
     circle: [2, 121, 255] /* blue */,
-    square: "red", //[255, 0, 0] /* red */
+    square: [255, 0, 0] /* red */,
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
@@ -58,7 +58,6 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
             for (let col = 0; col < colCount; col++) {
                 const i = cellIndex({ row, col }, grid);
                 const shape = p5.random(allShapes);
-                console.log(shape);
                 cellShape[i] = shape;
             }
         }
@@ -82,11 +81,9 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     const { cellShape, shapeColors } = ensure(state);
     const shape = ensure(cellShape[cell.index]);
 
-    // TypeScript currently does not recognize that our union type is matching
-    // one of the overloads.
-    // https://github.com/microsoft/TypeScript/issues/14107
     p5.fill(shapeColors[shape]);
 
+    // Keep a margin
     const r = p5.max(s - 10, 10);
 
     // x and y are the top left coordinates
