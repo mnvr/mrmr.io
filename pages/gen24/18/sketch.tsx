@@ -1,55 +1,73 @@
 import { ensure } from "utils/ensure";
 import type { CellShader, GridShader } from "../grid";
-import { gridSketch, maybeCellIndex } from "../grid";
+import { cellIndex, gridSketch } from "../grid";
 
 /**
  * Sketch Description
  * ------------------
  *
- * This sketch is a reproduction of a Study by Erch Mrozek for Vassily
- * Kandinsky's Farbenlehre (Course on color), circa 1929, at the Bauhaus.
+ * Randomly fill each square in one of the three primary forms (as taught in the
+ * Preliminary course on Form and Color at the Bauhaus school): Triangle, Circle
+ * and Square.
+ *
+ * Color each of the three primary forms in the color that Vassily Kandinksky
+ * believed they corresponded to (Vassily was a synaesthese).
  */
 interface State {
-    /** The indices of the 3x3 cells that form the inner square */
-    innerSquare: Set<number>;
+    /** The shape for each cell, indexed by the cell index */
+    cellShape: Record<number, Shape>;
 }
 
-const blue = [21, 56, 152];
-const orange = [254, 78, 55];
+type Shape = "circle" | "triangle" | "square";
+const allShapes: Shape[] = ["circle", "triangle", "square"];
 
-const drawGrid: GridShader<State> = ({ p5, state, grid }) => {
+const shapeColor: Record<Shape, string> = {
+    triangle: "yellow",
+    circle: "red",
+    square: "blue",
+};
+
+const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
     const makeState = () => {
-        // We hardcode the cell indices here to be somewhere on the top left.
-        // These indices _might_ possibly be out of bounds too, but that's
-        // unlikely to happen in most window dimensions, so we handle that case
-        // by just ignoring out of bound indices.
-        const innerSquare: Set<number> = new Set([]);
-        for (let row = 2; row <= 4; row += 1) {
-            for (let col = 2; col <= 4; col += 1) {
-                const i = maybeCellIndex({ row, col }, grid);
-                if (i !== undefined) {
-                    innerSquare.add(i);
-                }
+        p5.randomSeed(1919);
+
+        // Randomly pick a shape for each cell
+        const cellShape: Record<number, Shape> = {};
+        const { rowCount, colCount } = grid;
+        for (let row = 0; row < rowCount; row++) {
+            for (let col = 0; col < colCount; col++) {
+                const i = cellIndex({ row, col }, grid);
+                const shape = p5.random(allShapes);
+                cellShape[i] = shape;
             }
         }
-        return { innerSquare };
+
+        return { cellShape };
     };
 
     const newState = state ?? makeState();
 
     p5.clear();
-    p5.background(blue);
     p5.strokeWeight(0);
-    p5.fill(orange);
 
     return newState;
 };
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const { innerSquare } = ensure(state);
-    if (!innerSquare.has(cell.index)) return;
+    const { cellShape } = ensure(state);
+    const shape = ensure(cellShape[cell.index]);
 
-    p5.rect(x, y, s, s);
+    p5.fill(shapeColor[shape]);
+
+    // x and y are the top left coordinates
+    switch (shape) {
+        case "triangle":
+            p5.triangle(x, y + s, x + s / 2, y, x + s, y + s);
+        case "circle":
+            p5.circle(x + s / 2, y + s / 2, s);
+        case "square":
+            p5.rect(x, y, s, s);
+    }
 };
 
 export const sketch = gridSketch({
