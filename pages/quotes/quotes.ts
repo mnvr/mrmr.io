@@ -79,4 +79,5 @@ export const quotes: string[] = [
     "Maybe they have to be crazy. How else can you stare at an empty canvas and see a work of art?",
     "There is no medium that cannot serve art",
     "People misinterpret complexity as sophistication, which is baffling – the incomprehensible should cause suspicion rather than admiration",
+    "There’s lots of ways to be, as a person. And some people express their deep appreciation in different ways. But one of the ways that I believe people express their appreciation to the rest of humanity is to make something wonderful and put it out there",
 ];
