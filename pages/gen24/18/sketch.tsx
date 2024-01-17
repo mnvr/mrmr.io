@@ -63,16 +63,18 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
     p5.fill(shapeColor[shape]);
 
+    const r = p5.max(s - 10, 10);
+
     // x and y are the top left coordinates
     switch (shape) {
         case "triangle":
-            p5.triangle(x, y + s, x + s / 2, y, x + s, y + s);
+            p5.triangle(x, y + r, x + r / 2, y, x + r, y + r);
             break;
         case "circle":
-            p5.circle(x + s / 2, y + s / 2, s);
+            p5.circle(x + r / 2, y + r / 2, r);
             break;
         case "square":
-            p5.rect(x, y, s, s);
+            p5.rect(x, y, r, r);
             break;
     }
 };
