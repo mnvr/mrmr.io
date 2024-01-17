@@ -22,12 +22,13 @@ type Shape = "circle" | "triangle" | "square";
 const allShapes: Shape[] = ["circle", "triangle", "square"];
 
 /** Anything that p5 recognizes as a color */
-type Color = number[];
+type Color = string | number[];
 
 const shapeColor: Record<Shape, Color> = {
-    triangle: [255, 224, 5] /* yellow */,
-    circle: [2, 121, 181] /* blue */,
-    square: [236, 67, 0] /* red */,
+    // triangle: [255, 224, 5] /* yellow */,
+    triangle: "yellow", //[255, 255, 0] /* yellow */,
+    circle: [2, 121, 255] /* blue */,
+    square: "red", //[255, 0, 0] /* red */,
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
