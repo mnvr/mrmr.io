@@ -21,10 +21,13 @@ interface State {
 type Shape = "circle" | "triangle" | "square";
 const allShapes: Shape[] = ["circle", "triangle", "square"];
 
-const shapeColor: Record<Shape, string> = {
-    triangle: "yellow",
-    circle: "red",
-    square: "blue",
+/** Anything that p5 recognizes as a color */
+type Color = number[];
+
+const shapeColor: Record<Shape, Color> = {
+    triangle: [255, 224, 5] /* yellow */,
+    circle: [2, 121, 181] /* blue */,
+    square: [236, 67, 0] /* red */,
 };
 
 const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
@@ -38,6 +41,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, state }) => {
             for (let col = 0; col < colCount; col++) {
                 const i = cellIndex({ row, col }, grid);
                 const shape = p5.random(allShapes);
+                console.log(shape);
                 cellShape[i] = shape;
             }
         }
@@ -63,10 +67,13 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     switch (shape) {
         case "triangle":
             p5.triangle(x, y + s, x + s / 2, y, x + s, y + s);
+            break;
         case "circle":
             p5.circle(x + s / 2, y + s / 2, s);
+            break;
         case "square":
             p5.rect(x, y, s, s);
+            break;
     }
 };
 
