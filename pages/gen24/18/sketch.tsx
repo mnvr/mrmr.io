@@ -35,9 +35,9 @@ type Color = number[];
 type ShapeColors = Record<Shape, Color>;
 
 const lightModeShapeColors: ShapeColors = {
-    triangle: [255, 224, 5] /* yellow */,
-    circle: [2, 121, 181] /* blue */,
-    square: [236, 67, 0] /* red */,
+    triangle: [255, 244, 50] /* yellow */,
+    circle: [2, 121, 201] /* blue */,
+    square: [256, 67, 0] /* red */,
 };
 
 const darkModeShapeColors: ShapeColors = {
