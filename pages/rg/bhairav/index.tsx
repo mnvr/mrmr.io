@@ -74,8 +74,8 @@ const Raag_ = styled.div`
         /* Don't let anything shrink */
         flex-shrink: 0;
         /* Give all the items a fixed height */
-        flex-basis: 3px;
-        border-radius: 3px;
+        flex-basis: 12px;
+        border-radius: 4px;
     }
 `;
 
