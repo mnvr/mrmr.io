@@ -23,7 +23,7 @@ const T1 = styled.span`
 `;
 
 const Raga: React.FC = () => {
-    const notes = [0, 1, 3, 5, 7, 9, 11];
+    const notes = [0, 1, 4, 5, 7, 8, 11];
     return (
         <Raga_>
             {noteSequence(notes).map(([i, isOn]) =>
@@ -69,7 +69,11 @@ const noteSequence = (notes: number[]): [number, boolean][] => {
 };
 
 interface NoteProps {
-    /** The note offset of this note from the root note of the raag */
+    /**
+     * The note offset of this note from the root note of the raag
+     *
+     * This is the number of semitones from the tonic (root).
+     */
     noteOffset: number;
 }
 
