@@ -34,17 +34,23 @@ const Raga: React.FC = () => {
 };
 
 const Raga_ = styled.div`
-    border: 1px solid tomato;
+    box-sizing: border-box;
+    padding-block: 4rem;
     min-height: 80svh;
     display: flex;
     flex-direction: column;
+    align-items: end;
+    gap: 4px;
 
     & > div {
-        width: min(17rem, 100%);
-        border: 1px dotted blue;
+        width: min(13rem, 50%);
+        /* Ask the flexbox to grow all the items equally along the main axis */
         flex-grow: 1;
+        /* Don't let anything shrink */
         flex-shrink: 0;
-        flex-basis: 1rem;
+        /* Give all the items some minimum height */
+        /* flex-basis: 1rem; */
+        flex-basis: 3px;
     }
 `;
 
@@ -62,13 +68,15 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
-    return (
-        <Note_>
-            <div>{noteOffset}</div>
-        </Note_>
-    );
+    return <Note_ style={{ marginInlineEnd: `${(noteOffset) * 8}px` }} />;
 };
 
 const Note_ = styled.div`
     background-color: var(--mrmr-color-4);
+    /* border-radius: 4px 12px 4px 12px; */
+    border-radius: 3px;
+
+    &:hover {
+        background-color: var(--mrmr-color-3);
+    }
 `;
