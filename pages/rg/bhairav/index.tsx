@@ -10,7 +10,7 @@ interface Raag {
 }
 
 const raagBhairav: Raag = {
-    name: "bhairav",
+    name: "Bhairav",
     notes: [0, 1, 4, 5, 7, 8, 11],
 };
 
@@ -18,17 +18,20 @@ export const Content: React.FC = () => {
     return <RaagContent raag={raagBhairav} />;
 };
 
-interface RaagProps {
+interface PropsWithRaag {
     raag: Raag;
 }
 
-export const RaagContent: React.FC<RaagProps> = ({ raag }) => {
+export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <WideColumn>
             <Title>
-                <T1>ra'g</T1> {raag.name}
+                <T1>ra'g</T1> {raag.name.toLowerCase()}
             </Title>
             <Raag raag={raag} />
+            <TextContent>
+                <Description raag={raag} />
+            </TextContent>
         </WideColumn>
     );
 };
@@ -42,7 +45,7 @@ const T1 = styled.span`
     color: var(--mrmr-color-4);
 `;
 
-const Raag: React.FC<RaagProps> = ({ raag }) => {
+const Raag: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <Raag_>
             {noteSequence(raag.notes).map(([i, isOn]) =>
@@ -110,3 +113,23 @@ const Blank_ = styled.div`
 
     opacity: 0.2;
 `;
+
+const Description: React.FC<PropsWithRaag> = ({ raag }) => {
+    return (
+        <div>
+            <p>
+                Raagas are like scales (not really, they're more like Markov
+                chains, but to a first approximation we can think of them as
+                scales).
+            </p>
+            <p>
+                {`Above you can see the semitone distance between notes on Raag
+                 ${raag.name}. Hover on them to hear how they sound (tap once to
+                 enable audio).`}
+            </p>
+        </div>
+    );
+};
+
+const TextContent = styled.div`
+`
