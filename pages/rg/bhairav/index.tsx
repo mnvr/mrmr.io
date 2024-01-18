@@ -65,7 +65,7 @@ const noteSequence = (notes: number[]): [number, boolean][] => {
     for (let i = 0; i < 12; i++) {
         seq.push([i, notes.includes(i)]);
     }
-    return seq;
+    return seq.toReversed();
 };
 
 interface NoteProps {
@@ -74,7 +74,7 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
-    return <Note_ style={{ marginInlineEnd: `${noteOffset * 8}px` }} />;
+    return <Note_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
 };
 
 const Note_ = styled.div`
@@ -86,7 +86,7 @@ const Note_ = styled.div`
 `;
 
 const Blank: React.FC<NoteProps> = ({ noteOffset }) => {
-    return <Blank_ style={{ marginInlineEnd: `${noteOffset * 8}px` }} />;
+    return <Blank_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
 };
 
 const Blank_ = styled.div`
