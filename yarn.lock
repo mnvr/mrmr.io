@@ -2110,27 +2110,27 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@strudel.cycles/core@0.9.0", "@strudel.cycles/core@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/core/-/core-0.9.0.tgz#5363c48701221534bf9be99ec888230a8ea8b999"
-  integrity sha512-ZGXE9AmOUTZJNXXAyPI0eF+rdWnqJAI6bo6Ya7jORqLlvDaa/3Z/0gSHMdMro/7J3GqqIHWnqtyhUKngBB9/hw==
+"@strudel/core@0.11.0", "@strudel/core@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@strudel/core/-/core-0.11.0.tgz#65d18c513f04ab1020325be56044c34f255bc37b"
+  integrity sha512-7tOqsm13fsTOd9iPR7NybNN+QbkIyOR7JXpjIMRuQybkH15/NGOTAxNAbghKoesMU8/dLkR7/xVg231Ype3HMQ==
   dependencies:
-    fraction.js "^4.2.0"
+    fraction.js "^4.3.7"
 
-"@strudel.cycles/mini@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/mini/-/mini-0.9.0.tgz#ff6dd6a334eb2ef89dde4b1aec848ab97cd2d6f5"
-  integrity sha512-1RhTL41550U4lo6C6aVuLb3ku14V+3qcfk50D9ex+O/HPLUTBwcqsVY/eh0+ZeV2ZPo0kM3HFgnbMHeK+UsKWA==
+"@strudel/mini@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@strudel/mini/-/mini-0.11.0.tgz#e47a7186e9e478e8f5f90fd15f50f937daf2a39a"
+  integrity sha512-oEPbNk1AVg/eYonQIzQcm6LxRW9351bZQKDsB5Dc5CUrHRTz/yVMFCz00nVRTwbLurJs5k7ogNAVuEDesBdFwQ==
   dependencies:
-    "@strudel.cycles/core" "0.9.0"
+    "@strudel/core" "0.11.0"
 
-"@strudel.cycles/webaudio@^0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@strudel.cycles/webaudio/-/webaudio-0.9.0.tgz#1ea17b08e34827bf1c5ba865a4eb269903cf82c3"
-  integrity sha512-f2FOsR9YCwf4Lqd9AeoedPz9mziBM2zTNwOzqP8omrikNrK9sGbD2srWDFG3KzJEC+ff2ZCs5Xk7FE8/cW5MwQ==
+"@strudel/webaudio@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@strudel/webaudio/-/webaudio-0.11.0.tgz#1c595718c0bd72caec8e34ac2792ddde969e7ecf"
+  integrity sha512-Yqc/th969RREqmqtppXTDZKxIgKBsqEG1aJX9T8sTxvYcgGjCC3auH96TF9JtwfVE/VhTxwsxjZDiLcuXTJtCA==
   dependencies:
-    "@strudel.cycles/core" "0.9.0"
-    superdough "0.9.8"
+    "@strudel/core" "0.11.0"
+    superdough "0.10.0"
 
 "@swc/helpers@^0.4.12":
   version "0.4.36"
@@ -5425,7 +5425,7 @@ forwarded@0.2.0:
   resolved "https://registry.yarnpkg.com/forwarded/-/forwarded-0.2.0.tgz#2269936428aad4c15c7ebe9779a84bf0b2a81811"
   integrity sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==
 
-fraction.js@^4.2.0, fraction.js@^4.3.6:
+fraction.js@^4.3.6, fraction.js@^4.3.7:
   version "4.3.7"
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
@@ -8243,10 +8243,10 @@ nanoid@^3.3.6, nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
-nanostores@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.8.1.tgz#963577028ac10eeb50bec376535f4762ab5af9be"
-  integrity sha512-1ZCfQtII2XeFDrtqXL2cdQ/diGrLxzRB3YMyQjn8m7GSGQrJfGST2iuqMpWnS/ZlifhtjgR/SX0Jy6Uij6lRLA==
+nanostores@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/nanostores/-/nanostores-0.9.5.tgz#4fcfce9786c4bf16e045a899cda2e46e90780a5b"
+  integrity sha512-Z+p+g8E7yzaWwOe5gEUB2Ox0rCEeXWYIZWmYvw/ajNYX8DlXdMvMDj8DWfM/subqPAcsf8l8Td4iAwO1DeIIRQ==
 
 napi-build-utils@^1.0.1:
   version "1.0.2"
@@ -10516,12 +10516,12 @@ sudo-prompt@^8.2.0:
   resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-8.2.5.tgz#cc5ef3769a134bb94b24a631cc09628d4d53603e"
   integrity sha512-rlBo3HU/1zAJUrkY6jNxDOC9eVYliG6nS4JA8u8KAshITd07tafMc/Br7xQwCSseXwJ2iCcHCE8SNWX3q8Z+kw==
 
-superdough@0.9.8:
-  version "0.9.8"
-  resolved "https://registry.yarnpkg.com/superdough/-/superdough-0.9.8.tgz#de30e364b2613a15a46f35f359a2a0ce30d52611"
-  integrity sha512-3xy2LXAH4K0JMwwY4G0eJz+u1VIhSFxIE4YZL7E4isjUQZTN9Y0jpX17EzQgvFIW1V3PUJMkDiDgEDWZTRCTKg==
+superdough@0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/superdough/-/superdough-0.10.0.tgz#06b027b16f54473f0281fcb0adcc1177d07d6e96"
+  integrity sha512-VMSUyKqTJumAd28I2rN5L8pTbzlp7Vsszri2BHlYipZ4vXO/B88cMjqtLqsCP4KaoARsput0kMXbpZ9JhjWbYQ==
   dependencies:
-    nanostores "^0.8.1"
+    nanostores "^0.9.5"
 
 supports-color@^5.3.0:
   version "5.5.0"

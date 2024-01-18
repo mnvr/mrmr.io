@@ -1,4 +1,4 @@
-import { Pattern, register } from "@strudel.cycles/core";
+import { Pattern, register } from "@strudel/core";
 import { isDevelopment } from "utils/debug";
 
 /** Inspect the first 7 cycles of the pattern `pat` */

@@ -1,4 +1,4 @@
-import { controls, rand, saw, sine, stack } from "@strudel.cycles/core";
+import { controls, rand, saw, sine, stack } from "@strudel/core";
 import { m } from "strudel/mini";
 import { fadeIn } from "strudel/util";
 import type { StrudelSong } from "types";

@@ -1,4 +1,4 @@
-import { Pattern } from "@strudel.cycles/core";
+import { Pattern } from "@strudel/core";
 import HydraRenderer, { type HydraSynth } from "hydra-synth";
 import type p5 from "p5";
 

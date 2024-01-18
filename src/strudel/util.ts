@@ -1,9 +1,4 @@
-import {
-    Pattern,
-    signal,
-    timeCat,
-    type Patternable,
-} from "@strudel.cycles/core";
+import { Pattern, signal, timeCat, type Patternable } from "@strudel/core";
 
 /**
  * A fade-in envelope

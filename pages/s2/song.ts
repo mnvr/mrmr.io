@@ -1,4 +1,4 @@
-import { controls, stack } from "@strudel.cycles/core";
+import { controls, stack } from "@strudel/core";
 import { m } from "strudel/mini";
 import type { StrudelSong } from "types";
 

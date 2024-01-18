@@ -1,4 +1,4 @@
-import { mini } from "@strudel.cycles/mini";
+import { mini } from "@strudel/mini";
 
 /**
  * A tagged template literal that wraps the input strings in `mini(...)`

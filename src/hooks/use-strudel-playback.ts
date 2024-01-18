@@ -1,5 +1,5 @@
-import { Pattern, type Scheduler } from "@strudel.cycles/core";
-import { initAudioOnFirstClick } from "@strudel.cycles/webaudio";
+import { Pattern, type Scheduler } from "@strudel/core";
+import { initAudioOnFirstClick } from "@strudel/webaudio";
 import * as React from "react";
 import { initStrudel } from "strudel/init";
 import { connectWebAudio } from "strudel/webaudio";

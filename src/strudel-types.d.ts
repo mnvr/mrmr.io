@@ -4,7 +4,7 @@
  *
  * By Manav Rathi (https://github.com/mnvr/mrmr.io)
  */
-declare module "@strudel.cycles/core" {
+declare module "@strudel/core" {
     /**
      * Patterns are the core abstraction of Tidal(Cycles).
      *
@@ -721,8 +721,8 @@ declare module "@strudel.cycles/core" {
     export const mask: PatternTransform;
 }
 
-declare module "@strudel.cycles/webaudio" {
-    import type { StrudelOutput } from "@strudel.cycles/core";
+declare module "@strudel/webaudio" {
+    import type { StrudelOutput } from "@strudel/core";
 
     /**
      * Initialize WebAudio on first user initiated interaction.
@@ -758,14 +758,14 @@ declare module "@strudel.cycles/webaudio" {
     export const registerSynthSounds: () => void;
 }
 
-declare module "@strudel.cycles/mini" {
+declare module "@strudel/mini" {
     // As of v3.2.2, the Prettier plugin to organize imports is removing this
     // line (incorrectly?). So disable the plugin for this file (can't be done
     // on a line-basis).
     // See: https://github.com/simonhaenisch/prettier-plugin-organize-imports
     //
     // organize-imports-ignore
-    import { Patternable } from "@strudel.cycles/core";
+    import { Patternable } from "@strudel/core";
 
     /**
      * Parse a string specified in the "mini" notation into a Strudel pattern.

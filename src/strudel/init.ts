@@ -1,5 +1,5 @@
-import { Pattern } from "@strudel.cycles/core";
-import { registerSynthSounds } from "@strudel.cycles/webaudio";
+import { Pattern } from "@strudel/core";
+import { registerSynthSounds } from "@strudel/webaudio";
 import { ensure } from "utils/ensure";
 import { inspect } from "./inspect";
 import { m } from "./mini";
