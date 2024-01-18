@@ -39,6 +39,7 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
 const Title = styled.h1`
     font-family: serif;
     font-style: italic;
+    font-size: 2.7rem;
 `;
 
 const T1 = styled.span`
@@ -61,7 +62,8 @@ const Raag: React.FC<PropsWithRaag> = ({ raag }) => {
 
 const Raag_ = styled.div`
     box-sizing: border-box;
-    padding-block: 1rem;
+    margin-block-start: -1rem;
+    /* padding-block: 1rem; */
     min-height: 80svh;
     display: flex;
     flex-direction: column;
@@ -137,4 +139,6 @@ const TextContent = styled.div`
     padding-inline: 1rem;
     padding-block: 0.2rem;
     border-radius: 3px;
+
+    font-size: 22px;
 `;
