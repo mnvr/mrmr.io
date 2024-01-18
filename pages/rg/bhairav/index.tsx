@@ -132,4 +132,9 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
 };
 
 const TextContent = styled.div`
-`
+    background-color: oklch(2% 0 0 / 0.05);
+    color: oklch(98% 0 0);
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
+    border-radius: 3px;
+`;
