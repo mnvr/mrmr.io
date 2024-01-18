@@ -79,7 +79,7 @@ export const quotes: string[] = [
     "Maybe they have to be crazy. How else can you stare at an empty canvas and see a work of art?",
     "There is no medium that cannot serve art",
     "People misinterpret complexity as sophistication, which is baffling – the incomprehensible should cause suspicion rather than admiration",
-    "You can’t connect the dots looking forward; you can only connect them looking backwards.Believing that the dots will connect down the road will give you the confidence you need to follow your heart.",
+    "You can only connect the dots looking backwards; believing that the dots will connect down the road will give you the confidence you need to follow your heart",
     "“If today were the last day of my life, would I want to do what I am about to do today?” And whenever the answer has been “No” for too many days in a row, I know I need to change something",
-    "Sic Transit Gloria. (All glory is fleeting.)",
+    "Sic Transit Gloria (All glory is fleeting)",
 ];
