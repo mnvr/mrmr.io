@@ -2,13 +2,33 @@ import { WideColumn } from "components/Column";
 import * as React from "react";
 import styled from "styled-components";
 
+/* More like thaat, but let's live with this for now */
+interface Raag {
+    name: string;
+    /** This is the number of semitones from the tonic (root, Sa). */
+    notes: number[];
+}
+
+const raagBhairav: Raag = {
+    name: "bhairav",
+    notes: [0, 1, 4, 5, 7, 8, 11],
+};
+
 export const Content: React.FC = () => {
+    return <RaagContent raag={raagBhairav} />;
+};
+
+interface RaagProps {
+    raag: Raag;
+}
+
+export const RaagContent: React.FC<RaagProps> = ({ raag }) => {
     return (
         <WideColumn>
             <Title>
-                <T1>ra'g</T1> bhairav
+                <T1>ra'g</T1> {raag.name}
             </Title>
-            <Raga />
+            <Raag raag={raag} />
         </WideColumn>
     );
 };
@@ -22,22 +42,21 @@ const T1 = styled.span`
     color: var(--mrmr-color-4);
 `;
 
-const Raga: React.FC = () => {
-    const notes = [0, 1, 4, 5, 7, 8, 11];
+const Raag: React.FC<RaagProps> = ({ raag }) => {
     return (
-        <Raga_>
-            {noteSequence(notes).map(([i, isOn]) =>
+        <Raag_>
+            {noteSequence(raag.notes).map(([i, isOn]) =>
                 isOn ? (
                     <Note key={i} noteOffset={i} />
                 ) : (
                     <Blank key={i} noteOffset={i} />
                 ),
             )}
-        </Raga_>
+        </Raag_>
     );
 };
 
-const Raga_ = styled.div`
+const Raag_ = styled.div`
     box-sizing: border-box;
     padding-block: 1rem;
     min-height: 80svh;
@@ -49,11 +68,9 @@ const Raga_ = styled.div`
 
     & > div {
         width: 50%;
-        /* Ask the flexbox to grow all the items equally along the main axis */
-        /* flex-grow: 1; */
         /* Don't let anything shrink */
         flex-shrink: 0;
-        /* Give all the items some minimum height */
+        /* Give all the items a fixed height */
         flex-basis: 3px;
         border-radius: 3px;
     }
@@ -68,11 +85,7 @@ const noteSequence = (notes: number[]): [number, boolean][] => {
 };
 
 interface NoteProps {
-    /**
-     * The note offset of this note from the root note of the raag
-     *
-     * This is the number of semitones from the tonic (root).
-     */
+    /** How many semitones away from the root is this note */
     noteOffset: number;
 }
 
