@@ -29,23 +29,29 @@ export const Poem: React.FC = () => {
             <p>
                 Solaris
                 <br />
-                <Line>They can't be anything else</Line>
                 <Line>They didn't choose to be</Line>
-                <Line>Blind brutal eternity</Line>
+                <Line>Blind brutal</Line>
+                <Line>Eternity</Line>
             </p>
             <p>
                 Solaris
                 <br />
                 <Line>Drenched in your light</Line>
-                <Line>I feel everything is all right</Line>
+                <Line>Everything is all right</Line>
             </p>
             <p>
                 Solaris
                 <br />
                 <Line>Time breaks me down</Line>
-                <Line>With time I'll cease to be</Line>
-                <Line>Yet</Line>
+                <Line>In time I cease to be, yet</Line>
                 <Line>Time is my testimony</Line>
+            </p>
+            <p>
+                Solaris
+                <br />
+                <Line>Cold dark mountain</Line>
+                <Line>Making me bleed</Line>
+                <Line>Float, and be free</Line>
             </p>
             <p>
                 <i>Solaris</i>
