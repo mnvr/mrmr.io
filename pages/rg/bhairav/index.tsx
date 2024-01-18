@@ -39,7 +39,7 @@ const Raga: React.FC = () => {
 
 const Raga_ = styled.div`
     box-sizing: border-box;
-    padding-block: 4rem;
+    padding-block: 1rem;
     min-height: 80svh;
     display: flex;
     flex-direction: column;
@@ -48,13 +48,12 @@ const Raga_ = styled.div`
     justify-content: space-evenly;
 
     & > div {
-        width: min(13rem, 50%);
+        width: 50%;
         /* Ask the flexbox to grow all the items equally along the main axis */
         /* flex-grow: 1; */
         /* Don't let anything shrink */
         flex-shrink: 0;
         /* Give all the items some minimum height */
-        /* flex-basis: 1rem; */
         flex-basis: 3px;
         border-radius: 3px;
     }
