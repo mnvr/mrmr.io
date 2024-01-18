@@ -6,7 +6,7 @@ export const Content: React.FC = () => {
     return (
         <WideColumn>
             <Title>
-                <T1>raag</T1> bhairav
+                <T1>ra'g</T1> bhairav
             </Title>
             <Raga />
         </WideColumn>
