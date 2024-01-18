@@ -27,7 +27,11 @@ const Raga: React.FC = () => {
     return (
         <Raga_>
             {noteSequence(notes).map(([i, isOn]) =>
-                isOn ? <Note key={i} noteOffset={i} /> : <div key={i} />,
+                isOn ? (
+                    <Note key={i} noteOffset={i} />
+                ) : (
+                    <Blank key={i} noteOffset={i} />
+                ),
             )}
         </Raga_>
     );
@@ -41,16 +45,18 @@ const Raga_ = styled.div`
     flex-direction: column;
     align-items: end;
     gap: 4px;
+    justify-content: space-evenly;
 
     & > div {
         width: min(13rem, 50%);
         /* Ask the flexbox to grow all the items equally along the main axis */
-        flex-grow: 1;
+        /* flex-grow: 1; */
         /* Don't let anything shrink */
         flex-shrink: 0;
         /* Give all the items some minimum height */
         /* flex-basis: 1rem; */
         flex-basis: 3px;
+        border-radius: 3px;
     }
 `;
 
@@ -68,15 +74,23 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
-    return <Note_ style={{ marginInlineEnd: `${(noteOffset) * 8}px` }} />;
+    return <Note_ style={{ marginInlineEnd: `${noteOffset * 8}px` }} />;
 };
 
 const Note_ = styled.div`
     background-color: var(--mrmr-color-4);
-    /* border-radius: 4px 12px 4px 12px; */
-    border-radius: 3px;
 
     &:hover {
         background-color: var(--mrmr-color-3);
     }
+`;
+
+const Blank: React.FC<NoteProps> = ({ noteOffset }) => {
+    return <Blank_ style={{ marginInlineEnd: `${noteOffset * 8}px` }} />;
+};
+
+const Blank_ = styled.div`
+    background-color: var(--mrmr-color-4);
+
+    opacity: 0.2;
 `;
