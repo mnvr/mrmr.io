@@ -1,6 +1,7 @@
 import { superdough } from "@strudel/webaudio";
 import { WideColumn } from "components/Column";
 import * as React from "react";
+import { isMobile } from "react-device-detect";
 import { initStrudel } from "strudel/init";
 import { useInitAudioOnFirstClick } from "strudel/use-init-audio";
 import styled from "styled-components";
@@ -167,6 +168,12 @@ const Note: React.FC<NoteProps> = ({ noteOffset, haveInitedAudio }) => {
     };
 
     const handleMouseEnter = () => {
+        // On mobile browsers, the touch event causes both the onClick and
+        // onMouseEnter events to fire, causing the sound to be played twice.
+        // There isn't a hover interaction on mobiles anyways, so we just ignore
+        // hover actions when on mobile (to prevent the double playback).
+        if (isMobile) return;
+
         if (haveInitedAudio) playNote();
     };
 
