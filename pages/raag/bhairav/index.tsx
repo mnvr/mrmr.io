@@ -125,9 +125,12 @@ const Raag_ = styled.div`
     }
 `;
 
-const noteSequence = (notes: number[]): [number, boolean][] => {
+const noteSequence = (
+    notes: number[],
+    octaves: number = 1,
+): [number, boolean][] => {
     const seq: [number, boolean][] = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 12 * octaves; i++) {
         seq.push([i, notes.includes(i)]);
     }
     return seq.reverse();
@@ -227,3 +230,66 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
 const TextContent = styled.div`
     padding-block: 1px;
 `;
+
+const RaagPlayer: React.FC<PropsWithRaag> = ({ raag }) => {
+    return (
+        <RaagPlayer_>
+            {noteSequence(raag.notes).map(([i, isOn]) =>
+                isOn ? <RPNote key={i} noteOffset={i} /> : <RPBlank key={i} />,
+            )}
+        </RaagPlayer_>
+    );
+};
+
+const RaagPlayer_ = styled.div`
+    box-sizing: border-box;
+    margin-block-start: -1rem;
+    /* padding-block: 1rem; */
+    min-height: 80svh;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 4px;
+    justify-content: space-evenly;
+
+    & > div {
+        width: 50%;
+        /* Don't let anything shrink */
+        flex-shrink: 0;
+        /* Give all the items a fixed height */
+        flex-basis: 12px;
+        border-radius: 4px;
+    }
+`;
+
+interface RPNoteProps {
+    /** @see {@link noteOffset} in {@link NoteProps} */
+    noteOffset: number;
+}
+
+const RPNote: React.FC<RPNoteProps> = ({ noteOffset }) => {
+    // true if this note is currently being played.
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    const playNote = () => {
+        const duration = 0.125;
+        superdough({ s: "sine", note: 69 + noteOffset }, 0.01, duration);
+        setIsPlaying(true);
+        setTimeout(() => {
+            // This doesn't cover all sorts of reentrant cases, but practically,
+            // given the small time scales involved, this is fine enough for our
+            // demo instrument.
+            setIsPlaying(false);
+        }, duration * 1000);
+    };
+
+    const handleClick = () => {
+        playNote();
+    };
+
+    return <Note_ $isPlaying={isPlaying} onClick={handleClick} />;
+};
+
+const RPBlank: React.FC = () => {
+    return <Blank_ />;
+};
