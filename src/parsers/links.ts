@@ -1,4 +1,3 @@
-import { getDomain, getDomainWithoutSuffix } from "tldts";
 import { isDefined } from "utils/array";
 
 /** Domains that we have special casing for (e.g. custom icons) */
@@ -59,14 +58,14 @@ export interface ParsedSlug {
 
 /** General link parser */
 export const parseLink = (s: string) => {
-    const domain = getDomainWithoutSuffix(s);
+    const hostname = new URL(s).hostname;
+    // Currently all the known domains we have end in a .com, so we can just
+    // slice that off.
+    const domain = hostname.split(".")[0];
     const knownDomain = domain && isKnownDomain(domain) ? domain : undefined;
     // Use one of the special cased titles if it is a known domain, otherwise
     // use the domain itself (including the suffix) as the title.
-    const title = knownDomain
-        ? titleForKnownDomain(knownDomain)
-        : // This nested fallback to convert the null to an undefined
-          getDomain(s) ?? undefined;
+    const title = knownDomain ? titleForKnownDomain(knownDomain) : undefined;
     return { url: s, knownDomain, title };
 };
 

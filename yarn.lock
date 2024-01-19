@@ -10680,18 +10680,6 @@ title-case@^3.0.3:
   dependencies:
     tslib "^2.0.3"
 
-tldts-core@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/tldts-core/-/tldts-core-6.1.1.tgz#c387f0882a286ea313bd3f8d3ee3b2849aaaac07"
-  integrity sha512-xBHFfOO2YmEwogupGTKR0IBXe1IJe1/GleNeXpO294Fk90aQSvrop41BKA66CkfNLVOuomJDZ304KxwovT04Vw==
-
-tldts@^6.0.15:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/tldts/-/tldts-6.1.1.tgz#68857936f64fdff332c06087612e979e328931be"
-  integrity sha512-uV5xEtjR8VdMZZU0my9zLqWJNAkG0PZ5l5t9F1dBYwOyeFeWTFd0emxEs12Y1U39XKD+dF2ElzNU59Qq0Z4PGQ==
-  dependencies:
-    tldts-core "^6.1.1"
-
 tmp@^0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
