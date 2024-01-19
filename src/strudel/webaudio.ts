@@ -1,7 +1,7 @@
 import { repl } from "@strudel/core";
 import { getAudioContext, webaudioOutput } from "@strudel/webaudio";
 
-/** Connect Strudel's core to the WebAudio renderer */
+/** Connect Strudel's core to its WebAudio renderer */
 export const connectWebAudio = () => {
     const ctx = getAudioContext();
 

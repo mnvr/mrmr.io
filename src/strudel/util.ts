@@ -1,4 +1,4 @@
-import { Pattern, signal, timeCat, type Patternable } from "@strudel/core";
+import { signal } from "@strudel/core";
 
 /**
  * A fade-in envelope
@@ -15,13 +15,3 @@ export const fadeIn = (n: number, wait: number = 0) =>
             1,
         ),
     );
-
-/**
- * Apply a gain envelope to the pattern
- *
- * It takes the same arguments as {@link timeCat}
- *
- * @unused
- */
-export const env = (p: Pattern, xs: [number, Patternable][]) =>
-    p.gain(timeCat(...(xs as any)).slow(xs.reduce((s, t) => s + t[0], 0)));
