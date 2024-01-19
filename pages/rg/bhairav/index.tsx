@@ -24,22 +24,29 @@ interface PropsWithRaag {
 
 export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
-        <WideColumn>
-            <Title>
-                <T1>ra'g</T1> {raag.name.toLowerCase()}
-            </Title>
-            <Raag raag={raag} />
-            <TextContent>
-                <Description raag={raag} />
-            </TextContent>
-        </WideColumn>
+        <RaagContent_>
+            <WideColumn>
+                <Title>
+                    <T1>ra'g</T1> {raag.name.toLowerCase()}
+                </Title>
+                <Raag raag={raag} />
+                <TextContent>
+                    <Description raag={raag} />
+                </TextContent>
+            </WideColumn>
+        </RaagContent_>
     );
 };
+
+const RaagContent_ = styled.div`
+    /* Use a large font as the base */
+    font-size: 22px;
+`;
 
 const Title = styled.h1`
     font-family: serif;
     font-style: italic;
-    font-size: 2.7rem;
+    font-size: 2.25em;
 `;
 
 const T1 = styled.span`
@@ -134,11 +141,10 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
 };
 
 const TextContent = styled.div`
-    background-color: oklch(2% 0 0 / 0.05);
+    /* background-color: oklch(2% 0 0 / 0.02); */
     color: oklch(98% 0 0);
     padding-inline: 1rem;
-    padding-block: 0.2rem;
+    margin-inline: -1rem;
+    padding-block: 1px;
     border-radius: 3px;
-
-    font-size: 22px;
 `;
