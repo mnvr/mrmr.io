@@ -435,7 +435,7 @@ declare module "@strudel/core" {
          * Otherwise it is taken to be the name of a {@link SampleName} (with
          * optional ":n:gain" suffixes when using mini-notation).
          *
-         * - @default `triangle`.
+         * @default `"triangle"`
          */
         s: PatternTransform<Synth | SampleSpecifier>;
 
@@ -688,6 +688,7 @@ declare module "@strudel/core" {
          * Delay level, and optional ":delaytime:delayfeedback"
          */
         delay: PatternTransform<Level>;
+
         /**
          * Delay time, in seconds
          *
@@ -696,6 +697,7 @@ declare module "@strudel/core" {
          * currently wired up to support times more than 1.
          */
         delaytime: PatternTransform<TSecond>;
+
         /** Delay feedback level */
         delayfeedback: PatternTransform<Level>;
 
@@ -762,12 +764,12 @@ declare module "@strudel/core" {
      * These are the same as the `OscillatorType` supported by WebAudio's
      * {@link AudioContext.createOscillator} method (except "custom").
      */
-    const SynthSoundWaveform = ["sine", "square", "triangle", "sawtooth"];
+    const SynthSoundWaveform = "sine" | "square" | "triangle" | "sawtooth";
 
     /**
      * The primitive noise types supported by Strudel.
      */
-    const SynthSoundNoise = ["pink", "white", "brown", "crackle"];
+    const SynthSoundNoise = "pink" | "white" | "brown" | "crackle";
 
     /**
      * A sample can be specified as name (e.g. when passing it as an argument to
@@ -901,7 +903,176 @@ declare module "@strudel/webaudio" {
         duration: TSecond,
     ) => void;
 
-    type SuperdoughValue = Record<string, string | number>;
+    /**
+     * Parameters that Superdough uses to decide what to play.
+     *
+     *  SuperdoughValue really is an arbitrary untyped key-value pair
+     *
+     *     type SuperdoughValue = Record<string, string | number>
+     *
+     * because it is passed to the individual synths, and they can expect
+     * arbitrary values from in it.
+     *
+     * However, the set of synths is fixed, so here we try to make it explicitly
+     * typed by adding annotations for the keys that we use. Just keep in mind
+     * that there are more, potentially.
+     *
+     * Most (all?) of these have equivalent control functions / methods. e.g.
+     * the value `s` below is the same value that gets passed to the {@link s}
+     * method of the {@link Controls} class in `@strudel/core`.
+     */
+    interface SuperdoughValue {
+        /**
+         * The synth, or sample, to play
+         *
+         * @default `"triangle"`
+         */
+        s: Synth | SampleSpecifier;
+
+        /**
+         * Overall gain (last one wins).
+         *
+         * @default 0.8
+         */
+        gain: Level;
+        /**
+         * Velocity of the note (A linear multiplier for the gain).
+         *
+         * @default 1.
+         */
+        velocity: Level;
+
+        /**** Amplitude ADSR envelope ****/
+
+        /**
+         * Attack time in seconds of the amplitude ADSR envelope.
+         *
+         * The amplitude ADSR envelope is linear.
+         *
+         * @default 0.001 (1 ms)
+         */
+        attack: TSecond;
+
+        /**
+         * Decay time in seconds of amplitude ADSR envelope.
+         *
+         * Only has an effect is sustain is less than 1.
+         *
+         * @default 0.05 (50 ms)
+         */
+        decay: TSecond;
+
+        /**
+         * Sustain level [0, 1] of the amplitude ADSR envelope.
+         *
+         * Note that the overall envelope is further impacted by gain (and
+         * Strudel has its own internal attentuation it performs too).
+         *
+         * @default 0.6
+         */
+        sustain: Level;
+
+        /**
+         * Release time in seconds of the amplitude ADSR envelope.
+         *
+         * @default 0.01 (10 ms)
+         */
+        release: TSecond;
+
+        /**
+         * Noise density.
+         *
+         * Only applicable if {@link s} is one of {@link SynthSoundNoise}.
+         */
+        density: number;
+
+        /**** LPF (Low pass filter) ****/
+
+        /** LPF cutoff */
+        cutoff: Frequency;
+
+        /**
+         * LPF resonance
+         *
+         * @default 1
+         */
+        resonance: number;
+
+        /**
+         * The depth of the filter modulation by its envelope.
+         *
+         * If non-zero, then an exponential ADSR envelope (specified by the
+         * various lp* values below) is applied to the cutoff value of the
+         * filter. By increasing this depth, we get more modulation of the
+         * filter.
+         */
+        lpenv: number;
+
+        /**
+         * Attack time in seconds of the LPF ADSR envelope.
+         *
+         * @default 0.005 (5 ms)
+         */
+        lpattack: TSecond;
+
+        /**
+         * Decay time in seconds of LPF ADSR envelope.
+         *
+         * Only has an effect is sustain is less than 1.
+         *
+         * @default 0.14 (140 ms)
+         */
+        lpdecay: TSecond;
+
+        /**
+         * Sustain level [0, 1] of the LPF ADSR envelope.
+         *
+         * @default 0
+         */
+        lpsustain: Level;
+
+        /**
+         * Release time in seconds of the LPF ADSR envelope.
+         *
+         * @default 0.1 (100 ms)
+         */
+        lprelease: TSecond;
+
+        /**
+         * Waveshaping distortion level [0, 1]
+         *
+         * Be careful with large values, might get loud.
+         */
+        shape: Level;
+
+        /**** Delay ****/
+
+        /** Delay level */
+        delay: Level;
+
+        /**
+         * Delay feedback level
+         *
+         * This sets how much of the signal is fed back into the delay.
+         *
+         * @default 0.5 (applicable when {@link delay} is non-zero)
+         */
+        delayfeedback: PatternTransform<Level>;
+
+        /**
+         * Delay time, in seconds
+         *
+         * @default 0.25 (applicable when {@link delay} is non-zero)
+         */
+        delaytime: TSecond;
+
+        /**** Reverb ****/
+
+        /** Reverb level */
+        room: Level;
+        /** Reverb roomsize (between 0 and 10) */
+        roomsize: number;
+    }
 }
 
 declare module "@strudel/mini" {
