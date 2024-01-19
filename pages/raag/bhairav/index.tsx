@@ -1,7 +1,8 @@
-import { initAudioOnFirstClick, superdough } from "@strudel/webaudio";
+import { superdough } from "@strudel/webaudio";
 import { WideColumn } from "components/Column";
 import * as React from "react";
 import { initStrudel } from "strudel/init";
+import { useInitAudioOnFirstClick } from "strudel/use-init-audio";
 import styled from "styled-components";
 
 /* More like thaat, but let's live with this for now */
@@ -25,38 +26,6 @@ export const Content: React.FC = () => {
 interface PropsWithRaag {
     raag: Raag;
 }
-
-/**
- * An wrapper over initAudioOnFirstClick that keeps track of whether or not
- * audio has been inited.
- *
- * We cannot use the initAudioOnFirstClick method because we also want to track
- * when the initialization has happened (From what I can see, there isn't a
- * straightforward way of getting that information out of Strudel).
- *
- * By tracking whether or not audio has been initated (on a user action), we can
- * then not try to play audio on hover until the first tap by the user. This is
- * not just for hygiene - otherwise the audio playback events we emit on hover
- * get enqueued and when the user first taps they all get triggered, causing a
- * loud noise.
- *
- * @returns a boolean value indicating if audio has been initialized.
- */
-const useInitAudioOnFirstClick = (): boolean => {
-    const [haveInitedAudio, setHaveInitedAudio] = React.useState(false);
-
-    React.useEffect(() => {
-        initAudioOnFirstClick();
-    }, []);
-
-    React.useEffect(() => {
-        const handleClick = () => setHaveInitedAudio(true);
-        window.addEventListener("click", handleClick);
-        return () => window.removeEventListener("click", handleClick);
-    }, []);
-
-    return haveInitedAudio;
-};
 
 export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     const haveInitedAudio = useInitAudioOnFirstClick();
