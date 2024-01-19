@@ -43,6 +43,8 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
                 <TextContent>
                     <Description raag={raag} />
                 </TextContent>
+                <Description2 raag={raag} />
+                <RaagPlayer raag={raag} />
             </WideColumn>
         </RaagContent_>
     );
@@ -88,15 +90,12 @@ type RaagProps = PropsWithRaag & {
 };
 
 const Raag: React.FC<RaagProps> = ({ raag, haveInitedAudio }) => {
+    const seq = () => noteSequence(raag.notes).reverse();
     return (
         <Raag_>
-            {noteSequence(raag.notes).map(([i, isOn]) =>
+            {seq().map(([i, isOn]) =>
                 isOn ? (
-                    <Note
-                        key={i}
-                        noteOffset={i}
-                        haveInitedAudio={haveInitedAudio}
-                    />
+                    <Note key={i} noteOffset={i} {...{ haveInitedAudio }} />
                 ) : (
                     <Blank key={i} noteOffset={i} />
                 ),
@@ -132,9 +131,9 @@ const noteSequence = (
 ): [number, boolean][] => {
     const seq: [number, boolean][] = [];
     for (let i = 0; i < 12 * octaves; i++) {
-        seq.push([i, notes.includes(i)]);
+        seq.push([i, notes.includes(i % 12)]);
     }
-    return seq.reverse();
+    return seq;
 };
 
 interface NoteProps {
@@ -223,12 +222,12 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
             <p>
                 Raagas are like scales (<i>not really</i>, they're more like
                 Markov chains, but thinking of them as scales is a good first
-                approximation).
+                approximation)
             </p>
             <p>
                 {`Above you can see the distance between notes on Raag
-                ${raag.name}. Hover on them to hear how they sound (tap once to
-                 enable audio).`}
+                ${raag.name} – Hover on them to hear how they sound (tap once to
+                 enable audio)`}
             </p>
         </div>
     );
@@ -238,10 +237,23 @@ const TextContent = styled.div`
     padding-block: 1px;
 `;
 
+const Description2: React.FC<PropsWithRaag> = ({ raag }) => {
+    return (
+        <Description2_>
+            <p>Here is an unending rendition of it</p>
+        </Description2_>
+    );
+};
+
+const Description2_ = styled.div`
+    margin-block-start: 3rem;
+`;
+
 const RaagPlayer: React.FC<PropsWithRaag> = ({ raag }) => {
+    const seq = () => noteSequence(raag.notes, 2);
     return (
         <RaagPlayer_>
-            {noteSequence(raag.notes).map(([i, isOn]) =>
+            {seq().map(([i, isOn]) =>
                 isOn ? <RPNote key={i} noteOffset={i} /> : <RPBlank key={i} />,
             )}
         </RaagPlayer_>
@@ -249,23 +261,19 @@ const RaagPlayer: React.FC<PropsWithRaag> = ({ raag }) => {
 };
 
 const RaagPlayer_ = styled.div`
-    box-sizing: border-box;
-    margin-block-start: -1rem;
-    /* padding-block: 1rem; */
-    min-height: 80svh;
+    margin-block: 3rem;
+    /* border: 1px solid tomato; */
+
+    /* max-width: calc(12px * 2px) * 24); //(1rem + 2); */
+
     display: flex;
-    flex-direction: column;
-    align-items: end;
-    gap: 4px;
-    justify-content: space-evenly;
+    gap: 12px;
+    justify-content: center;
 
     & > div {
-        width: 50%;
-        /* Don't let anything shrink */
-        flex-shrink: 0;
-        /* Give all the items a fixed height */
-        flex-basis: 12px;
-        border-radius: 4px;
+        width: 12px;
+        height: 30px;
+        border-radius: 3px;
     }
 `;
 
