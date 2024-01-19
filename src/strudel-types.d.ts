@@ -293,18 +293,18 @@ declare module "@strudel/core" {
     }
 
     /**
-     * Following are some PV* ("pattern value") type aliases that serve as
+     * Following are some V* ("pattern value") type aliases that serve as
      * documentation of the type / range of inputs driving a pattern.
      */
 
     /** A value in the range 20-20k Hz */
-    export type PVFrequency = number;
+    export type Frequency = number;
     /** A "unipolar" value - [0, 1] */
-    export type PVLevel = number;
+    export type Level = number;
     /** A "bipolar" value - [-1, 1] */
-    export type PVLevel2 = number;
+    export type BipolarLevel = number;
     /** A time duration in Seconds */
-    export type PVSeconds = number;
+    export type TSecond = number;
 
     /**
      * The best
@@ -477,14 +477,14 @@ declare module "@strudel/core" {
          *
          * e.g. `"a b".fast(7.5).slow(7.5)` is equivalent to `"a b"`.
          */
-        fast: PatternTransform<Number>;
+        fast: PatternTransform<number>;
 
         /**
          * Slow down the pattern
          *
          * Useful for spreading signals over multiple cycles.
          */
-        slow: PatternTransform<Number>;
+        slow: PatternTransform<number>;
 
         /**
          * Equivalent to `slow(n).f().fast(n)`
@@ -509,7 +509,7 @@ declare module "@strudel/core" {
         /**
          * Repeat each event the given number of times
          */
-        ply: PatternTransform<Number>;
+        ply: PatternTransform<number>;
 
         /**
          * Squeeze cycles from the pattern on the right (the argument) into the
@@ -584,7 +584,7 @@ declare module "@strudel/core" {
          *
          * @param n The number of samples to take per cycle
          */
-        segment: PatternTransform<Number>;
+        segment: PatternTransform<number>;
 
         /**
          * Playback level, exponential.
@@ -596,7 +596,7 @@ declare module "@strudel/core" {
          * to tweak the gain after setting the base level, use {@link velocity}
          * which acts the (linear) multiplier for the gain.
          */
-        gain: PatternTransform<PVLevel>;
+        gain: PatternTransform<Level>;
 
         /**
          * Playback level, linear [0 1].
@@ -609,72 +609,72 @@ declare module "@strudel/core" {
          * parameter: so for gain, the last value wins, whilst for velocity
          * there is explicit `(existingVelocity || 1) * newVelocity` handling.
          */
-        velocity: PatternTransform<PVLevel>;
+        velocity: PatternTransform<Level>;
 
         /**
          * Attack time in seconds of the amplitude ADSR envelope.
          */
-        attack: PatternTransform<PVSeconds>;
+        attack: PatternTransform<TSecond>;
 
         /**
          * Decay time in seconds of amplitude ADSR envelope.
          *
          * Only has an effect is sustain is less than 1.
          */
-        decay: PatternTransform<PVSeconds>;
+        decay: PatternTransform<TSecond>;
 
         /**
          * Sustain level [0, 1] of the amplitude ADSR envelope.
          */
-        sustain: PatternTransform<PVLevel>;
+        sustain: PatternTransform<Level>;
 
         /**
          * Release time in seconds of the amplitude ADSR envelope.
          */
-        release: PatternTransform<PVSeconds>;
+        release: PatternTransform<TSecond>;
 
         /**
          * Waveshaping distortion level [0, 1]
          *
          * Be careful with large values, might get loud.
          */
-        shape: PatternTransform<PVLevel>;
+        shape: PatternTransform<Level>;
 
         /**
          * Detune the oscillator
          *
          * - Only supported by SuperDirt synths.
          */
-        detune: PatternTransform<PVLevel>;
+        detune: PatternTransform<Level>;
 
         /**
          * Low-pass filter cutoff frequency, and an optional ":resonance"
          */
-        cutoff: PatternTransform<PVFrequency>;
+        cutoff: PatternTransform<Frequency>;
         /**
          * Resonance for the low-pass filter [0, 50]
          *
          * @default 1
          */
-        resonance: PatternTransform<Number>;
+        resonance: PatternTransform<number>;
 
         /**
          * High-pass filter cutoff frequency, and an optional ":hresonance"
          */
-        hcutoff: PatternTransform<PVFrequency>;
+        hcutoff: PatternTransform<Frequency>;
         /**
          * Resonance for the high-pass filter [0, 50]
          */
-        hresonance: PatternTransform<Number>;
+        hresonance: PatternTransform<number>;
 
         /**
          * Band-pass filter center frequency, and an optional ":bandq"
          */
-        bandf: PatternTransform<PVFrequency>;
+        bandf: PatternTransform<Frequency>;
         /**
          * Resonance for the band-pass filter
          */
-        bandq: PatternTransform<Number>;
+        bandq: PatternTransform<number>;
 
         /**
          * Formant filter frequency.
@@ -687,7 +687,7 @@ declare module "@strudel/core" {
         /**
          * Delay level, and optional ":delaytime:delayfeedback"
          */
-        delay: PatternTransform<PVLevel>;
+        delay: PatternTransform<Level>;
         /**
          * Delay time, in seconds
          *
@@ -695,16 +695,16 @@ declare module "@strudel/core" {
          * not an inherent WebAudio limitation, rather just things are not
          * currently wired up to support times more than 1.
          */
-        delaytime: PatternTransform<PVSeconds>;
+        delaytime: PatternTransform<TSecond>;
         /** Delay feedback level */
-        delayfeedback: PatternTransform<PVLevel>;
+        delayfeedback: PatternTransform<Level>;
 
         /**
          * Reverb level, and optional ":roomsize".
          *
          * roomsize is between 0 and 10.
          */
-        room: PatternTransform<PVLevel>;
+        room: PatternTransform<Level>;
 
         /**
          * Convert a unipolar pattern [0, 1] into a bipolar one [-1, 1].
@@ -735,7 +735,7 @@ declare module "@strudel/core" {
          *
          * @param n is the number of cycles to print.
          */
-        inspect: PatternTransform<Number>;
+        inspect: PatternTransform<number>;
     }
 
     export const controls: Controls;
@@ -864,7 +864,7 @@ declare module "@strudel/webaudio" {
     export const registerSynthSounds: () => void;
 
     /**
-     * Obtain a direct reference to the "superdough" audio engine.
+     * A direct reference to the underlying "superdough" audio engine.
      *
      * The webaudio package for Strudel is a thin-binding over the superdough
      * package, which is also published independently of Strudel.
@@ -888,12 +888,20 @@ declare module "@strudel/webaudio" {
      * time-varying soundscape of them. We can use it just a function that we
      * pass key value pairs describing the sound, and the length of the sound.
      * Taken this way, it ends up being a nicer to use API than raw WebAudio.
+     *
+     * @param value The key value pairs that tell superdough what sound to make.
+     * @param after Time (in seconds) after which to play the sound. Pass 0 to
+     * trigger the sound immediately.
+     * @param duration How long the sound should last, in seconds. This is
+     * optional if playing a sample, and required if playing a synth.
      */
     export const superdough: (
-        value: Record<string, string | number>,
-        deadline,
-        hapDuration,
+        value: SuperdoughValue,
+        after: TSecond,
+        duration: TSecond,
     ) => void;
+
+    type SuperdoughValue = Record<string, string | number>;
 }
 
 declare module "@strudel/mini" {
