@@ -21,12 +21,12 @@ export const WideColumn: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: 1fr min(24rem, 100%) 3fr;
+    grid-template-columns: 1fr min(24em, 100%) 3fr;
 `;
 
 const WideGrid = styled.div`
     display: grid;
-    grid-template-columns: 1fr min(31rem, 100%) 5fr;
+    grid-template-columns: 1fr min(31em, 100%) 5fr;
 `;
 
 const Middle = styled.div`
