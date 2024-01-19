@@ -93,7 +93,7 @@ const noteSequence = (notes: number[]): [number, boolean][] => {
     for (let i = 0; i < 12; i++) {
         seq.push([i, notes.includes(i)]);
     }
-    return seq.toReversed();
+    return seq.reverse();
 };
 
 interface NoteProps {
