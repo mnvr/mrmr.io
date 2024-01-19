@@ -26,9 +26,42 @@ interface PropsWithRaag {
     raag: Raag;
 }
 
-export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
+/**
+ * An wrapper over initAudioOnFirstClick that keeps track of whether or not
+ * audio has been inited.
+ *
+ * We cannot use the initAudioOnFirstClick method because we also want to track
+ * when the initialization has happened (From what I can see, there isn't a
+ * straightforward way of getting that information out of Strudel).
+ *
+ * By tracking whether or not audio has been initated (on a user action), we can
+ * then not try to play audio on hover until the first tap by the user. This is
+ * not just for hygiene - otherwise the audio playback events we emit on hover
+ * get enqueued and when the user first taps they all get triggered, causing a
+ * loud noise.
+ *
+ * @returns a boolean value indicating if audio has been initialized.
+ */
+const useInitAudioOnFirstClick = (): boolean => {
+    const [haveInitedAudio, setHaveInitedAudio] = React.useState(false);
+
     React.useEffect(() => {
         initAudioOnFirstClick();
+    }, []);
+
+    React.useEffect(() => {
+        const handleClick = () => setHaveInitedAudio(true);
+        window.addEventListener("click", handleClick);
+        return () => window.removeEventListener("click", handleClick);
+    }, []);
+
+    return haveInitedAudio;
+};
+
+export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
+    const haveInitedAudio = useInitAudioOnFirstClick();
+
+    React.useEffect(() => {
         initStrudel();
     }, []);
 
@@ -36,7 +69,7 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
         <RaagContent_>
             <WideColumn>
                 <RaagName raag={raag} />
-                <Raag raag={raag} />
+                <Raag {...{ raag, haveInitedAudio }} />
                 <TextContent>
                     <Description raag={raag} />
                 </TextContent>
@@ -80,12 +113,20 @@ const T1 = styled.span`
     color: var(--mrmr-color-4);
 `;
 
-const Raag: React.FC<PropsWithRaag> = ({ raag }) => {
+type RaagProps = PropsWithRaag & {
+    haveInitedAudio: boolean;
+};
+
+const Raag: React.FC<RaagProps> = ({ raag, haveInitedAudio }) => {
     return (
         <Raag_>
             {noteSequence(raag.notes).map(([i, isOn]) =>
                 isOn ? (
-                    <Note key={i} noteOffset={i} />
+                    <Note
+                        key={i}
+                        noteOffset={i}
+                        haveInitedAudio={haveInitedAudio}
+                    />
                 ) : (
                     <Blank key={i} noteOffset={i} />
                 ),
@@ -126,9 +167,11 @@ const noteSequence = (notes: number[]): [number, boolean][] => {
 interface NoteProps {
     /** How many semitones away from the root is this note */
     noteOffset: number;
+    /** True if the user has tapped once to initiate audio */
+    haveInitedAudio: boolean;
 }
 
-const Note: React.FC<NoteProps> = ({ noteOffset }) => {
+const Note: React.FC<NoteProps> = ({ noteOffset, haveInitedAudio }) => {
     // true if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -147,11 +190,19 @@ const Note: React.FC<NoteProps> = ({ noteOffset }) => {
         }, duration * 1000);
     };
 
+    const handleClick = () => {
+        playNote();
+    };
+
+    const handleMouseEnter = () => {
+        if (haveInitedAudio) playNote();
+    };
+
     return (
         <Note_
             $isPlaying={isPlaying}
-            onClick={playNote}
-            onMouseEnter={playNote}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
             style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }}
         />
     );
@@ -172,7 +223,12 @@ const Note_ = styled.div<NoteProps_>`
     }
 `;
 
-const Blank: React.FC<NoteProps> = ({ noteOffset }) => {
+interface BlankProps {
+    /** @see {@link noteOffset} in {@link NoteProps} */
+    noteOffset: number;
+}
+
+const Blank: React.FC<BlankProps> = ({ noteOffset }) => {
     return <Blank_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
 };
 
