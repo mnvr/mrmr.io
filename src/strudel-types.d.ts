@@ -293,6 +293,20 @@ declare module "@strudel/core" {
     }
 
     /**
+     * A Note
+     *
+     * Notes can be specified as strings (e.g. "a#6") or MIDI numbers. "a4" is
+     * MIDI 69.
+     *
+     * Note that c is the "first note" so to say, and b / e don't have sharps,
+     * so it goes
+     *
+     *     a -> a# -> b -> c<next-octave> -> c# -> d -> d# -> e -> f -> f#
+     *         -> g -> g# -> ...
+     */
+    type Note = string | number;
+
+    /**
      * Following are some V* ("pattern value") type aliases that serve as
      * documentation of the type / range of inputs driving a pattern.
      */
@@ -442,13 +456,7 @@ declare module "@strudel/core" {
         /**
          * Convert the pattern elements into musical notes.
          *
-         * Notes can be specified as strings (e.g. "a#6") or MIDI numbers. "a4"
-         * is MIDI 69.
-         *
-         * Note that c is the "first note" so to say, and b / e don't have
-         * sharps, so it goes
-         *
-         *     a -> a# -> b -> c<next-octave> -> c# -> d -> d# -> e -> f -> f# -> g -> g# -> ...
+         * @see {@link Note}.
          */
         note: PatternTransform;
 
@@ -927,20 +935,39 @@ declare module "@strudel/webaudio" {
          *
          * @default `"triangle"`
          */
-        s: Synth | SampleSpecifier;
+        s?: Synth | SampleSpecifier;
+
+        /**
+         * The note to play.
+         *
+         * @default is 36. This is MIDI 36, which translates into a frequency of
+         * 65.4 Hz.
+         */
+        note?: Note;
+
+        /**
+         * The frequency to play
+         *
+         * This is an alternative to specifying the {@link note} - we can
+         * directly provide the frequency in Hz of the synth.
+         */
+        freq?: Frequency;
+
+        /**** Amplitude ****/
 
         /**
          * Overall gain (last one wins).
          *
          * @default 0.8
          */
-        gain: Level;
+        gain?: Level;
+
         /**
          * Velocity of the note (A linear multiplier for the gain).
          *
          * @default 1.
          */
-        velocity: Level;
+        velocity?: Level;
 
         /**** Amplitude ADSR envelope ****/
 
@@ -951,7 +978,7 @@ declare module "@strudel/webaudio" {
          *
          * @default 0.001 (1 ms)
          */
-        attack: TSecond;
+        attack?: TSecond;
 
         /**
          * Decay time in seconds of amplitude ADSR envelope.
@@ -960,7 +987,7 @@ declare module "@strudel/webaudio" {
          *
          * @default 0.05 (50 ms)
          */
-        decay: TSecond;
+        decay?: TSecond;
 
         /**
          * Sustain level [0, 1] of the amplitude ADSR envelope.
@@ -970,33 +997,33 @@ declare module "@strudel/webaudio" {
          *
          * @default 0.6
          */
-        sustain: Level;
+        sustain?: Level;
 
         /**
          * Release time in seconds of the amplitude ADSR envelope.
          *
          * @default 0.01 (10 ms)
          */
-        release: TSecond;
+        release?: TSecond;
 
         /**
          * Noise density.
          *
          * Only applicable if {@link s} is one of {@link SynthSoundNoise}.
          */
-        density: number;
+        density?: number;
 
         /**** LPF (Low pass filter) ****/
 
         /** LPF cutoff */
-        cutoff: Frequency;
+        cutoff?: Frequency;
 
         /**
          * LPF resonance
          *
          * @default 1
          */
-        resonance: number;
+        resonance?: number;
 
         /**
          * The depth of the filter modulation by its envelope.
@@ -1006,14 +1033,14 @@ declare module "@strudel/webaudio" {
          * filter. By increasing this depth, we get more modulation of the
          * filter.
          */
-        lpenv: number;
+        lpenv?: number;
 
         /**
          * Attack time in seconds of the LPF ADSR envelope.
          *
          * @default 0.005 (5 ms)
          */
-        lpattack: TSecond;
+        lpattack?: TSecond;
 
         /**
          * Decay time in seconds of LPF ADSR envelope.
@@ -1022,33 +1049,33 @@ declare module "@strudel/webaudio" {
          *
          * @default 0.14 (140 ms)
          */
-        lpdecay: TSecond;
+        lpdecay?: TSecond;
 
         /**
          * Sustain level [0, 1] of the LPF ADSR envelope.
          *
          * @default 0
          */
-        lpsustain: Level;
+        lpsustain?: Level;
 
         /**
          * Release time in seconds of the LPF ADSR envelope.
          *
          * @default 0.1 (100 ms)
          */
-        lprelease: TSecond;
+        lprelease?: TSecond;
 
         /**
          * Waveshaping distortion level [0, 1]
          *
          * Be careful with large values, might get loud.
          */
-        shape: Level;
+        shape?: Level;
 
         /**** Delay ****/
 
         /** Delay level */
-        delay: Level;
+        delay?: Level;
 
         /**
          * Delay feedback level
@@ -1057,21 +1084,21 @@ declare module "@strudel/webaudio" {
          *
          * @default 0.5 (applicable when {@link delay} is non-zero)
          */
-        delayfeedback: PatternTransform<Level>;
+        delayfeedback?: PatternTransform<Level>;
 
         /**
          * Delay time, in seconds
          *
          * @default 0.25 (applicable when {@link delay} is non-zero)
          */
-        delaytime: TSecond;
+        delaytime?: TSecond;
 
         /**** Reverb ****/
 
         /** Reverb level */
-        room: Level;
+        room?: Level;
         /** Reverb roomsize (between 0 and 10) */
-        roomsize: number;
+        roomsize?: number;
     }
 }
 

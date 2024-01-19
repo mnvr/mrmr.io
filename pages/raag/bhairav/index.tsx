@@ -130,7 +130,7 @@ interface NoteProps {
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
     const playNote = () => {
-        superdough({ note: "g1", s: "sawtooth", cutoff: 600 }, 0, 0.125);
+        superdough({ s: "sine", note: 69 + noteOffset }, 0, 0.125);
     };
     return (
         <Note_
