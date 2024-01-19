@@ -5,12 +5,14 @@ import styled from "styled-components";
 /* More like thaat, but let's live with this for now */
 interface Raag {
     name: string;
+    nameInDevanagri: string;
     /** This is the number of semitones from the tonic (root, Sa). */
     notes: number[];
 }
 
 const raagBhairav: Raag = {
     name: "Bhairav",
+    nameInDevanagri: "भैरव",
     notes: [0, 1, 4, 5, 7, 8, 11],
 };
 
@@ -26,9 +28,7 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <RaagContent_>
             <WideColumn>
-                <Title>
-                    <T1>ra'g</T1> {raag.name.toLowerCase()}
-                </Title>
+                <RaagName raag={raag} />
                 <Raag raag={raag} />
                 <TextContent>
                     <Description raag={raag} />
@@ -43,10 +43,30 @@ const RaagContent_ = styled.div`
     font-size: 22px;
 `;
 
-const Title = styled.h1`
+const RaagName: React.FC<PropsWithRaag> = ({ raag }) => {
+    return (
+        <RaagName_>
+            <h1>
+                <T1>ra'g</T1> {raag.name.toLowerCase()}
+            </h1>
+            <big>
+                <T1>राग</T1> {raag.nameInDevanagri}
+            </big>
+        </RaagName_>
+    );
+};
+
+const RaagName_ = styled.div`
     font-family: serif;
     font-style: italic;
-    font-size: 2.25em;
+
+    h1 {
+        font-size: 2.25em;
+        margin-block-end: 0.1em;
+    }
+    big {
+        margin-inline-start: -1px;
+    }
 `;
 
 const T1 = styled.span`
@@ -127,13 +147,13 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <div>
             <p>
-                Raagas are like scales (not really, they're more like Markov
-                chains, but to a first approximation we can think of them as
-                scales).
+                Raagas are like scales (<i>not really</i>, they're more like
+                Markov chains, but thinking of them as scales is a good first
+                approximation).
             </p>
             <p>
-                {`Above you can see the semitone distance between notes on Raag
-                 ${raag.name}. Hover on them to hear how they sound (tap once to
+                {`Above you can see the distance between notes on Raag
+                ${raag.name}. Hover on them to hear how they sound (tap once to
                  enable audio).`}
             </p>
         </div>
