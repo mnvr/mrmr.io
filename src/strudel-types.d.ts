@@ -1,12 +1,72 @@
 /**
- * TypeScript d.ts type declarations for strudel
+ * TypeScript d.ts type declarations for Strudel
  * https://github.com/tidalcycles/strudel
  *
  * By Manav Rathi (https://github.com/mnvr/mrmr.io)
+ *
+ * ## Strudel
+ *
+ * JavaScript port of TidalCycles.
+ *
+ * ## Installation
+ *
+ * Strudel is split into a number of small packages, all available under
+ * `@strudel/*`. Here we cover the following:
+ *
+ * - `@strudel/core` - as it says on the tin
+ * - `@strudel/webaudio` - to allow us to emit sounds using
+ *   [WebAudio](https://www.w3.org/TR/webaudio/)
+ * - `@strudel/mini` - to allow us to use the mini notation
+ *
+ * ### Core
+ *
+ * The heart of Tidal (and thus, Strudel) is the {@link Pattern} class. A
+ * pattern is a function that can query to ask what all **events** happen over a
+ * cycle (arc) of time.
+ *
+ * The core contains various primitive pattern (notes, silence etc), and ways to
+ * combine them (concatenate them, stack them, add the values embedded in them,
+ * etc).
+ *
+ * Control parameters act as FX chains, modifying patterns to create new ones
+ * that incorporate the effects of the control parameter. The control parameter
+ * itself can be parameterized by a pattern to change its value.
+ *
+ * ### WebAudio
+ *
+ * A pattern is something we can query to ask what all events happen over a
+ * cycle (By convention, 1 cycle is 1 second). Events can be arbitrary things,
+ * but the events we're dealing in the context of sound are things that can be
+ * rendered as audio by the WebAudio renderer.
+ *
+ * To connect core to WebAudio, we need to import `getAudioContext`,
+ * `webaudioOutput` from "@strudel.cycles/webaudio", and then pass those to the
+ * core's `repl` object. Thereafter, communication between core and webaudio
+ * happens implicitly via control parameters attached to events.
+ *
+ * The webaudio package also exports `initAudioOnFirstClick`, which we need to
+ * call once. It also has a `samples` function, which can be used to load
+ * samples.
+ *
+ * ### Mini
+ *
+ * The mini notation is syntax sugar to simplify writing patterns.
+ *
+ * ### Superdough
+ *
+ * Strudel also provides us access to its audio engine, _superdough_. The
+ * `strudel/webaudio` package is in fact a thin wrapper around the standalone
+ * `superdough` package.
+ *
+ * Superdough is useful for directly triggering sounds, e.g.
+ *
+ *      // superdough(value, time, duration)
+ *      superdough({ note: 'g1', s: 'sawtooth', cutoff: 600 }, t, 0.125);
+ *
  */
 declare module "@strudel/core" {
     /**
-     * Patterns are the core abstraction of Tidal(Cycles).
+     * Patterns are the core abstraction of TidalCycles (and thus Strudel).
      *
      * A Pattern is something that can be queried to ask it which Events (aka
      * {@link Hap}s) occur during a given Timespan. {@link Timespan}s are spans
@@ -19,6 +79,12 @@ declare module "@strudel/core" {
      *
      * Surprisingly, all the abstractions that we see can be implemented by
      * combinations of this primitive.
+     *
+     * The {@link Pattern} class extends {@link Controls}, but that is just for
+     * providing a convenient, chainable, interface to creating new patterns by
+     * calling a function on an existing pattern. Conceptually, the
+     * {@link Pattern} is the core primitive, while {@link Controls} can be
+     * thought of as a way to augment it with frequently useful extensions.
      */
     export class Pattern extends Controls {
         /**
@@ -53,7 +119,7 @@ declare module "@strudel/core" {
         /**
          * Return a new pattern but with its events sorted by their onsets.
          *
-         * Only useful when debugging really, can't imagine other uses.
+         * This is useful when debugging.
          */
         sortHapsByPart(): Pattern;
     }
@@ -76,8 +142,9 @@ declare module "@strudel/core" {
      *
      * Note that if multiple Patternables are provided (either explicitly as an
      * array, or implicitly as multiple arguments to the function), then they're
-     * {@link sequence}-d to produce a single Pattern. This is the Pattern that
-     * this function then acts on to produce the output pattern
+     * {@link sequence}-d to produce a single Pattern. The resultant, sequenced
+     * (fast-catted) Pattern is what the transformation function then acts on to
+     * produce the output pattern.
      */
     export type PatternTransform<T = number> = (
         ...pats: Patternable<T>[]
@@ -100,7 +167,12 @@ declare module "@strudel/core" {
          * TimeSpans.
          */
 
-        /** The start of the current cycle */
+        /**
+         * The start of the current cycle.
+         *
+         * The name comes from Hindi सम, which denotes the first beat of a taal
+         * (ताल).
+         */
         sam: IFraction;
 
         /**
@@ -126,7 +198,7 @@ declare module "@strudel/core" {
      */
     export type Cycle = number | IFraction;
 
-    /** A duration in time */
+    /** A duration in time; an arc of time. */
     export class TimeSpan {
         constructor(begin: Cycle, end: Cycle);
     }
@@ -221,8 +293,8 @@ declare module "@strudel/core" {
     }
 
     /**
-     * Following are some PV* type aliases that serve as documentation of the
-     * type / range of inputs driving a pattern.
+     * Following are some PV* ("pattern value") type aliases that serve as
+     * documentation of the type / range of inputs driving a pattern.
      */
 
     /** A value in the range 20-20k Hz */
@@ -323,24 +395,27 @@ declare module "@strudel/core" {
      * example, the "cutoff" control parameter attaches a "cutoff" key-value
      * pair to each event's value.
      *
-     *     original pattern => control parameter x => modified pattern
+     *     original pattern => control parameter =>  modified pattern
      *         event                cutoff                event
-     *       value {...}              42           value {..., foo: 42 }
+     *       value {...}              42          value {..., cutoff: 42 }
      *
      * It is up to the renderer to interpret this attached bit of state. e.g. in
-     * case of cutoff, if the pattern ultimately gets chained to a WebAudio
+     * case of cutoff, if the pattern ultimately gets delivered to a WebAudio
      * synth, then the presence of the "cutoff" in the event's value would
      * inform the synth to set the frequency of the filter accordingly.
      *
-     * The value of the control parameter itself can be a pattern to have the
-     * value attached by the control parameter change with time. Indeed, it is
-     * patterns all the way down.
+     * The value of the control parameter itself can be a pattern. This way, we
+     * can have the value attached by the control parameter change with time.
+     * Such recursive patterning is not a special case but the primary effector
+     * offered by TidalCycles (and Strudel).
      *
      * The built-in control parameters are surfaced in two ways:
-     * - As functions in the `controls` object
-     * - As functions on pattern objects
      *
-     * Typically, the cutoff object is destructured to get at the special
+     * 1. As functions in the `controls` object
+     *
+     * 2. As functions on pattern objects
+     *
+     * Typically, the controls object is destructured to get at the special
      * control parameter "note" (the first way), whilst the rest of the control
      * parameters are expressed as chain notation (the second way).
      *
@@ -482,6 +557,7 @@ declare module "@strudel/core" {
          * pattern to create the new superimposed one.
          */
         superimpose: PatternTransform;
+
         /**
          * Like superimpose, but offset the copy first
          *
@@ -492,6 +568,7 @@ declare module "@strudel/core" {
          * @param f The {@link PatternTransform}
          */
         off: PatternTransform;
+
         /**
          * Superimpose and offset multiple copies of the pattern.
          *
@@ -520,6 +597,7 @@ declare module "@strudel/core" {
          * which acts the (linear) multiplier for the gain.
          */
         gain: PatternTransform<PVLevel>;
+
         /**
          * Playback level, linear [0 1].
          *
@@ -537,16 +615,19 @@ declare module "@strudel/core" {
          * Attack time in seconds of the amplitude ADSR envelope.
          */
         attack: PatternTransform<PVSeconds>;
+
         /**
          * Decay time in seconds of amplitude ADSR envelope.
          *
          * Only has an effect is sustain is less than 1.
          */
         decay: PatternTransform<PVSeconds>;
+
         /**
          * Sustain level [0, 1] of the amplitude ADSR envelope.
          */
         sustain: PatternTransform<PVLevel>;
+
         /**
          * Release time in seconds of the amplitude ADSR envelope.
          */
@@ -721,7 +802,7 @@ declare module "@strudel/core" {
     /**
      * Register a new pattern function.
      *
-     * This method then becomes available on the Pattern class (the last
+     * This method then becomes available on the {@link Pattern} class (the last
      * argument will be the pattern instance on which this method is called).
      *
      * A function suitable for use as a global {@link PatternTransform} is also
@@ -733,8 +814,11 @@ declare module "@strudel/core" {
     ) => PatternTransform;
 
     /**
-     * Repeated definitions of operations, useful when needing the standalone
-     * version. For documentation, see the version inside {@link Controls}.
+     * Below are repeated, duplicate, definitions of operations copy pasted from
+     * above.
+     *
+     * These are useful when needing the standalone version. For documentation,
+     * see the corresponding method inside {@link Controls}.
      */
     export const add: PatternTransform;
     export const mask: PatternTransform;
@@ -746,7 +830,8 @@ declare module "@strudel/webaudio" {
     /**
      * Initialize WebAudio on first user initiated interaction.
      *
-     * Trying to use audio otherwise makes the browser unhappy.
+     * Trying to use audio otherwise makes the browser unhappy, and it'll refuse
+     * to play any sounds.
      */
     export const initAudioOnFirstClick: () => void;
 
@@ -777,6 +862,38 @@ declare module "@strudel/webaudio" {
      * {@link s} parameter.
      */
     export const registerSynthSounds: () => void;
+
+    /**
+     * Obtain a direct reference to the "superdough" audio engine.
+     *
+     * The webaudio package for Strudel is a thin-binding over the superdough
+     * package, which is also published independently of Strudel.
+     *
+     * This function forms the heart of superdough. We give it a rendered event,
+     * the time after which the event should be played, and the duration for
+     * which to play that event. It then generates audio for us.
+     *
+     * This function is what ultimately gets called when we use Strudel's
+     * pattern functions. The various pattern chains we build are queried to get
+     * the next set of events, and these events are then rendered down to
+     * JavaScript objects with a known set of key-value pairs that superdough
+     * knows how to interpret. For example,
+     *
+     *       superdough({ note: 'g1', s: 'sawtooth', cutoff: 600 }, 0.1, 0.5)
+     *
+     * The benefit of directly accessing superdough is that it gives us the
+     * ability to trigger on-off sounds. Also, since it doesn't involve the
+     * learning the concepts behind patterns/events etc, this is simpler to use
+     * when the intent is to make a specific sound and not generate a
+     * time-varying soundscape of them. We can use it just a function that we
+     * pass key value pairs describing the sound, and the length of the sound.
+     * Taken this way, it ends up being a nicer to use API than raw WebAudio.
+     */
+    export const superdough: (
+        value: Record<string, string | number>,
+        deadline,
+        hapDuration,
+    ) => void;
 }
 
 declare module "@strudel/mini" {
@@ -799,7 +916,7 @@ declare module "@strudel/mini" {
      * into patterns.
      *
      * For more mini-notation syntax, see:
-     * https://strudel.tidalcycles.org/learn/mini-notation
+     * https://strudel.cc/learn/mini-notation/
      */
     export const mini = (...strings) => Patternable;
 }
