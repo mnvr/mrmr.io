@@ -61,8 +61,8 @@ export const useStrudelPlayback = (
     };
 
     React.useEffect(() => {
-        initStrudel();
         initAudioOnFirstClick();
+        initStrudel();
     }, []);
 
     React.useEffect(() => {

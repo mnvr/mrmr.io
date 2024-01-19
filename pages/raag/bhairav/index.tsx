@@ -1,5 +1,7 @@
+import { initAudioOnFirstClick, superdough } from "@strudel/webaudio";
 import { WideColumn } from "components/Column";
 import * as React from "react";
+import { initStrudel } from "strudel/init";
 import styled from "styled-components";
 
 /* More like thaat, but let's live with this for now */
@@ -25,6 +27,11 @@ interface PropsWithRaag {
 }
 
 export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
+    React.useEffect(() => {
+        initAudioOnFirstClick();
+        initStrudel();
+    }, []);
+
     return (
         <RaagContent_>
             <WideColumn>
@@ -122,7 +129,15 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
-    return <Note_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
+    const playNote = () => {
+        superdough({ note: "g1", s: "sawtooth", cutoff: 600 }, 0, 0.125);
+    };
+    return (
+        <Note_
+            onClick={playNote}
+            style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }}
+        />
+    );
 };
 
 const Note_ = styled.div`

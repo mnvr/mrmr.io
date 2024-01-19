@@ -14,10 +14,10 @@ import { m } from "./mini";
  * Strudel is split into a number of small packages. For our purposes, we need
  * the following:
  *
- * - `@strudel.cycles/core` - as it says on the tin
- * - `@strudel.cycles/webaudio` - to allow us to emit sounds using
+ * - `@strudel/core` - as it says on the tin
+ * - `@strudel/webaudio` - to allow us to emit sounds using
  *   [WebAudio](https://www.w3.org/TR/webaudio/)
- * - `@strudel.cycles/mini` - to allow us to use the mini notation
+ * - `@strudel/mini` - to allow us to use the mini notation
  *
  * ### Core
  *
@@ -48,9 +48,20 @@ import { m } from "./mini";
  *
  * The mini notation is syntax sugar to simplify writing patterns.
  *
+ * ### Superdough
+ *
+ * Strudel also provides us access to its audio engine, _superdough_. The
+ * `strudel/webaudio` package is in fact a thin wrapper around the standalone
+ * `superdough` package.
+ *
+ * Superdough is useful for directly triggering sounds, e.g.
+ *
+ *      // superdough(value, time, duration)
+ *      superdough({ note: 'g1', s: 'sawtooth', cutoff: 600 }, t, 0.125);
+ *
  * ## Extensions
  *
- * ### m``
+ * ### A tagged template literal - m``
  *
  * @see {@link m}.
  */

@@ -353,6 +353,18 @@ declare module "@strudel/core" {
      */
     export abstract class Controls {
         /**
+         * Set the synth or sample to use.
+         *
+         * Synth can be specified as one of the enum values in {@link Synth}.
+         *
+         * Otherwise it is taken to be the name of a {@link SampleName} (with
+         * optional ":n:gain" suffixes when using mini-notation).
+         *
+         * - @default `triangle`.
+         */
+        s: PatternTransform<Synth | SampleSpecifier>;
+
+        /**
          * Convert the pattern elements into musical notes.
          *
          * Notes can be specified as strings (e.g. "a#6") or MIDI numbers. "a4"
@@ -496,19 +508,6 @@ declare module "@strudel/core" {
          * @param n The number of samples to take per cycle
          */
         segment: PatternTransform<Number>;
-
-        /**
-         * Set the synth or sample to use
-         *
-         * Synth can be specified as one of the enum values in
-         * {@link SynthType}.
-         *
-         * Otherwise it is taken to be the name of a {@link Sample} (with
-         * optional ":n:gain" suffixes when using mini-notation).
-         *
-         * - @default `triangle`.
-         */
-        s: PatternTransform<SynthType | SampleSpecifier>;
 
         /**
          * Playback level, exponential.
@@ -661,13 +660,33 @@ declare module "@strudel/core" {
     export const controls: Controls;
 
     /**
-     * Supported synth types that can be passed to {@link s}
+     * Supported built-in synths that can be passed to {@link s}
      *
-     * Currently, these are the same as the `OscillatorType` supported by
-     * WebAudio's {@link AudioContext.createOscillator} method (except the type
-     * "custom", which is not supported yet).
+     * These are DSP generated (as opposed to playing a sample).
+     *
+     * These need to be registered before they can be used. {@see SynthSound}.
      */
-    type SynthType = "sawtooth" | "sine" | "square" | "triangle";
+    type Synth = SynthSound;
+
+    /**
+     * The primitive synth types supported by Strudel.
+     *
+     * To use these we need to call {@link registerSynthSounds} once beforehand.
+     */
+    const SynthSound = SynthSoundWaveform | SynthSoundNoise;
+
+    /**
+     * The primitive "oscillators"-type synths supported by Strudel.
+
+     * These are the same as the `OscillatorType` supported by WebAudio's
+     * {@link AudioContext.createOscillator} method (except "custom").
+     */
+    const SynthSoundWaveform = ["sine", "square", "triangle", "sawtooth"];
+
+    /**
+     * The primitive noise types supported by Strudel.
+     */
+    const SynthSoundNoise = ["pink", "white", "brown", "crackle"];
 
     /**
      * A sample can be specified as name (e.g. when passing it as an argument to
@@ -752,8 +771,10 @@ declare module "@strudel/webaudio" {
     };
 
     /**
-     * Call this on startup to register support for the  in-built
-     * {@link SynthType}s oscillators.
+     * Call this on startup to register support for the built-in {@link Synth}s.
+     *
+     * In particular, this enables us to use {@link StrudelSynth} values as the
+     * {@link s} parameter.
      */
     export const registerSynthSounds: () => void;
 }
