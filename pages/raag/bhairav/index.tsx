@@ -129,19 +129,43 @@ interface NoteProps {
 }
 
 const Note: React.FC<NoteProps> = ({ noteOffset }) => {
+    // true if this note is currently being played.
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
     const playNote = () => {
-        superdough({ s: "sine", note: 69 + noteOffset }, 0, 0.125);
+        // As a temporary workaround for the issue of superdough sometimes not
+        // playing the sound when deadline is 0, provide a small delta
+        // https://github.com/tidalcycles/strudel/issues/925
+        const duration = 0.125;
+        superdough({ s: "sine", note: 69 + noteOffset }, 0.01, duration);
+        setIsPlaying(true);
+        setTimeout(() => {
+            // This doesn't cover all sorts of reentrant cases, but practically,
+            // given the small time scales involved, this is fine enough for our
+            // demo instrument.
+            setIsPlaying(false);
+        }, duration * 1000);
     };
+
     return (
         <Note_
+            $isPlaying={isPlaying}
             onClick={playNote}
+            onMouseEnter={playNote}
             style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }}
         />
     );
 };
 
-const Note_ = styled.div`
-    background-color: var(--mrmr-color-4);
+interface NoteProps_ {
+    $isPlaying: boolean;
+}
+
+const Note_ = styled.div<NoteProps_>`
+    cursor: pointer;
+
+    background-color: ${(props) =>
+        props.$isPlaying ? "var(--mrmr-color-3)" : "var(--mrmr-color-4)"};
 
     &:hover {
         background-color: var(--mrmr-color-3);
