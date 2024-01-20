@@ -104,6 +104,62 @@ export class Synth {
     }
 }
 
+/**
+ * Frequency expressed as the MIDI note
+ *
+ * Even though we don't use MIDI, this is a convenient way of specifying musical
+ * notes because integral MIDI notes correspond to semitones.
+ *
+ * Integral values correspond to semitones. It is totally fine to specify
+ * fractional values too to get arbitrary frequencies - even then, specifying
+ * notes this way is convenient because of the implicit logarithmic nature (we
+ * get a new octave every thirteenth MIDI note).
+ *
+ * For example, MIDI note 69 corresponds to A4, 440 Hz.
+ *
+ * This value should be between 21 (A0, 27.5 Hz) and 108 (C8, 4186 Hz),
+ * inclusive.
+ *
+ * If you're new to seeing MIDI numbers, the following might be helpful:
+ *
+ * - An octave is a ratio of 2:1. Two notes, where one is double the frequency
+ *   of the other, are an octave apart.
+ *
+ * - An octave is divided into 12 equal semitones (this is controversial, but
+ *   that's how it gets done de facto). So the difference between two notes that
+ *   are just one semitone apart is 1/12th of an octave. However, human hearing,
+ *   and musical notes, are logarithmic - which means that instead of linear
+ *   differences we perceive ratios (and thus in music use ratios). So a more
+ *   accurate statement is that the _ratio_ between two notes that are just one
+ *   semitone apart is 1/12th of an octave.
+ *
+ * - So we need to find a ratio r such that if we multiply by it 12 times (once
+ *   each for the 12 notes in an octave), we get back 2. This is 2 ^ (1/12), the
+ *   12th root of 2.
+ *
+ *         $ python3 -c 'print(2 ** (1/12))'
+ *         1.0594630
+ *
+ * - So each semitone has the ratio 1.059.
+ *
+ * - Conveniently, each MIDI number corresponds to a semitone. Two common
+ *   reference points are MIDI 60, which corresponds to "middle C", C4, 261.3
+ *   Hz; and MIDI 69, which corresponds to musical note A4, 440 Hz.
+ *
+ * - The range of MIDI numbers is conventionally capped to match a hypothetical
+ *   piano that ranges from note A0 (MIDI 21, 27.5 Hz) to C8 (MIDI 108, 4186
+ *   Hz).
+ *
+ * - To convert MIDI notes to frequencies, 69 is taken as the reference value.
+ *   Then we just multiply (or divide) by 1.059 (i.e. 2^(1/12)) as many times as
+ *   is needed to get from 69 to the given note.
+ *
+ * There are other good explanations too available online. e.g. this one from
+ * UNSW: [Note names, MIDI numbers and
+ * frequencies](https://newt.phys.unsw.edu.au/jw/notes.html).
+ */
+type MIDINote = number;
+
 /** A unipolar level value, between 0 and 1 (inclusive) */
 type Level = number;
 
@@ -112,16 +168,13 @@ type Bipolar = number;
 
 interface PlayParams {
     /**
-     * Frequency expressed as the MIDI note
+     * Frequency expressed as a {@link MIDINote}.
      *
-     * Even though we don't use MIDI, this is a convenient way of specifying
-     * musical notes because integral MIDI notes correspond to semitones.
-     *
-     * 69 is A4, 440 Hz.
+     * e.g. 69 is A4, 440 Hz.
      *
      * @default 69.
      */
-    midiNote?: number;
+    midiNote?: MIDINote;
     /**
      * Multiplier for the level of the output.
      *
@@ -152,9 +205,18 @@ const defaultPlayParams: Required<PlayParams> = {
 const validateParams = (params: Required<PlayParams>) => {
     const { midiNote, gain } = params;
 
+    ensureMIDINote(midiNote);
     ensureLevel(gain);
 
     return params;
+};
+
+/** Throw if the given value does not look like a {@link MIDINote} */
+const ensureMIDINote = (v: Level) => {
+    if (v < 21 || v > 108)
+        throw new Error(
+            `Invalid level ${v}. Level values are expected to be in the range 21 and 108 (inclusive).`,
+        );
 };
 
 /** Throw if the given value does not look like a {@link Level} */
@@ -163,4 +225,16 @@ const ensureLevel = (v: Level) => {
         throw new Error(
             `Invalid level ${v}. Level values are expected to be in the range 0 and 1 (inclusive).`,
         );
+};
+
+/**
+ * Convert a MIDI note `m` to a frequency (Hz) value.
+ *
+ * @see {@link MIDINote} for a detailed explanation of what this formula does.
+ *
+ * @param m A MIDI Note
+ * @returns A frequency in Hz.
+ */
+const convertMIDINoteToFrequency = (m: MIDINote) => {
+    return 440 * (2 ** (1 / 12)) ** (m - 69);
 };
