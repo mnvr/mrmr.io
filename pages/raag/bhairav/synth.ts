@@ -131,11 +131,23 @@ export class Synth {
         // > Depending on your use case, getting 95% toward the target value may
         //   already be enough; in that case, you could set `timeConstant` to
         //   one third of the desired duration.
-
         amp.gain.setTargetAtTime(
             env.sustainLevel * level,
             t + env.attack,
             env.decay / 3,
+        );
+
+        // Exponential ramp from `sustainLevel * level` to `0` over
+        // `release` seconds, after waiting out the `sustain` duration.
+        //
+        // This time we scale the timeConstant by 5, to get 99% to the target
+        // value. This is needed because we'll remove the node from the audio
+        // graph at this point, so having it effectively be silent is necessary
+        // so as to not cause clicks.
+        amp.gain.setTargetAtTime(
+            0,
+            t + env.attack + env.decay + env.sustain,
+            env.release / 5,
         );
 
         // Apply a relatively strong attentuation to the output always, to avoid
@@ -323,7 +335,7 @@ export interface Envelope {
      * The decay phase is an exponential ramp from 1 to `sustainLevel` over
      * `decay` seconds.
      *
-     * @default 0.010 (10 ms)
+     * @default 0.004 (4 ms)
      */
     decay?: TSecond;
     /**
@@ -349,16 +361,16 @@ export interface Envelope {
      *
      * The release phase is an exponential ramp from `sustainLevel` to 0.
      *
-     * @default 0.01 (10 ms)
+     * @default 0.02 (20 ms)
      */
     release?: TSecond;
 }
 
 export const defaultAmplitudeEnvelope: Required<Envelope> = {
     attack: 0.001,
-    decay: 0.01,
+    decay: 0.004,
     sustain: 0.1,
-    release: 0.01,
+    release: 0.02,
     sustainLevel: 0.8,
 };
 
