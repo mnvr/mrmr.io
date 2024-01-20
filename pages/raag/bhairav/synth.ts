@@ -8,9 +8,9 @@ export class Synth {
     ctx?: AudioContext;
 
     /**
-     * Set this to true to emit debugging logs.
+     * Set this to true to emit debugging messages to the console.
      */
-    #debug = true;
+    #debug = false;
 
     /**
      * Count of outstanding playbacks.
@@ -227,16 +227,12 @@ export class Synth {
 
         this.#activePlaybackCount += 1;
         if (this.#debug) {
-            console.info(
-                `[yes] playing note at ${Math.round(freq)} hz (activePlaybackCount: ${this.#activePlaybackCount} )`,
-            );
+            console.info(`[yes] note ${Math.round(freq)} hz`);
         }
         osc.onended = () => {
             this.#activePlaybackCount -= 1;
             if (this.#debug) {
-                console.info(
-                    `[yes] done playing note at ${Math.round(freq)} hz (activePlaybackCount: ${this.#activePlaybackCount} )`,
-                );
+                console.info(`[yes] note ${Math.round(freq)} hz done`);
             }
             this.suspendContextIfInactive();
             if (onEnded !== undefined) onEnded();
@@ -366,19 +362,19 @@ export interface PlayParams {
      * {@link sustainLevel}, then the sustain level is multiplied with this
      * level to obtain the level of the sound during the sustain phase.
      *
-     * As a safety measure, there is a hardcoded attenuation (gain of 0.3)
+     * As a safety measure, there is a hardcoded attenuation (a gain of 0.3)
      * applied to the final signal before sending it to the destination. The
      * level (gain) specified here is independent of that.
      *
      * In practice, setting this to 1 sounds loud (even after the safety
      * attenuation), so a value of 1 here should be taken as a loud extreme (and
-     * a value of 0 as silence). In between is a linear range. The default 0.3
+     * a value of 0 as silence). In between is a linear range. The default here
      * is meant as something that is audible even if the user's speakers are set
      * to a low volume, but not too loud if the speakers are turned all the way
      * up (so as to not startle them). But this is more of a prayer than a
      * guarantee, and may not apply based on the user's setup.
      *
-     * @default 0.3
+     * @default 0.6
      */
     level?: Level;
     /**
@@ -486,7 +482,7 @@ type PlayParamOrDefault = Required<
 export const defaultPlayParams: PlayParamOrDefault = {
     note: 69,
     waveform: "sine",
-    level: 0.3,
+    level: 0.5,
     env: defaultAmplitudeEnvelope,
 };
 

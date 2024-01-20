@@ -306,15 +306,7 @@ const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
 
     const playNote = () => {
         setIsPlaying(true);
-        synth.play(
-            {
-                note: 69 + noteOffset,
-                env: { sustainLevel: 1 },
-            },
-            () => {
-                setIsPlaying(false);
-            },
-        );
+        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
     };
 
     const handleClick = () => {
