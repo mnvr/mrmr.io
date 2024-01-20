@@ -5,6 +5,7 @@ import { isMobile } from "react-device-detect";
 import { initStrudel } from "strudel/init";
 import { useInitAudioOnFirstClick } from "strudel/use-init-audio";
 import styled from "styled-components";
+import { Synth } from "./synth";
 
 /* More like thaat, but let's live with this for now */
 interface Raag {
@@ -28,8 +29,20 @@ interface PropsWithRaag {
     raag: Raag;
 }
 
+interface PropsWithSynthAndRaag {
+    synth: Synth;
+    raag: Raag;
+}
+
 export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     const haveInitedAudio = useInitAudioOnFirstClick();
+    const synth = React.useRef(new Synth());
+
+    React.useEffect(() => {
+        const handleClick = () => synth.current.init();
+        window.addEventListener("click", handleClick);
+        return () => window.removeEventListener("click", handleClick);
+    }, []);
 
     React.useEffect(() => {
         initStrudel();
@@ -44,7 +57,7 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
                     <Description raag={raag} />
                 </TextContent>
                 <Description2 raag={raag} />
-                <RaagPlayer raag={raag} />
+                <RaagPlayer synth={synth.current} raag={raag} />
             </WideColumn>
         </RaagContent_>
     );
@@ -249,12 +262,16 @@ const Description2_ = styled.div`
     margin-block-start: 3rem;
 `;
 
-const RaagPlayer: React.FC<PropsWithRaag> = ({ raag }) => {
+const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const seq = () => noteSequence(raag.notes, 2);
     return (
         <RaagPlayer_>
             {seq().map(([i, isOn]) =>
-                isOn ? <RPNote key={i} noteOffset={i} /> : <RPBlank key={i} />,
+                isOn ? (
+                    <RPNote key={i} synth={synth} noteOffset={i} />
+                ) : (
+                    <RPBlank key={i} />
+                ),
             )}
         </RaagPlayer_>
     );
@@ -278,11 +295,12 @@ const RaagPlayer_ = styled.div`
 `;
 
 interface RPNoteProps {
+    synth: Synth;
     /** @see {@link noteOffset} in {@link NoteProps} */
     noteOffset: number;
 }
 
-const RPNote: React.FC<RPNoteProps> = ({ noteOffset }) => {
+const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
     // true if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -302,7 +320,19 @@ const RPNote: React.FC<RPNoteProps> = ({ noteOffset }) => {
         playNote();
     };
 
-    return <Note_ $isPlaying={isPlaying} onClick={handleClick} />;
+    const handleMouseEnter = () => {
+        if (isMobile) return;
+        console.log(synth)
+        if (synth.canAutoplay) synth.play();
+    };
+
+    return (
+        <Note_
+            $isPlaying={isPlaying}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+        />
+    );
 };
 
 const RPBlank: React.FC = () => {

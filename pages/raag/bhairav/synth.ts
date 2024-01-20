@@ -4,7 +4,7 @@
  * yes uses the WebAudio API, specifically audio worklets, to dynamically
  * generate and play sounds in a browser.
  */
-class Synth {
+export class Synth {
     ctx?: AudioContext;
 
     /**
@@ -56,22 +56,31 @@ class Synth {
      *
      * @param params The {@link PlayParams}
      */
-    async play({ midiNote }: PlayParams) {
+    async play(params?: PlayParams) {
+        const { midiNote } = params ?? {};
+
         const ctx = this.init();
 
         /**
          * Always resume the context
-        *
-        * Ideally, this would need to be done only once. However, on iOS Safari
-        * the audio context switches to an "interrupted" state if we navigate
-        * away from the page for an extended time. If we were to then come back
-        * and play, no sound would be emitted until the context is resumed.
-        *
-        * https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
-        * */
-       await ctx.resume();
+         *
+         * Ideally, this would need to be done only once. However, on iOS Safari
+         * the audio context switches to an "interrupted" state if we navigate
+         * away from the page for an extended time. If we were to then come back
+         * and play, no sound would be emitted until the context is resumed.
+         *
+         * https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
+         * */
+        await ctx.resume();
 
-       /** Play a sine tone at 440 Hz for 0.125 seconds */
+        const t = ctx.currentTime;
+
+        /** Play a sine tone at 440 Hz for 0.125 seconds */
+        const osc = ctx.createOscillator();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(440, t);
+        osc.connect(ctx.destination);
+        osc.start();
     }
 }
 
@@ -86,5 +95,5 @@ interface PlayParams {
      *
      * @default 69.
      */
-    midiNote: number;
+    midiNote?: number;
 }
