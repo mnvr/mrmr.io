@@ -2,7 +2,7 @@
  * TypeScript d.ts type declarations for Strudel
  * https://github.com/tidalcycles/strudel
  *
- * By Manav Rathi (https://github.com/mnvr/mrmr.io)
+ * By Manav Rathi – https://github.com/mnvr
  *
  * ## Strudel
  *
@@ -159,7 +159,7 @@ declare module "@strudel/core" {
         /** Numerator */
         n: number;
         /** Denominator */
-        n: number;
+        d: number;
 
         /*
          * The standard "Fraction" type that Strudel uses has been enhanced by
@@ -391,7 +391,7 @@ declare module "@strudel/core" {
      * More specifically, it is a {@link IFraction} value indicating the midpoint
      * of each cycle, as this signal gets evaluated.
      *
-     * e.g. `time.inspect()` would show
+     * e.g.
      *
      *     [ 0/1 → 1/1 | {"s":1,"n":1,"d":2} ]
      *     [ 1/1 → 2/1 | {"s":1,"n":3,"d":2} ]
@@ -764,7 +764,7 @@ declare module "@strudel/core" {
      *
      * To use these we need to call {@link registerSynthSounds} once beforehand.
      */
-    const SynthSound = SynthSoundWaveform | SynthSoundNoise;
+    type SynthSound = SynthSoundWaveform | SynthSoundNoise;
 
     /**
      * The primitive "oscillators"-type synths supported by Strudel.
@@ -772,12 +772,12 @@ declare module "@strudel/core" {
      * These are the same as the `OscillatorType` supported by WebAudio's
      * {@link AudioContext.createOscillator} method (except "custom").
      */
-    const SynthSoundWaveform = "sine" | "square" | "triangle" | "sawtooth";
+    type SynthSoundWaveform = "sine" | "square" | "triangle" | "sawtooth";
 
     /**
      * The primitive noise types supported by Strudel.
      */
-    const SynthSoundNoise = "pink" | "white" | "brown" | "crackle";
+    type SynthSoundNoise = "pink" | "white" | "brown" | "crackle";
 
     /**
      * A sample can be specified as name (e.g. when passing it as an argument to
@@ -835,7 +835,9 @@ declare module "@strudel/core" {
 }
 
 declare module "@strudel/webaudio" {
-    import type { StrudelOutput } from "@strudel/core";
+    import type { StrudelOutput, PatternTransform } from "@strudel/core";
+    import type { Note, Synth, SampleSpecifier } from "@strudel/core";
+    import type { Frequency, Level, TSecond } from "@strudel/core";
 
     /**
      * Initialize WebAudio on first user initiated interaction.
