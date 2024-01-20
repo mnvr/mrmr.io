@@ -57,6 +57,9 @@ export class Synth {
      * @param params The {@link PlayParams}
      */
     async play(params?: PlayParams) {
+        // WebAudio spec:
+        // https://webaudio.github.io/web-audio-api/
+
         const { midiNote, level, env } = validateParams(
             mergeIntoDefaultPlayParams(params),
         );
@@ -177,6 +180,24 @@ export class Synth {
         osc.start();
 
         // Stop the source (osc) after the requested duration has passed.
+        //
+        // WebAudio automatically does "garbage collection" for the entire chain
+        // of nodes that were reachable from the source node that we stop. This
+        // is described in the (non-normative) "Dynamic Lifetime" section of the
+        // WebAudio spec:
+        // https://webaudio.github.io/web-audio-api/#DynamicLifetime
+        //
+        // > The audio system automatically deals with tearing-down the part of
+        //   the routing graph for individual "note" events.
+        //
+        // > A "note" is represented by an AudioBufferSourceNode (nb:
+        //   OscillatorNodes inherit from AudioBufferSourceNode), which can be
+        //   directly connected to other processing nodes. When the note has
+        //   finished playing, the context will automatically release the
+        //   refernce to the AudioBufferSourceNode, which in turn will release
+        //   references to any nodes it is connected to, and so on. The nodes
+        //   will automatically get disconnected from the graph and will be
+        //   deleted when they have no more references.
         osc.stop(t + env.attack + env.decay + env.sustain + env.release);
     }
 }
