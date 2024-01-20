@@ -57,10 +57,9 @@ export class Synth {
      * @param params The {@link PlayParams}
      */
     async play(params?: PlayParams) {
-        const { midiNote, level, env } = validateParams({
-            ...params,
-            ...defaultPlayParams,
-        });
+        const { midiNote, level, env } = validateParams(
+            mergeIntoDefaultPlayParams(params),
+        );
 
         const ctx = this.init();
 
@@ -93,6 +92,7 @@ export class Synth {
         });
         osc.connect(amp);
 
+        console.log(env.attack);
         // Linear ramp to level over `attack` seconds.
         amp.gain.linearRampToValueAtTime(level, t + env.attack);
 
@@ -328,6 +328,27 @@ export const defaultPlayParams: PlayParamOrDefault = {
     midiNote: 69,
     level: 0.3,
     env: defaultAmplitudeEnvelope,
+};
+
+/**
+ * Return a new {@link PlayParam} that has everything set to default, and then
+ * overridden with the provided parameters.
+ *
+ * This can be conceptually be though of as a expanded version of
+ *
+ *     { ...defaultPlayParams, ...params }
+ *
+ * This more elaborate version is needed to handle nested objects.
+ */
+const mergeIntoDefaultPlayParams = (
+    params?: PlayParams,
+): PlayParamOrDefault => {
+    if (!params) return defaultPlayParams;
+    return {
+        ...defaultPlayParams,
+        ...params,
+        env: { ...defaultPlayParams.env, ...params.env },
+    };
 };
 
 /**
