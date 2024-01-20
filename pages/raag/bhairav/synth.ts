@@ -8,6 +8,11 @@ export class Synth {
     ctx?: AudioContext;
 
     /**
+     * Set this to true to emit debugging logs.
+     */
+    #debug = true;
+
+    /**
      * Count of outstanding playbacks.
      *
      * When we start playing in response to a call of `play()`, this value is
@@ -38,6 +43,14 @@ export class Synth {
         if (ctx === undefined) {
             ctx = new AudioContext();
             this.ctx = ctx;
+
+            if (this.#debug) {
+                ctx.addEventListener("statechange", () => {
+                    console.info(
+                        `[yes] AudioContext state changed to ${ctx?.state}`,
+                    );
+                });
+            }
         }
         return ctx;
     }
@@ -72,7 +85,7 @@ export class Synth {
         // WebAudio spec:
         // https://webaudio.github.io/web-audio-api/
 
-        const { note, level, env } = validateParams(
+        const { note, waveform, level, env } = validateParams(
             mergeIntoDefaultPlayParams(params),
         );
 
@@ -94,9 +107,9 @@ export class Synth {
 
         const freq = convertMIDINoteToFrequency(note);
 
-        // Play a sine tone at `freq` Hz for 0.125 seconds.
+        // Play a pure tone of type `type` at `freq` Hz.
         const osc = new OscillatorNode(ctx, {
-            type: "sine",
+            type: waveform,
             frequency: freq,
         });
 
@@ -213,8 +226,18 @@ export class Synth {
         osc.stop(t + env.attack + env.decay + env.sustain + env.release);
 
         this.#activePlaybackCount += 1;
+        if (this.#debug) {
+            console.info(
+                `[yes] playing note at ${Math.round(freq)} hz (activePlaybackCount: ${this.#activePlaybackCount} )`,
+            );
+        }
         osc.onended = () => {
             this.#activePlaybackCount -= 1;
+            if (this.#debug) {
+                console.info(
+                    `[yes] done playing note at ${Math.round(freq)} hz (activePlaybackCount: ${this.#activePlaybackCount} )`,
+                );
+            }
             this.suspendContextIfInactive();
             if (onEnded !== undefined) onEnded();
         };
@@ -222,7 +245,7 @@ export class Synth {
 
     suspendContextIfInactive() {
         if (this.#activePlaybackCount === 0) {
-            this.ctx?.suspend;
+            this.ctx?.suspend();
         }
     }
 }
@@ -292,6 +315,33 @@ export type Bipolar = number;
 /** A time value, in seconds */
 export type TSecond = number;
 
+/**
+ * The waveform to sound as the sound source
+ *
+ * This specifies the shape of the wave produced by the oscillator that acts as
+ * our sound source. Available options are:
+ *
+ * - "sine" - A sine wave.
+ * - "square" - A square wave with a duty cycle of 0.5 (i.e. the signal is high
+ *   for 50% of the period)
+ * - "sawtooth" - A sawtooth wave.
+ * - "triangle" - A triangle wave.
+ *
+ * Each of these waveforms provide different harmonic content.
+ *
+ * The simplest, in the sense of having no harmonics, is the sine wave - it is
+ * just the wave itself, at the given frequency.
+ *
+ * The other waveforms, while visually and computationally easier to describe,
+ * are more complicated because they are effectively a harmonic series of sine
+ * waves, starting with a sine wave at the given frequency, but also having a
+ * subset of the harmonics / partials. As such, these provide more fodder for
+ * any filters down the line to shape. This is subtractive synthesis (start
+ * with a waveform that contains a lot of harmonics, and filter them in a
+ * musical, time varying, manner).
+ */
+export type Waveform = "sine" | "square" | "sawtooth" | "triangle";
+
 /** Parameters for the {@link Synth}'s {@link play} method. */
 export interface PlayParams {
     /**
@@ -302,6 +352,12 @@ export interface PlayParams {
      * @default 69.
      */
     note?: MIDINote;
+    /**
+     * The waveform to use.
+     *
+     * @default "sine"
+     */
+    waveform?: Waveform;
     /**
      * Amplitude level
      *
@@ -429,6 +485,7 @@ type PlayParamOrDefault = Required<
 
 export const defaultPlayParams: PlayParamOrDefault = {
     note: 69,
+    waveform: "sine",
     level: 0.3,
     env: defaultAmplitudeEnvelope,
 };
