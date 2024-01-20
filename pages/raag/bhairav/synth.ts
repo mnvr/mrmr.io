@@ -57,7 +57,7 @@ export class Synth {
      * @param params The {@link PlayParams}
      */
     async play(params?: PlayParams) {
-        const { midiNote, level } = validateParams({
+        const { midiNote, level, env } = validateParams({
             ...params,
             ...defaultPlayParams,
         });
@@ -86,7 +86,7 @@ export class Synth {
             frequency: freq,
         });
 
-        // Multiply the output of the `osc` by `gain`.
+        // Apply the ADSR envelope.
         const oscOut = new GainNode(ctx, {
             gain: level,
         });
@@ -316,7 +316,11 @@ export const defaultAmplitudeEnvelope: Required<Envelope> = {
     sustainLevel: 0.8,
 };
 
-export const defaultPlayParams: Required<PlayParams> = {
+type PlayParamOrDefault = Required<
+    Omit<PlayParams, "env"> & { env: Required<Envelope> }
+>;
+
+export const defaultPlayParams: PlayParamOrDefault = {
     midiNote: 69,
     level: 0.3,
     env: defaultAmplitudeEnvelope,
@@ -332,17 +336,18 @@ export const defaultPlayParams: Required<PlayParams> = {
  *
  * @return the passed in parameters.
  */
-const validateParams = (params: Required<PlayParams>) => {
-    const { midiNote, level } = params;
+const validateParams = (params: PlayParamOrDefault) => {
+    const { midiNote, level, env } = params;
 
-    ensureMIDINote(midiNote);
-    ensureLevel(level);
+    validateMIDINote(midiNote);
+    validateLevel(level);
+    validateEnvelope(env);
 
     return params;
 };
 
 /** Throw if the given value does not look like a {@link MIDINote} */
-const ensureMIDINote = (v: Level) => {
+const validateMIDINote = (v: MIDINote) => {
     if (v < 21 || v > 108)
         throw new Error(
             `Invalid MIDI note ${v}. MIDI note values are expected to be in the range 21 and 108 (inclusive).`,
@@ -350,11 +355,28 @@ const ensureMIDINote = (v: Level) => {
 };
 
 /** Throw if the given value does not look like a {@link Level} */
-const ensureLevel = (v: Level) => {
+const validateLevel = (v: Level) => {
     if (v < 0 || v > 1)
         throw new Error(
             `Invalid level ${v}. Level values are expected to be in the range 0 and 1 (inclusive).`,
         );
+};
+
+/** Throw if the given value does not look like a {@link TSecond} */
+const validateTSecond = (v: TSecond) => {
+    if (v < 0)
+        throw new Error(
+            `Invalid time (in second) ${v}. Second values are expected to be positive.`,
+        );
+};
+
+/** Throw if any of the the fields in the given envelope look fishy */
+const validateEnvelope = (e: Required<Envelope>) => {
+    validateTSecond(e.attack);
+    validateTSecond(e.decay);
+    validateTSecond(e.sustain);
+    validateTSecond(e.release);
+    validateLevel(e.sustainLevel);
 };
 
 /**
