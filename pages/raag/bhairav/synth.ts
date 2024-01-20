@@ -64,36 +64,37 @@ export class Synth {
 
         const ctx = this.init();
 
-        /**
-         * Always resume the context
-         *
-         * Ideally, this would need to be done only once. However, on iOS Safari
-         * the audio context switches to an "interrupted" state if we navigate
-         * away from the page for an extended time. If we were to then come back
-         * and play, no sound would be emitted until the context is resumed.
-         *
-         * https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
-         * */
+        // Always resume the context
+        //
+        // Ideally, this would need to be done only once. However, on iOS Safari
+        // the audio context switches to an "interrupted" state if we navigate
+        // away from the page for an extended time. If we were to then come back
+        // and play, no sound would be emitted until the context is resumed.
+        //
+        // I've empirically observed this. For more details, see
+        // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
+
         await ctx.resume();
 
         const t = ctx.currentTime;
 
-        /** Play a sine tone at 440 Hz for 0.125 seconds */
+        const freq = convertMIDINoteToFrequency(midiNote);
+
+        // Play a sine tone at `freq` Hz for 0.125 seconds.
         const osc = new OscillatorNode(ctx, {
             type: "sine",
-            frequency: 440,
+            frequency: freq,
         });
 
+        // Multiply the output of the `osc` by `gain`.
         const oscOut = new GainNode(ctx, {
             gain,
         });
         osc.connect(oscOut);
 
-        /**
-         * Apply a relatively strong attentuation to the output always, to avoid
-         * accidentally emitting loud noises, both during development, and for
-         * people who might have their speakers unknowingly turned on too loud.
-         */
+        // Apply a relatively strong attentuation to the output always, to avoid
+        // accidentally emitting loud noises, both during development, and for
+        // people who might have their speakers unknowingly turned on too loud.
         const out = new GainNode(ctx, {
             gain: 0.3,
         });
