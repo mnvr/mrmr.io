@@ -86,11 +86,15 @@ export class Synth {
             frequency: freq,
         });
 
-        // Apply the ADSR envelope.
-        const oscOut = new GainNode(ctx, {
-            gain: level,
+        // Apply the ADSR envelope to the amplitude.
+        // Start at 0
+        const amp = new GainNode(ctx, {
+            gain: 0,
         });
-        osc.connect(oscOut);
+        osc.connect(amp);
+
+        // Linear ramp to level over `attack` seconds.
+        amp.gain.linearRampToValueAtTime(level, t + env.attack);
 
         // Apply a relatively strong attentuation to the output always, to avoid
         // accidentally emitting loud noises, both during development, and for
@@ -115,7 +119,7 @@ export class Synth {
         });
         out.connect(ctx.destination);
 
-        oscOut.connect(out);
+        amp.connect(out);
         osc.start();
     }
 }
@@ -217,7 +221,7 @@ export interface PlayParams {
      *
      * @default 0.3
      */
-    level: Level;
+    level?: Level;
     /**
      * Amplitude envelope
      *
@@ -234,7 +238,7 @@ export interface PlayParams {
      *
      * @default @see {@link defaultAmplitudeEnvelope}
      */
-    env: Envelope;
+    env?: Envelope;
 }
 
 /**
