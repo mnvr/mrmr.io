@@ -8,6 +8,17 @@ export class Synth {
     ctx?: AudioContext;
 
     /**
+     * Count of outstanding playbacks.
+     *
+     * When we start playing in response to a call of `play()`, this value is
+     * incremented. When the corresponding node ends, this value is decremented.
+     *
+     * It is used to then suspend the audio context if there is nothing
+     * remaining to be played.
+     */
+    #activePlaybackCount = 0;
+
+    /**
      * Call this method in response to a user action, like a tap.
      *
      * The browsers autoplay policy prevents JavaScript code from unilaterally
@@ -55,12 +66,13 @@ export class Synth {
      * happen.
      *
      * @param params The {@link PlayParams}
+     * @param onEnded A callback that is fired when the note ends playing.
      */
-    async play(params?: PlayParams) {
+    async play(params?: PlayParams, onEnded?: () => void) {
         // WebAudio spec:
         // https://webaudio.github.io/web-audio-api/
 
-        const { midiNote, level, env } = validateParams(
+        const { note, level, env } = validateParams(
             mergeIntoDefaultPlayParams(params),
         );
 
@@ -80,7 +92,7 @@ export class Synth {
 
         const t = ctx.currentTime;
 
-        const freq = convertMIDINoteToFrequency(midiNote);
+        const freq = convertMIDINoteToFrequency(note);
 
         // Play a sine tone at `freq` Hz for 0.125 seconds.
         const osc = new OscillatorNode(ctx, {
@@ -199,6 +211,19 @@ export class Synth {
         //   will automatically get disconnected from the graph and will be
         //   deleted when they have no more references.
         osc.stop(t + env.attack + env.decay + env.sustain + env.release);
+
+        this.#activePlaybackCount += 1;
+        osc.onended = () => {
+            this.#activePlaybackCount -= 1;
+            this.suspendContextIfInactive();
+            if (onEnded !== undefined) onEnded();
+        };
+    }
+
+    suspendContextIfInactive() {
+        if (this.#activePlaybackCount === 0) {
+            this.ctx?.suspend;
+        }
     }
 }
 
@@ -276,7 +301,7 @@ export interface PlayParams {
      *
      * @default 69.
      */
-    midiNote?: MIDINote;
+    note?: MIDINote;
     /**
      * Amplitude level
      *
@@ -403,7 +428,7 @@ type PlayParamOrDefault = Required<
 >;
 
 export const defaultPlayParams: PlayParamOrDefault = {
-    midiNote: 69,
+    note: 69,
     level: 0.3,
     env: defaultAmplitudeEnvelope,
 };
@@ -440,9 +465,9 @@ const mergeIntoDefaultPlayParams = (
  * @return the passed in parameters.
  */
 const validateParams = (params: PlayParamOrDefault) => {
-    const { midiNote, level, env } = params;
+    const { note, level, env } = params;
 
-    validateMIDINote(midiNote);
+    validateMIDINote(note);
     validateLevel(level);
     validateEnvelope(env);
 

@@ -305,15 +305,16 @@ const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
     const [isPlaying, setIsPlaying] = React.useState(false);
 
     const playNote = () => {
-        const duration = 0.125;
-        superdough({ s: "sine", note: 69 + noteOffset }, 0.01, duration);
         setIsPlaying(true);
-        setTimeout(() => {
-            // This doesn't cover all sorts of reentrant cases, but practically,
-            // given the small time scales involved, this is fine enough for our
-            // demo instrument.
-            setIsPlaying(false);
-        }, duration * 1000);
+        synth.play(
+            {
+                note: 69 + noteOffset,
+                env: { sustainLevel: 1 },
+            },
+            () => {
+                setIsPlaying(false);
+            },
+        );
     };
 
     const handleClick = () => {
@@ -322,7 +323,7 @@ const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
 
     const handleMouseEnter = () => {
         if (isMobile) return;
-        if (synth.canAutoplay) synth.play();
+        if (synth.canAutoplay) playNote();
     };
 
     return (
