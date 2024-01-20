@@ -175,6 +175,9 @@ export class Synth {
 
         amp.connect(out);
         osc.start();
+
+        // Stop the source (osc) after the requested duration has passed.
+        osc.stop(t + env.attack + env.decay + env.sustain + env.release);
     }
 }
 
