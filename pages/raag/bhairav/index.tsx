@@ -322,7 +322,7 @@ const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
 
     const handleMouseEnter = () => {
         if (isMobile) return;
-        if (synth.canAutoplay) synth.play({});
+        if (synth.canAutoplay) synth.play();
     };
 
     return (

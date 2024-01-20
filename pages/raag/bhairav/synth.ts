@@ -86,15 +86,57 @@ export class Synth {
         });
 
         // Apply the ADSR envelope to the amplitude.
-        // Start at 0
-        const amp = new GainNode(ctx, {
-            gain: 0,
-        });
+        const amp = new GainNode(ctx);
         osc.connect(amp);
 
-        console.log(env.attack);
+        // Start at 0
+        amp.gain.setValueAtTime(0, 0);
+
         // Linear ramp to level over `attack` seconds.
         amp.gain.linearRampToValueAtTime(level, t + env.attack);
+
+        // Exponential ramp from `level * 1` to `sustainLevel * level` over
+        // `decay` seconds.
+        //
+        // The third parameter to setTargetAtTime is a `timeConstant`, which is
+        // the time it takes to reach 1 - e⁻¹ = 63% of the target (the first
+        // parameter).
+        //
+        // To see where the 63% comes from, notice that 1/e = 0.367. So
+        // 1-(e**-1) is 0.632, ~63%. MDN, excellent as always, has a longer
+        // [explanation](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/setTargetAtTime#description):
+        //
+        // > The change starts at the time specified in `startTime` (second
+        //   parameter) and exponentially moves towards the value given by the
+        //   `target` parameter (the first parameter to setTargetAtTime). The
+        //   decay rate as defined by the `timeConstant` parameter (the third
+        //   parameter) is exponential; therefore the value will never reach
+        //   `target` completely, but after each timestep of length
+        //   `timeConstant`, the value will have approach the `target` by
+        //   another 1 - e⁻¹ ≃ 63%.
+        //
+        // Multiplying the time constant by some n is equivalent to having n
+        // timesteps, and each timestep will further get 1 - e⁻¹ closer to the
+        // target, i.e.
+        //
+        //       (1 - e⁻¹)ⁿ
+        //     = 1ⁿ - (1/e)ⁿ
+        //     = 1  - e⁻ⁿ
+        //
+        // So multiplying by 3 gives us 1  - e⁻³ ≃ 0.95, i.e a value that is 95%
+        // of the target. Since we already know the time interval we have at our
+        // disposal, we can divide it by 3 to a timeConstant that gets us the
+        // equivalent effect. MDN corraborates:
+        //
+        // > Depending on your use case, getting 95% toward the target value may
+        //   already be enough; in that case, you could set `timeConstant` to
+        //   one third of the desired duration.
+
+        amp.gain.setTargetAtTime(
+            env.sustainLevel * level,
+            t + env.attack,
+            env.decay / 3,
+        );
 
         // Apply a relatively strong attentuation to the output always, to avoid
         // accidentally emitting loud noises, both during development, and for
@@ -249,7 +291,7 @@ export interface PlayParams {
  * - Attack: A linear ramp from 0 to the 1. This ramp happens over `attack`
  *   seconds.
  *
- * - Decay: A linear ramp from 1 to `sustainLevel`. This ramp happens over
+ * - Decay: An exponential ramp from 1 to `sustainLevel`. This ramp happens over
  *   `decay` seconds.
  *
  * - Sustain: Keep the value constant at `sustainLevel` for `sustain` seconds.
@@ -278,8 +320,8 @@ export interface Envelope {
     /**
      * The duration of the decay phase in seconds.
      *
-     * The decay phase is a linear ramp from 1 to `sustainLevel` over `decay`
-     * seconds.
+     * The decay phase is an exponential ramp from 1 to `sustainLevel` over
+     * `decay` seconds.
      *
      * @default 0.010 (10 ms)
      */
