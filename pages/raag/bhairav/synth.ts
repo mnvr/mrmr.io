@@ -95,6 +95,17 @@ export class Synth {
         // Apply a relatively strong attentuation to the output always, to avoid
         // accidentally emitting loud noises, both during development, and for
         // people who might have their speakers unknowingly turned on too loud.
+        //
+        // About Gain
+        // ----------
+        //
+        // The gain is a unitless value, that each sample is multiplied with. An
+        // instanteously applied gain causes clicks in the audio, so it is
+        // better to use a envelope instead. However, since this audio node is
+        // meant to serve as a pseudo brick-wall limiter, we start with (and
+        // remain at) the constant attenuation (i.e. a gain < 1), and rely on
+        // one of the nodes before us in the chain to apply an envelope to
+        // prevent clicks.
         const out = new GainNode(ctx, {
             gain: 0.3,
         });
@@ -167,6 +178,10 @@ type Level = number;
 /** A bipolar value between -1 and 1 (inclusive) */
 type Bipolar = number;
 
+/** A time value, in seconds */
+type TSecond = number;
+
+/** Parameters for the {@link Synth}'s {@link play} method. */
 interface PlayParams {
     /**
      * Frequency expressed as a {@link MIDINote}.
@@ -177,16 +192,43 @@ interface PlayParams {
      */
     midiNote?: MIDINote;
     /**
-     * Multiplier for the level of the output.
+     * Amplitude envelope for the level of the output.
+     *
+     * As a convenience, this can be set as a number, which is taken to mean an
+     * ADSR envelope with some reasonable default set of parameters and level
+     * set to the given {@link Level}. See  {@link Envelope} for the default
+     * envelope that such an option would entail.
      *
      * Note that as a safety measure, there is a hardcoded attenuation (gain of
      * 0.3) applied to the final signal before sending it to the destination.
      * The gain specified here is independent of that.
      *
-     * @default 0.3.
+     * @default 0.3
      */
-    gain: Level;
+    gain: Level | Envelope;
 }
+
+/**
+ * An ADSR envelope
+ *
+ * An ADSR envelope goes through 4 phases:
+ *
+ * - Attack: A linear ramp from 0 to the specified `level`. This ramp happens
+ *   over `attack` seconds.
+ *
+ * - Decay: A linear ramp from `level` to `sustainLevel`. This ramp happens over
+ *   `decay` seconds.
+ *
+ * - Sustain: Keep the value constant at `sustainLevel` for `sustain` seconds.
+ *
+ * - Release: An exponential ramp from `sustainLevel` to 0 over `release`
+ *   seconds.
+ *
+ * There is nothing fundamental about an ADSR envelope as described above, but
+ * in practice these four phases seem to capture how many natural, and musical,
+ * sounds grow and fade in time.
+ */
+interface Envelope {}
 
 const defaultPlayParams: Required<PlayParams> = {
     midiNote: 69,
@@ -207,7 +249,7 @@ const validateParams = (params: Required<PlayParams>) => {
     const { midiNote, gain } = params;
 
     ensureMIDINote(midiNote);
-    ensureLevel(gain);
+    if (typeof gain === "number") ensureLevel(gain);
 
     return params;
 };
