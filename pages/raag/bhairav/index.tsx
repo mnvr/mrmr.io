@@ -243,12 +243,55 @@ const Description2_ = styled.div`
     flex-direction: column;
 `;
 
-const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
+const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    // True if we're currently playing
     const [isPlaying, setIsPlaying] = React.useState(false);
+
+    // The number of octaves we span in our player
+    const octaves = 2;
+    // Create `octave` copies of the notes in the raag, each offset by 12.
+    let notes: Array<number> = [];
+    for (let oct = 0; oct < octaves; oct++) {
+        notes.push(...raag.notes.map((n) => n + 12 * oct));
+    }
+    // The index of the note that we're currently playing. Only valid when
+    // isPlaying is `true`.
+    const [noteIndex, setNoteIndex] = React.useState(0);
+
+    /**
+     * Use random brownian motion to determine the next note, ensuring that we
+     * stay within the range of notes we're visualizing
+     */
+    const nextNote = () => {
+        const coin = Math.random() > 0.5;
+        let i;
+        if (noteIndex === notes.length - 1) {
+            if (coin) {
+                i = noteIndex - 2;
+            } else {
+                i = noteIndex - 1;
+            }
+        } else if (noteIndex === 0) {
+            if (coin) {
+                i = 2;
+            } else {
+                i = 1;
+            }
+        } else {
+            if (coin) {
+                i = noteIndex + 1;
+            } else {
+                i = noteIndex - 1;
+            }
+        }
+        setNoteIndex(i);
+    };
 
     const handleClick = () => {
         setIsPlaying(!isPlaying);
     };
+
+    const noteOffsetToPlay = isPlaying ? notes[noteIndex] : undefined;
 
     return (
         <RaagPlayer_>
@@ -259,7 +302,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
                     <BsPlayFill title="Play" />
                 )}
             </IconButton>
-            <RaagPlayerNotes {...props} />
+            <RaagPlayerNotes {...{ synth, raag, octaves, noteOffsetToPlay }} />
         </RaagPlayer_>
     );
 };
@@ -286,13 +329,28 @@ const RaagPlayer_ = styled.div`
     gap: 2em;
 `;
 
-const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
-    const seq = () => noteSequence(raag.notes, 2);
+type RaagPlayerNotesProps = PropsWithSynthAndRaag & {
+    octaves: number;
+    noteOffsetToPlay?: number;
+};
+
+const RaagPlayerNotes: React.FC<RaagPlayerNotesProps> = ({
+    synth,
+    raag,
+    octaves,
+    noteOffsetToPlay,
+}) => {
+    const seq = () => noteSequence(raag.notes, octaves);
     return (
         <RaagPlayerNotes_>
             {seq().map(([i, isNoteOnRaag]) =>
                 isNoteOnRaag ? (
-                    <RPNote key={i} synth={synth} noteOffset={i} />
+                    <RPNote
+                        key={i}
+                        synth={synth}
+                        noteOffset={i}
+                        isPlaying={i === noteOffsetToPlay}
+                    />
                 ) : (
                     <RPBlank key={i} />
                 ),
@@ -317,13 +375,17 @@ const RaagPlayerNotes_ = styled.div`
     }
 `;
 
-const RPNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
-    // true if this note is currently being played.
-    const [isPlaying, setIsPlaying] = React.useState(false);
+type RPNoteProps = NoteProps & {
+    isPlaying: boolean;
+};
+
+const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset, isPlaying }) => {
+    // True if this note is currently being played because of a user action.
+    const [wasTriggered, setWasTriggered] = React.useState(false);
 
     const playNote = () => {
-        setIsPlaying(true);
-        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
+        setWasTriggered(true);
+        synth.play({ note: 69 + noteOffset }, () => setWasTriggered(false));
     };
 
     const handleClick = () => {
@@ -337,7 +399,7 @@ const RPNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
 
     return (
         <Note_
-            $isPlaying={isPlaying}
+            $isPlaying={isPlaying || wasTriggered}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
         />
