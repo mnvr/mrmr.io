@@ -29,6 +29,15 @@ const Main = styled.main`
     display: grid;
     place-content: center;
 
+    p {
+        /* Give more breathing space to the lines.
+         *
+         * The default is browser / font dependent, with MDN mentioning that Firefox
+         * uses 1.2 usually. Safari on macOS with system-ui seems more like 1.0 rem.
+         */
+        line-height: 1.3;
+    }
+
     a {
         text-decoration: none;
         border-bottom: 1px solid currentColor;
@@ -66,41 +75,37 @@ const H1 = styled.h1`
     margin-block-end: 0;
 `;
 
-const Quote = styled.span`
-    font-family: serif;
-`;
-
-const Text = styled.p`
-    /* Give more breathing space to the lines.
-     *
-     * The default is browser / font dependent, with MDN mentioning that Firefox
-     * uses 1.2 usually. Safari on macOS with system-ui seems more like 1.0 rem.
-     */
-    line-height: 1.3;
+const SubText = styled.p`
+    font-size: smaller;
+    color: var(--mrmr-color-3);
 `;
 
 const Content: React.FC = () => {
     return (
         <div>
             <H1>404</H1>
-            <Text>
+            <p>
                 The page you're looking for,
                 <br />
                 doesn't exist anymore.
-            </Text>
-            <p>Or maybe it never did.</p>
-            <p>
-                <Link to="/">
-                    <Quote>
-                        <i>
-                            You can always start again
-                            <br />
-                            like a tear in the rain
-                        </i>
-                    </Quote>
-                    <BsArrowRightShort />
-                </Link>
+                <br />
+                Or maybe it never did.
             </p>
+
+            <SubText>
+                If you think this page should've been here
+                <br />
+                and there is some issue,
+                <br />
+                <a href="https://github.com/mnvr/mrmr.io/issues">
+                    please let me know!
+                    <BsArrowRightShort />
+                </a>
+            </SubText>
+
+            <SubText style={{ marginBlockStart: "2rem" }}>
+                <Link to="/">Home</Link>
+            </SubText>
         </div>
     );
 };
