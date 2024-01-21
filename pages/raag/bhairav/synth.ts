@@ -113,24 +113,48 @@ export interface PlayParams {
      */
     waveform?: Waveform;
     /**
+     * Duration of the note.
+     *
+     * This sets the duration of the sustain phase of the ADSR envelope, so the
+     * _actual_ duration of the note is
+     *
+     *     attack (time) + decay (time) + this + release (time)
+     *
+     * In practice, the attack/decay are quite short, and that we think of as
+     * the duration is usually the part of the note that sustains. Thus the
+     * sustain time is treated differently.
+     *
+     * It might seem quite arbitrary, treating sustain differently this way -
+     * (a) the sustain parameter in the ADSR {@link Envelope} is, unlike the
+     * other ADSR parameters, a level; and (b) instead of specifying the sustain
+     * duration there, we specify it here, outside the envelope. And I wouldn't
+     * disagree, it is quite arbitrary. But it does seem to map to a more
+     * musically ergonomic synth.
+     *
+     * @default 0.1 (100 ms)
+     */
+    duration?: TSecond;
+    /**
      * Amplitude level
      *
      * This sets maximum level that the amplitude envelope ({@link env} reaches
      * – i.e. its level after the attack phase. If the envelope also has a
-     * {@link sustainLevel}, then the sustain level is multiplied with this
+     * {@link sustain} (level), then the sustain level is multiplied with this
      * level to obtain the level of the sound during the sustain phase.
      *
-     * As a safety measure, there is a hardcoded attenuation (a gain of 0.3)
-     * applied to the final signal before sending it to the destination. The
-     * level (gain) specified here is independent of that.
+     * Note that as a safety measure, there is a hardcoded attenuation (a gain
+     * of 0.3) applied to the final signal before sending it to the destination.
+     * The level (gain) specified here acts prior to it.
      *
      * In practice, setting this to 1 sounds loud (even after the safety
      * attenuation), so a value of 1 here should be taken as a loud extreme (and
-     * a value of 0 as silence). In between is a linear range. The default here
-     * is meant as something that is audible even if the user's speakers are set
-     * to a low volume, but not too loud if the speakers are turned all the way
-     * up (so as to not startle them). But this is more of a prayer than a
-     * guarantee, and may not apply based on the user's setup.
+     * a value of 0 as the other extreme of silence).
+     *
+     * In between is a linear range. The default here is meant as something that
+     * is audible even if the user's speakers are set to a low volume, but not
+     * too loud if the speakers are turned all the way up (so as to not startle
+     * them). But this is more of a prayer than a guarantee, and may not apply
+     * based on the user's setup.
      *
      * @default 0.6
      */
@@ -146,8 +170,8 @@ export interface PlayParams {
      * - After the attack phase, the envelope reaches 1. The actual sound level
      *   at this point will be `level * 1`.
      *
-     * - During the sustain phase, the envelope holds at `sustainLevel`. The
-     *   actual sound level during this time will be `level * sustainLevel`.
+     * - During the sustain phase, the envelope holds at `sustain`. So the
+     *   actual sound level during this time will be `level * sustain`.
      *
      * @default @see {@link defaultAmplitudeEnvelope}
      */
@@ -162,13 +186,15 @@ export interface PlayParams {
  * - Attack: A linear ramp from 0 to the 1. This ramp happens over `attack`
  *   seconds.
  *
- * - Decay: An exponential ramp from 1 to `sustainLevel`. This ramp happens over
+ * - Decay: An exponential ramp from 1 to `sustain`. This ramp happens over
  *   `decay` seconds.
  *
- * - Sustain: Keep the value constant at `sustainLevel` for `sustain` seconds.
+ * - Sustain: Keep the value constant at `sustain` for the duration of the
+ *   phenomena. When this envelope is used to control the amplitude of a note,
+ *   this sustain duration is specified by the {@link duration} property of
+ *   {@link PlayParam}.
  *
- * - Release: An exponential ramp from `sustainLevel` to 0 over `release`
- *   seconds.
+ * - Release: An exponential ramp from `sustain` to 0 over `release` seconds.
  *
  * There is nothing fundamental about an ADSR envelope as described above, but
  * in practice these four phases seem to capture how many natural, and musical,
@@ -198,23 +224,20 @@ export interface Envelope {
      */
     decay?: TSecond;
     /**
-     * The duration of the sustain phase in seconds.
-     *
-     * The level remains constant at `sustainLevel` during the sustain phase.
-     *
-     * @default 0.1 (100 ms)
-     */
-    sustain?: TSecond;
-    /**
      * The level during the sustain phase.
      *
      * Note that both this, and the implicit attackLevel (1) is multiplied by
      * the some external (to the envelope) {@link level} parameter when the
      * applying this envelope and figuring out the actual gain values to use.
      *
+     * The duration of the sustain phase of the envelope is externally
+     * specified. For instance, if an ADSR envelope is used to control the
+     * amplitude of a note, then the sustain duration is specified by the
+     * {@link duration} value in {@link PlayParam}.
+     *
      * @default 0.8
      */
-    sustainLevel?: Level;
+    sustain?: Level;
     /**
      * The duration of the release phase in seconds.
      *
@@ -225,22 +248,22 @@ export interface Envelope {
     release?: TSecond;
 }
 
-export const defaultAmplitudeEnvelope: Required<Envelope> = {
-    attack: 0.001,
-    decay: 0.004,
-    sustain: 0.1,
-    release: 0.02,
-    sustainLevel: 0.8,
-};
-
 type PlayParamOrDefault = Required<
     Omit<PlayParams, "env"> & { env: Required<Envelope> }
 >;
 
+export const defaultAmplitudeEnvelope: Required<Envelope> = {
+    attack: 0.001,
+    decay: 0.004,
+    sustain: 0.8,
+    release: 0.02,
+};
+
 export const defaultPlayParams: PlayParamOrDefault = {
     note: 69,
+    duration: 0.1,
+    level: 0.6,
     waveform: "sine",
-    level: 0.5,
     env: defaultAmplitudeEnvelope,
 };
 
@@ -276,9 +299,10 @@ const mergeIntoDefaultPlayParams = (
  * @return the passed in parameters.
  */
 const validateParams = (params: PlayParamOrDefault) => {
-    const { note, level, env } = params;
+    const { note, duration, level, env } = params;
 
     validateMIDINote(note);
+    validateTSecond(duration);
     validateLevel(level);
     validateEnvelope(env);
 
@@ -313,9 +337,8 @@ const validateTSecond = (v: TSecond) => {
 const validateEnvelope = (e: Required<Envelope>) => {
     validateTSecond(e.attack);
     validateTSecond(e.decay);
-    validateTSecond(e.sustain);
+    validateLevel(e.sustain);
     validateTSecond(e.release);
-    validateLevel(e.sustainLevel);
 };
 
 /**
@@ -417,7 +440,7 @@ export class Synth {
         // WebAudio spec:
         // https://webaudio.github.io/web-audio-api/
 
-        const { note, waveform, level, env } = validateParams(
+        const { note, waveform, duration, level, env } = validateParams(
             mergeIntoDefaultPlayParams(params),
         );
 
@@ -492,7 +515,7 @@ export class Synth {
         //   already be enough; in that case, you could set `timeConstant` to
         //   one third of the desired duration.
         amp.gain.setTargetAtTime(
-            env.sustainLevel * level,
+            env.sustain * level,
             t + env.attack,
             env.decay / 3,
         );
@@ -506,7 +529,7 @@ export class Synth {
         // so as to not cause clicks.
         amp.gain.setTargetAtTime(
             0,
-            t + env.attack + env.decay + env.sustain,
+            t + env.attack + env.decay + duration,
             env.release / 5,
         );
 
@@ -555,7 +578,7 @@ export class Synth {
         //   references to any nodes it is connected to, and so on. The nodes
         //   will automatically get disconnected from the graph and will be
         //   deleted when they have no more references.
-        osc.stop(t + env.attack + env.decay + env.sustain + env.release);
+        osc.stop(t + env.attack + env.decay + duration + env.release);
 
         this.#activePlaybackCount += 1;
         if (this.#debug) {
