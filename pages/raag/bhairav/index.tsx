@@ -92,8 +92,8 @@ const RaagLadder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const seq = () => noteSequence(raag.notes).reverse();
     return (
         <RaagLadder_>
-            {seq().map(([i, isOn]) =>
-                isOn ? (
+            {seq().map(([i, isNoteOnRaag]) =>
+                isNoteOnRaag ? (
                     <LadderNote key={i} synth={synth} noteOffset={i} />
                 ) : (
                     <LadderBlank key={i} noteOffset={i} />
@@ -241,8 +241,8 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const seq = () => noteSequence(raag.notes, 2);
     return (
         <RaagPlayer_>
-            {seq().map(([i, isOn]) =>
-                isOn ? (
+            {seq().map(([i, isNoteOnRaag]) =>
+                isNoteOnRaag ? (
                     <RPNote key={i} synth={synth} noteOffset={i} />
                 ) : (
                     <RPBlank key={i} />
