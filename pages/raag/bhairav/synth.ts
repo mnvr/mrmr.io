@@ -368,7 +368,7 @@ export class Synth {
     /**
      * Set this to true to emit debugging messages to the console.
      */
-    #debug = true;
+    #debug = false;
 
     /**
      * Count of outstanding playbacks.
@@ -460,6 +460,18 @@ export class Synth {
         //
         // I've empirically observed this. For more details, see
         // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
+        //
+        // Also, it seems that iOS will only allow the audioContext to be
+        // resumed if it is running within the call-stack of the a UI event
+        // handler.
+        //
+        // Note that we never suspend the audio context. An earlier version of
+        // this code did indeed try to be a good citizen and suspend the audio
+        // context when the note was done playing. However, doing that caused
+        // stuttery audio. So we just let it be. The browser automatically stops
+        // showing the "playing"/"speaker" icon next to our tab in the tab bar
+        // even if we don't explicitly suspend it, so not suspending doesn't
+        // have any functional impact that I can tell of.
 
         await ctx.resume();
 
@@ -590,21 +602,7 @@ export class Synth {
             if (this.#debug) {
                 this.log(`note ${Math.round(freq)} hz done`);
             }
-            // Don't immediately suspend the audio context, doing so causes the
-            // tail of the note to get clipped. I don't understand why though,
-            // because we've already received the onended event.
-            //
-            // For now, add a bit of delay before we suspend the audio context.
-            setTimeout(() => {
-                this.suspendContextIfInactive();
-            }, 100);
             if (onEnded !== undefined) onEnded();
         };
-    }
-
-    suspendContextIfInactive() {
-        if (this.#activePlaybackCount === 0) {
-            // this.ctx?.suspend();
-        }
     }
 }
