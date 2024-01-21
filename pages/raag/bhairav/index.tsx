@@ -1,9 +1,11 @@
 import { WideColumn } from "components/Column";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
-import { BsPlayFill } from "react-icons/bs";
+import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 import { Synth } from "./synth";
+import { HiPlayPause } from "react-icons/hi2";
+import { FaPlayCircle, FaRegPauseCircle, FaRegPlayCircle } from "react-icons/fa";
 
 /* More like Thaat, but let's live with this for now */
 interface Raag {
@@ -247,7 +249,12 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
     return (
         <RaagPlayer_>
             <Row>
-                <BsPlayFill title="Play" />
+                {/* <BsPlayFill title="Play" /> */}
+                <FaPlayCircle title="Play" />
+            </Row>
+            <Row>
+
+                <FaRegPauseCircle title="Play" />
             </Row>
             <RaagPlayerNotes {...props} />
         </RaagPlayer_>
@@ -260,7 +267,7 @@ const RaagPlayer_ = styled.div`
     margin-inline: 1rem;
     display: flex;
     flex-direction: column;
-    font-size: 2rem;
+    font-size: 44px;
     gap: 1rem;
 
     /* border: 1px solid tomato; */
@@ -268,7 +275,8 @@ const RaagPlayer_ = styled.div`
 
 const Row = styled.div`
     /* border: 1px solid green; */
-    margin-inline-start: -8px;
+    /* margin-inline-start: -8px; */
+    color: var(--mrmr-color-4);
 `;
 
 const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
