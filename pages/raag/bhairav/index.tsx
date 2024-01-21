@@ -275,7 +275,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
      * Use random brownian motion to determine the next note, ensuring that we
      * stay within the range of notes we're visualizing
      */
-    const nextNote = (ni: number) => {
+    const nextNote = (ni: number, dir: number) => {
         // const coin = Math.random() > 0.8;
         // let i;
         // if (noteIndex === notes.length - 1) {
@@ -303,12 +303,14 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
         // setNoteIndex(i);
 
         // const j = Math.floor(Math.random() * (notes.length + 4));
-        let j = ni + direction;
+        let j = ni + (dir ?? 1);
         if (j === notes.length) {
             setDirection(-1);
-            j = notes.length - 1;
+            dir = -1;
+            j = notes.length - 2;
         } else if (j < 0) {
             setDirection(1);
+            dir = 1;
             j = 0;
         }
         const nj = j < notes.length ? notes[j] : undefined;
@@ -329,7 +331,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
         });
 
         const tid = window.setTimeout(() => {
-            nextNote(j);
+            nextNote(j, dir);
         }, 800);
         setScheduledTimerId(tid);
     };
@@ -345,7 +347,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             setScheduledTimerId(undefined);
         } else {
             setIsPlaying(true);
-            nextNote(noteIndex);
+            nextNote(noteIndex, direction);
             // setNoteIndex(0);
             // setDirection(1);
             // synth.play({ note: 69 + noteIndex });
