@@ -263,7 +263,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
      * stay within the range of notes we're visualizing
      */
     const nextNote = () => {
-        const coin = Math.random() > 0.5;
+        const coin = Math.random() > 0.8;
         let i;
         if (noteIndex === notes.length - 1) {
             if (coin) {
@@ -284,8 +284,23 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
                 i = noteIndex - 1;
             }
         }
-        synth.play({ note: 69 + i });
-        setNoteIndex(i);
+        console.log(coin, noteIndex, i, notes[i], notes.length);
+        // synth.play({ note: 69 + ensure(notes[i]) });
+        // setNoteIndex(i);
+
+        const j = Math.floor(Math.random() * (notes.length + 4));
+        const nj = j < notes.length ? notes[j] : undefined;
+        if (nj) {
+            // synth.play({ note: 69 + nj });
+            const l = 0.2 + Math.random() * 0.3;
+            synth.play({
+                note: 69 - 12 + nj,
+                duration: 0.14,
+                level: l,
+                env: { release: 0.08 },
+            });
+        }
+        setNoteIndex(j);
     };
 
     const [scheduledIntervalId, setScheduledIntervalId] = React.useState<
@@ -302,7 +317,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             synth.play({ note: 69 + noteIndex });
             const interval = window.setInterval(() => {
                 nextNote();
-            }, 1000);
+            }, 240);
             setScheduledIntervalId(interval);
         }
     };
