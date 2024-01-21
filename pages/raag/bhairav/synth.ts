@@ -368,7 +368,7 @@ export class Synth {
     /**
      * Set this to true to emit debugging messages to the console.
      */
-    #debug = false;
+    #debug = true;
 
     /**
      * Count of outstanding playbacks.
@@ -404,13 +404,15 @@ export class Synth {
 
             if (this.#debug) {
                 ctx.addEventListener("statechange", () => {
-                    console.info(
-                        `[yes] AudioContext state changed to ${ctx?.state}`,
-                    );
+                    this.log(`AudioContext state changed to ${ctx?.state}`);
                 });
             }
         }
         return ctx;
+    }
+
+    log(msg: string) {
+        console.info(`[yes]  ${this.ctx?.currentTime ?? 0} ${msg}`);
     }
 
     /**
@@ -443,9 +445,8 @@ export class Synth {
         // WebAudio spec:
         // https://webaudio.github.io/web-audio-api/
 
-        const { note, waveform, duration, level, env } = validateParams(
-            mergeIntoDefaultPlayParams(params),
-        );
+        const vParams = validateParams(mergeIntoDefaultPlayParams(params));
+        const { note, waveform, duration, level, env } = vParams;
 
         const ctx = this.init();
 
@@ -581,21 +582,28 @@ export class Synth {
 
         this.#activePlaybackCount += 1;
         if (this.#debug) {
-            console.info(`[yes] note ${Math.round(freq)} hz`);
+            this.log(`note ${Math.round(freq)} hz: ${JSON.stringify(vParams)}`);
         }
         osc.onended = () => {
             this.#activePlaybackCount -= 1;
             if (this.#debug) {
-                console.info(`[yes] note ${Math.round(freq)} hz done`);
+                this.log(`note ${Math.round(freq)} hz done`);
             }
-            this.suspendContextIfInactive();
+            // Don't immediately suspend the audio context, doing so causes the
+            // tail of the note to get clipped. I don't understand why though,
+            // because we've already received the onended event.
+            //
+            // For now, add a bit of delay before we suspend the audio context.
+            setTimeout(() => {
+                this.suspendContextIfInactive();
+            }, 100);
             if (onEnded !== undefined) onEnded();
         };
     }
 
     suspendContextIfInactive() {
         if (this.#activePlaybackCount === 0) {
-            this.ctx?.suspend();
+            // this.ctx?.suspend();
         }
     }
 }
