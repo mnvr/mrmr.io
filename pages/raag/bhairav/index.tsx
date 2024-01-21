@@ -1,12 +1,10 @@
+import { IconButton } from "components/Buttons";
 import { WideColumn } from "components/Column";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 import { Synth } from "./synth";
-import { HiPlayPause } from "react-icons/hi2";
-import { FaPlayCircle, FaRegPauseCircle, FaRegPlayCircle } from "react-icons/fa";
-import { FaRegCirclePlay } from "react-icons/fa6";
 
 /* More like Thaat, but let's live with this for now */
 interface Raag {
@@ -247,37 +245,44 @@ const Description2_ = styled.div`
 const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
     const [isPlaying, setIsPlaying] = React.useState(false);
 
+    const handleClick = () => {
+        setIsPlaying(!isPlaying);
+    };
+
     return (
         <RaagPlayer_>
-            <Row>
-                {/* <BsPlayFill title="Play" /> */}
-                <FaRegCirclePlay title="Play" />
-            </Row>
-            {/* <Row>
-
-                <FaRegPauseCircle title="Play" />
-            </Row> */}
+            <IconButton onClick={handleClick}>
+                {isPlaying ? (
+                    <BsPauseFill title="Pause" />
+                ) : (
+                    <BsPlayFill title="Play" />
+                )}
+            </IconButton>
             <RaagPlayerNotes {...props} />
         </RaagPlayer_>
     );
 };
 
 const RaagPlayer_ = styled.div`
-    margin-block-start: 32px;
+    /* There is various bits of pixel tweaking here and other places below to
+       try and get the button and the raga notes etc to _look_ aligned */
+    margin-block-start: 20px;
     margin-block-end: 3em;
-    margin-inline: 1rem;
+
     display: flex;
     flex-direction: column;
-    font-size: 44px;
-    gap: 1em;
+    align-items: center;
 
-    /* border: 1px solid tomato; */
-`;
+    button {
+        font-size: 44px;
+        /* margin-inline-start: -8px; */
 
-const Row = styled.div`
-    /* border: 1px solid green; */
-    /* margin-inline-start: -8px; */
-    color: var(--mrmr-color-4);
+        color: var(--mrmr-color-4);
+        /* min-height: 56px; */
+        opacity: 0.9;
+    }
+
+    gap: 44px;
 `;
 
 const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
@@ -296,12 +301,10 @@ const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 };
 
 const RaagPlayerNotes_ = styled.div`
-    /* margin-block-end: 3rem; */
-    /* border: 1px solid tomato; */
-/* margin-inline: 1rem; */
+    margin-inline: 3px;
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
-    /* justify-content: center; */
 
     & > div {
         width: 12px;
