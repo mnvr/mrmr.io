@@ -81,6 +81,7 @@ const RaagName_ = styled.div`
         font-size: 2.25em;
         margin-block-end: 0.1em;
     }
+
     big {
         margin-inline-start: -1px;
     }
@@ -264,9 +265,7 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
 };
 
 const RaagPlayer_ = styled.div`
-    /* There is various bits of pixel tweaking here and other places below to
-       try and get the button and the raga notes etc to _look_ aligned */
-    margin-block-start: 20px;
+    margin-block-start: 1.05em;
     margin-block-end: 3em;
 
     display: flex;
@@ -274,15 +273,17 @@ const RaagPlayer_ = styled.div`
     align-items: center;
 
     button {
-        font-size: 44px;
-        /* margin-inline-start: -8px; */
+        font-size: 2em;
 
         color: var(--mrmr-color-4);
-        /* min-height: 56px; */
         opacity: 0.9;
     }
 
-    gap: 44px;
+    button:hover {
+        color: var(--mrmr-color-3);
+    }
+
+    gap: 2em;
 `;
 
 const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
@@ -301,7 +302,10 @@ const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 };
 
 const RaagPlayerNotes_ = styled.div`
+    /* A bit of pixel tweaking to try and get the left side of the raga notes to
+       look vertically aligned with the text above it */
     margin-inline: 3px;
+
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
