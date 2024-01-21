@@ -1,250 +1,8 @@
 /**
- * Yet Another Synth, yes.
+ * @file Yet Another Synth, yes.
  *
- * yes uses the WebAudio API, specifically audio worklets, to dynamically
- * generate and play sounds in a browser.
+ * This file begins with the types. The actual synth, {@link Synth} follows.
  */
-export class Synth {
-    ctx?: AudioContext;
-
-    /**
-     * Set this to true to emit debugging messages to the console.
-     */
-    #debug = false;
-
-    /**
-     * Count of outstanding playbacks.
-     *
-     * When we start playing in response to a call of `play()`, this value is
-     * incremented. When the corresponding node ends, this value is decremented.
-     *
-     * It is used to then suspend the audio context if there is nothing
-     * remaining to be played.
-     */
-    #activePlaybackCount = 0;
-
-    /**
-     * Call this method in response to a user action, like a tap.
-     *
-     * The browsers autoplay policy prevents JavaScript code from unilaterally
-     * starting audio playback. Trying to create and use an audio context
-     * without user interaction results in the browser printing a warning on the
-     * console. Worse, it (and this might be undefined behaviour) enqueues any
-     * existing events, and then plays them all at once when we do actually
-     * trigger an audio context event in response to a user event.
-     *
-     * To get around this, call trigger in response to a user event, e.g. by
-     * attaching a window "click" listener . This init is needed only once.
-     *
-     * @see {@link canAutoplay}
-     */
-    init() {
-        let ctx = this.ctx;
-        if (ctx === undefined) {
-            ctx = new AudioContext();
-            this.ctx = ctx;
-
-            if (this.#debug) {
-                ctx.addEventListener("statechange", () => {
-                    console.info(
-                        `[yes] AudioContext state changed to ${ctx?.state}`,
-                    );
-                });
-            }
-        }
-        return ctx;
-    }
-
-    /**
-     * The {@link canAutoplay} property can be used to see if we're in a state
-     * where {@link play} can be called without needing user interaction.
-     */
-    get canAutoplay() {
-        return this.ctx !== undefined;
-    }
-
-    /**
-     * Play a sound using the given parameters
-     *
-     * It is up to the caller to ensure that either one of the following two
-     * conditions hold:
-     *
-     * 1. This method is being called in response to a user action like tap, or
-     *
-     * 2. There has been at least one tap before, and in the global handler for
-     *    that tap we have called {@link init} explicitly. We can check for this
-     *    case by querying {@link canAutoplay}.
-     *
-     * If you call play without one of the above being true, bad™ things will
-     * happen.
-     *
-     * @param params The {@link PlayParams}
-     * @param onEnded A callback that is fired when the note ends playing.
-     */
-    async play(params?: PlayParams, onEnded?: () => void) {
-        // WebAudio spec:
-        // https://webaudio.github.io/web-audio-api/
-
-        const { note, waveform, level, env } = validateParams(
-            mergeIntoDefaultPlayParams(params),
-        );
-
-        const ctx = this.init();
-
-        // Always resume the context
-        //
-        // Ideally, this would need to be done only once. However, on iOS Safari
-        // the audio context switches to an "interrupted" state if we navigate
-        // away from the page for an extended time. If we were to then come back
-        // and play, no sound would be emitted until the context is resumed.
-        //
-        // I've empirically observed this. For more details, see
-        // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
-
-        await ctx.resume();
-
-        const t = ctx.currentTime;
-
-        const freq = convertMIDINoteToFrequency(note);
-
-        // Play a pure tone of type `type` at `freq` Hz.
-        const osc = new OscillatorNode(ctx, {
-            type: waveform,
-            frequency: freq,
-        });
-
-        // Apply the ADSR envelope to the amplitude.
-        const amp = new GainNode(ctx);
-        osc.connect(amp);
-
-        // Start at 0
-        amp.gain.setValueAtTime(0, 0);
-
-        // Linear ramp to level over `attack` seconds.
-        amp.gain.linearRampToValueAtTime(level, t + env.attack);
-
-        // Exponential ramp from `level * 1` to `sustainLevel * level` over
-        // `decay` seconds.
-        //
-        // The third parameter to setTargetAtTime is a `timeConstant`, which is
-        // the time it takes to reach 1 - e⁻¹ = 63% of the target (the first
-        // parameter).
-        //
-        // To see where the 63% comes from, notice that 1/e = 0.367. So
-        // 1-(e**-1) is 0.632, ~63%. MDN, excellent as always, has a longer
-        // [explanation](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/setTargetAtTime#description):
-        //
-        // > The change starts at the time specified in `startTime` (second
-        //   parameter) and exponentially moves towards the value given by the
-        //   `target` parameter (the first parameter to setTargetAtTime). The
-        //   decay rate as defined by the `timeConstant` parameter (the third
-        //   parameter) is exponential; therefore the value will never reach
-        //   `target` completely, but after each timestep of length
-        //   `timeConstant`, the value will have approach the `target` by
-        //   another 1 - e⁻¹ ≃ 63%.
-        //
-        // Multiplying the time constant by some n is equivalent to having n
-        // timesteps, and each timestep will further get 1 - e⁻¹ closer to the
-        // target, i.e.
-        //
-        //       (1 - e⁻¹)ⁿ
-        //     = 1ⁿ - (1/e)ⁿ
-        //     = 1  - e⁻ⁿ
-        //
-        // So multiplying by 3 gives us 1  - e⁻³ ≃ 0.95, i.e a value that is 95%
-        // of the target. Since we already know the time interval we have at our
-        // disposal, we can divide it by 3 to a timeConstant that gets us the
-        // equivalent effect. MDN corraborates:
-        //
-        // > Depending on your use case, getting 95% toward the target value may
-        //   already be enough; in that case, you could set `timeConstant` to
-        //   one third of the desired duration.
-        amp.gain.setTargetAtTime(
-            env.sustainLevel * level,
-            t + env.attack,
-            env.decay / 3,
-        );
-
-        // Exponential ramp from `sustainLevel * level` to `0` over
-        // `release` seconds, after waiting out the `sustain` duration.
-        //
-        // This time we scale the timeConstant by 5, to get 99% to the target
-        // value. This is needed because we'll remove the node from the audio
-        // graph at this point, so having it effectively be silent is necessary
-        // so as to not cause clicks.
-        amp.gain.setTargetAtTime(
-            0,
-            t + env.attack + env.decay + env.sustain,
-            env.release / 5,
-        );
-
-        // Apply a relatively strong attentuation to the output always, to avoid
-        // accidentally emitting loud noises, both during development, and for
-        // people who might have their speakers unknowingly turned on too loud.
-        //
-        // About Gain
-        // ----------
-        //
-        // The gain is a unitless value, that each sample is multiplied with. An
-        // instanteously applied gain causes clicks in the audio and so in
-        // practice we need to use ramps / envelopes when applying them (this is
-        // actually true of almost all audio parameters to a certain extent, but
-        // is especially true of the output level).
-        //
-        // So when applying a gain it is better to use a envelope instead.
-        // However, since this audio node is meant to serve as a pseudo
-        // brick-wall limiter, we start with (and remain at) the constant
-        // attenuation, and rely on one of the nodes before us in the chain to
-        // apply an envelope to prevent clicks.
-        const out = new GainNode(ctx, {
-            gain: 0.3,
-        });
-        out.connect(ctx.destination);
-
-        amp.connect(out);
-        osc.start();
-
-        // Stop the source (osc) after the requested duration has passed.
-        //
-        // WebAudio automatically does "garbage collection" for the entire chain
-        // of nodes that were reachable from the source node that we stop. This
-        // is described in the (non-normative) "Dynamic Lifetime" section of the
-        // WebAudio spec:
-        // https://webaudio.github.io/web-audio-api/#DynamicLifetime
-        //
-        // > The audio system automatically deals with tearing-down the part of
-        //   the routing graph for individual "note" events.
-        //
-        // > A "note" is represented by an AudioBufferSourceNode (nb:
-        //   OscillatorNodes inherit from AudioBufferSourceNode), which can be
-        //   directly connected to other processing nodes. When the note has
-        //   finished playing, the context will automatically release the
-        //   refernce to the AudioBufferSourceNode, which in turn will release
-        //   references to any nodes it is connected to, and so on. The nodes
-        //   will automatically get disconnected from the graph and will be
-        //   deleted when they have no more references.
-        osc.stop(t + env.attack + env.decay + env.sustain + env.release);
-
-        this.#activePlaybackCount += 1;
-        if (this.#debug) {
-            console.info(`[yes] note ${Math.round(freq)} hz`);
-        }
-        osc.onended = () => {
-            this.#activePlaybackCount -= 1;
-            if (this.#debug) {
-                console.info(`[yes] note ${Math.round(freq)} hz done`);
-            }
-            this.suspendContextIfInactive();
-            if (onEnded !== undefined) onEnded();
-        };
-    }
-
-    suspendContextIfInactive() {
-        if (this.#activePlaybackCount === 0) {
-            this.ctx?.suspend();
-        }
-    }
-}
 
 /**
  * Frequency expressed as the MIDI note
@@ -571,3 +329,251 @@ const validateEnvelope = (e: Required<Envelope>) => {
 const convertMIDINoteToFrequency = (m: MIDINote) => {
     return 440 * (2 ** (1 / 12)) ** (m - 69);
 };
+
+/**
+ * Yet Another Synth, yes.
+ *
+ * yes uses the WebAudio API, specifically audio worklets, to dynamically
+ * generate and play sounds in a browser.
+ */
+export class Synth {
+    ctx?: AudioContext;
+
+    /**
+     * Set this to true to emit debugging messages to the console.
+     */
+    #debug = false;
+
+    /**
+     * Count of outstanding playbacks.
+     *
+     * When we start playing in response to a call of `play()`, this value is
+     * incremented. When the corresponding node ends, this value is decremented.
+     *
+     * It is used to then suspend the audio context if there is nothing
+     * remaining to be played.
+     */
+    #activePlaybackCount = 0;
+
+    /**
+     * Call this method in response to a user action, like a tap.
+     *
+     * The browsers autoplay policy prevents JavaScript code from unilaterally
+     * starting audio playback. Trying to create and use an audio context
+     * without user interaction results in the browser printing a warning on the
+     * console. Worse, it (and this might be undefined behaviour) enqueues any
+     * existing events, and then plays them all at once when we do actually
+     * trigger an audio context event in response to a user event.
+     *
+     * To get around this, call trigger in response to a user event, e.g. by
+     * attaching a window "click" listener . This init is needed only once.
+     *
+     * @see {@link canAutoplay}
+     */
+    init() {
+        let ctx = this.ctx;
+        if (ctx === undefined) {
+            ctx = new AudioContext();
+            this.ctx = ctx;
+
+            if (this.#debug) {
+                ctx.addEventListener("statechange", () => {
+                    console.info(
+                        `[yes] AudioContext state changed to ${ctx?.state}`,
+                    );
+                });
+            }
+        }
+        return ctx;
+    }
+
+    /**
+     * The {@link canAutoplay} property can be used to see if we're in a state
+     * where {@link play} can be called without needing user interaction.
+     */
+    get canAutoplay() {
+        return this.ctx !== undefined;
+    }
+
+    /**
+     * Play a sound using the given parameters
+     *
+     * It is up to the caller to ensure that either one of the following two
+     * conditions hold:
+     *
+     * 1. This method is being called in response to a user action like tap, or
+     *
+     * 2. There has been at least one tap before, and in the global handler for
+     *    that tap we have called {@link init} explicitly. We can check for this
+     *    case by querying {@link canAutoplay}.
+     *
+     * If you call play without one of the above being true, bad™ things will
+     * happen.
+     *
+     * @param params The {@link PlayParams}
+     * @param onEnded A callback that is fired when the note ends playing.
+     */
+    async play(params?: PlayParams, onEnded?: () => void) {
+        // WebAudio spec:
+        // https://webaudio.github.io/web-audio-api/
+
+        const { note, waveform, level, env } = validateParams(
+            mergeIntoDefaultPlayParams(params),
+        );
+
+        const ctx = this.init();
+
+        // Always resume the context
+        //
+        // Ideally, this would need to be done only once. However, on iOS Safari
+        // the audio context switches to an "interrupted" state if we navigate
+        // away from the page for an extended time. If we were to then come back
+        // and play, no sound would be emitted until the context is resumed.
+        //
+        // I've empirically observed this. For more details, see
+        // https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/state#resuming_interrupted_play_states_in_ios_safari
+
+        await ctx.resume();
+
+        const t = ctx.currentTime;
+
+        const freq = convertMIDINoteToFrequency(note);
+
+        // Play a pure tone of type `type` at `freq` Hz.
+        const osc = new OscillatorNode(ctx, {
+            type: waveform,
+            frequency: freq,
+        });
+
+        // Apply the ADSR envelope to the amplitude.
+        const amp = new GainNode(ctx);
+        osc.connect(amp);
+
+        // Start at 0
+        amp.gain.setValueAtTime(0, 0);
+
+        // Linear ramp to level over `attack` seconds.
+        amp.gain.linearRampToValueAtTime(level, t + env.attack);
+
+        // Exponential ramp from `level * 1` to `sustainLevel * level` over
+        // `decay` seconds.
+        //
+        // The third parameter to setTargetAtTime is a `timeConstant`, which is
+        // the time it takes to reach 1 - e⁻¹ = 63% of the target (the first
+        // parameter).
+        //
+        // To see where the 63% comes from, notice that 1/e = 0.367. So
+        // 1-(e**-1) is 0.632, ~63%. MDN, excellent as always, has a longer
+        // [explanation](https://developer.mozilla.org/en-US/docs/Web/API/AudioParam/setTargetAtTime#description):
+        //
+        // > The change starts at the time specified in `startTime` (second
+        //   parameter) and exponentially moves towards the value given by the
+        //   `target` parameter (the first parameter to setTargetAtTime). The
+        //   decay rate as defined by the `timeConstant` parameter (the third
+        //   parameter) is exponential; therefore the value will never reach
+        //   `target` completely, but after each timestep of length
+        //   `timeConstant`, the value will have approach the `target` by
+        //   another 1 - e⁻¹ ≃ 63%.
+        //
+        // Multiplying the time constant by some n is equivalent to having n
+        // timesteps, and each timestep will further get 1 - e⁻¹ closer to the
+        // target, i.e.
+        //
+        //       (1 - e⁻¹)ⁿ
+        //     = 1ⁿ - (1/e)ⁿ
+        //     = 1  - e⁻ⁿ
+        //
+        // So multiplying by 3 gives us 1  - e⁻³ ≃ 0.95, i.e a value that is 95%
+        // of the target. Since we already know the time interval we have at our
+        // disposal, we can divide it by 3 to a timeConstant that gets us the
+        // equivalent effect. MDN corraborates:
+        //
+        // > Depending on your use case, getting 95% toward the target value may
+        //   already be enough; in that case, you could set `timeConstant` to
+        //   one third of the desired duration.
+        amp.gain.setTargetAtTime(
+            env.sustainLevel * level,
+            t + env.attack,
+            env.decay / 3,
+        );
+
+        // Exponential ramp from `sustainLevel * level` to `0` over
+        // `release` seconds, after waiting out the `sustain` duration.
+        //
+        // This time we scale the timeConstant by 5, to get 99% to the target
+        // value. This is needed because we'll remove the node from the audio
+        // graph at this point, so having it effectively be silent is necessary
+        // so as to not cause clicks.
+        amp.gain.setTargetAtTime(
+            0,
+            t + env.attack + env.decay + env.sustain,
+            env.release / 5,
+        );
+
+        // Apply a relatively strong attentuation to the output always, to avoid
+        // accidentally emitting loud noises, both during development, and for
+        // people who might have their speakers unknowingly turned on too loud.
+        //
+        // About Gain
+        // ----------
+        //
+        // The gain is a unitless value, that each sample is multiplied with. An
+        // instanteously applied gain causes clicks in the audio and so in
+        // practice we need to use ramps / envelopes when applying them (this is
+        // actually true of almost all audio parameters to a certain extent, but
+        // is especially true of the output level).
+        //
+        // So when applying a gain it is better to use a envelope instead.
+        // However, since this audio node is meant to serve as a pseudo
+        // brick-wall limiter, we start with (and remain at) the constant
+        // attenuation, and rely on one of the nodes before us in the chain to
+        // apply an envelope to prevent clicks.
+        const out = new GainNode(ctx, {
+            gain: 0.3,
+        });
+        out.connect(ctx.destination);
+
+        amp.connect(out);
+        osc.start();
+
+        // Stop the source (osc) after the requested duration has passed.
+        //
+        // WebAudio automatically does "garbage collection" for the entire chain
+        // of nodes that were reachable from the source node that we stop. This
+        // is described in the (non-normative) "Dynamic Lifetime" section of the
+        // WebAudio spec:
+        // https://webaudio.github.io/web-audio-api/#DynamicLifetime
+        //
+        // > The audio system automatically deals with tearing-down the part of
+        //   the routing graph for individual "note" events.
+        //
+        // > A "note" is represented by an AudioBufferSourceNode (nb:
+        //   OscillatorNodes inherit from AudioBufferSourceNode), which can be
+        //   directly connected to other processing nodes. When the note has
+        //   finished playing, the context will automatically release the
+        //   refernce to the AudioBufferSourceNode, which in turn will release
+        //   references to any nodes it is connected to, and so on. The nodes
+        //   will automatically get disconnected from the graph and will be
+        //   deleted when they have no more references.
+        osc.stop(t + env.attack + env.decay + env.sustain + env.release);
+
+        this.#activePlaybackCount += 1;
+        if (this.#debug) {
+            console.info(`[yes] note ${Math.round(freq)} hz`);
+        }
+        osc.onended = () => {
+            this.#activePlaybackCount -= 1;
+            if (this.#debug) {
+                console.info(`[yes] note ${Math.round(freq)} hz done`);
+            }
+            this.suspendContextIfInactive();
+            if (onEnded !== undefined) onEnded();
+        };
+    }
+
+    suspendContextIfInactive() {
+        if (this.#activePlaybackCount === 0) {
+            this.ctx?.suspend();
+        }
+    }
+}
