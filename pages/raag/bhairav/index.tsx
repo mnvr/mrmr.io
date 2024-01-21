@@ -1,6 +1,7 @@
 import { WideColumn } from "components/Column";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
+import { BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
 import { Synth } from "./synth";
 
@@ -228,19 +229,52 @@ const Description_ = styled.div`
 const Description2: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <Description2_>
-            <p>Here is an unending rendition of it</p>
+            <p>Here is an unending rendition of it </p>
         </Description2_>
     );
 };
 
 const Description2_ = styled.div`
     margin-block-start: 3rem;
+    /* border: 1px solid tomato; */
+    display: flex;
+    flex-direction: column;
 `;
 
-const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
-    const seq = () => noteSequence(raag.notes, 2);
+const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
     return (
         <RaagPlayer_>
+            <Row>
+                <BsPlayFill title="Play" />
+            </Row>
+            <RaagPlayerNotes {...props} />
+        </RaagPlayer_>
+    );
+};
+
+const RaagPlayer_ = styled.div`
+    margin-block-start: 1em;
+    margin-block-end: 3em;
+    margin-inline: 1rem;
+    display: flex;
+    flex-direction: column;
+    font-size: 2rem;
+    gap: 1rem;
+
+    /* border: 1px solid tomato; */
+`;
+
+const Row = styled.div`
+    /* border: 1px solid green; */
+    margin-inline-start: -8px;
+`;
+
+const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    const seq = () => noteSequence(raag.notes, 2);
+    return (
+        <RaagPlayerNotes_>
             {seq().map(([i, isNoteOnRaag]) =>
                 isNoteOnRaag ? (
                     <RPNote key={i} synth={synth} noteOffset={i} />
@@ -248,16 +282,17 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
                     <RPBlank key={i} />
                 ),
             )}
-        </RaagPlayer_>
+        </RaagPlayerNotes_>
     );
 };
 
-const RaagPlayer_ = styled.div`
-    margin-block: 3rem;
+const RaagPlayerNotes_ = styled.div`
+    /* margin-block-end: 3rem; */
+    /* border: 1px solid tomato; */
 
     display: flex;
     gap: 12px;
-    justify-content: center;
+    /* justify-content: center; */
 
     & > div {
         width: 12px;
