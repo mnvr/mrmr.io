@@ -1,17 +1,14 @@
-import { superdough } from "@strudel/webaudio";
 import { WideColumn } from "components/Column";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
-import { initStrudel } from "strudel/init";
-import { useInitAudioOnFirstClick } from "strudel/use-init-audio";
 import styled from "styled-components";
 import { Synth } from "./synth";
 
-/* More like thaat, but let's live with this for now */
+/* More like Thaat, but let's live with this for now */
 interface Raag {
     name: string;
     nameInDevanagri: string;
-    /** This is the number of semitones from the tonic (root, Sa). */
+    /** This is the number of semitones from the root note (the Sa). */
     notes: number[];
 }
 
@@ -35,7 +32,6 @@ interface PropsWithSynthAndRaag {
 }
 
 export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
-    const haveInitedAudio = useInitAudioOnFirstClick();
     const synth = React.useRef(new Synth());
 
     React.useEffect(() => {
@@ -44,18 +40,12 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
         return () => window.removeEventListener("click", handleClick);
     }, []);
 
-    React.useEffect(() => {
-        initStrudel();
-    }, []);
-
     return (
         <RaagContent_>
             <WideColumn>
                 <RaagName raag={raag} />
-                <Raag {...{ raag, haveInitedAudio }} />
-                <TextContent>
-                    <Description raag={raag} />
-                </TextContent>
+                <RaagLadder synth={synth.current} raag={raag} />
+                <Description raag={raag} />
                 <Description2 raag={raag} />
                 <RaagPlayer synth={synth.current} raag={raag} />
             </WideColumn>
@@ -98,29 +88,24 @@ const T1 = styled.span`
     color: var(--mrmr-color-4);
 `;
 
-type RaagProps = PropsWithRaag & {
-    haveInitedAudio: boolean;
-};
-
-const Raag: React.FC<RaagProps> = ({ raag, haveInitedAudio }) => {
+const RaagLadder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const seq = () => noteSequence(raag.notes).reverse();
     return (
-        <Raag_>
+        <RaagLadder_>
             {seq().map(([i, isOn]) =>
                 isOn ? (
-                    <Note key={i} noteOffset={i} {...{ haveInitedAudio }} />
+                    <LadderNote key={i} synth={synth} noteOffset={i} />
                 ) : (
-                    <Blank key={i} noteOffset={i} />
+                    <LadderBlank key={i} noteOffset={i} />
                 ),
             )}
-        </Raag_>
+        </RaagLadder_>
     );
 };
 
-const Raag_ = styled.div`
+const RaagLadder_ = styled.div`
     box-sizing: border-box;
     margin-block-start: -1rem;
-    /* padding-block: 1rem; */
     min-height: 80svh;
     display: flex;
     flex-direction: column;
@@ -150,29 +135,18 @@ const noteSequence = (
 };
 
 interface NoteProps {
+    synth: Synth;
     /** How many semitones away from the root is this note */
     noteOffset: number;
-    /** True if the user has tapped once to initiate audio */
-    haveInitedAudio: boolean;
 }
 
-const Note: React.FC<NoteProps> = ({ noteOffset, haveInitedAudio }) => {
-    // true if this note is currently being played.
+const LadderNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+    // `true` if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
     const playNote = () => {
-        // As a temporary workaround for the issue of superdough sometimes not
-        // playing the sound when deadline is 0, provide a small delta
-        // https://github.com/tidalcycles/strudel/issues/925
-        const duration = 0.125;
-        superdough({ s: "sine", note: 69 + noteOffset }, 0.01, duration);
         setIsPlaying(true);
-        setTimeout(() => {
-            // This doesn't cover all sorts of reentrant cases, but practically,
-            // given the small time scales involved, this is fine enough for our
-            // demo instrument.
-            setIsPlaying(false);
-        }, duration * 1000);
+        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
     };
 
     const handleClick = () => {
@@ -180,13 +154,14 @@ const Note: React.FC<NoteProps> = ({ noteOffset, haveInitedAudio }) => {
     };
 
     const handleMouseEnter = () => {
+        // [Note: onMouseEnter on touch devices]
+        //
         // On mobile browsers, the touch event causes both the onClick and
         // onMouseEnter events to fire, causing the sound to be played twice.
         // There isn't a hover interaction on mobiles anyways, so we just ignore
         // hover actions when on mobile (to prevent the double playback).
         if (isMobile) return;
-
-        if (haveInitedAudio) playNote();
+        if (synth.canAutoplay) playNote();
     };
 
     return (
@@ -214,12 +189,12 @@ const Note_ = styled.div<NoteProps_>`
     }
 `;
 
-interface BlankProps {
+interface LadderBlankProps {
     /** @see {@link noteOffset} in {@link NoteProps} */
     noteOffset: number;
 }
 
-const Blank: React.FC<BlankProps> = ({ noteOffset }) => {
+const LadderBlank: React.FC<LadderBlankProps> = ({ noteOffset }) => {
     return <Blank_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
 };
 
@@ -231,7 +206,7 @@ const Blank_ = styled.div`
 
 const Description: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
-        <div>
+        <Description_>
             <p>
                 Raagas are like scales (<i>not really</i>, they're more like
                 Markov chains, but thinking of them as scales is a good first
@@ -242,11 +217,11 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
                 ${raag.name} – Hover on them to hear how they sound (tap once to
                  enable audio)`}
             </p>
-        </div>
+        </Description_>
     );
 };
 
-const TextContent = styled.div`
+const Description_ = styled.div`
     padding-block: 1px;
 `;
 
@@ -279,9 +254,6 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 
 const RaagPlayer_ = styled.div`
     margin-block: 3rem;
-    /* border: 1px solid tomato; */
-
-    /* max-width: calc(12px * 2px) * 24); //(1rem + 2); */
 
     display: flex;
     gap: 12px;
@@ -294,13 +266,7 @@ const RaagPlayer_ = styled.div`
     }
 `;
 
-interface RPNoteProps {
-    synth: Synth;
-    /** @see {@link noteOffset} in {@link NoteProps} */
-    noteOffset: number;
-}
-
-const RPNote: React.FC<RPNoteProps> = ({ synth, noteOffset }) => {
+const RPNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
     // true if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
