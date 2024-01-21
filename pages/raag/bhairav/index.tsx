@@ -88,7 +88,7 @@ const RaagName_ = styled.div`
 `;
 
 const T1 = styled.span`
-    color: var(--mrmr-color-4);
+    color: var(--mrmr-color-3);
 `;
 
 const RaagLadder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
@@ -185,10 +185,10 @@ const Note_ = styled.div<NoteProps_>`
     cursor: pointer;
 
     background-color: ${(props) =>
-        props.$isPlaying ? "var(--mrmr-color-3)" : "var(--mrmr-color-4)"};
+        props.$isPlaying ? "var(--mrmr-color-2)" : "var(--mrmr-color-3)"};
 
     &:hover {
-        background-color: var(--mrmr-color-3);
+        background-color: var(--mrmr-color-2);
     }
 `;
 
@@ -202,7 +202,7 @@ const LadderBlank: React.FC<LadderBlankProps> = ({ noteOffset }) => {
 };
 
 const Blank_ = styled.div`
-    background-color: var(--mrmr-color-4);
+    background-color: var(--mrmr-color-3);
 
     opacity: 0.2;
 `;
@@ -275,12 +275,12 @@ const RaagPlayer_ = styled.div`
     button {
         font-size: 2em;
 
-        color: var(--mrmr-color-4);
+        color: var(--mrmr-color-3);
         opacity: 0.9;
     }
 
     button:hover {
-        color: var(--mrmr-color-3);
+        color: var(--mrmr-color-2);
     }
 
     gap: 2em;
