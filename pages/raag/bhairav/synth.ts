@@ -412,7 +412,8 @@ export class Synth {
     }
 
     log(msg: string) {
-        console.info(`[yes]  ${this.ctx?.currentTime ?? 0} ${msg}`);
+        const t = (this.ctx?.currentTime ?? 0).toFixed(6);
+        console.info(`[yes] ${t} ${msg}`);
     }
 
     /**
