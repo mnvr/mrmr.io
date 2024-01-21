@@ -4,6 +4,7 @@ import * as React from "react";
 import { isMobile } from "react-device-detect";
 import { BsPauseFill, BsPlayFill } from "react-icons/bs";
 import styled from "styled-components";
+import { ensure } from "utils/ensure";
 import { Synth } from "./synth";
 
 /* More like Thaat, but let's live with this for now */
@@ -247,76 +248,109 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     // True if we're currently playing
     const [isPlaying, setIsPlaying] = React.useState(false);
 
-    // The number of octaves we span in our player
-    const octaves = 2;
-    // Create `octave` copies of the notes in the raag, each offset by 12.
-    let notes: Array<number> = [];
-    for (let oct = 0; oct < octaves; oct++) {
-        notes.push(...raag.notes.map((n) => n + 12 * oct));
-    }
     // The index of the note that we're currently playing. Only valid when
     // isPlaying is `true`.
     const [noteIndex, setNoteIndex] = React.useState(0);
-
-    /**
-     * Use random brownian motion to determine the next note, ensuring that we
-     * stay within the range of notes we're visualizing
-     */
-    const nextNote = () => {
-        const coin = Math.random() > 0.8;
-        let i;
-        if (noteIndex === notes.length - 1) {
-            if (coin) {
-                i = noteIndex - 2;
-            } else {
-                i = noteIndex - 1;
-            }
-        } else if (noteIndex === 0) {
-            if (coin) {
-                i = 2;
-            } else {
-                i = 1;
-            }
-        } else {
-            if (coin) {
-                i = noteIndex + 1;
-            } else {
-                i = noteIndex - 1;
-            }
-        }
-        console.log(coin, noteIndex, i, notes[i], notes.length);
-        // synth.play({ note: 69 + ensure(notes[i]) });
-        // setNoteIndex(i);
-
-        const j = Math.floor(Math.random() * (notes.length + 4));
-        const nj = j < notes.length ? notes[j] : undefined;
-        if (nj) {
-            // synth.play({ note: 69 + nj });
-            const l = 0.2 + Math.random() * 0.3;
-            synth.play({
-                note: 69 - 12 + nj,
-                duration: 0.14,
-                level: l,
-                env: { release: 0.08 },
-            });
-        }
-        setNoteIndex(j);
-    };
+    const [direction, setDirection] = React.useState(1);
 
     const [scheduledIntervalId, setScheduledIntervalId] = React.useState<
         number | undefined
     >(undefined);
 
+    const [scheduledTimerId, setScheduledTimerId] = React.useState<
+        number | undefined
+    >(undefined);
+
+    console.log("rendering RaagPlayer", { noteIndex, direction, isPlaying });
+
+    // The number of octaves we span in our player
+    const octaves = 1;
+    // Create `octave` copies of the notes in the raag, each offset by 12.
+    let notes: Array<number> = [];
+    for (let oct = 0; oct < octaves; oct++) {
+        notes.push(...raag.notes.map((n) => n + 12 * oct));
+    }
+
+    /**
+     * Use random brownian motion to determine the next note, ensuring that we
+     * stay within the range of notes we're visualizing
+     */
+    const nextNote = (ni: number) => {
+        // const coin = Math.random() > 0.8;
+        // let i;
+        // if (noteIndex === notes.length - 1) {
+        //     if (coin) {
+        //         i = noteIndex - 2;
+        //     } else {
+        //         i = noteIndex - 1;
+        //     }
+        // } else if (noteIndex === 0) {
+        //     if (coin) {
+        //         i = 2;
+        //     } else {
+        //         i = 1;
+        //     }
+        // } else {
+        //     if (coin) {
+        //         i = noteIndex + 1;
+        //     } else {
+        //         i = noteIndex - 1;
+        //     }
+        // }
+        // console.log(coin, noteIndex, i, notes[i], notes.length);
+        console.log(ni);
+        synth.play({ note: 69 + ensure(notes[ni ?? 0]) });
+        // setNoteIndex(i);
+
+        // const j = Math.floor(Math.random() * (notes.length + 4));
+        let j = ni + direction;
+        if (j === notes.length) {
+            setDirection(-1);
+            j = notes.length - 1;
+        } else if (j < 0) {
+            setDirection(1);
+            j = 0;
+        }
+        const nj = j < notes.length ? notes[j] : undefined;
+        if (nj) {
+            // synth.play({ note: 69 + nj });
+            // const l = 0.1 + Math.random() * 0.3;
+            // synth.play({
+            //     note: 69 + nj,
+            //     duration: 0.14,
+            //     level: l,
+            //     env: { release: 0.08 },
+            // });
+        }
+        console.log("nextNote", { j, nj, ni, direction });
+        setNoteIndex((k) => {
+            console.log("within setNoteIndex", { k, j });
+            return j;
+        });
+
+        const tid = window.setTimeout(() => {
+            nextNote(j);
+        }, 800);
+        setScheduledTimerId(tid);
+    };
+
     const handleClick = () => {
         if (isPlaying) {
             setIsPlaying(false);
+            setNoteIndex(0);
+            setDirection(1);
             clearInterval(scheduledIntervalId);
             setScheduledIntervalId(undefined);
+            clearTimeout(scheduledTimerId);
+            setScheduledTimerId(undefined);
         } else {
             setIsPlaying(true);
-            synth.play({ note: 69 + noteIndex });
+            nextNote(noteIndex);
+            // setNoteIndex(0);
+            // setDirection(1);
+            // synth.play({ note: 69 + noteIndex });
             const interval = window.setInterval(() => {
-                nextNote();
+                // nextNote();
             }, 240);
             setScheduledIntervalId(interval);
         }
@@ -371,6 +405,8 @@ const RaagPlayerNotes: React.FC<RaagPlayerNotesProps> = ({
     octaves,
     noteOffsetToPlay,
 }) => {
+    console.log("rendering RaagPlayerNotes", { octaves, noteOffsetToPlay });
+
     const seq = () => noteSequence(raag.notes, octaves);
     return (
         <RaagPlayerNotes_>
