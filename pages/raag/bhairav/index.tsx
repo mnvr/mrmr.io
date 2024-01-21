@@ -284,11 +284,27 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
                 i = noteIndex - 1;
             }
         }
+        synth.play({ note: 69 + i });
         setNoteIndex(i);
     };
 
+    const [scheduledIntervalId, setScheduledIntervalId] = React.useState<
+        number | undefined
+    >(undefined);
+
     const handleClick = () => {
-        setIsPlaying(!isPlaying);
+        if (isPlaying) {
+            setIsPlaying(false);
+            clearInterval(scheduledIntervalId);
+            setScheduledIntervalId(undefined);
+        } else {
+            setIsPlaying(true);
+            synth.play({ note: 69 + noteIndex });
+            const interval = window.setInterval(() => {
+                nextNote();
+            }, 1000);
+            setScheduledIntervalId(interval);
+        }
     };
 
     const noteOffsetToPlay = isPlaying ? notes[noteIndex] : undefined;
