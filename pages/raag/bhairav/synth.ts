@@ -37,7 +37,7 @@
  *   each for the 12 notes in an octave), we get back 2. This is 2 ^ (1/12), the
  *   12th root of 2.
  *
- *         $ python3 -c 'print(2 ** (1/12))'
+ *         $ python -c 'print(2 ** (1/12))'
  *         1.0594630
  *
  * - So each semitone has the ratio 1.059.
