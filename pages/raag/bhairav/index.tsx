@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Synth } from "./synth";
 import { HiPlayPause } from "react-icons/hi2";
 import { FaPlayCircle, FaRegPauseCircle, FaRegPlayCircle } from "react-icons/fa";
+import { FaRegCirclePlay } from "react-icons/fa6";
 
 /* More like Thaat, but let's live with this for now */
 interface Raag {
@@ -250,25 +251,25 @@ const RaagPlayer: React.FC<PropsWithSynthAndRaag> = (props) => {
         <RaagPlayer_>
             <Row>
                 {/* <BsPlayFill title="Play" /> */}
-                <FaPlayCircle title="Play" />
+                <FaRegCirclePlay title="Play" />
             </Row>
-            <Row>
+            {/* <Row>
 
                 <FaRegPauseCircle title="Play" />
-            </Row>
+            </Row> */}
             <RaagPlayerNotes {...props} />
         </RaagPlayer_>
     );
 };
 
 const RaagPlayer_ = styled.div`
-    margin-block-start: 1em;
+    margin-block-start: 32px;
     margin-block-end: 3em;
     margin-inline: 1rem;
     display: flex;
     flex-direction: column;
     font-size: 44px;
-    gap: 1rem;
+    gap: 1em;
 
     /* border: 1px solid tomato; */
 `;
@@ -297,7 +298,7 @@ const RaagPlayerNotes: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 const RaagPlayerNotes_ = styled.div`
     /* margin-block-end: 3rem; */
     /* border: 1px solid tomato; */
-
+/* margin-inline: 1rem; */
     display: flex;
     gap: 12px;
     /* justify-content: center; */
