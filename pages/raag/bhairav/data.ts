@@ -67,21 +67,14 @@ const fretboardStringsRBA2: FretboardStrings = [
 
 /** Multiple octaves of raag Bhairav rooted at D2 */
 const fretboardStringsRBD2Expanded: FretboardStrings = [
-    Array(8).fill(undefined),
-    Array(8).fill(undefined),
-    Array(8).fill(undefined),
-    [
-        undefined,
-        undefined,
-        undefined,
-        11,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-    ],
+    [undefined, undefined, 19, 20, undefined, undefined, 23, 24],
+    [undefined, undefined, undefined, undefined, 16, 17, undefined, undefined],
+    [undefined, undefined, undefined, 11, 12, 13, undefined, undefined],
     [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
-    [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
+    // [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
+    // Array(8).fill(undefined),
+    [undefined, -1, 0, 1, undefined, undefined, 4, undefined],
+    [undefined, -4, -3, -2, undefined, undefined, undefined, undefined],
 ];
 
 export const raagBhairav: Raag = {

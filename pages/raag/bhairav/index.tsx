@@ -55,7 +55,7 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <LadderDescription raag={raag} />
             <FretboardDescription />
             <Fretboard1 synth={synth} raag={raag} />
-            <FretboardDescription2 />
+            <IntervalDescription />
             <Intervals synth={synth} raag={raag} />
             <FretboardDescription2 />
             <Fretboard2 synth={synth} raag={raag} />
@@ -275,7 +275,7 @@ const Fretboard: React.FC<FretboardProps> = ({
 }) => {
     return (
         <Fretboard_>
-            {raag.fretboard1.map((notes, i) => (
+            {fretboard.map((notes, i) => (
                 <FretboardString key={i} {...{ synth, rootNote, notes }} />
             ))}
             <FretboardMarking marks={raag.fretboardMarks} />
@@ -405,7 +405,7 @@ const FretboardMarking_ = styled.div`
     }
 `;
 
-const FretboardDescription2: React.FC = () => {
+const IntervalDescription: React.FC = () => {
     return (
         <div>
             <p>
@@ -482,16 +482,17 @@ const Interval_ = styled.div<NoteProps_>`
     }
 `;
 
-const FretboardDescription3: React.FC = () => {
+const FretboardDescription2: React.FC = () => {
     return (
         <div>
             <p>
-                This fretboard shows the raag if we begin with note A2 (the A on
-                the first string)
+                So start at any note. Count as you proceed. If the number you
+                counted is on this list, then that note belongs to the raag.
             </p>
             <p>
-                But we can begin with any note we want, all we need to do is
-                maintain the distance between notes
+                For example, this fretboard show the raag if we begin with note
+                D2 (the D on the second string) – it also includes notes that
+                are in the lower and upper octaves
             </p>
         </div>
     );
