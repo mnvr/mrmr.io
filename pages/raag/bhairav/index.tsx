@@ -242,9 +242,14 @@ const FretboardDescription_ = styled.div`
 `;
 
 /**
- * A string on a fretboard, with non-zero values indicating the enabled frets.
+ * A string on a fretboard, with:
+ *
+ * - Numeric values indicating frets that belong to the raag. The number is the
+ *   noteOffset from the root note;
+ *
+ * - `undefined` values indicating frets that are not part of the raag.
  */
-type FretboardStringNotes = Array<number>;
+type FretboardStringNotes = Array<number | undefined>;
 
 /**
  * The six strings that form a guitar fretboard.
@@ -254,17 +259,7 @@ type FretboardStrings = Array<FretboardStringNotes>;
 /**
  * Marks alongside the strings on a fretboard to easily identify the fret.
  */
-type FretboardMarks = Array<number>;
-
-// TODO: Remove me
-const raagFretboardStrings0To9: FretboardStrings = [
-    Array(9).fill(0),
-    Array(9).fill(0),
-    Array(9).fill(0),
-    Array(9).fill(0),
-    [0, 0, 0, 0, 1, 1, 0, 0, 1],
-    Array(9).fill(0),
-];
+type FretboardMarks = Array<boolean>;
 
 /**
  * The notes on the fretboard which are part of the raag.
@@ -274,12 +269,14 @@ const raagFretboardStrings0To9: FretboardStrings = [
  * string starts from fret 4 and continues till fret 10.
  */
 const raagFretboardStrings: FretboardStrings = [
-    Array(7).fill(0),
-    Array(7).fill(0),
-    Array(7).fill(0),
-    Array(7).fill(0),
-    [0, 1, 1, 0, 0, 1, 0],
-    Array(7).fill(0),
+    Array(7).fill(undefined),
+    Array(7).fill(undefined),
+    Array(7).fill(undefined),
+    Array(7).fill(undefined),
+    [undefined, undefined, 11, undefined, undefined, undefined, undefined],
+    [5, undefined, 7, 8, undefined, undefined, undefined],
+    [undefined, 0, 1, undefined, undefined, 4, undefined],
+    Array(7).fill(undefined),
 ];
 
 /**
@@ -288,7 +285,9 @@ const raagFretboardStrings: FretboardStrings = [
  * This spans the same range as {@link raagFretboardStrings}, i.e. it starts
  * from fret 4 and goes on till fret 10 (inclusive).
  */
-const standardFretboardMarks: FretboardMarks = [0, 1, 0, 1, 0, 1, 0];
+const standardFretboardMarks: FretboardMarks = [0, 1, 0, 1, 0, 1, 0].map(
+    (i) => i === 1,
+);
 
 const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
@@ -316,8 +315,12 @@ interface FretboardStringProps {
 const FretboardString: React.FC<FretboardStringProps> = ({ synth, notes }) => {
     return (
         <FretboardString_>
-            {notes.map((isOn, i) =>
-                isOn ? <FretNote key={i} /> : <FretBlank key={i} />,
+            {notes.map((noteOffset, i) =>
+                noteOffset !== undefined ? (
+                    <FretNote key={i} {...{ synth, noteOffset }} />
+                ) : (
+                    <FretBlank key={i} />
+                ),
             )}
         </FretboardString_>
     );
@@ -337,8 +340,32 @@ const FretboardString_ = styled.div`
 `;
 
 /** A note on a string ({@link FretboardString}) of the {@link Fretboard} */
-const FretNote: React.FC = () => {
-    return <Note_ $isPlaying={false}></Note_>;
+const FretNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+    // `true` if this note is currently being played.
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    const playNote = () => {
+        setIsPlaying(true);
+        synth.play({ note: 62 + noteOffset }, () => setIsPlaying(false));
+    };
+
+    const handleClick = () => {
+        playNote();
+    };
+
+    const handleMouseEnter = () => {
+        // See: [Note: onMouseEnter on touch devices]
+        if (isMobile) return;
+        if (synth.canAutoplay) playNote();
+    };
+
+    return (
+        <Note_
+            $isPlaying={isPlaying}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+        />
+    );
 };
 
 const FretBlank: React.FC = () => {
@@ -354,7 +381,7 @@ const FretboardMarking: React.FC<FretboardMarkingProps> = ({ marks }) => {
     return (
         <FretboardMarking_>
             {marks.map((isMarked, i) => (
-                <div key={i}>{isMarked !== 0 && <Blank_ />}</div>
+                <div key={i}>{isMarked && <Blank_ />}</div>
             ))}
         </FretboardMarking_>
     );
