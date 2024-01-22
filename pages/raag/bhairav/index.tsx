@@ -549,46 +549,56 @@ const Piano: React.FC = () => {
 const Piano_ = styled.div`
     margin-block-start: 2em;
 
-    margin-left: 20px;
+    padding-inline-start: 20px;
 
     display: flex;
     justify-content: center;
     gap: 2px;
 
     & > div {
-        border: 1px solid transparent;
         border-radius: 3px;
 
-        width: 30px;
-        height: 160px;
-        margin-left: -15px;
-
+        width: 46px;
+        height: 190px;
+        margin-left: -16px;
     }
 
     div.adj {
         margin-left: 0px;
     }
 
+    div.off {
+        background-color: oklch(84.24% 0.006 43.32 / 0.1);
+    }
+
     div.on {
-        background-color: oklch(84.24% 0.006 43.32 / 0.5);
+        background-color: oklch(84.24% 0.006 43.32 / 0.6);
     }
 
     div.minor {
-        background-color: var(--mrmr-background-color-1);
+        background-color: oklch(84.24% 0.006 43.32 / 0.3);
 
+        z-index: 1;
         height: 120px;
     }
 
     div.minor.on {
-        background-color: black;
+        background-color: oklch(27% 0 0);
     }
 
     div.minor.off {
-        background-color: black;
-        z-index: 1;
         background-color: var(--mrmr-background-color-1);
     }
+
+    div.on:hover {
+        background-color: oklch(84.24% 0.006 43.32);
+    }
+
+    div.minor.on:hover {
+        background-color: black;
+    }
 `;
+
 const Footer: React.FC = () => {
     return (
         <Footer_>
