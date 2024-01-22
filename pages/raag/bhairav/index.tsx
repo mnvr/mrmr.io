@@ -44,8 +44,11 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
         <RaagContent_>
             <WideColumn>
                 <RaagName raag={raag} />
-                <RaagLadder synth={synth.current} raag={raag} />
-                <Description raag={raag} />
+                <Ladder synth={synth.current} raag={raag} />
+                <LadderDescription raag={raag} />
+                <FretboardDescription />
+                <Fretboard synth={synth.current} raag={raag} />
+                <Footer />
             </WideColumn>
         </RaagContent_>
     );
@@ -87,10 +90,10 @@ const T1 = styled.span`
     color: var(--mrmr-color-3);
 `;
 
-const RaagLadder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+const Ladder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const seq = () => noteSequence(raag.notes).reverse();
     return (
-        <RaagLadder_>
+        <Ladder_>
             {seq().map(([i, isNoteOnRaag]) =>
                 isNoteOnRaag ? (
                     <LadderNote key={i} synth={synth} noteOffset={i} />
@@ -98,11 +101,11 @@ const RaagLadder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
                     <LadderBlank key={i} noteOffset={i} />
                 ),
             )}
-        </RaagLadder_>
+        </Ladder_>
     );
 };
 
-const RaagLadder_ = styled.div`
+const Ladder_ = styled.div`
     box-sizing: border-box;
     margin-block-start: -1rem;
     min-height: 80svh;
@@ -203,11 +206,11 @@ const Blank_ = styled.div`
     opacity: 0.2;
 `;
 
-const Description: React.FC<PropsWithRaag> = ({ raag }) => {
+const LadderDescription: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
-        <Description_>
+        <LadderDescription_>
             <p>
-                Raagas are like scales (<i>not really</i>, they're more like
+                Raags are like scales (<i>not really</i>, they're more like
                 Markov chains, but thinking of them as scales is a good first
                 approximation)
             </p>
@@ -216,10 +219,86 @@ const Description: React.FC<PropsWithRaag> = ({ raag }) => {
                 ${raag.name} – Hover on them to hear how they sound (tap once to
                  enable audio)`}
             </p>
-        </Description_>
+        </LadderDescription_>
     );
 };
 
-const Description_ = styled.div`
+const LadderDescription_ = styled.div`
     padding-block: 1px;
+`;
+
+const FretboardDescription: React.FC = () => {
+    return (
+        <FretboardDescription_>
+            <p>You can play it on the guitar, like this:</p>
+        </FretboardDescription_>
+    );
+};
+
+const FretboardDescription_ = styled.div`
+    margin-block-start: 3rem;
+    padding-block: 1px;
+`;
+
+const Fretboard: React.FC<PropsWithSynthAndRaag> = (props) => {
+    return (
+        <Fretboard_>
+            <FBString {...props} />
+        </Fretboard_>
+    );
+};
+
+const Fretboard_ = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+/** A string on the {@link Fretboard} */
+const FBString: React.FC<PropsWithSynthAndRaag> = (props) => {
+    const notes = () =>
+        Array(9)
+            .fill(0)
+            .map((_, i) => [i, false]);
+    return (
+        <FBString_>
+            {notes().map(([i, isOn]) => {
+                return <FretNote />;
+            })}
+        </FBString_>
+    );
+};
+
+const FBString_ = styled.div`
+    display: flex;
+
+    gap: 12px;
+
+    & > div {
+        flex-basis: 50px;
+        height: 12px;
+        border-radius: 3px;
+    }
+`;
+
+/** A note on a string ({@link FBString}) of the {@link Fretboard} */
+const FretNote: React.FC = () => {
+    return <Note_ $isPlaying={false}></Note_>;
+};
+
+const FretNote_ = styled.div`
+    width: 30px;
+    height: 5px;
+    background-color: red;
+`;
+
+const Footer: React.FC = () => {
+    return (
+        <FretboardDescription_>
+            <p> </p>
+        </FretboardDescription_>
+    );
+};
+
+const Footer_ = styled.div`
+    margin-block-start: 3rem;
 `;
