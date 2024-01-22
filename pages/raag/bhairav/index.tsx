@@ -609,7 +609,9 @@ const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
 
     const playNote = () => {
         setIsPlaying(true);
-        synth.play({ note: rootNote + noteOffset }, () => setIsPlaying(false));
+        synth.play({ note: rootNote + noteOffset, duration: 3 }, () =>
+            setIsPlaying(false),
+        );
     };
 
     const handleClick = () => {
