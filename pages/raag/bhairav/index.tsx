@@ -266,26 +266,33 @@ type FretboardMarks = Array<boolean>;
  *
  * To limit the width of the fretboard (so that it fits even on small sized
  * mobile screens), only a relevant range of the fretboard is shown. Here, each
- * string starts from fret 4 and continues till fret 10.
+ * string starts from fret 3 and continues till fret 10.
  */
 const raagFretboardStrings: FretboardStrings = [
-    Array(7).fill(undefined),
-    Array(7).fill(undefined),
-    Array(7).fill(undefined),
-    Array(7).fill(undefined),
-    [undefined, undefined, 11, undefined, undefined, undefined, undefined],
-    [5, undefined, 7, 8, undefined, undefined, undefined],
-    [undefined, 0, 1, undefined, undefined, 4, undefined],
-    Array(7).fill(undefined),
+    Array(8).fill(undefined),
+    Array(8).fill(undefined),
+    [
+        undefined,
+        undefined,
+        undefined,
+        11,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+    ],
+    [undefined, 5, undefined, 7, 8, undefined, undefined, undefined],
+    [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
+    Array(8).fill(undefined),
 ];
 
 /**
  * Markings on the fretboard, same as what guitars usually have.
  *
  * This spans the same range as {@link raagFretboardStrings}, i.e. it starts
- * from fret 4 and goes on till fret 10 (inclusive).
+ * from fret 3 and goes on till fret 10 (inclusive).
  */
-const standardFretboardMarks: FretboardMarks = [0, 1, 0, 1, 0, 1, 0].map(
+const standardFretboardMarks: FretboardMarks = [1, 0, 1, 0, 1, 0, 1, 0].map(
     (i) => i === 1,
 );
 
