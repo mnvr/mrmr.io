@@ -528,24 +528,36 @@ const PianoDescription_ = styled.div`
 `;
 
 const Piano: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
-    // The list of notes is hardcoded, we don't pick it from the raag.
-    //
-    // The intervals are those for raag Bhairav, rooted at C.
-    const cp = { synth, rootNote: 60 };
+    // An array of classNames describing the keys of a piano, starting from C
+    // and going for one octave.
+    const classNames = [
+        "major",
+        "minor",
+        "major",
+        "minor",
+        "major",
+        "major adj",
+        "minor",
+        "major",
+        "minor",
+        "major",
+        "minor",
+        "major",
+    ];
     return (
         <Piano_>
-            <PianoNote className="on major" {...cp} noteOffset={0} />
-            <PianoNote className="on minor" {...cp} noteOffset={1} />
-            <div className="off" />
-            <div className="off minor" />
-            <PianoNote className="on major" {...cp} noteOffset={4} />
-            <PianoNote className="on major adj" {...cp} noteOffset={5} />
-            <div className="off minor" />
-            <PianoNote className="on major" {...cp} noteOffset={7} />
-            <PianoNote className="on minor" {...cp} noteOffset={8} />
-            <div className="off" />
-            <div className="off minor" />
-            <PianoNote className="on major" {...cp} noteOffset={11} />
+            {classNames.map((className, i) =>
+                raag.notes.includes(i) ? (
+                    <PianoNote
+                        className={`on ${className}`}
+                        synth={synth}
+                        rootNote={raag.pianoRootNote}
+                        noteOffset={i}
+                    />
+                ) : (
+                    <div className={`off ${className}`} />
+                ),
+            )}
         </Piano_>
     );
 };
@@ -579,16 +591,16 @@ const Piano_ = styled.div`
         cursor: pointer;
     }
 
-    & > div.major {
-        background-color: var(--mrmr-color-3);
-        opacity: 0.6;
-    }
-
     & > div.minor {
         z-index: 1;
         height: 120px;
 
         background-color: var(--mrmr-background-color-1);
+    }
+
+    & > div.major.on {
+        background-color: var(--mrmr-color-3);
+        opacity: 0.6;
     }
 
     & > div.minor.on {

@@ -44,6 +44,11 @@ export interface Raag {
     fretboard1RootNote: number;
     fretboard2: FretboardStrings;
     fretboard2RootNote: number;
+    /**
+     * The piano illustration currently has a hardcoded 11 keys beginning at C,
+     * so this should be a MIDI note corresponding to some C
+     */
+    pianoRootNote: number;
 }
 
 /** One octave of raag Bhairav starting at A2 */
@@ -88,4 +93,5 @@ export const raagBhairav: Raag = {
     fretboardMarks: standardFretboardMarks,
     fretboard2: fretboardStringsRBD2Expanded,
     fretboard2RootNote: 74,
+    pianoRootNote: 60,
 };
