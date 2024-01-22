@@ -1,4 +1,6 @@
 import { WideColumn } from "components/Column";
+import { LinkStyleUnderlined } from "components/LinkStyles";
+import { Link } from "gatsby";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
@@ -648,11 +650,11 @@ const End: React.FC = () => {
         <End_>
             <p>
                 You can play it on any instrument, acoustic or electronic,
-                analog or digital – and if you don't have any instrument lying
-                around, you can sing it too
+                analog or digital. Or if there are no instrument lying around,
+                you can sing it too
             </p>
             <p>
-                Remember, raags are not a recipe, but an invitation, to create
+                Remember, raags are not a recipe, but an invitation, to make
                 music
             </p>
         </End_>
@@ -666,11 +668,21 @@ const End_ = styled.div`
 const Footer: React.FC = () => {
     return (
         <Footer_>
-            <p>&nbsp;</p>
+            <LinkStyleUnderlined>
+                <p>{/* <Link to={"/raag"}>Raag FAQs</Link> */}</p>
+                <p>
+                    <Link to={"/"}>Home</Link>
+                </p>
+            </LinkStyleUnderlined>
         </Footer_>
     );
 };
 
 const Footer_ = styled.div`
-    margin-block-start: 8rem;
+    margin-block: 4em;
+
+    p {
+        font-size: 16px;
+        margin-bottom: 2.9em;
+    }
 `;
