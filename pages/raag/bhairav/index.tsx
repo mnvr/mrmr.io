@@ -61,6 +61,7 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <Fretboard2 synth={synth} raag={raag} />
             <PianoDescription />
             <Piano synth={synth} raag={raag} />
+            <End />
             <Footer />
         </>
     );
@@ -641,6 +642,26 @@ const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
         <div onClick={handleClick} onMouseEnter={handleMouseEnter} {...rest} />
     );
 };
+
+const End: React.FC = () => {
+    return (
+        <End_>
+            <p>
+                You can play it on any instrument, acoustic or electronic,
+                analog or digital – and if you don't have any instrument lying
+                around, you can sing it too
+            </p>
+            <p>
+                Remember, raags are not a recipe, but an invitation, to create
+                music
+            </p>
+        </End_>
+    );
+};
+
+const End_ = styled.div`
+    margin-block-start: 2em;
+`;
 
 const Footer: React.FC = () => {
     return (
