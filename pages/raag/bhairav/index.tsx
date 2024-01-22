@@ -55,7 +55,7 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <FretboardDescription />
             <Fretboard synth={synth} raag={raag} />
             <FretboardDescription2 />
-            <Intervals raag={raag} />
+            <Intervals synth={synth} raag={raag} />
             <Footer />
         </>
     );
@@ -386,11 +386,11 @@ const FretboardDescription2: React.FC = () => {
 
 const FretboardDescription2_ = styled.div``;
 
-const Intervals: React.FC<PropsWithRaag> = ({ raag }) => {
+const Intervals: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
         <Intervals_>
-            {raag.notes.map((note, i) => (
-                <div key={i}>{note}</div>
+            {raag.notes.map((noteOffset, i) => (
+                <Interval key={i} {...{ synth, noteOffset }} />
             ))}
         </Intervals_>
     );
@@ -400,11 +400,51 @@ const Intervals_ = styled.div`
     margin-block: 1em;
 
     display: flex;
-    justify-content: center;
-    gap: 22px;
+    justify-content: space-evenly;
+    max-width: 400px;
 
     font-size: 44px;
     color: var(--mrmr-color-3);
+`;
+
+/** An individual interval */
+const Interval: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    const playNote = () => {
+        setIsPlaying(true);
+        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
+    };
+
+    const handleClick = () => {
+        playNote();
+    };
+
+    const handleMouseEnter = () => {
+        if (isMobile) return;
+        if (synth.canAutoplay) playNote();
+    };
+
+    return (
+        <Interval_
+            $isPlaying={isPlaying}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+        >
+            {noteOffset}
+        </Interval_>
+    );
+};
+
+const Interval_ = styled.div<NoteProps_>`
+    cursor: pointer;
+
+    color: ${(props) =>
+        props.$isPlaying ? "var(--mrmr-color-2)" : "var(--mrmr-color-3)"};
+
+    &:hover {
+        color: var(--mrmr-color-2);
+    }
 `;
 
 const Footer: React.FC = () => {
