@@ -242,8 +242,7 @@ const FretboardDescription_ = styled.div`
 `;
 
 /**
- * A string on a fretboard, with non-zero values indicating the frets that are
- * part of the raag.
+ * A string on a fretboard, with non-zero values indicating the enabled frets.
  */
 type FretboardStringNotes = Array<number>;
 
@@ -252,7 +251,13 @@ type FretboardStringNotes = Array<number>;
  */
 type FretboardStrings = Array<FretboardStringNotes>;
 
-const raagFretboardStrings: FretboardStrings = [
+/**
+ * Marks alongside the strings on a fretboard to easily identify the fret.
+ */
+type FretboardMarks = Array<number>;
+
+// TODO: Remove me
+const raagFretboardStrings0To9: FretboardStrings = [
     Array(9).fill(0),
     Array(9).fill(0),
     Array(9).fill(0),
@@ -261,12 +266,37 @@ const raagFretboardStrings: FretboardStrings = [
     Array(9).fill(0),
 ];
 
+/**
+ * The notes on the fretboard which are part of the raag.
+ *
+ * To limit the width of the fretboard (so that it fits even on small sized
+ * mobile screens), only a relevant range of the fretboard is shown. Here, each
+ * string starts from fret 3 and continues till fret 10.
+ */
+const raagFretboardStrings: FretboardStrings = [
+    Array(7).fill(0),
+    Array(7).fill(0),
+    Array(7).fill(0),
+    Array(7).fill(0),
+    [0, 1, 1, 0, 0, 1, 0],
+    Array(7).fill(0),
+];
+
+/**
+ * Markings on the fretboard, same as what guitars usually have.
+ *
+ * This spans the same range as {@link raagFretboardStrings}, i.e. it starts
+ * from fret 3 and goes on till fret 10 (inclusive).
+ */
+const standardFretboardMarks: FretboardMarks = [1, 0, 1, 0, 1, 0, 1, 0];
+
 const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
         <Fretboard_>
             {raagFretboardStrings.map((notes, i) => (
                 <FretboardString key={i} {...{ synth, notes }} />
             ))}
+            <FretboardMarking marks={standardFretboardMarks} />
         </Fretboard_>
     );
 };
@@ -314,6 +344,39 @@ const FretNote: React.FC = () => {
 const FretBlank: React.FC = () => {
     return <Blank_ />;
 };
+
+interface FretboardMarkingProps {
+    marks: FretboardMarks;
+}
+
+/** Markings on the {@link Fretboard} */
+const FretboardMarking: React.FC<FretboardMarkingProps> = ({ marks }) => {
+    return (
+        <FretboardMarking_>
+            {marks.map((isMarked, i) => (
+                <div key={i} className={isMarked ? "marked" : ""} />
+            ))}
+        </FretboardMarking_>
+    );
+};
+
+const FretboardMarking_ = styled.div`
+    display: flex;
+    justify-content: center;
+
+    gap: 12px;
+
+    & > div {
+        flex-basis: 50px;
+        height: 12px;
+        border-radius: 3px;
+        background-color: blue;
+    }
+
+    & > div.marked {
+        background-color: red;
+    }
+`;
 
 const Footer: React.FC = () => {
     return (
