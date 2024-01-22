@@ -11,7 +11,7 @@ import {
 import { Synth } from "./synth";
 
 export const Content: React.FC = () => {
-    return <RaagContent raag={raagBhairav} />;
+    return <RaagColumn raag={raagBhairav} />;
 };
 
 interface PropsWithRaag {
@@ -23,7 +23,7 @@ interface PropsWithSynthAndRaag {
     raag: Raag;
 }
 
-export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
+export const RaagColumn: React.FC<PropsWithRaag> = ({ raag }) => {
     const synth = React.useRef(new Synth());
 
     React.useEffect(() => {
@@ -33,24 +33,33 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
     }, []);
 
     return (
-        <RaagContent_>
+        <RaagColumn_>
             <WideColumn>
-                <RaagName raag={raag} />
-                <Ladder synth={synth.current} raag={raag} />
-                <LadderDescription raag={raag} />
-                <FretboardDescription />
-                <Fretboard synth={synth.current} raag={raag} />
-                <FretboardDescription2 />
-                <Footer />
+                <RaagContent synth={synth.current} raag={raag} />
             </WideColumn>
-        </RaagContent_>
+        </RaagColumn_>
     );
 };
 
-const RaagContent_ = styled.div`
+const RaagColumn_ = styled.div`
     /* Use a large font as the base */
     font-size: 22px;
 `;
+
+const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    return (
+        <>
+            <RaagName raag={raag} />
+            <Ladder synth={synth} raag={raag} />
+            <LadderDescription raag={raag} />
+            <FretboardDescription />
+            <Fretboard synth={synth} raag={raag} />
+            <FretboardDescription2 />
+            <Intervals raag={raag} />
+            <Footer />
+        </>
+    );
+};
 
 const RaagName: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
@@ -382,6 +391,27 @@ const FretboardDescription2: React.FC = () => {
 };
 
 const FretboardDescription2_ = styled.div``;
+
+const Intervals: React.FC<PropsWithRaag> = ({ raag }) => {
+    return (
+        <Intervals_>
+            {raag.notes.map((note, i) => (
+                <div key={i}>{note}</div>
+            ))}
+        </Intervals_>
+    );
+};
+
+const Intervals_ = styled.div`
+    margin-block: 2em;
+
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+
+    font-size: 44px;
+    color: var(--mrmr-color-3);
+`;
 
 const Footer: React.FC = () => {
     return (
