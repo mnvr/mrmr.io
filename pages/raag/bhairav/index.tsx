@@ -40,6 +40,7 @@ export const RaagContent: React.FC<PropsWithRaag> = ({ raag }) => {
                 <LadderDescription raag={raag} />
                 <FretboardDescription />
                 <Fretboard synth={synth.current} raag={raag} />
+                <FretboardDescription2 />
                 <Footer />
             </WideColumn>
         </RaagContent_>
@@ -222,15 +223,13 @@ const LadderDescription_ = styled.div`
 const FretboardDescription: React.FC = () => {
     return (
         <FretboardDescription_>
-            <p>You can play it on the guitar</p>
+            <p>You can play it on a guitar</p>
         </FretboardDescription_>
     );
 };
 
 const FretboardDescription_ = styled.div`
-    margin-block-start: 3rem;
-    margin-block-end: 1rem;
-    padding-block: 1px;
+    margin-block-start: 3em;
 `;
 
 const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
@@ -245,6 +244,13 @@ const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 };
 
 const Fretboard_ = styled.div`
+    margin-block-start: 2em;
+    /* The last row of the fretboard are the markers, which have less visual
+      weight than the strings. To make the fretboard look visually in the middle
+      of the paragraphs of text that precede and succeed it, we need an
+      asymmetrical block margin - lesser at the end */
+    margin-block-end: 1.1em;
+
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -353,6 +359,29 @@ const FretboardMarking_ = styled.div`
         border-radius: 4px;
     }
 `;
+
+const FretboardDescription2: React.FC = () => {
+    return (
+        <FretboardDescription2_>
+            <p>
+                The above fretboard is zoomed onto frets 3 to 10, and shows the
+                raag notes if we begin with note A2 (first string, fret 5)
+            </p>
+            <p>
+                But we can begin with any note we want. The raag doesn't care
+                where you start, or which instrument you play it on – all it
+                cares about is the distance between notes. 0, 1, 2, 4, 5, 7, 8,
+                11.
+            </p>
+            <p>
+                U above fretboard is zoomed onto frets 3 to 10, and shows the
+                raag notes if we begin with note A2 (first string, fret 5)
+            </p>
+        </FretboardDescription2_>
+    );
+};
+
+const FretboardDescription2_ = styled.div``;
 
 const Footer: React.FC = () => {
     return (
