@@ -373,18 +373,12 @@ const FretboardDescription2: React.FC = () => {
     return (
         <FretboardDescription2_>
             <p>
-                The above fretboard is zoomed onto frets 3 to 10, and shows the
-                raag notes if we begin with note A2 (first string, fret 5)
+                This fretboard shows the raag if we begin with note A2 (the A on
+                the first string)
             </p>
             <p>
-                But we can begin with any note we want. The raag doesn't care
-                where you start, or which instrument you play it on – all it
-                cares about is the distance between notes. 0, 1, 2, 4, 5, 7, 8,
-                11.
-            </p>
-            <p>
-                U above fretboard is zoomed onto frets 3 to 10, and shows the
-                raag notes if we begin with note A2 (first string, fret 5)
+                But we can begin with any note we want, all we need to do is
+                maintain the distance between notes
             </p>
         </FretboardDescription2_>
     );
@@ -403,7 +397,7 @@ const Intervals: React.FC<PropsWithRaag> = ({ raag }) => {
 };
 
 const Intervals_ = styled.div`
-    margin-block: 2em;
+    margin-block: 1em;
 
     display: flex;
     justify-content: center;
