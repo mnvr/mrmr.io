@@ -38,8 +38,12 @@ export interface Raag {
     nameInDevanagri: string;
     /** This is the number of semitones from the root note (the Sa). */
     notes: number[];
-    fretboard1: FretboardStrings;
+    ladderRootNote: number;
     fretboardMarks: FretboardMarks;
+    fretboard1: FretboardStrings;
+    fretboard1RootNote: number;
+    fretboard2: FretboardStrings;
+    fretboard2RootNote: number;
 }
 
 /** One octave of raag Bhairav starting at A2 */
@@ -61,7 +65,8 @@ const fretboardStringsRBA2: FretboardStrings = [
     [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
 ];
 
-const raagFretboardStringsC: FretboardStrings = [
+/** Multiple octaves of raag Bhairav rooted at D2 */
+const fretboardStringsRBD2Expanded: FretboardStrings = [
     Array(8).fill(undefined),
     Array(8).fill(undefined),
     Array(8).fill(undefined),
@@ -75,7 +80,7 @@ const raagFretboardStringsC: FretboardStrings = [
         undefined,
         undefined,
     ],
-    [undefined, 5, undefined, 7, 8, undefined, undefined, undefined],
+    [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
     [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
 ];
 
@@ -83,6 +88,10 @@ export const raagBhairav: Raag = {
     name: "Bhairav",
     nameInDevanagri: "भैरव",
     notes: [0, 1, 4, 5, 7, 8, 11],
+    ladderRootNote: 69,
     fretboard1: fretboardStringsRBA2,
+    fretboard1RootNote: 69,
     fretboardMarks: standardFretboardMarks,
+    fretboard2: fretboardStringsRBD2Expanded,
+    fretboard2RootNote: 74,
 };

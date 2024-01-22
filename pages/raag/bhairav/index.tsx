@@ -6,6 +6,7 @@ import {
     raagBhairav,
     type FretboardMarks,
     type FretboardStringNotes,
+    type FretboardStrings,
     type Raag,
 } from "./data";
 import { Synth } from "./synth";
@@ -53,9 +54,11 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <Ladder synth={synth} raag={raag} />
             <LadderDescription raag={raag} />
             <FretboardDescription />
-            <Fretboard synth={synth} raag={raag} />
+            <Fretboard1 synth={synth} raag={raag} />
             <FretboardDescription2 />
             <Intervals synth={synth} raag={raag} />
+            <FretboardDescription2 />
+            <Fretboard2 synth={synth} raag={raag} />
             <Footer />
         </>
     );
@@ -93,12 +96,18 @@ const T1 = styled.span`
 `;
 
 const Ladder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    const rootNote = raag.ladderRootNote;
     const seq = () => noteSequence(raag.notes).reverse();
     return (
         <Ladder_>
             {seq().map(([i, isNoteOnRaag]) =>
                 isNoteOnRaag ? (
-                    <LadderNote key={i} synth={synth} noteOffset={i} />
+                    <LadderNote
+                        key={i}
+                        synth={synth}
+                        rootNote={rootNote}
+                        noteOffset={i}
+                    />
                 ) : (
                     <LadderBlank key={i} noteOffset={i} />
                 ),
@@ -140,17 +149,19 @@ const noteSequence = (
 
 interface NoteProps {
     synth: Synth;
+    /** The root MIDI note */
+    rootNote: number;
     /** How many semitones away from the root is this note */
     noteOffset: number;
 }
 
-const LadderNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
     // `true` if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
     const playNote = () => {
         setIsPlaying(true);
-        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
+        synth.play({ note: rootNote + noteOffset }, () => setIsPlaying(false));
     };
 
     const handleClick = () => {
@@ -241,11 +252,31 @@ const FretboardDescription_ = styled.div`
     margin-block-start: 3em;
 `;
 
-const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+const Fretboard1: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    return (
+        <Fretboard
+            fretboard={raag.fretboard1}
+            rootNote={raag.fretboard1RootNote}
+            {...{ synth, raag }}
+        />
+    );
+};
+
+type FretboardProps = PropsWithSynthAndRaag & {
+    fretboard: FretboardStrings;
+    rootNote: number;
+};
+
+const Fretboard: React.FC<FretboardProps> = ({
+    synth,
+    raag,
+    fretboard,
+    rootNote,
+}) => {
     return (
         <Fretboard_>
             {raag.fretboard1.map((notes, i) => (
-                <FretboardString key={i} {...{ synth, notes }} />
+                <FretboardString key={i} {...{ synth, rootNote, notes }} />
             ))}
             <FretboardMarking marks={raag.fretboardMarks} />
         </Fretboard_>
@@ -267,16 +298,21 @@ const Fretboard_ = styled.div`
 
 interface FretboardStringProps {
     synth: Synth;
+    rootNote: number;
     notes: FretboardStringNotes;
 }
 
 /** A string on the {@link Fretboard} */
-const FretboardString: React.FC<FretboardStringProps> = ({ synth, notes }) => {
+const FretboardString: React.FC<FretboardStringProps> = ({
+    synth,
+    rootNote,
+    notes,
+}) => {
     return (
         <FretboardString_>
             {notes.map((noteOffset, i) =>
                 noteOffset !== undefined ? (
-                    <FretNote key={i} {...{ synth, noteOffset }} />
+                    <FretNote key={i} {...{ synth, rootNote, noteOffset }} />
                 ) : (
                     <FretBlank key={i} />
                 ),
@@ -299,7 +335,7 @@ const FretboardString_ = styled.div`
 `;
 
 /** A note on a string ({@link FretboardString}) of the {@link Fretboard} */
-const FretNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+const FretNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
     // `true` if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -308,7 +344,7 @@ const FretNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
         // Even though this is A2 (MIDI 45), that frequency is too low for the
         // synth we're using, so we use the A that's two octaves up. This has
         // the additional advantage that our fretboard matches the ladder.
-        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
+        synth.play({ note: rootNote + noteOffset }, () => setIsPlaying(false));
     };
 
     const handleClick = () => {
@@ -371,7 +407,7 @@ const FretboardMarking_ = styled.div`
 
 const FretboardDescription2: React.FC = () => {
     return (
-        <FretboardDescription2_>
+        <div>
             <p>
                 This fretboard shows the raag if we begin with note A2 (the A on
                 the first string)
@@ -380,17 +416,16 @@ const FretboardDescription2: React.FC = () => {
                 But we can begin with any note we want, all we need to do is
                 maintain the distance between notes
             </p>
-        </FretboardDescription2_>
+        </div>
     );
 };
 
-const FretboardDescription2_ = styled.div``;
-
 const Intervals: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    const rootNote = raag.ladderRootNote;
     return (
         <Intervals_>
             {raag.notes.map((noteOffset, i) => (
-                <Interval key={i} {...{ synth, noteOffset }} />
+                <Interval key={i} {...{ synth, rootNote, noteOffset }} />
             ))}
         </Intervals_>
     );
@@ -446,6 +481,31 @@ const Interval_ = styled.div<NoteProps_>`
         color: var(--mrmr-color-2);
     }
 `;
+
+const FretboardDescription3: React.FC = () => {
+    return (
+        <div>
+            <p>
+                This fretboard shows the raag if we begin with note A2 (the A on
+                the first string)
+            </p>
+            <p>
+                But we can begin with any note we want, all we need to do is
+                maintain the distance between notes
+            </p>
+        </div>
+    );
+};
+
+const Fretboard2: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    return (
+        <Fretboard
+            fretboard={raag.fretboard2}
+            rootNote={raag.fretboard2RootNote}
+            {...{ synth, raag }}
+        />
+    );
+};
 
 const Footer: React.FC = () => {
     return (
