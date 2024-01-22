@@ -71,10 +71,8 @@ const fretboardStringsRBD2Expanded: FretboardStrings = [
     [undefined, undefined, undefined, undefined, 16, 17, undefined, undefined],
     [undefined, undefined, undefined, 11, 12, 13, undefined, undefined],
     [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
-    // [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
-    // Array(8).fill(undefined),
     [undefined, -1, 0, 1, undefined, undefined, 4, undefined],
-    [undefined, -4, -3, -2, undefined, undefined, undefined, undefined],
+    [undefined, -6, -5, -4, undefined, undefined, undefined, undefined],
 ];
 
 export const raagBhairav: Raag = {
