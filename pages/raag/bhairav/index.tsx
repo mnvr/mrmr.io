@@ -230,20 +230,43 @@ const LadderDescription_ = styled.div`
 const FretboardDescription: React.FC = () => {
     return (
         <FretboardDescription_>
-            <p>You can play it on the guitar, like this:</p>
+            <p>You can play it on the guitar</p>
         </FretboardDescription_>
     );
 };
 
 const FretboardDescription_ = styled.div`
     margin-block-start: 3rem;
+    margin-block-end: 1rem;
     padding-block: 1px;
 `;
 
-const Fretboard: React.FC<PropsWithSynthAndRaag> = (props) => {
+/**
+ * A string on a fretboard, with non-zero values indicating the frets that are
+ * part of the raag.
+ */
+type FretboardStringNotes = Array<number>;
+
+/**
+ * The six strings that form a guitar fretboard.
+ */
+type FretboardStrings = Array<FretboardStringNotes>;
+
+const raagFretboardStrings: FretboardStrings = [
+    Array(9).fill(0),
+    Array(9).fill(0),
+    Array(9).fill(0),
+    Array(9).fill(0),
+    [0, 0, 0, 0, 1, 1, 0, 0, 1],
+    Array(9).fill(0),
+];
+
+const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
         <Fretboard_>
-            <FBString {...props} />
+            {raagFretboardStrings.map((string, i) => (
+                <FBString key={i} {...{ synth, raag, string }} />
+            ))}
         </Fretboard_>
     );
 };
@@ -251,7 +274,12 @@ const Fretboard: React.FC<PropsWithSynthAndRaag> = (props) => {
 const Fretboard_ = styled.div`
     display: flex;
     flex-direction: column;
+    gap: 12px;
 `;
+
+type FretboardStringProps = PropsWithSynthAndRaag & {
+    string: Array<number>;
+};
 
 /** A string on the {@link Fretboard} */
 const FBString: React.FC<PropsWithSynthAndRaag> = (props) => {
@@ -270,6 +298,7 @@ const FBString: React.FC<PropsWithSynthAndRaag> = (props) => {
 
 const FBString_ = styled.div`
     display: flex;
+    justify-content: center;
 
     gap: 12px;
 
@@ -285,20 +314,14 @@ const FretNote: React.FC = () => {
     return <Note_ $isPlaying={false}></Note_>;
 };
 
-const FretNote_ = styled.div`
-    width: 30px;
-    height: 5px;
-    background-color: red;
-`;
-
 const Footer: React.FC = () => {
     return (
-        <FretboardDescription_>
-            <p> </p>
-        </FretboardDescription_>
+        <Footer_>
+            <p>&nbsp;</p>
+        </Footer_>
     );
 };
 
 const Footer_ = styled.div`
-    margin-block-start: 3rem;
+    margin-block-start: 8rem;
 `;
