@@ -57,6 +57,13 @@
  * There are other good explanations too available online. e.g. this one from
  * UNSW: [Note names, MIDI numbers and
  * frequencies](https://newt.phys.unsw.edu.au/jw/notes.html).
+ *
+ * Some other, maybe useful, facts follow.
+ *
+ * Octaves change on C, not on A. i.e. the standard MIDI notes run like A0, B0,
+ * C1, D1, ..., A1, B1, C2, ... etc.
+ *
+ * The standard guitar tuning is E2 A2 D3 G3 B3 E4.
  */
 export type MIDINote = number;
 
