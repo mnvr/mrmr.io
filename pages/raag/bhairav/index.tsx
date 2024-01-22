@@ -2,13 +2,13 @@ import { WideColumn } from "components/Column";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
 import styled from "styled-components";
-import {
-    raagBhairav,
-    type FretboardMarks,
-    type FretboardStringNotes,
-    type FretboardStrings,
-    type Raag,
+import type {
+    FretboardMarks,
+    FretboardStringNotes,
+    FretboardStrings,
+    Raag,
 } from "./data";
+import { raagBhairav } from "./data";
 import { Synth } from "./synth";
 
 export const Content: React.FC = () => {
@@ -414,8 +414,8 @@ const IntervalDescription: React.FC = () => {
     return (
         <div>
             <p>
-                This fretboard shows the raag if we begin with note A2 (the A on
-                the first string)
+                The fretboard shows the raag if we begin with the A note
+                (highlighted) on the first string
             </p>
             <p>
                 But we can begin with any note we want, all we need to do is
@@ -491,13 +491,13 @@ const FretboardDescription2: React.FC = () => {
     return (
         <div>
             <p>
-                So start at any note. Count as you proceed. If the number you
-                counted is on this list, then that note belongs to the raag.
+                So pick any note. Count as you proceed. If the number you
+                counted is on this list, then that note belongs to the raag
             </p>
             <p>
-                For example, this fretboard show the raag if we begin with note
-                D2 (the D on the second string) – it also includes notes that
-                are in the lower and upper octaves
+                For example, here's the raag if we use the D on the second
+                string as our root note. Notice how we can also count backwards,
+                and how we can keep counting even after 11 - the raag repeats
             </p>
         </div>
     );
