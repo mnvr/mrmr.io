@@ -191,13 +191,18 @@ const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
 
 interface NoteProps_ {
     $isPlaying: boolean;
+    $isHighlighted?: boolean;
 }
 
 const Note_ = styled.div<NoteProps_>`
     cursor: pointer;
 
     background-color: ${(props) =>
-        props.$isPlaying ? "var(--mrmr-color-2)" : "var(--mrmr-color-3)"};
+        props.$isPlaying
+            ? "var(--mrmr-color-2)"
+            : props.$isHighlighted === true
+              ? "khaki"
+              : "var(--mrmr-color-3)"};
 
     &:hover {
         background-color: var(--mrmr-color-2);
@@ -341,9 +346,6 @@ const FretNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
 
     const playNote = () => {
         setIsPlaying(true);
-        // Even though this is A2 (MIDI 45), that frequency is too low for the
-        // synth we're using, so we use the A that's two octaves up. This has
-        // the additional advantage that our fretboard matches the ladder.
         synth.play({ note: rootNote + noteOffset }, () => setIsPlaying(false));
     };
 
@@ -357,9 +359,12 @@ const FretNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
         if (synth.canAutoplay) playNote();
     };
 
+    const isRootNote = noteOffset === 0;
+
     return (
         <Note_
             $isPlaying={isPlaying}
+            $isHighlighted={isRootNote}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
         />

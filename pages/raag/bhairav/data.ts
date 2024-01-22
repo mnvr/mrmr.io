@@ -81,6 +81,9 @@ export const raagBhairav: Raag = {
     notes: [0, 1, 4, 5, 7, 8, 11],
     ladderRootNote: 69,
     fretboard1: fretboardStringsRBA2,
+    // Even though the scale starts at A2 (MIDI 45), that frequency is too low
+    // for the synth we're using, so we use the A that's two octaves up. This
+    // has the additional advantage that our fretboard matches the ladder.
     fretboard1RootNote: 69,
     fretboardMarks: standardFretboardMarks,
     fretboard2: fretboardStringsRBD2Expanded,
