@@ -534,18 +534,18 @@ const Piano: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const cp = { synth, rootNote: 60 };
     return (
         <Piano_>
-            <PianoNote className="on" {...cp} noteOffset={0} />
+            <PianoNote className="on major" {...cp} noteOffset={0} />
             <PianoNote className="on minor" {...cp} noteOffset={1} />
             <div className="off" />
             <div className="off minor" />
-            <PianoNote className="on" {...cp} noteOffset={4} />
-            <PianoNote className="on adj" {...cp} noteOffset={5} />
+            <PianoNote className="on major" {...cp} noteOffset={4} />
+            <PianoNote className="on major adj" {...cp} noteOffset={5} />
             <div className="off minor" />
-            <PianoNote className="on" {...cp} noteOffset={7} />
+            <PianoNote className="on major" {...cp} noteOffset={7} />
             <PianoNote className="on minor" {...cp} noteOffset={8} />
             <div className="off" />
             <div className="off minor" />
-            <PianoNote className="on" {...cp} noteOffset={11} />
+            <PianoNote className="on major" {...cp} noteOffset={11} />
         </Piano_>
     );
 };
@@ -567,36 +567,42 @@ const Piano_ = styled.div`
         margin-left: -16px;
     }
 
-    div.adj {
+    & > div.adj {
         margin-left: 0px;
     }
 
-    div.off {
+    & > div.off {
         background-color: oklch(84.24% 0.006 43.32 / 0.1);
     }
 
-    div.on {
-        background-color: oklch(84.24% 0.006 43.32 / 0.6);
+    & > div.on {
+        cursor: pointer;
     }
 
-    div.minor {
+    & > div.major {
+        background-color: var(--mrmr-color-3);
+        opacity: 0.6;
+    }
+
+    & > div.minor {
         z-index: 1;
         height: 120px;
-    }
 
-    div.minor.on {
-        background-color: oklch(27% 0 0);
-    }
-
-    div.minor.off {
         background-color: var(--mrmr-background-color-1);
     }
 
-    div.on:hover {
-        background-color: oklch(84.24% 0.006 43.32);
+    & > div.minor.on {
+        background-color: oklch(27% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: oklch(22% 0 0);
+        }
     }
 
-    div.minor.on:hover {
+    & > div.major.on:hover {
+        opacity: 1;
+    }
+
+    & > div.minor.on:hover {
         background-color: black;
     }
 `;
@@ -605,13 +611,9 @@ const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
     props,
 ) => {
     const { synth, rootNote, noteOffset, ...rest } = props;
-    const [isPlaying, setIsPlaying] = React.useState(false);
 
     const playNote = () => {
-        setIsPlaying(true);
-        synth.play({ note: rootNote + noteOffset, duration: 3 }, () =>
-            setIsPlaying(false),
-        );
+        synth.play({ note: rootNote + noteOffset, env: { release: 3 } });
     };
 
     const handleClick = () => {
@@ -624,12 +626,7 @@ const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
     };
 
     return (
-        <Note_
-            $isPlaying={isPlaying}
-            onClick={handleClick}
-            onMouseEnter={handleMouseEnter}
-            {...rest}
-        />
+        <div onClick={handleClick} onMouseEnter={handleMouseEnter} {...rest} />
     );
 };
 
