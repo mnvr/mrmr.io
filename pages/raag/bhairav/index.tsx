@@ -59,6 +59,8 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <Intervals synth={synth} raag={raag} />
             <FretboardDescription2 />
             <Fretboard2 synth={synth} raag={raag} />
+            <PianoDescription />
+            <Piano />
             <Footer />
         </>
     );
@@ -201,7 +203,7 @@ const Note_ = styled.div<NoteProps_>`
         props.$isPlaying
             ? "var(--mrmr-color-2)"
             : props.$isHighlighted === true
-              ? "khaki"
+              ? "darkkhaki"
               : "var(--mrmr-color-3)"};
 
     &:hover {
@@ -513,6 +515,80 @@ const Fretboard2: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     );
 };
 
+const PianoDescription: React.FC = () => {
+    return (
+        <PianoDescription_>
+            <p>You can play it on a piano</p>
+        </PianoDescription_>
+    );
+};
+
+const PianoDescription_ = styled.div`
+    margin-block-start: 4em;
+`;
+
+const Piano: React.FC = () => {
+    return (
+        <Piano_>
+            <div className="on" />
+            <div className="on minor" />
+            <div className="off" />
+            <div className="off minor" />
+            <div className="on" />
+            <div className="on adj" />
+            <div className="off minor" />
+            <div className="on" />
+            <div className="on minor" />
+            <div className="off" />
+            <div className="off minor" />
+            <div className="on" />
+        </Piano_>
+    );
+};
+
+const Piano_ = styled.div`
+    margin-block-start: 2em;
+
+    margin-left: 20px;
+
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+
+    & > div {
+        border: 1px solid transparent;
+        border-radius: 3px;
+
+        width: 30px;
+        height: 160px;
+        margin-left: -15px;
+
+    }
+
+    div.adj {
+        margin-left: 0px;
+    }
+
+    div.on {
+        background-color: oklch(84.24% 0.006 43.32 / 0.5);
+    }
+
+    div.minor {
+        background-color: var(--mrmr-background-color-1);
+
+        height: 120px;
+    }
+
+    div.minor.on {
+        background-color: black;
+    }
+
+    div.minor.off {
+        background-color: black;
+        z-index: 1;
+        background-color: var(--mrmr-background-color-1);
+    }
+`;
 const Footer: React.FC = () => {
     return (
         <Footer_>
