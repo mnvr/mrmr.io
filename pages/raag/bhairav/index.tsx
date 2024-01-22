@@ -355,7 +355,16 @@ const FretNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
         setIsPlaying(true);
         // Even though this is D3 (MIDI 50), that frequency is too low for the
         // synth we're using, so produce a sound one octave up.
-        synth.play({ note: 62 + noteOffset }, () => setIsPlaying(false));
+        synth.play(
+            {
+                note: 62 + noteOffset,
+                waveform: "triangle",
+                duration: 0.05,
+                level: 0.5,
+                env: { attack: 0.015, decay: 0.04, release: 0.4 },
+            },
+            () => setIsPlaying(false),
+        );
     };
 
     const handleClick = () => {
