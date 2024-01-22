@@ -271,7 +271,7 @@ const raagFretboardStrings0To9: FretboardStrings = [
  *
  * To limit the width of the fretboard (so that it fits even on small sized
  * mobile screens), only a relevant range of the fretboard is shown. Here, each
- * string starts from fret 3 and continues till fret 10.
+ * string starts from fret 4 and continues till fret 10.
  */
 const raagFretboardStrings: FretboardStrings = [
     Array(7).fill(0),
@@ -286,9 +286,9 @@ const raagFretboardStrings: FretboardStrings = [
  * Markings on the fretboard, same as what guitars usually have.
  *
  * This spans the same range as {@link raagFretboardStrings}, i.e. it starts
- * from fret 3 and goes on till fret 10 (inclusive).
+ * from fret 4 and goes on till fret 10 (inclusive).
  */
-const standardFretboardMarks: FretboardMarks = [1, 0, 1, 0, 1, 0, 1, 0];
+const standardFretboardMarks: FretboardMarks = [0, 1, 0, 1, 0, 1, 0];
 
 const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
@@ -354,7 +354,7 @@ const FretboardMarking: React.FC<FretboardMarkingProps> = ({ marks }) => {
     return (
         <FretboardMarking_>
             {marks.map((isMarked, i) => (
-                <div key={i} className={isMarked ? "marked" : ""} />
+                <div key={i}>{isMarked !== 0 && <Blank_ />}</div>
             ))}
         </FretboardMarking_>
     );
@@ -369,12 +369,14 @@ const FretboardMarking_ = styled.div`
     & > div {
         flex-basis: 50px;
         height: 12px;
-        border-radius: 3px;
-        background-color: blue;
+        display: flex;
+        justify-content: center;
     }
 
-    & > div.marked {
-        background-color: red;
+    & > div > div {
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
     }
 `;
 
