@@ -264,8 +264,8 @@ const raagFretboardStrings: FretboardStrings = [
 const Fretboard: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     return (
         <Fretboard_>
-            {raagFretboardStrings.map((string, i) => (
-                <FBString key={i} {...{ synth, raag, string }} />
+            {raagFretboardStrings.map((notes, i) => (
+                <FretboardString key={i} {...{ synth, notes }} />
             ))}
         </Fretboard_>
     );
@@ -277,26 +277,23 @@ const Fretboard_ = styled.div`
     gap: 12px;
 `;
 
-type FretboardStringProps = PropsWithSynthAndRaag & {
-    string: Array<number>;
-};
+interface FretboardStringProps {
+    synth: Synth;
+    notes: FretboardStringNotes;
+}
 
 /** A string on the {@link Fretboard} */
-const FBString: React.FC<PropsWithSynthAndRaag> = (props) => {
-    const notes = () =>
-        Array(9)
-            .fill(0)
-            .map((_, i) => [i, false]);
+const FretboardString: React.FC<FretboardStringProps> = ({ synth, notes }) => {
     return (
-        <FBString_>
-            {notes().map(([i, isOn]) => {
-                return <FretNote />;
-            })}
-        </FBString_>
+        <FretboardString_>
+            {notes.map((isOn, i) =>
+                isOn ? <FretNote key={i} /> : <FretBlank key={i} />,
+            )}
+        </FretboardString_>
     );
 };
 
-const FBString_ = styled.div`
+const FretboardString_ = styled.div`
     display: flex;
     justify-content: center;
 
@@ -309,9 +306,13 @@ const FBString_ = styled.div`
     }
 `;
 
-/** A note on a string ({@link FBString}) of the {@link Fretboard} */
+/** A note on a string ({@link FretboardString}) of the {@link Fretboard} */
 const FretNote: React.FC = () => {
     return <Note_ $isPlaying={false}></Note_>;
+};
+
+const FretBlank: React.FC = () => {
+    return <Blank_ />;
 };
 
 const Footer: React.FC = () => {
