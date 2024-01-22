@@ -271,6 +271,25 @@ type FretboardMarks = Array<boolean>;
 const raagFretboardStrings: FretboardStrings = [
     Array(8).fill(undefined),
     Array(8).fill(undefined),
+    Array(8).fill(undefined),
+    [
+        undefined,
+        undefined,
+        undefined,
+        11,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+    ],
+    [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
+    [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
+];
+
+const raagFretboardStringsC: FretboardStrings = [
+    Array(8).fill(undefined),
+    Array(8).fill(undefined),
+    Array(8).fill(undefined),
     [
         undefined,
         undefined,
@@ -283,9 +302,7 @@ const raagFretboardStrings: FretboardStrings = [
     ],
     [undefined, 5, undefined, 7, 8, undefined, undefined, undefined],
     [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
-    Array(8).fill(undefined),
 ];
-
 /**
  * Markings on the fretboard, same as what guitars usually have.
  *
@@ -353,18 +370,10 @@ const FretNote: React.FC<NoteProps> = ({ synth, noteOffset }) => {
 
     const playNote = () => {
         setIsPlaying(true);
-        // Even though this is D3 (MIDI 50), that frequency is too low for the
-        // synth we're using, so produce a sound one octave up.
-        synth.play(
-            {
-                note: 62 + noteOffset,
-                waveform: "triangle",
-                duration: 0.05,
-                level: 0.5,
-                env: { attack: 0.015, decay: 0.04, release: 0.4 },
-            },
-            () => setIsPlaying(false),
-        );
+        // Even though this is A2 (MIDI 45), that frequency is too low for the
+        // synth we're using, so we use the A that's two octaves up. This has
+        // the additional advantage that our fretboard matches the ladder.
+        synth.play({ note: 69 + noteOffset }, () => setIsPlaying(false));
     };
 
     const handleClick = () => {
