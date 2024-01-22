@@ -60,7 +60,7 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             <FretboardDescription2 />
             <Fretboard2 synth={synth} raag={raag} />
             <PianoDescription />
-            <Piano />
+            <Piano synth={synth} raag={raag} />
             <Footer />
         </>
     );
@@ -527,21 +527,25 @@ const PianoDescription_ = styled.div`
     margin-block-start: 4em;
 `;
 
-const Piano: React.FC = () => {
+const Piano: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
+    // The list of notes is hardcoded, we don't pick it from the raag.
+    //
+    // The intervals are those for raag Bhairav, rooted at C.
+    const cp = { synth, rootNote: 60 };
     return (
         <Piano_>
-            <div className="on" />
-            <div className="on minor" />
+            <PianoNote className="on" {...cp} noteOffset={0} />
+            <PianoNote className="on minor" {...cp} noteOffset={1} />
             <div className="off" />
             <div className="off minor" />
-            <div className="on" />
-            <div className="on adj" />
+            <PianoNote className="on" {...cp} noteOffset={4} />
+            <PianoNote className="on adj" {...cp} noteOffset={5} />
             <div className="off minor" />
-            <div className="on" />
-            <div className="on minor" />
+            <PianoNote className="on" {...cp} noteOffset={7} />
+            <PianoNote className="on minor" {...cp} noteOffset={8} />
             <div className="off" />
             <div className="off minor" />
-            <div className="on" />
+            <PianoNote className="on" {...cp} noteOffset={11} />
         </Piano_>
     );
 };
@@ -576,8 +580,6 @@ const Piano_ = styled.div`
     }
 
     div.minor {
-        background-color: oklch(84.24% 0.006 43.32 / 0.3);
-
         z-index: 1;
         height: 120px;
     }
@@ -598,6 +600,36 @@ const Piano_ = styled.div`
         background-color: black;
     }
 `;
+
+const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
+    props,
+) => {
+    const { synth, rootNote, noteOffset, ...rest } = props;
+    const [isPlaying, setIsPlaying] = React.useState(false);
+
+    const playNote = () => {
+        setIsPlaying(true);
+        synth.play({ note: rootNote + noteOffset }, () => setIsPlaying(false));
+    };
+
+    const handleClick = () => {
+        playNote();
+    };
+
+    const handleMouseEnter = () => {
+        if (isMobile) return;
+        if (synth.canAutoplay) playNote();
+    };
+
+    return (
+        <Note_
+            $isPlaying={isPlaying}
+            onClick={handleClick}
+            onMouseEnter={handleMouseEnter}
+            {...rest}
+        />
+    );
+};
 
 const Footer: React.FC = () => {
     return (
