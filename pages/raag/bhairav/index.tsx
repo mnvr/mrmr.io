@@ -10,9 +10,9 @@ import type {
     FretboardStringNotes,
     FretboardStrings,
     Raag,
-} from "./data";
-import { raagBhairav } from "./data";
-import { Synth } from "./synth";
+} from "../raag";
+import { raagBhairav } from "../raag";
+import { Synth } from "../synth";
 
 export const Content: React.FC = () => {
     return <RaagColumn raag={raagBhairav} />;
