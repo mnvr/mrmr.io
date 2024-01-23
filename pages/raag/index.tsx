@@ -86,33 +86,9 @@ const RaagList_ = styled.ul`
     }
 `;
 
-const RaagBhairav: React.FC = () => {
-    return (
-        <Link to={"bhairav"}>
-            <RaagBhairav_>
-                bhairav
-                <Notes />
-            </RaagBhairav_>
-        </Link>
-    );
-};
-
-const RaagBhairav_ = styled.div`
-    /* Taken from the page colors */
-    background-color: oklch(49.35% 0.025 53.84);
-    color: oklch(84.24% 0.006 43.32);
-    --mrmr-raag-card-muted-color: oklch(84.24% 0.006 43.32 / 0.3);
-    --mrmr-raag-card-highlighted-color: oklch(98% 0 0);
-
-    @media (prefers-color-scheme: dark) {
-        background-color: oklch(25% 0.05 83.84);
-        color: oklch(75.15% 0.013 86.85 / 0.6);
-        --mrmr-raag-card-muted-color: oklch(75.15% 0.013 86.85 / 0.5);
-        --mrmr-raag-card-highlighted-color: oklch(94% 0 0);
-    }
-
-    padding-inline: 1.5em;
-    padding-block: 1.25em;
+const RaagCard = styled.div`
+    padding-inline: 1.25em;
+    padding-block: 0.75em;
     border-radius: 3px;
 
     font-variant: small-caps;
@@ -132,8 +108,12 @@ const RaagBhairav_ = styled.div`
     }
 `;
 
-const Notes: React.FC = () => {
-    const notes = [0, 1, 4, 5, 7, 8, 11];
+interface NotesProps {
+    /** notes on the raag, expressed as offsets from the root */
+    notes: Array<number>;
+}
+
+const Notes: React.FC<NotesProps> = ({ notes }) => {
     const seq = () => Array(12).fill(0);
     return (
         <Notes_>
@@ -159,5 +139,33 @@ const Notes_ = styled.div`
         width: 12px;
         height: 42px;
         border-radius: 3px;
+    }
+`;
+
+const RaagBhairav: React.FC = () => {
+    const notes = [0, 1, 4, 5, 7, 8, 11];
+
+    return (
+        <Link to={"bhairav"}>
+            <RaagBhairav_>
+                bhairav
+                <Notes notes={notes} />
+            </RaagBhairav_>
+        </Link>
+    );
+};
+
+const RaagBhairav_ = styled(RaagCard)`
+    /* Taken from the page colors */
+    background-color: oklch(49.35% 0.025 53.84);
+    color: oklch(84.24% 0.006 43.32);
+    --mrmr-raag-card-muted-color: oklch(84.24% 0.006 43.32 / 0.3);
+    --mrmr-raag-card-highlighted-color: oklch(98% 0 0);
+
+    @media (prefers-color-scheme: dark) {
+        background-color: oklch(25% 0.05 83.84);
+        color: oklch(75.15% 0.013 86.85 / 0.6);
+        --mrmr-raag-card-muted-color: oklch(75.15% 0.013 86.85 / 0.5);
+        --mrmr-raag-card-highlighted-color: oklch(94% 0 0);
     }
 `;
