@@ -1,5 +1,19 @@
+import { LinkStyleUnderlined } from "components/LinkStyles";
+import * as C from "components/text/components";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
+
+export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <C.Container>
+            <C.Title />
+            {children}
+            <C.Signoff />
+            <Footer />
+        </C.Container>
+    );
+};
 
 export const Notes = styled.div`
     margin-left: 1em;
@@ -128,5 +142,29 @@ const Row = styled.div`
 
     &.nums {
         font-size: 0.9em;
+    }
+`;
+
+const Footer: React.FC = () => {
+    return (
+        <LinkStyleUnderlined>
+            <Footer_>
+                <p>
+                    <Link to="/raag">All raags</Link>
+                </p>
+                <p>
+                    <Link to="/">Home</Link>
+                </p>
+            </Footer_>
+        </LinkStyleUnderlined>
+    );
+};
+
+const Footer_ = styled.div`
+    margin-block: 3rem;
+
+    p {
+        font-size: 0.9rem;
+        line-height: 2.2em;
     }
 `;
