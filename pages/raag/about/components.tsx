@@ -17,8 +17,16 @@ const Container_ = styled.div`
     font-size: 20px;
 
     p {
-        line-height: 1.5em;
+        line-height: 1.4em;
     }
+
+    blockquote {
+        color: var(--mrmr-color-3);
+        border-left: 1px solid currentColor;
+        margin-inline: 0em;
+        padding-inline: 1.3em;
+    }
+
 `;
 
 const Title: React.FC = () => {
@@ -40,9 +48,11 @@ const Title_ = styled.div`
 
     text-align: center;
 
+    margin-block: 2.2em;
+
     h1 {
         font-size: 2.25em;
-        margin-block-end: 0.1em;
+        margin-block-end: 0.4em;
     }
 
     big {
