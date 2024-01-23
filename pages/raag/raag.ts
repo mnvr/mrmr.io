@@ -89,3 +89,5 @@ export const raagBhairav: Raag = {
     fretboard2RootNote: 74,
     pianoRootNote: 60,
 };
+
+export const raagYaman: Raag = raagBhairav;

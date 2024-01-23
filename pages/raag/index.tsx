@@ -3,6 +3,7 @@ import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
+import { raagBhairav } from "./raag";
 
 export const Contents: React.FC = ({}) => {
     return (
@@ -165,13 +166,11 @@ const Footer_ = styled(LinkStyleBoldHover)`
 `;
 
 const RaagBhairav: React.FC = () => {
-    const notes = [0, 1, 4, 5, 7, 8, 11];
-
     return (
         <Link to={"bhairav"}>
             <RaagBhairav_>
                 bhairav
-                <Notes notes={notes} />
+                <Notes notes={raagBhairav.notes} />
             </RaagBhairav_>
         </Link>
     );
