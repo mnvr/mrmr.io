@@ -1,32 +1,54 @@
 import * as React from "react";
 import styled from "styled-components";
 
-export const Sargam: React.FC = () => {
-    return <Notes>Sa Re Ga Ma Pa Dha Ni</Notes>;
-};
-
 export const Notes = styled.div`
     margin-left: 1em;
     font-style: italic;
 `;
 
-export const Sargam12: React.FC = () => {
-    return <Notes>Sa Re Ga Ma Pa Dha Ni</Notes>;
+interface HighlightedNotesProps {
+    /** The indicies of the notes to highlight */
+    highlighted: Array<number>;
+}
+
+// export const HighlightedNotes =
+
+const sargam = "S r R g G m M P d D n N";
+const westernNotes = "A A# B C C# D D# E F F# G G#";
+const intervals = Array(12)
+    .fill(0)
+    .map((_, i) => `${i}`);
+
+export const Mapping1: React.FC = () => {
+    return <Mapping rows={[sargam, westernNotes]} />;
 };
 
-export const Mapping: React.FC = () => {
-    const iNotes = "S r R g G m M P d D n N".split(" ");
-    const wNotes = "A A# B C C# D D# E F F# G G#".split(" ");
+export const Mapping2: React.FC = () => {
+    return <Mapping rows={[sargam, westernNotes, intervals]} />;
+};
+
+interface MappingProps {
+    /**
+     * Rows of notes
+     *
+     * Each row can be specified as a string, in which case it is split by words
+     * to obtain the notes, or it can be directly provided as an array of notes.
+     */
+    rows: Array<string | Array<string>>;
+    /** The indicies of the notes in each row to highlight */
+    highlighted?: Array<number>;
+}
+
+const Mapping: React.FC<MappingProps> = ({ rows, highlighted }) => {
+    const nrows = rows.map((row) =>
+        Array.isArray(row) ? row : row.split(" "),
+    );
+
     return (
-        <Notes>
-            <Mapping_>
-                <Row>
-                    {iNotes.map((note, i) => (
-                        <div key={i}>{note}</div>
-                    ))}
-                </Row>
-                <Row>
-                    {wNotes.map((note, i) =>
+        <Mapping_>
+            {nrows.map((row, i) => (
+                <Row key={i}>
+                    {row.map((note, i) =>
                         note[1] === "#" ? (
                             <div key={i}>
                                 <span>{note[0]}</span>
@@ -39,33 +61,32 @@ export const Mapping: React.FC = () => {
                         ),
                     )}
                 </Row>
-            </Mapping_>
-        </Notes>
+            ))}
+        </Mapping_>
     );
 };
 
 const Mapping_ = styled.div`
+    @media (min-width: 400px) {
+        margin-inline: 1em;
+    }
+
+    font-style: italic;
+
     display: flex;
     flex-direction: column;
-    /* border: 1px solid tan; */
-
-    /* font-family: monospace; */
 `;
 
 const Row = styled.div`
     display: flex;
     max-width: 400px;
     justify-content: space-between;
-    /* gap: 1px; */
-    /* background-color: tan; */
 
     & > div {
         flex-grow: 1;
         flex-basis: 20px;
-        background-color: var(--mrmr-background-color-1);
 
         display: flex;
-        border: 1px solid tomato;
 
         sup {
             color: var(--mrmr-color-3);
