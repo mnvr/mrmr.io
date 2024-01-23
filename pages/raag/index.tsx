@@ -80,7 +80,7 @@ const RaagBhairav: React.FC = () => {
     return (
         <RaagBhairav_>
             <RaagName>
-                <div>raag</div> <div className="highlighted">bhairav</div>
+                <div>bhairav</div>
             </RaagName>
             <Notes />
         </RaagBhairav_>
@@ -90,7 +90,9 @@ const RaagBhairav: React.FC = () => {
 const RaagName = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 0.4em;
+    min-height: 50px;
 `;
 
 const RaagBhairav_ = styled.div`
@@ -108,14 +110,16 @@ const RaagBhairav_ = styled.div`
 
     padding-inline: 1.5em;
     padding-block: 1.25em;
-    font-style: italic;
-    font-family: serif;
+    /* font-style: italic; */
+    /* font-family: monospace; */
+    font-variant: small-caps;
 
     display: flex;
     justify-content: space-between;
 
     .highlighted {
         color: var(--mrmr-note-highlighted-color);
+        background-color: var(--mrmr-note-highlighted-color);
     }
 `;
 
@@ -126,14 +130,17 @@ const Notes: React.FC = () => {
             {Array(12)
                 .fill(0)
                 .map((_, i) => (
-                    <div key={i}>{i}</div>
+                    <div
+                        key={i}
+                        className={notes.includes(i) ? "highlighted" : ""}
+                    />
                 ))}
         </Notes_>
     );
 };
 
 const Notes_ = styled.div`
-    border: 1px solid tomato;
+    /* border: 1px solid tomato; */
     display: flex;
     gap: 12px;
 
@@ -143,5 +150,4 @@ const Notes_ = styled.div`
         border-radius: 3px;
         background-color: oklch(84.24% 0.006 43.32 / 0.6);
     }
-
 `;
