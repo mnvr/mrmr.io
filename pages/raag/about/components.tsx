@@ -4,14 +4,29 @@ import styled from "styled-components";
 export const Notes = styled.div`
     margin-left: 1em;
     font-style: italic;
+
+    .muted {
+        color: var(--mrmr-color-3);
+    }
 `;
 
-interface HighlightedNotesProps {
-    /** The indicies of the notes to highlight */
-    highlighted: Array<number>;
-}
+export const BhairavNotes: React.FC = () => {
+    const notes = sargam.split(" ");
+    return (
+        <Notes>
+            {notes.map((note, i) => (
+                <span
+                    key={i}
+                    className={bhairavNotes.includes(i) ? "" : "muted"}
+                >
+                    {`${note} `}
+                </span>
+            ))}
+        </Notes>
+    );
+};
 
-// export const HighlightedNotes =
+const bhairavNotes = [0, 1, 4, 5, 7, 8, 11];
 
 const sargam = "S r R g G m M P d D n N";
 const westernNotes = "A A# B C C# D D# E F F# G G#";
@@ -33,6 +48,9 @@ interface MappingProps {
      *
      * Each row can be specified as a string, in which case it is split by words
      * to obtain the notes, or it can be directly provided as an array of notes.
+     *
+     * The third row, if present, is taken to be a row of numbers and styled
+     * differently.
      */
     rows: Array<string | Array<string>>;
     /** The indicies of the notes in each row to highlight */
@@ -47,19 +65,21 @@ const Mapping: React.FC<MappingProps> = ({ rows, highlighted }) => {
     return (
         <Mapping_>
             {nrows.map((row, i) => (
-                <Row key={i}>
-                    {row.map((note, i) =>
-                        note[1] === "#" ? (
-                            <div key={i}>
-                                <span>{note[0]}</span>
-                                <span>
-                                    <sup>#</sup>
-                                </span>
-                            </div>
-                        ) : (
-                            <div key={i}>{note}</div>
-                        ),
-                    )}
+                <Row key={i} className={i === 2 ? "nums" : ""}>
+                    {row.map((note, i) => (
+                        <div key={i}>
+                            {note[1] === "#" ? (
+                                <>
+                                    <span>{note[0]}</span>
+                                    <span>
+                                        <sup>#</sup>
+                                    </span>
+                                </>
+                            ) : (
+                                <span>{note}</span>
+                            )}
+                        </div>
+                    ))}
                 </Row>
             ))}
         </Mapping_>
@@ -79,17 +99,20 @@ const Mapping_ = styled.div`
 
 const Row = styled.div`
     display: flex;
-    max-width: 400px;
-    justify-content: space-between;
+    max-width: 320px;
 
     & > div {
         flex-grow: 1;
-        flex-basis: 20px;
+        flex-basis: 1px;
 
         display: flex;
 
         sup {
             color: var(--mrmr-color-3);
         }
+    }
+
+    &.nums {
+        font-size: 0.9em;
     }
 `;
