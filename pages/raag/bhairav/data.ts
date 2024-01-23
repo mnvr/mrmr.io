@@ -51,33 +51,27 @@ export interface Raag {
     pianoRootNote: number;
 }
 
+/** A convenience alias */
+const na = undefined;
+
 /** One octave of raag Bhairav starting at A2 */
 const fretboardStringsRBA2: FretboardStrings = [
-    Array(8).fill(undefined),
-    Array(8).fill(undefined),
-    Array(8).fill(undefined),
-    [
-        undefined,
-        undefined,
-        undefined,
-        11,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-    ],
-    [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
-    [undefined, undefined, 0, 1, undefined, undefined, 4, undefined],
+    Array(8).fill(na),
+    Array(8).fill(na),
+    Array(8).fill(na),
+    [na, na, na, 11, na, na, na, na],
+    [na, na, 5, na, 7, 8, na, na],
+    [na, na, 0, 1, na, na, 4, na],
 ];
 
 /** Multiple octaves of raag Bhairav rooted at D2 */
 const fretboardStringsRBD2Expanded: FretboardStrings = [
-    [undefined, undefined, 19, 20, undefined, undefined, 23, 24],
-    [undefined, undefined, undefined, undefined, 16, 17, undefined, undefined],
-    [undefined, undefined, undefined, 11, 12, 13, undefined, undefined],
-    [undefined, undefined, 5, undefined, 7, 8, undefined, undefined],
-    [undefined, -1, 0, 1, undefined, undefined, 4, undefined],
-    [undefined, -6, -5, -4, undefined, undefined, undefined, undefined],
+    [na, na, 19, 20, na, na, 23, 24],
+    [na, na, na, na, 16, 17, na, na],
+    [na, na, na, 11, 12, 13, na, na],
+    [na, na, 5, na, 7, 8, na, na],
+    [na, -1, 0, 1, na, na, 4, na],
+    [na, -6, -5, -4, na, na, na, na],
 ];
 
 export const raagBhairav: Raag = {
