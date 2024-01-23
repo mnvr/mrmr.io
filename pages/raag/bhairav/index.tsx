@@ -667,25 +667,28 @@ const End_ = styled.div`
 const Footer: React.FC = () => {
     return (
         <Footer_>
-            <p>
+            <li>
                 <Link to={"/raag/about"}>More about raags</Link>
-            </p>
-            <p>
+            </li>
+            <li>
                 <Link to={"/raag"}>More raags</Link>
-            </p>
-            <p>
+            </li>
+            <li>
                 <Link to={"/"}>Home</Link>
-            </p>
+            </li>
         </Footer_>
     );
 };
 
-const Footer_ = styled.div`
+const Footer_ = styled.ul`
     margin-block: 4em;
 
-    p {
+    list-style: none;
+    padding-inline-start: 0;
+
+    li {
         font-size: 16px;
-        line-height: 30px;
+        line-height: 48px;
     }
 
     a {
