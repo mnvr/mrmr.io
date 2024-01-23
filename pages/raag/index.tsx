@@ -50,6 +50,8 @@ const Title_ = styled.div`
             color: var(--mrmr-color-3);
             margin-inline-start: -5px;
         }
+
+        margin-inline-start: 5px;
     }
 
     big {
