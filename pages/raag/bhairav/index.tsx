@@ -2,6 +2,7 @@ import { WideColumn } from "components/Column";
 import { Link } from "gatsby";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
+import { FaChevronRight } from "react-icons/fa6";
 import styled from "styled-components";
 import type {
     FretboardMarks,
@@ -668,13 +669,22 @@ const Footer: React.FC = () => {
     return (
         <Footer_>
             <li>
-                <Link to={"/raag/about"}>More about raags</Link>
+                <Link to={"/raag/about"}>
+                    More about raags
+                    <FaChevronRight />
+                </Link>
             </li>
             <li>
-                <Link to={"/raag"}>More raags</Link>
+                <Link to={"/raag"}>
+                    More raags
+                    <FaChevronRight />
+                </Link>
             </li>
             <li>
-                <Link to={"/"}>Home</Link>
+                <Link to={"/"}>
+                    Home
+                    <FaChevronRight />
+                </Link>
             </li>
         </Footer_>
     );
@@ -688,12 +698,25 @@ const Footer_ = styled.ul`
 
     li {
         font-size: 16px;
-        line-height: 48px;
+        line-height: 24px;
+        margin-block: 2em;
     }
 
     a {
+        padding-inline-start: 4px;
+        padding-block: 3px;
+        border-radius: 2px;
+
         text-decoration: none;
         font-weight: 500;
+
+        svg {
+            width: 12px;
+            height: 12px;
+            vertical-align: middle;
+            margin-block-end: 3px;
+            margin-inline: 4px;
+        }
     }
 
     a:hover {
