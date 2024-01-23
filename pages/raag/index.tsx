@@ -118,7 +118,10 @@ const RaagBhairav_ = styled.div`
     font-variant: small-caps;
 
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
+    gap: 1.5em;
 
     .muted {
         background-color: var(--mrmr-raag-card-muted-color);
@@ -145,12 +148,16 @@ const Notes: React.FC = () => {
 };
 
 const Notes_ = styled.div`
+    flex-grow: 1;
+    flex-shrink: 1;
+    max-width: 300px;
+
     display: flex;
-    gap: 12px;
+    justify-content: space-between;
 
     & > div {
         width: 12px;
-        height: 100%;
+        height: 42px;
         border-radius: 3px;
     }
 `;
