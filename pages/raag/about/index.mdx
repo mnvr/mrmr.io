@@ -16,6 +16,8 @@ dark-colors:
     - oklch(75.15% 0.013 86.85)
 ---
 
+import * as C from './components';
+
 ### What is a raag?
 
 A raag in Indian music is similar to a scale in Western music.
@@ -68,7 +70,7 @@ notes instead of adding more verbiage to the illustrations themselves.
 ### How do I convert a raag to Western notes?
 
 This is perhaps the only useful question on this page. Most instruments that
-amateurs have access to today are based on a Western notes, so being able to
+amateurs have access to today are based on Western notes, so being able to
 convert raags to Western notes enables more people to play them.
 
 > This is not an exact mapping. Raags are usually rendered on fretless
@@ -78,27 +80,32 @@ convert raags to Western notes enables more people to play them.
 The Indian music tradition employs a movable set of notes. These notes are
 uttered aloud as:
 
-<i>Sa Re Ga Ma Pa Dha Ni</i>
+<C.Notes>Sa Re Ga Ma Pa Dha Ni</C.Notes>
 
 But they don't map to a fixed frequency. Nor is there any correspondence to a
 western note like C or A.
 
-Instead, what these notes describe is ratios, or intervals. We can then pick any
-frequency, or any western note, as our starting note (the _Sa_), and then the
-rest of the sequence can be one-to-one mapped to the corresponding western notes
-starting from that point.
+Instead, what these notes describe is distances, or intervals. We can then pick
+any frequency, or any western note, as our starting note (the _Sa_), and then
+the rest of the sequence can be one-to-one mapped to the corresponding western
+notes starting from that point.
 
 Above we listed the 7 major notes. There are also 5 minor ones, for a total of
 12. All 12 in sequence are sometimes notated as:
 
-<i>S r R g G m M P d D n N</i>
+<C.Notes>S r R g G m M P d D n N</C.Notes>
 
 So suppose we want to start with the note A on the guitar (say, A2, the open
 second string). We will _move_ our sequence of 12 notes so that our starting
 (root) note, _S_, corresponds to A. Then, it is a one-to-one mapping:
 
-<i>S r R g G m M P d D n N</i><br />
-<i>A A# B C C# D D# E F F# G G#</i>
+<C.Mapping />
+
+a | b |
+-------
+1 | 2 |
+
+
 
 That's it.
 
@@ -113,3 +120,11 @@ the internet, you'll find that it consists of the following notes:
 
 Let's put these within the sequence of all 12 notes, highlighting the ones that
 form the thaat.
+
+Then let's include the mapping table from above. I've also included the distance
+from the root note.
+
+Finally, we can read off corresponding western notes.
+
+Since our mapping table used A as the root note, so these are the western notes
+corresponding to Bhairav thaat played with A as the root note.
