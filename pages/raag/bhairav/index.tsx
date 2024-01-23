@@ -1,5 +1,4 @@
 import { WideColumn } from "components/Column";
-import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
@@ -668,12 +667,15 @@ const End_ = styled.div`
 const Footer: React.FC = () => {
     return (
         <Footer_>
-            <LinkStyleUnderlined>
-                <p>{/* <Link to={"/raag"}>Raag FAQs</Link> */}</p>
-                <p>
-                    <Link to={"/"}>Home</Link>
-                </p>
-            </LinkStyleUnderlined>
+            <p>
+                <Link to={"/raag/about"}>More about raags</Link>
+            </p>
+            <p>
+                <Link to={"/raag"}>More raags</Link>
+            </p>
+            <p>
+                <Link to={"/"}>Home</Link>
+            </p>
         </Footer_>
     );
 };
@@ -683,6 +685,20 @@ const Footer_ = styled.div`
 
     p {
         font-size: 16px;
-        margin-bottom: 2.9em;
+        line-height: 30px;
+    }
+
+    a {
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    a:hover {
+        background-color: hsl(60, 100%, 85%);
+        color: oklch(40% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: yellow;
+            color: oklch(20% 0 0);
+        }
     }
 `;
