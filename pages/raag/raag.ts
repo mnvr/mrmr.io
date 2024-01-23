@@ -55,7 +55,7 @@ export interface Raag {
 const na = undefined;
 
 /** One octave of raag Bhairav starting at A2 */
-const fretboardStringsRBA2: FretboardStrings = [
+const fretboard1BhairavA2: FretboardStrings = [
     Array(8).fill(na),
     Array(8).fill(na),
     Array(8).fill(na),
@@ -65,7 +65,7 @@ const fretboardStringsRBA2: FretboardStrings = [
 ];
 
 /** Multiple octaves of raag Bhairav rooted at D2 */
-const fretboardStringsRBD2Expanded: FretboardStrings = [
+const fretboard2BhairavD2Ex: FretboardStrings = [
     [na, na, 19, 20, na, na, 23, 24],
     [na, na, na, na, 16, 17, na, na],
     [na, na, na, 11, 12, 13, na, na],
@@ -79,19 +79,19 @@ export const raagBhairav: Raag = {
     nameInDevanagri: "भैरव",
     notes: [0, 1, 4, 5, 7, 8, 11],
     ladderRootNote: 69,
-    fretboard1: fretboardStringsRBA2,
+    fretboard1: fretboard1BhairavA2,
     // Even though the scale starts at A2 (MIDI 45), that frequency is too low
     // for the synth we're using, so we use the A that's two octaves up. This
     // has the additional advantage that our fretboard matches the ladder.
     fretboard1RootNote: 69,
     fretboardMarks: standardFretboardMarks,
-    fretboard2: fretboardStringsRBD2Expanded,
+    fretboard2: fretboard2BhairavD2Ex,
     fretboard2RootNote: 74,
     pianoRootNote: 60,
 };
 
 /** One octave of raag Yaman starting at A2 */
-const fretboardStringsRYA2: FretboardStrings = [
+const fretboard1YamanA2: FretboardStrings = [
     Array(8).fill(na),
     Array(8).fill(na),
     Array(8).fill(na),
@@ -101,7 +101,7 @@ const fretboardStringsRYA2: FretboardStrings = [
 ];
 
 /** Multiple octaves of raag Yaman rooted at D2 */
-const fretboardStringsRBY2Expanded: FretboardStrings = [
+const fretboard2YamanD2Ex: FretboardStrings = [
     [na, 18, 19, na, 21, na, 23, 24],
     [na, na, 14, na, 16, na, na, na],
     [na, 9, na, 11, 12, na, na, na],
@@ -112,13 +112,13 @@ const fretboardStringsRBY2Expanded: FretboardStrings = [
 
 export const raagYaman: Raag = {
     name: "Yaman",
-    nameInDevanagri: "भैरव", // TODO
+    nameInDevanagri: "यमन",
     notes: [0, 2, 4, 6, 7, 9, 11],
     ladderRootNote: 69,
-    fretboard1: fretboardStringsRYA2,
+    fretboard1: fretboard1YamanA2,
     fretboard1RootNote: 69,
     fretboardMarks: standardFretboardMarks,
-    fretboard2: fretboardStringsRBY2Expanded,
+    fretboard2: fretboard2YamanD2Ex,
     fretboard2RootNote: 74,
     pianoRootNote: 60,
 };

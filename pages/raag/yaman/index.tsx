@@ -52,9 +52,9 @@ const RaagContent: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
 const LadderDescription: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <LadderDescription_>
-            <p>{`The ladder above shows the distance between notes that form raag
-                ${raag.name} – Hover on them to hear how they sound (You'll need to tap once to
-                 enable audio)`}</p>
+            <p>{`The ladder above shows the distance between notes that form
+                raag ${raag.name} – Hover on them to hear how they sound (you'll
+                need to tap once to enable audio)`}</p>
             <p>
                 Compared to the Bhairav raag that we looked at earlier, raag
                 Yaman is simpler. Both to play, and how it sounds. It has a more
@@ -73,8 +73,8 @@ const FretboardDescription: React.FC = () => {
     return (
         <FretboardDescription_>
             <p>
-                Raags can be played on any instrument. For example, we can play
-                it on a guitar, starting with the highlighted note (the A on the
+                Raags can be played on any instrument. For example, here it is
+                on a guitar, starting with the highlighted note (the A on the
                 first string)
             </p>
         </FretboardDescription_>
@@ -89,8 +89,8 @@ const IntervalDescription: React.FC = () => {
     return (
         <div>
             <p>
-                But we can begin with any note we want, all we need to do is
-                ensure successive notes have the following distance between them
+                We can begin with any note we want, all we need to do is ensure
+                successive notes have the following distance between them
             </p>
         </div>
     );
@@ -100,10 +100,10 @@ const FretboardDescription2: React.FC = () => {
     return (
         <div>
             <p>
-                We illustrate this and two more things in the fretboard shown:
-                (a) We pick a different root note (the D on the second string),
-                (b) we continue counting beyond 11 - the raag starts to repeat,
-                and (c) we count backwards from the root note:
+                You can see this, and two more things, in the fretboard below:
+                (a) picking a different root note, the D on the second string,
+                (b) counting beyond 11 (the raag repeats), and (c) counting
+                backwards from the root note
             </p>
         </div>
     );

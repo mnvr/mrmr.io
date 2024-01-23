@@ -3,7 +3,7 @@ import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { raagBhairav } from "./raag";
+import { raagBhairav, raagYaman } from "./raag";
 
 export const Contents: React.FC = ({}) => {
     return (
@@ -67,6 +67,9 @@ const RaagList: React.FC = () => {
             <li>
                 <RaagBhairav />
             </li>
+            <li>
+                <RaagYaman />
+            </li>
         </RaagList_>
     );
 };
@@ -81,6 +84,9 @@ const RaagList_ = styled.ul`
         a {
             text-decoration: none;
             opacity: 0.94;
+            @media (prefers-color-scheme: dark) {
+                opacity: 0.84;
+            }
         }
 
         a:hover {
@@ -185,8 +191,26 @@ const RaagBhairav_ = styled(RaagCard)`
 
     @media (prefers-color-scheme: dark) {
         background-color: oklch(25% 0.05 83.84);
-        color: oklch(75.15% 0.013 86.85 / 0.6);
-        --mrmr-raag-card-muted-color: oklch(75.15% 0.013 86.85 / 0.5);
+        color: oklch(75.15% 0.013 86.85);
+        --mrmr-raag-card-muted-color: oklch(75.15% 0.013 86.85 / 0.3);
         --mrmr-raag-card-highlighted-color: oklch(94% 0 0);
     }
+`;
+
+const RaagYaman: React.FC = () => {
+    return (
+        <Link to={"yaman"}>
+            <RaagYaman_>
+                yaman
+                <Notes notes={raagYaman.notes} />
+            </RaagYaman_>
+        </Link>
+    );
+};
+
+const RaagYaman_ = styled(RaagCard)`
+    background-color: oklch(52% 0.166 267);
+    color: oklch(94% 0 0);
+    --mrmr-raag-card-muted-color: oklch(80% 0.065 265 / 0.5);
+    --mrmr-raag-card-highlighted-color: oklch(94% 0 0);
 `;

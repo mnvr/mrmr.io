@@ -53,12 +53,11 @@ const LadderDescription: React.FC<PropsWithRaag> = ({ raag }) => {
     return (
         <LadderDescription_>
             <p>
-                Raags are like scales (<i>not really</i>, they're more like
-                Markov chains, but thinking of them as scales is a good first
+                Raags are like scales (<i>not really</i>, but it's a good first
                 approximation)
             </p>
             <p>
-                {`Above you can see the distance between notes on Raag
+                {`Above you can see the distance between notes on raag
                 ${raag.name} – Hover on them to hear how they sound (tap once to
                  enable audio)`}
             </p>
