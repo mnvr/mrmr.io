@@ -1,4 +1,5 @@
 import { WideColumn } from "components/Column";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 
@@ -73,23 +74,34 @@ const RaagList_ = styled.ul`
 
     li {
         margin: 1em;
+
+        a {
+            text-decoration: none;
+            opacity: 0.94;
+        }
+
+        a:hover {
+            opacity: 1;
+        }
     }
 `;
 
 const RaagBhairav: React.FC = () => {
     return (
-        <RaagBhairav_>
-            bhairav
-            <Notes />
-        </RaagBhairav_>
+        <Link to={"bhairav"}>
+            <RaagBhairav_>
+                bhairav
+                <Notes />
+            </RaagBhairav_>
+        </Link>
     );
 };
 
 const RaagBhairav_ = styled.div`
     /* Taken from the page colors */
     background-color: oklch(49.35% 0.025 53.84);
-    color: oklch(84.24% 0.006 43.32 / 0.8);
-    --mrmr-raag-card-muted-color: oklch(84.24% 0.006 43.32 / 0.5);
+    color: oklch(84.24% 0.006 43.32);
+    --mrmr-raag-card-muted-color: oklch(84.24% 0.006 43.32 / 0.3);
     --mrmr-raag-card-highlighted-color: oklch(98% 0 0);
 
     @media (prefers-color-scheme: dark) {
