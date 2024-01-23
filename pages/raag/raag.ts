@@ -90,4 +90,35 @@ export const raagBhairav: Raag = {
     pianoRootNote: 60,
 };
 
-export const raagYaman: Raag = raagBhairav;
+/** One octave of raag Yaman starting at A2 */
+const fretboardStringsRYA2: FretboardStrings = [
+    Array(8).fill(na),
+    Array(8).fill(na),
+    Array(8).fill(na),
+    [na, 9, na, 11, na, na, na, na],
+    [na, 4, na, 6, 7, na, na, na],
+    [na, na, 0, na, 2, na, na, na],
+];
+
+/** Multiple octaves of raag Yaman rooted at D2 */
+const fretboardStringsRBY2Expanded: FretboardStrings = [
+    [na, 18, 19, na, 21, na, 23, 24],
+    [na, na, 14, na, 16, na, na, na],
+    [na, 9, na, 11, 12, na, na, na],
+    [na, 4, na, 6, 7, na, na, na],
+    [na, -1, 0, na, 2, na, na, na],
+    [na, -6, -5, na, -3, na, na, na],
+];
+
+export const raagYaman: Raag = {
+    name: "Yaman",
+    nameInDevanagri: "भैरव", // TODO
+    notes: [0, 2, 4, 6, 7, 9, 11],
+    ladderRootNote: 69,
+    fretboard1: fretboardStringsRYA2,
+    fretboard1RootNote: 69,
+    fretboardMarks: standardFretboardMarks,
+    fretboard2: fretboardStringsRBY2Expanded,
+    fretboard2RootNote: 74,
+    pianoRootNote: 60,
+};

@@ -451,13 +451,14 @@ export const Piano: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
             {classNames.map((className, i) =>
                 raag.notes.includes(i) ? (
                     <PianoNote
+                        key={i}
                         className={`on ${className}`}
                         synth={synth}
                         rootNote={raag.pianoRootNote}
                         noteOffset={i}
                     />
                 ) : (
-                    <div className={`off ${className}`} />
+                    <div key={i} className={`off ${className}`} />
                 ),
             )}
         </Piano_>
