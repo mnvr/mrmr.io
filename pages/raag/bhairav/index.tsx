@@ -655,7 +655,7 @@ const End: React.FC = () => {
                 you can sing it too
             </p>
             <p>
-                Remember, raags are not a recipe, but an invitation, to make
+                Remember, raags are not a recipe but an invitation to create
                 music
             </p>
         </End_>

@@ -6,14 +6,22 @@ import styled from "styled-components";
 
 export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <C.Container>
-            <C.Title />
-            {children}
-            <C.Signoff />
-            <Footer />
-        </C.Container>
+        <Layout_>
+            <C.Container>
+                <C.Title />
+                {children}
+                <C.Signoff />
+                <Footer />
+            </C.Container>
+        </Layout_>
     );
 };
+
+const Layout_ = styled.div`
+    h3 {
+        margin-block-start: 3em;
+    }
+`;
 
 export const Notes = styled.div`
     margin-left: 1em;
@@ -150,7 +158,7 @@ const Footer: React.FC = () => {
         <LinkStyleUnderlined>
             <Footer_>
                 <p>
-                    <Link to="/raag">All raags</Link>
+                    <Link to="/raag">List of raags</Link>
                 </p>
                 <p>
                     <Link to="/">Home</Link>
