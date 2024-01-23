@@ -7,6 +7,7 @@ export const Notes = styled.div`
 
     .muted {
         color: var(--mrmr-color-3);
+        opacity: 0.5;
     }
 `;
 
@@ -39,7 +40,12 @@ export const Mapping1: React.FC = () => {
 };
 
 export const Mapping2: React.FC = () => {
-    return <Mapping rows={[sargam, westernNotes, intervals]} />;
+    return (
+        <Mapping
+            rows={[sargam, westernNotes, intervals]}
+            highlighted={bhairavNotes}
+        />
+    );
 };
 
 interface MappingProps {
@@ -67,7 +73,14 @@ const Mapping: React.FC<MappingProps> = ({ rows, highlighted }) => {
             {nrows.map((row, i) => (
                 <Row key={i} className={i === 2 ? "nums" : ""}>
                     {row.map((note, i) => (
-                        <div key={i}>
+                        <div
+                            key={i}
+                            className={
+                                highlighted?.includes(i) === false
+                                    ? "muted"
+                                    : ""
+                            }
+                        >
                             {note[1] === "#" ? (
                                 <>
                                     <span>{note[0]}</span>
@@ -95,6 +108,11 @@ const Mapping_ = styled.div`
 
     display: flex;
     flex-direction: column;
+
+    .muted {
+        color: var(--mrmr-color-3);
+        opacity: 0.5;
+    }
 `;
 
 const Row = styled.div`
@@ -106,10 +124,6 @@ const Row = styled.div`
         flex-basis: 1px;
 
         display: flex;
-
-        sup {
-            color: var(--mrmr-color-3);
-        }
     }
 
     &.nums {
