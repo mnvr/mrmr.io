@@ -1,4 +1,5 @@
 import { WideColumn } from "components/Column";
+import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
@@ -9,6 +10,7 @@ export const Contents: React.FC = ({}) => {
             <WideColumn>
                 <Title />
                 <RaagList />
+                <Footer />
             </WideColumn>
         </Container_>
     );
@@ -139,6 +141,26 @@ const Notes_ = styled.div`
         width: 12px;
         height: 42px;
         border-radius: 3px;
+    }
+`;
+
+const Footer: React.FC = () => {
+    return (
+        <Footer_>
+            <Link to={"about"}>FAQ</Link>
+        </Footer_>
+    );
+};
+
+const Footer_ = styled(LinkStyleBoldHover)`
+    margin-block: 3rem;
+
+    font-size: 16px;
+    text-align: center;
+
+    a {
+        padding: 8px;
+        border-radius: 4px;
     }
 `;
 

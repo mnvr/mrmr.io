@@ -1,4 +1,5 @@
 import { WideColumn } from "components/Column";
+import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
 import { isMobile } from "react-device-detect";
@@ -667,26 +668,28 @@ const End_ = styled.div`
 
 const Footer: React.FC = () => {
     return (
-        <Footer_>
-            <li>
-                <Link to={"/raag/about"}>
-                    More about raags
-                    <FaChevronRight />
-                </Link>
-            </li>
-            <li>
-                <Link to={"/raag"}>
-                    More raags
-                    <FaChevronRight />
-                </Link>
-            </li>
-            <li>
-                <Link to={"/"}>
-                    Home
-                    <FaChevronRight />
-                </Link>
-            </li>
-        </Footer_>
+        <LinkStyleBoldHover>
+            <Footer_>
+                <li>
+                    <Link to={"/raag/about"}>
+                        More about raags
+                        <FaChevronRight />
+                    </Link>
+                </li>
+                <li>
+                    <Link to={"/raag"}>
+                        More raags
+                        <FaChevronRight />
+                    </Link>
+                </li>
+                <li>
+                    <Link to={"/"}>
+                        Home
+                        <FaChevronRight />
+                    </Link>
+                </li>
+            </Footer_>
+        </LinkStyleBoldHover>
     );
 };
 
@@ -707,24 +710,12 @@ const Footer_ = styled.ul`
         padding-block: 3px;
         border-radius: 2px;
 
-        text-decoration: none;
-        font-weight: 500;
-
         svg {
             width: 12px;
             height: 12px;
             vertical-align: middle;
             margin-block-end: 3px;
             margin-inline: 4px;
-        }
-    }
-
-    a:hover {
-        background-color: hsl(60, 100%, 85%);
-        color: oklch(40% 0 0);
-        @media (prefers-color-scheme: dark) {
-            background-color: yellow;
-            color: oklch(20% 0 0);
         }
     }
 `;

@@ -36,3 +36,29 @@ export const LinkStyleUnderlined = styled.div`
         }
     }
 `;
+
+/**
+ * A container that styles links (<a> elements) within its children to have a
+ * yellow hover background.
+ *
+ * This is a subset of {@link LinkStyleUnderlined}.
+ *
+ * - Links will be bold, but will not have a text decoration.
+ *
+ * - Hover state will show a yellow background.
+ */
+export const LinkStyleBoldHover = styled.div`
+    a {
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    a:hover {
+        background-color: hsl(60, 100%, 85%);
+        color: oklch(40% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: yellow;
+            color: oklch(20% 0 0);
+        }
+    }
+`;
