@@ -112,7 +112,11 @@ const FretboardDescription2: React.FC = () => {
 const PianoDescription: React.FC = () => {
     return (
         <PianoDescription_>
-            <p>We can play it on a piano too</p>
+            <p>
+                Raag Yaman is just one note away from the Bilawal thaat (the
+                major scale, all white keys on the piano), but just that one
+                displaced note makes a difference to the vibe.
+            </p>
         </PianoDescription_>
     );
 };
