@@ -14,6 +14,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     // p5.strokeWeight(0);
     p5.background(199, 25, 31);
     p5.background(215, 40, 14);
+    p5.background(212, 52, 52);
     p5.fill("white");
 
     return {};
@@ -31,9 +32,12 @@ const drawCell0: CellShader<State> = ({ p5, x, y, s }) => {
 type P = [number, number];
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
-    const r1 = 0;
-    const r2 = 0;
-    const r3 = 0;
+    // Move the top anchor point 1 towards the left
+    const r1 = 4; // [1, 4]
+    // Offset c1 from the center (positive values move it leftwards)
+    const r2 = 4; // [4, -4]
+    // Offset c2 downward from its standard position (1/8 of s from the top).
+    const r3 = 4; // [-4, 4]
     const r4 = 0;
     const r5 = 0;
     const r6 = 0;
@@ -45,12 +49,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     // bit of a bulge to the "bulby" shape that we draw.
 
     // Top anchor point 1
-    const a1: P = [x + s / 2, y];
+    const a1: P = [x + s / 2 - r1, y];
     // Left anchor point
     const a2: P = [x + s / 8, y + s / 2];
     // Control points
-    const c1: P = [x + s / 2, y + s / 2];
-    const c2: P = [x + s / 8, y + s / 2 - s / 4];
+    const c1: P = [x + s / 2 - r2, y + s / 2 - s / 4];
+    const c2: P = [x + s / 8, y + s / 8 + r3];
 
     // Exact mirror of c2
     const c3: P = [x + s / 8, y + s / 2 + s / 4];
@@ -107,6 +111,6 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
     noLoop: true,
-    // n: 2,
-    // showGuides: true,
+    n: 2,
+    showGuides: true,
 });
