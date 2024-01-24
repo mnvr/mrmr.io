@@ -2110,27 +2110,27 @@
   resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
   integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
 
-"@strudel/core@0.11.0", "@strudel/core@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@strudel/core/-/core-0.11.0.tgz#65d18c513f04ab1020325be56044c34f255bc37b"
-  integrity sha512-7tOqsm13fsTOd9iPR7NybNN+QbkIyOR7JXpjIMRuQybkH15/NGOTAxNAbghKoesMU8/dLkR7/xVg231Ype3HMQ==
+"@strudel/core@1.0.0", "@strudel/core@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@strudel/core/-/core-1.0.0.tgz#48e097c31ca00fcb9d3401d005b6995709c4217a"
+  integrity sha512-mQq+RQLzZrymCtSg1uuyi4MLizx92aItpUaxNdiHtkQzQLfl3aBNc3DzlBjz5PImtZpGe+shssjqno9QBGlQQw==
   dependencies:
     fraction.js "^4.3.7"
 
-"@strudel/mini@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@strudel/mini/-/mini-0.11.0.tgz#e47a7186e9e478e8f5f90fd15f50f937daf2a39a"
-  integrity sha512-oEPbNk1AVg/eYonQIzQcm6LxRW9351bZQKDsB5Dc5CUrHRTz/yVMFCz00nVRTwbLurJs5k7ogNAVuEDesBdFwQ==
+"@strudel/mini@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@strudel/mini/-/mini-1.0.0.tgz#9f44858812b3f34a9c845d700ec028c333a37bb6"
+  integrity sha512-Il5iAut/KjApDcGAQNGjmkAuVOvzWcrObPEnZW7kcJ1Lu/6b7uRBsZm060adhnT3dJKI+GhTRKhkaQ4dO6ULbQ==
   dependencies:
-    "@strudel/core" "0.11.0"
+    "@strudel/core" "1.0.0"
 
-"@strudel/webaudio@^0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@strudel/webaudio/-/webaudio-0.11.0.tgz#1c595718c0bd72caec8e34ac2792ddde969e7ecf"
-  integrity sha512-Yqc/th969RREqmqtppXTDZKxIgKBsqEG1aJX9T8sTxvYcgGjCC3auH96TF9JtwfVE/VhTxwsxjZDiLcuXTJtCA==
+"@strudel/webaudio@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@strudel/webaudio/-/webaudio-1.0.0.tgz#00024da2af5d3e07dde1088c396d4f012e1ab0fa"
+  integrity sha512-MKh+HsLZsakvdTNfvQJmYWKvhQZHO/WvEWt+rwSVAfqOpFN/WMCFSLqmijQX1TSXxB9+Ob9026WiDWg92Q+VFg==
   dependencies:
-    "@strudel/core" "0.11.0"
-    superdough "0.10.0"
+    "@strudel/core" "1.0.0"
+    superdough "1.0.0"
 
 "@swc/helpers@^0.4.12":
   version "0.4.36"
@@ -10511,10 +10511,10 @@ sudo-prompt@^8.2.0:
   resolved "https://registry.yarnpkg.com/sudo-prompt/-/sudo-prompt-8.2.5.tgz#cc5ef3769a134bb94b24a631cc09628d4d53603e"
   integrity sha512-rlBo3HU/1zAJUrkY6jNxDOC9eVYliG6nS4JA8u8KAshITd07tafMc/Br7xQwCSseXwJ2iCcHCE8SNWX3q8Z+kw==
 
-superdough@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/superdough/-/superdough-0.10.0.tgz#06b027b16f54473f0281fcb0adcc1177d07d6e96"
-  integrity sha512-VMSUyKqTJumAd28I2rN5L8pTbzlp7Vsszri2BHlYipZ4vXO/B88cMjqtLqsCP4KaoARsput0kMXbpZ9JhjWbYQ==
+superdough@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/superdough/-/superdough-1.0.0.tgz#7aa448ac646834a0fa678ab745d19452b726449a"
+  integrity sha512-4+z3G4XEvKE/OASDA50F624gR7YGlnyfsrXUh8ctme4NdUtDXpGEKxmk3Cih9EUk4RNNyba3TLuuNdUu1Ihckg==
   dependencies:
     nanostores "^0.9.5"
 
