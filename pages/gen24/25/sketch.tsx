@@ -11,7 +11,7 @@ interface State {}
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     p5.clear();
-    // p5.strokeWeight(0);
+    p5.strokeWeight(0);
     p5.background(199, 25, 31);
     p5.background(215, 40, 14);
     p5.background(212, 52, 52);
@@ -40,10 +40,13 @@ type P = [number, number];
  * @param onlyHoriz If true, there is no vertical jitter added.
  */
 const jiggle = (pt: P, onlyHoriz = false): P => {
-    const jx = Math.floor(Math.random() * 4);
-    const jy = onlyHoriz ? 0 : Math.floor(Math.random() * 4);
+    const jx = Math.floor(Math.random() * 8);
+    const jy = onlyHoriz ? 0 : Math.floor(Math.random() * 8);
     return [pt[0] + jx, pt[1] + jy];
 };
+
+const symmetric = false;
+const debug = false;
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     // Draw four bezier curves, roughly approximating a diamond horizontally
@@ -90,14 +93,43 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     // Top anchor point 2
     const a6: P = [x + s / 2, y];
 
-    p5.beginShape();
-    p5.vertex(...a1);
-    p5.bezierVertex(...c1, ...c2, ...a2);
-    p5.bezierVertex(...c3, ...c4, ...a3);
-    p5.vertex(...a4);
-    p5.bezierVertex(...c5, ...c6, ...a5);
-    p5.bezierVertex(...c7, ...c8, ...a6);
-    p5.endShape(p5.CLOSE);
+    const ja1 = jiggle(a1, true);
+    const ja2 = jiggle(a2);
+    const ja3 = jiggle(a3, true);
+    const ja4 = jiggle(a4, true);
+    const ja5 = jiggle(a5);
+    const ja6 = jiggle(a6, true);
+
+    const jc1 = jiggle(c1);
+    const jc2 = jiggle(c2);
+    const jc3 = jiggle(c3);
+    const jc4 = jiggle(c4);
+    const jc5 = jiggle(c5);
+    const jc6 = jiggle(c6);
+    const jc7 = jiggle(c7);
+    const jc8 = jiggle(c8);
+
+    if (symmetric) {
+        p5.beginShape();
+        p5.vertex(...a1);
+        p5.bezierVertex(...c1, ...c2, ...a2);
+        p5.bezierVertex(...c3, ...c4, ...a3);
+        p5.vertex(...a4);
+        p5.bezierVertex(...c5, ...c6, ...a5);
+        p5.bezierVertex(...c7, ...c8, ...a6);
+        p5.endShape(p5.CLOSE);
+    } else {
+        p5.beginShape();
+        p5.vertex(...ja1);
+        p5.bezierVertex(...jc1, ...jc2, ...ja2);
+        p5.bezierVertex(...jc3, ...jc4, ...ja3);
+        p5.vertex(...ja4);
+        p5.bezierVertex(...jc5, ...jc6, ...ja5);
+        p5.bezierVertex(...jc7, ...jc8, ...ja6);
+        p5.endShape(p5.CLOSE);
+    }
+
+    if (!debug) return;
 
     p5.push();
     p5.fill("cyan");
@@ -110,6 +142,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     p5.circle(...c7, 5);
     p5.circle(...c8, 5);
 
+    p5.fill("pink");
+    p5.circle(...jc1, 5);
+    p5.circle(...jc2, 5);
+    p5.circle(...jc3, 5);
+    p5.circle(...jc4, 5);
+    p5.circle(...jc5, 5);
+    p5.circle(...jc6, 5);
+    p5.circle(...jc7, 5);
+    p5.circle(...jc8, 5);
+
     p5.fill("green");
     p5.circle(...a1, 5);
     p5.circle(...a2, 5);
@@ -117,6 +159,15 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     p5.circle(...a4, 5);
     p5.circle(...a5, 5);
     p5.circle(...a6, 5);
+
+    p5.fill("pink");
+    p5.circle(...ja1, 5);
+    p5.circle(...ja2, 5);
+    p5.circle(...ja3, 5);
+    p5.circle(...ja4, 5);
+    p5.circle(...ja5, 5);
+    p5.circle(...ja6, 5);
+
     p5.pop();
 };
 
@@ -124,6 +175,6 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
     noLoop: true,
-    n: 2,
-    showGuides: true,
+    // n: 2,
+    showGuides: debug,
 });
