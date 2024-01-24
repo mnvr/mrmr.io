@@ -43,7 +43,9 @@ export const LinkStyleUnderlined = styled.div`
  *
  * This is a subset of {@link LinkStyleUnderlined}.
  *
- * - Links will be bold, but will not have a text decoration.
+ * - Links will be bold, but will not have a text decoration. Instead,
+ *   --mrmr-color-4, which is by default a 70% opacity variation of
+ *   --mrmr-color-1, will be used as the link color.
  *
  * - Hover state will show a yellow background.
  */
@@ -51,6 +53,10 @@ export const LinkStyleBoldHover = styled.div`
     a {
         text-decoration: none;
         font-weight: 500;
+    }
+
+    a:visited {
+        color: var(--mrmr-color-4);
     }
 
     a:hover {
