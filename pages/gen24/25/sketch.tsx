@@ -11,7 +11,8 @@ interface State {}
 
 const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     p5.clear();
-    p5.background("firebrick");
+    p5.strokeWeight(0);
+    p5.background(196, 28, 40);
     p5.fill("white");
 
     return {};
