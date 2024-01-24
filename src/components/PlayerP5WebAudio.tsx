@@ -1,6 +1,6 @@
 import { IconButton, PlayButton } from "components/Buttons";
 import { LoadingIndicator } from "components/LoadingIndicator";
-import { ReelSizedP5SketchBox } from "components/ReelSizedP5SketchBox";
+import { ReelSizedP5SketchBox } from "components/P5SketchBox";
 import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
 import type p5 from "p5";
 import * as React from "react";
