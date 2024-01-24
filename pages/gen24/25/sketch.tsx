@@ -15,6 +15,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
     p5.background(199, 25, 31);
     p5.background(215, 40, 14);
     p5.background(212, 52, 52);
+    p5.background(220, 60, 70);
     p5.fill("white");
 
     return {};
@@ -34,14 +35,20 @@ type P = [number, number];
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
     // Move the top anchor point 1 towards the left
     const r1 = 4; // [1, 4]
-    // Offset c1 from the center (positive values move it leftwards)
+    // Offset c1 from the center. Positive values move it leftwards.
     const r2 = 4; // [4, -4]
     // Offset c2 downward from its standard position (1/8 of s from the top).
     const r3 = 4; // [-4, 4]
-    const r4 = 0;
-    const r5 = 0;
-    const r6 = 0;
-    const r7 = 5;
+    // Offset the left anchor point from its standard position (1/8 of s from
+    // the left). Positive values move it leftwards.
+    const r4 = 4; // [-4, 4]
+    // Offset c3 downwards from its standard position (1/8 of s from the
+    // bottom). Positive values move it upwards.
+    const r5 = 4; // [-4, 4]
+    // Offset c4 from the center. Positive values move it leftwards.
+    const r6 = 4; // [-4, 4]
+    // Move the bottom anchor point 1 towards the left.
+    const r7 = 4; // [1, 4]
 
     // Draw four bezier curves, roughly approximating a diamond horizontally
     // centered in the cell and running along its entire height. The anchor
@@ -50,18 +57,20 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
 
     // Top anchor point 1
     const a1: P = [x + s / 2 - r1, y];
-    // Left anchor point
-    const a2: P = [x + s / 8, y + s / 2];
     // Control points
     const c1: P = [x + s / 2 - r2, y + s / 2 - s / 4];
     const c2: P = [x + s / 8, y + s / 8 + r3];
 
-    // Exact mirror of c2
-    const c3: P = [x + s / 8, y + s / 2 + s / 4];
-    const c4: P = [x + s / 2, y + s / 2];
+    // Left anchor point
+    const a2: P = [x + s / 8 - r4, y + s / 2];
+
+    // Inexact mirror of c2
+    const c3: P = [x + s / 8, y + s - s / 8 - r5];
+    // Similar to c1
+    const c4: P = [x + s / 2 - r6, y + s - s / 4];
 
     // Bottom anchor point 1
-    const a3: P = [x + s / 2, y + s];
+    const a3: P = [x + s / 2 - r7, y + s];
 
     // Now let's draw the other side.
 
