@@ -82,6 +82,11 @@ const RaagList_ = styled.ul`
 
     li {
         margin: 1em;
+        /* Remove the margin on small screens (we already have a margin from the
+           page edge because of the WideColumn above) */
+        @media (max-width: 600px) {
+            margin-inline: 0;
+        }
 
         a {
             text-decoration: none;
@@ -102,13 +107,11 @@ const RaagCard = styled.div`
     padding-block: 0.75em;
     border-radius: 3px;
 
-    font-variant: small-caps;
-
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5em;
+    gap: 12px;
 
     .muted {
         background-color: var(--mrmr-raag-card-muted-color);
@@ -117,6 +120,14 @@ const RaagCard = styled.div`
     .highlighted {
         background-color: var(--mrmr-raag-card-highlighted-color);
     }
+`;
+
+const Name = styled.div`
+    font-variant: small-caps;
+    /* Shift up a bit from the centerline to account for the small-caps having
+    empty space at the top (as compared to if they were full caps). */
+    margin-block-end: 4px;
+    width: 150px;
 `;
 
 interface NotesProps {
@@ -140,9 +151,7 @@ const Notes: React.FC<NotesProps> = ({ notes }) => {
 
 const Notes_ = styled.div`
     flex-grow: 1;
-    flex-shrink: 1;
-    max-width: 300px;
-
+    flex-basis: calc(12px * (12 + 11));
     display: flex;
     justify-content: space-between;
 
@@ -177,7 +186,7 @@ const RaagBhairav: React.FC = () => {
     return (
         <Link to={"bhairav"}>
             <RaagBhairav_>
-                bhairav
+                <Name>bhairav</Name>
                 <Notes notes={raagBhairav.notes} />
             </RaagBhairav_>
         </Link>
@@ -203,7 +212,7 @@ const RaagYaman: React.FC = () => {
     return (
         <Link to={"yaman"}>
             <RaagYaman_>
-                yaman
+                <Name>yaman</Name>
                 <Notes notes={raagYaman.notes} />
             </RaagYaman_>
         </Link>
