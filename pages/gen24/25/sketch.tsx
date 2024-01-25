@@ -126,6 +126,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Top anchor point 2
     const a6: Pt = [x + s / 2 + otRight, y];
 
+    /**
+     * Return a new point that is the result of introducing a random jitter to
+     * the given point.
+     */
+    const jiggle = (pt: Pt): Pt => {
+        const jx = p5.floor(p5.random() * 8);
+        const jy = p5.floor(p5.random() * 8);
+        return [pt[0] + jx, pt[1] + jy];
+    };
+
     const ja1 = a1;
     const ja2 = jiggle(a2);
     const ja3 = a3;
@@ -191,16 +201,6 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     p5.circle(...ja6, 5);
 
     p5.pop();
-};
-
-/**
- * Return a new point that is the result of introducing a random jitter to the
- * given point.
- */
-const jiggle = (pt: Pt): Pt => {
-    const jx = Math.floor(Math.random() * 8);
-    const jy = Math.floor(Math.random() * 8);
-    return [pt[0] + jx, pt[1] + jy];
 };
 
 export const sketch = gridSketch({
