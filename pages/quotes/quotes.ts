@@ -83,4 +83,5 @@ export const quotes: string[] = [
     "“If today were the last day of my life, would I want to do what I am about to do today?” And whenever the answer has been “No” for too many days in a row, I know I need to change something",
     "Sic Transit Gloria (All glory is fleeting)",
     "Gentlemen, owing to lack of time and adverse circumstances, most people leave this world without thinking too much about it. Those who try get a headache and move on to something else. I belong to the second group.",
+    "Those who are downtrodden, and have been walked over, are still deserving of music and the light",
 ];
