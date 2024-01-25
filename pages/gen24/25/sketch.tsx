@@ -87,8 +87,21 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
         cellIndex({ row: cell.row + 1, col: cell.col }, grid)
     ] ?? [0, 0]; /* last row won't have a successor cell, so use 0, 0 */
 
+    /** A small jitter */
+    const jS = () => p5.floor(p5.random() * (s / 16));
+    /** A medium jitter */
+    const jM = () => p5.floor(p5.random() * (s / 8));
+    /** A larger jiggle */
+    // const jiggle = () => p5.floor(p5.random() * 4)
+
     // Top anchor point 1
-    const a1: Pt = [x + s / 2 - otLeft, y];
+    const v1: Pt = [x + s / 2 - otLeft, y];
+
+    // Don't start the bezier curve at the top anchor, instead move a bit below
+    // to give a thicker seeming, and more seamless, connecting thread between
+    // the cells.
+    const v2: Pt = [v1[0], v1[1] + jM()];
+
     // Control points
     const c1: Pt = [x + s / 2, y + s / 2 - s / 4];
     const c2: Pt = [x + s / 8, y + s / 8];
@@ -101,8 +114,10 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Similar to c1
     const c4: Pt = [x + s / 2, y + s - s / 4];
 
-    // Bottom anchor point 1
-    const a3: Pt = [x + s / 2 - obLeft, y + s];
+    // Bottom anchor point 1, and the point slightly above it where we actually
+    // end the bezier curve.
+    const v5: Pt = [x + s / 2 - obLeft, y + s];
+    const v4: Pt = [v5[0], v5[1] - jM()]
 
     // Now let's draw the other side.
 
@@ -136,9 +151,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
         return [pt[0] + jx, pt[1] + jy];
     };
 
-    const ja1 = a1;
     const ja2 = jiggle(a2);
-    const ja3 = a3;
     const ja4 = a4;
     const ja5 = jiggle(a5);
     const ja6 = a6;
@@ -153,52 +166,54 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const jc8 = jiggle(c8);
 
     p5.beginShape();
-    p5.vertex(...ja1);
+    p5.vertex(...v1);
+    p5.vertex(...v2);
     p5.bezierVertex(...jc1, ...jc2, ...ja2);
-    p5.bezierVertex(...jc3, ...jc4, ...ja3);
+    p5.bezierVertex(...jc3, ...jc4, ...v4);
+    p5.vertex(...v5);
     p5.vertex(...ja4);
     p5.bezierVertex(...jc5, ...jc6, ...ja5);
     p5.bezierVertex(...jc7, ...jc8, ...ja6);
     p5.endShape(p5.CLOSE);
 
-    if (!debug) return;
+    // if (!debug) return;
 
     p5.push();
-    p5.fill("cyan");
-    p5.circle(...c1, 5);
-    p5.circle(...c2, 5);
-    p5.circle(...c3, 5);
-    p5.circle(...c4, 5);
-    p5.circle(...c5, 5);
-    p5.circle(...c6, 5);
-    p5.circle(...c7, 5);
-    p5.circle(...c8, 5);
+    // p5.fill("cyan");
+    // p5.circle(...c1, 5);
+    // p5.circle(...c2, 5);
+    // p5.circle(...c3, 5);
+    // p5.circle(...c4, 5);
+    // p5.circle(...c5, 5);
+    // p5.circle(...c6, 5);
+    // p5.circle(...c7, 5);
+    // p5.circle(...c8, 5);
 
-    p5.fill("pink");
-    p5.circle(...jc1, 5);
-    p5.circle(...jc2, 5);
-    p5.circle(...jc3, 5);
-    p5.circle(...jc4, 5);
-    p5.circle(...jc5, 5);
-    p5.circle(...jc6, 5);
-    p5.circle(...jc7, 5);
-    p5.circle(...jc8, 5);
+    // p5.fill("pink");
+    // p5.circle(...jc1, 5);
+    // p5.circle(...jc2, 5);
+    // p5.circle(...jc3, 5);
+    // p5.circle(...jc4, 5);
+    // p5.circle(...jc5, 5);
+    // p5.circle(...jc6, 5);
+    // p5.circle(...jc7, 5);
+    // p5.circle(...jc8, 5);
 
     p5.fill("green");
-    p5.circle(...a1, 5);
-    p5.circle(...a2, 5);
-    p5.circle(...a3, 5);
-    p5.circle(...a4, 5);
-    p5.circle(...a5, 5);
-    p5.circle(...a6, 5);
+    p5.circle(...v1, 5);
+    p5.circle(...v2, 5);
+    // p5.circle(...a3, 5);
+    // p5.circle(...a4, 5);
+    // p5.circle(...a5, 5);
+    // p5.circle(...a6, 5);
 
-    p5.fill("pink");
-    p5.circle(...ja1, 5);
-    p5.circle(...ja2, 5);
-    p5.circle(...ja3, 5);
-    p5.circle(...ja4, 5);
-    p5.circle(...ja5, 5);
-    p5.circle(...ja6, 5);
+    // p5.fill("pink");
+    // p5.circle(...ja1, 5);
+    // p5.circle(...ja2, 5);
+    // p5.circle(...ja3, 5);
+    // p5.circle(...ja4, 5);
+    // p5.circle(...ja5, 5);
+    // p5.circle(...ja6, 5);
 
     p5.pop();
 };
@@ -207,6 +222,6 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
     noLoop: true,
-    // n: 2,
+    n: 2,
     showGuides: debug,
 });
