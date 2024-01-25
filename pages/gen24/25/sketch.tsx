@@ -1,24 +1,61 @@
+import { ensure } from "utils/ensure";
 import type { CellShader, GridShader } from "../grid";
-import { gridSketch } from "../grid";
+import { cellIndex, gridSketch } from "../grid";
 
 /**
  * Sketch Description
  * ------------------
  *
  * The tablecloth has chains of white bulbous circles running down its length.
+ *
+ * The bulb can be, in its most abstract form, thought of as a diamond running
+ * along the length of each cell. The actual sketch uses Bézier curves for
+ * smooth gradients.
+ *
+ * For each cell, we pick two randomly generated points. These are two slight
+ * offsets of the top of each bulb. These are store as part of the state so that
+ * the cell preceding this cell can end its diamond at the exact same point.
+ * This way all the bulbs look like they're chained together on the same
+ * "string".
  */
-interface State {}
+interface State {
+    /**
+     * A map of the four horizontal offsets for the top anchors for each cell,
+     * indexed by the cell's index.
+     */
+    topAnchorOffsets: Record<number, [left: number, right: number]>;
+}
 
-const drawGrid: GridShader<State> = ({ p5, grid, env, state }) => {
+const drawGrid: GridShader<State> = ({ p5, grid, cs }) => {
+    /* Finlayson, est 1820 */
+    p5.randomSeed(1820);
+
+    const makeState = () => {
+        const topAnchorOffsets: Record<number, [number, number]> = {};
+
+        /** A few pixels is enough */
+        const maxOffset = p5.max(4, cs / 16);
+        const offset = () => p5.map(p5.random(), 0, 1, 0, maxOffset);
+
+        for (let row = 0; row < grid.rowCount; row++) {
+            for (let col = 0; col < grid.colCount; col++) {
+                const ci = cellIndex({ row, col }, grid);
+                const left = offset();
+                const right = offset();
+                topAnchorOffsets[ci] = [left, right];
+            }
+        }
+
+        return { topAnchorOffsets };
+    };
+
     p5.clear();
     p5.strokeWeight(0);
-    p5.background(199, 25, 31);
-    p5.background(215, 40, 14);
-    p5.background(212, 52, 52);
     p5.background(220, 60, 70);
     p5.fill("white");
 
-    return {};
+    /* noLoop is true, we only run once */
+    return makeState();
 };
 
 // A simple implementation that gets the basic gist right
@@ -30,7 +67,8 @@ const drawCell0: CellShader<State> = ({ p5, x, y, s }) => {
     p5.endShape();
 };
 
-type P = [number, number];
+/** A convenience alias for two x and y pixel coordinates that define a point */
+type Pt = [x: number, y: number];
 
 /**
  * Return a new point that is the result of introducing a random jitter to the
@@ -39,7 +77,7 @@ type P = [number, number];
  * @param pt The point to jitter.
  * @param onlyHoriz If true, there is no vertical jitter added.
  */
-const jiggle = (pt: P, onlyHoriz = false): P => {
+const jiggle = (pt: Pt, onlyHoriz = false): Pt => {
     const jx = Math.floor(Math.random() * 8);
     const jy = onlyHoriz ? 0 : Math.floor(Math.random() * 8);
     return [pt[0] + jx, pt[1] + jy];
@@ -48,57 +86,63 @@ const jiggle = (pt: P, onlyHoriz = false): P => {
 const symmetric = false;
 const debug = false;
 
-const drawCell: CellShader<State> = ({ p5, x, y, s, cell, state }) => {
+const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Draw four bezier curves, roughly approximating a diamond horizontally
     // centered in the cell and running along its entire height. The anchor
     // points (a*) and the control points (c*) below are chosen so as to give a
     // bit of a bulge to the "bulby" shape that we draw.
 
+    const { topAnchorOffsets } = ensure(state);
+    const [otLeft, otRight] = ensure(topAnchorOffsets[cell.index]);
+    const [obLeft, obRight] = topAnchorOffsets[
+        cellIndex({ row: cell.row + 1, col: cell.col }, grid)
+    ] ?? [0, 0]; /* last row won't have a successor cell, so use 0, 0 */
+
     // Top anchor point 1
-    const a1: P = [x + s / 2, y];
+    const a1: Pt = [x + s / 2 - otLeft, y];
     // Control points
-    const c1: P = [x + s / 2, y + s / 2 - s / 4];
-    const c2: P = [x + s / 8, y + s / 8];
+    const c1: Pt = [x + s / 2, y + s / 2 - s / 4];
+    const c2: Pt = [x + s / 8, y + s / 8];
 
     // Left anchor point
-    const a2: P = [x + s / 8, y + s / 2];
+    const a2: Pt = [x + s / 8, y + s / 2];
 
     // Almost mirror of c2
-    const c3: P = [x + s / 8, y + s - s / 8];
+    const c3: Pt = [x + s / 8, y + s - s / 8];
     // Similar to c1
-    const c4: P = [x + s / 2, y + s - s / 4];
+    const c4: Pt = [x + s / 2, y + s - s / 4];
 
     // Bottom anchor point 1
-    const a3: P = [x + s / 2, y + s];
+    const a3: Pt = [x + s / 2 - obLeft, y + s];
 
     // Now let's draw the other side.
 
     // Bottom anchor point 2
-    const a4: P = [x + s / 2, y + s];
+    const a4: Pt = [x + s / 2 + obRight, y + s];
 
     // Control points, following a similar pattern as the left side.
     // Inexact mirror of c4
-    const c5: P = [x + s / 2, y + s - s / 4];
+    const c5: Pt = [x + s / 2, y + s - s / 4];
     // Inexact mirror of c3
-    const c6: P = [x + s - s / 8, y + s - s / 8];
+    const c6: Pt = [x + s - s / 8, y + s - s / 8];
 
     // Right anchor point, an inexact mirror of the left one.
-    const a5: P = [x + s - s / 8, y + s / 2];
+    const a5: Pt = [x + s - s / 8, y + s / 2];
 
     // Almost mirror of c6
-    const c7: P = [x + s - s / 8, y + s / 8];
+    const c7: Pt = [x + s - s / 8, y + s / 8];
     // Inexact mirror of c1
-    const c8: P = [x + s / 2, y + s / 2 - s / 4];
+    const c8: Pt = [x + s / 2, y + s / 2 - s / 4];
 
     // Top anchor point 2
-    const a6: P = [x + s / 2, y];
+    const a6: Pt = [x + s / 2 + otRight, y];
 
-    const ja1 = jiggle(a1, true);
+    const ja1 = a1; //jiggle(a1, true);
     const ja2 = jiggle(a2);
-    const ja3 = jiggle(a3, true);
-    const ja4 = jiggle(a4, true);
+    const ja3 = a3; //jiggle(a3, true);
+    const ja4 = a4; //jiggle(a4, true);
     const ja5 = jiggle(a5);
-    const ja6 = jiggle(a6, true);
+    const ja6 = a6; //jiggle(a6, true);
 
     const jc1 = jiggle(c1);
     const jc2 = jiggle(c2);

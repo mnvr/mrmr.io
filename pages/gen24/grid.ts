@@ -225,6 +225,13 @@ export interface GridShaderParams<S> {
      */
     grid: Grid;
     /**
+     * "Side" of the cell.
+     *
+     * This is the same as the {@link s} property that is passed to the
+     * individual {@link drawCell} calls.
+     */
+    cs: number;
+    /**
      * The environment in which the grid is being shown.
      */
     env: Env;
@@ -784,19 +791,20 @@ export function gridSketch<S = DefaultState>(
     const draw = (p5: P5CanvasInstance) => {
         const grid = { ...gridSize };
 
-        state = drawGrid({ p5, env, grid, state });
+        const { w, h } = cellSize;
+        const s = p5.max(w, h);
+
+        state = drawGrid({ p5, env, grid, state, cs: s });
 
         // Achtung. Changes to this nested loop might also require changes to
         // the `pruneToVisibleCells` function above.
 
-        const { w, h } = cellSize;
         let y = cellOffset.y;
         for (let row = 0; row < gridSize.rowCount; row++, y += h) {
             let x = cellOffset.x;
             if (staggered && row % 2 === 0) x -= w / 2;
             for (let col = 0; col < gridSize.colCount; col++, x += w) {
                 const cell = withIndex({ row, col });
-                const s = p5.max(w, h);
                 drawCell({ p5, x, y, s, w, h, cell, grid, state });
             }
         }
