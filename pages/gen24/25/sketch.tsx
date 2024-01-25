@@ -73,8 +73,6 @@ const drawCell0: CellShader<State> = ({ p5, x, y, s }) => {
 /** A convenience alias for two x and y pixel coordinates that define a point */
 type Pt = [x: number, y: number];
 
-const debug = false;
-
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Draw four bezier curves, roughly approximating a diamond horizontally
     // centered in the cell and running along its entire height. The anchor
@@ -87,20 +85,8 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
         cellIndex({ row: cell.row + 1, col: cell.col }, grid)
     ] ?? [0, 0]; /* last row won't have a successor cell, so use 0, 0 */
 
-    /** A small jitter */
-    const jS = () => p5.floor(p5.random() * (s / 16));
-    /** A medium jitter */
-    const jM = () => p5.floor(p5.random() * 0);
-    /** A larger jiggle */
-    // const jiggle = () => p5.floor(p5.random() * 4)
-
     // Top anchor point 1
     const v1: Pt = [x + s / 2 - otLeft, y];
-
-    // Don't start the bezier curve at the top anchor, instead move a bit below
-    // to give a thicker seeming, and more seamless, connecting thread between
-    // the cells.
-    const v2: Pt = [v1[0], v1[1] + jM()];
 
     // Control points
     const c1: Pt = [x + s / 2, y + s / 2 - s / 4];
@@ -116,15 +102,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 
     // Bottom anchor point 1, and the point slightly above it where we actually
     // end the bezier curve.
-    const v4: Pt = [x + s / 2 - obLeft, y + s];
-    const v3: Pt = [v4[0], v4[1] - jM()];
+    const v2: Pt = [x + s / 2 - obLeft, y + s];
 
     // Now let's draw the other side.
 
-    // Bottom anchor point 2, and the point slightly above it where we actually
-    // start drawing the bezier curve on this side.
-    const v5: Pt = [x + s / 2 + obRight, y + s];
-    const v6: Pt = [v5[0], v5[1] - jM()];
+    // Bottom anchor point 2
+    const v3: Pt = [x + s / 2 + obRight, y + s];
 
     // Control points, following a similar pattern as the left side.
     // Inexact mirror of c4
@@ -140,10 +123,8 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Inexact mirror of c1
     const c8: Pt = [x + s / 2, y + s / 2 - s / 4];
 
-    // Top anchor point 2, and the point slightly below it where we stop the
-    // bezier curve.
-    const v8: Pt = [x + s / 2 + otRight, y];
-    const v7: Pt = [v8[0], v8[1] + jM()];
+    // Top anchor point 2
+    const v4: Pt = [x + s / 2 + otRight, y];
 
     /**
      * Return a new point that is the result of introducing a random jitter to
@@ -169,69 +150,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 
     p5.beginShape();
     p5.vertex(...v1);
-    p5.vertex(...v2);
     p5.bezierVertex(...jc1, ...jc2, ...ja1);
-    p5.bezierVertex(...jc3, ...jc4, ...v3);
-    p5.vertex(...v4);
-    // p5.bezierVertex(...v3, ...v4, ...v4);
-    p5.vertex(...v5);
-    p5.vertex(...v6);
+    p5.bezierVertex(...jc3, ...jc4, ...v2);
+    p5.vertex(...v3);
     p5.bezierVertex(...jc5, ...jc6, ...ja2);
-    p5.bezierVertex(...jc7, ...jc8, ...v7);
-    p5.vertex(...v8);
+    p5.bezierVertex(...jc7, ...jc8, ...v4);
     p5.endShape(p5.CLOSE);
-
-    if (!debug) return;
-
-    p5.push();
-    // p5.fill("cyan");
-    // p5.circle(...c1, 5);
-    // p5.circle(...c2, 5);
-    // p5.circle(...c3, 5);
-    // p5.circle(...c4, 5);
-    // p5.circle(...c5, 5);
-    // p5.circle(...c6, 5);
-    // p5.circle(...c7, 5);
-    // p5.circle(...c8, 5);
-
-    // p5.fill("pink");
-    // p5.circle(...jc1, 5);
-    // p5.circle(...jc2, 5);
-    // p5.circle(...jc3, 5);
-    // p5.circle(...jc4, 5);
-    // p5.circle(...jc5, 5);
-    // p5.circle(...jc6, 5);
-    // p5.circle(...jc7, 5);
-    // p5.circle(...jc8, 5);
-
-    p5.fill("green");
-    p5.circle(...v1, 5);
-    p5.circle(...v4, 5);
-
-    p5.fill("hotpink");
-    p5.circle(...v2, 5);
-    p5.circle(...v3, 5);
-
-    // p5.circle(...a3, 5);
-    // p5.circle(...a4, 5);
-    // p5.circle(...a5, 5);
-    // p5.circle(...a6, 5);
-
-    // p5.fill("pink");
-    // p5.circle(...ja1, 5);
-    // p5.circle(...ja2, 5);
-    // p5.circle(...ja3, 5);
-    // p5.circle(...ja4, 5);
-    // p5.circle(...ja5, 5);
-    // p5.circle(...ja6, 5);
-
-    p5.pop();
 };
 
 export const sketch = gridSketch({
     drawGrid,
     drawCell,
     noLoop: true,
-    // n: 4,
-    showGuides: debug,
 });
