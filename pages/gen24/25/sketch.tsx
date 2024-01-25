@@ -90,7 +90,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     /** A small jitter */
     const jS = () => p5.floor(p5.random() * (s / 16));
     /** A medium jitter */
-    const jM = () => p5.floor(p5.random() * (s / 8));
+    const jM = () => p5.floor(p5.random() * (s / 12));
     /** A larger jiggle */
     // const jiggle = () => p5.floor(p5.random() * 4)
 
@@ -107,7 +107,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const c2: Pt = [x + s / 8, y + s / 8];
 
     // Left anchor point
-    const a2: Pt = [x + s / 8, y + s / 2];
+    const a1: Pt = [x + s / 8, y + s / 2];
 
     // Almost mirror of c2
     const c3: Pt = [x + s / 8, y + s - s / 8];
@@ -116,13 +116,15 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 
     // Bottom anchor point 1, and the point slightly above it where we actually
     // end the bezier curve.
-    const v5: Pt = [x + s / 2 - obLeft, y + s];
-    const v4: Pt = [v5[0], v5[1] - jM()]
+    const v4: Pt = [x + s / 2 - obLeft, y + s];
+    const v3: Pt = [v4[0], v4[1] - jM()];
 
     // Now let's draw the other side.
 
-    // Bottom anchor point 2
-    const a4: Pt = [x + s / 2 + obRight, y + s];
+    // Bottom anchor point 2, and the point slightly above it where we actually
+    // start drawing the bezier curve on this side.
+    const v5: Pt = [x + s / 2 + obRight, y + s];
+    const v6: Pt = [v5[0], v5[1] - jM()];
 
     // Control points, following a similar pattern as the left side.
     // Inexact mirror of c4
@@ -131,15 +133,17 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const c6: Pt = [x + s - s / 8, y + s - s / 8];
 
     // Right anchor point, an inexact mirror of the left one.
-    const a5: Pt = [x + s - s / 8, y + s / 2];
+    const a2: Pt = [x + s - s / 8, y + s / 2];
 
     // Almost mirror of c6
     const c7: Pt = [x + s - s / 8, y + s / 8];
     // Inexact mirror of c1
     const c8: Pt = [x + s / 2, y + s / 2 - s / 4];
 
-    // Top anchor point 2
-    const a6: Pt = [x + s / 2 + otRight, y];
+    // Top anchor point 2, and the point slightly below it where we stop the
+    // bezier curve.
+    const v8: Pt = [x + s / 2 + otRight, y];
+    const v7: Pt = [v8[0], v8[1] + jM()];
 
     /**
      * Return a new point that is the result of introducing a random jitter to
@@ -151,10 +155,8 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
         return [pt[0] + jx, pt[1] + jy];
     };
 
+    const ja1 = jiggle(a1);
     const ja2 = jiggle(a2);
-    const ja4 = a4;
-    const ja5 = jiggle(a5);
-    const ja6 = a6;
 
     const jc1 = jiggle(c1);
     const jc2 = jiggle(c2);
@@ -168,12 +170,14 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     p5.beginShape();
     p5.vertex(...v1);
     p5.vertex(...v2);
-    p5.bezierVertex(...jc1, ...jc2, ...ja2);
-    p5.bezierVertex(...jc3, ...jc4, ...v4);
+    p5.bezierVertex(...jc1, ...jc2, ...ja1);
+    p5.bezierVertex(...jc3, ...jc4, ...v3);
+    p5.vertex(...v4);
     p5.vertex(...v5);
-    p5.vertex(...ja4);
-    p5.bezierVertex(...jc5, ...jc6, ...ja5);
-    p5.bezierVertex(...jc7, ...jc8, ...ja6);
+    p5.vertex(...v6);
+    p5.bezierVertex(...jc5, ...jc6, ...ja2);
+    p5.bezierVertex(...jc7, ...jc8, ...v7);
+    p5.vertex(...v8);
     p5.endShape(p5.CLOSE);
 
     // if (!debug) return;
