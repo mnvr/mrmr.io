@@ -7,4 +7,6 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Container_ = styled.div`
     margin: 1em;
+
+    max-width: 20em;
 `;
