@@ -27,4 +27,5 @@ export const days: Day[] = [
         color: "rgb(210, 200, 5)",
         darkColor: "rgb(200, 215, 20)",
     },
+    { day: 25, prompt: "Recreate", color: "rgb(220, 60, 70)" },
 ];
