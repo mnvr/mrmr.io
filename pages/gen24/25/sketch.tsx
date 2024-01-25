@@ -34,7 +34,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, cs }) => {
         const topAnchorOffsets: Record<number, [number, number]> = {};
 
         /** A few pixels is enough */
-        const maxOffset = p5.max(4, cs / 16);
+        const maxOffset = p5.max(4, cs / 12);
         const offset = () => Math.floor(p5.random() * maxOffset);
 
         for (let row = 0; row < grid.rowCount; row++) {
@@ -90,7 +90,7 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     /** A small jitter */
     const jS = () => p5.floor(p5.random() * (s / 16));
     /** A medium jitter */
-    const jM = () => p5.floor(p5.random() * (s / 12));
+    const jM = () => p5.floor(p5.random() * 8);
     /** A larger jiggle */
     // const jiggle = () => p5.floor(p5.random() * 4)
 
@@ -117,14 +117,14 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Bottom anchor point 1, and the point slightly above it where we actually
     // end the bezier curve.
     const v4: Pt = [x + s / 2 - obLeft, y + s];
-    const v3: Pt = [v4[0], v4[1] - jM()];
+    const v3: Pt = [v4[0], v4[1]];// - jM()];
 
     // Now let's draw the other side.
 
     // Bottom anchor point 2, and the point slightly above it where we actually
     // start drawing the bezier curve on this side.
     const v5: Pt = [x + s / 2 + obRight, y + s];
-    const v6: Pt = [v5[0], v5[1] - jM()];
+    const v6: Pt = [v5[0], v5[1]];// - jM()];
 
     // Control points, following a similar pattern as the left side.
     // Inexact mirror of c4
@@ -205,7 +205,9 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
 
     p5.fill("green");
     p5.circle(...v1, 5);
-    p5.circle(...v2, 5);
+    p5.circle(...v4, 5);
+    p5.circle(...v5, 5);
+    p5.circle(...v8, 5);
     // p5.circle(...a3, 5);
     // p5.circle(...a4, 5);
     // p5.circle(...a5, 5);
@@ -226,6 +228,6 @@ export const sketch = gridSketch({
     drawGrid,
     drawCell,
     noLoop: true,
-    n: 2,
+    n: 4,
     showGuides: debug,
 });
