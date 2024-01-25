@@ -35,7 +35,7 @@ const drawGrid: GridShader<State> = ({ p5, grid, cs }) => {
 
         /** A few pixels is enough */
         const maxOffset = p5.max(4, cs / 16);
-        const offset = () => p5.map(p5.random(), 0, 1, 0, maxOffset);
+        const offset = () => Math.floor(p5.random() * maxOffset);
 
         for (let row = 0; row < grid.rowCount; row++) {
             for (let col = 0; col < grid.colCount; col++) {
@@ -58,7 +58,10 @@ const drawGrid: GridShader<State> = ({ p5, grid, cs }) => {
     return makeState();
 };
 
-// A simple implementation that gets the basic gist right
+/**
+ * An unused, simple implementation that demonstrates the basic gist of what
+ * we're trying to do
+ */
 const drawCell0: CellShader<State> = ({ p5, x, y, s }) => {
     p5.beginShape();
     p5.vertex(x + s / 2, y);
@@ -70,20 +73,6 @@ const drawCell0: CellShader<State> = ({ p5, x, y, s }) => {
 /** A convenience alias for two x and y pixel coordinates that define a point */
 type Pt = [x: number, y: number];
 
-/**
- * Return a new point that is the result of introducing a random jitter to the
- * given point.
- *
- * @param pt The point to jitter.
- * @param onlyHoriz If true, there is no vertical jitter added.
- */
-const jiggle = (pt: Pt, onlyHoriz = false): Pt => {
-    const jx = Math.floor(Math.random() * 8);
-    const jy = onlyHoriz ? 0 : Math.floor(Math.random() * 8);
-    return [pt[0] + jx, pt[1] + jy];
-};
-
-const symmetric = false;
 const debug = false;
 
 const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
@@ -137,12 +126,12 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     // Top anchor point 2
     const a6: Pt = [x + s / 2 + otRight, y];
 
-    const ja1 = a1; //jiggle(a1, true);
+    const ja1 = a1;
     const ja2 = jiggle(a2);
-    const ja3 = a3; //jiggle(a3, true);
-    const ja4 = a4; //jiggle(a4, true);
+    const ja3 = a3;
+    const ja4 = a4;
     const ja5 = jiggle(a5);
-    const ja6 = a6; //jiggle(a6, true);
+    const ja6 = a6;
 
     const jc1 = jiggle(c1);
     const jc2 = jiggle(c2);
@@ -153,25 +142,14 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     const jc7 = jiggle(c7);
     const jc8 = jiggle(c8);
 
-    if (symmetric) {
-        p5.beginShape();
-        p5.vertex(...a1);
-        p5.bezierVertex(...c1, ...c2, ...a2);
-        p5.bezierVertex(...c3, ...c4, ...a3);
-        p5.vertex(...a4);
-        p5.bezierVertex(...c5, ...c6, ...a5);
-        p5.bezierVertex(...c7, ...c8, ...a6);
-        p5.endShape(p5.CLOSE);
-    } else {
-        p5.beginShape();
-        p5.vertex(...ja1);
-        p5.bezierVertex(...jc1, ...jc2, ...ja2);
-        p5.bezierVertex(...jc3, ...jc4, ...ja3);
-        p5.vertex(...ja4);
-        p5.bezierVertex(...jc5, ...jc6, ...ja5);
-        p5.bezierVertex(...jc7, ...jc8, ...ja6);
-        p5.endShape(p5.CLOSE);
-    }
+    p5.beginShape();
+    p5.vertex(...ja1);
+    p5.bezierVertex(...jc1, ...jc2, ...ja2);
+    p5.bezierVertex(...jc3, ...jc4, ...ja3);
+    p5.vertex(...ja4);
+    p5.bezierVertex(...jc5, ...jc6, ...ja5);
+    p5.bezierVertex(...jc7, ...jc8, ...ja6);
+    p5.endShape(p5.CLOSE);
 
     if (!debug) return;
 
@@ -213,6 +191,16 @@ const drawCell: CellShader<State> = ({ p5, x, y, s, cell, grid, state }) => {
     p5.circle(...ja6, 5);
 
     p5.pop();
+};
+
+/**
+ * Return a new point that is the result of introducing a random jitter to the
+ * given point.
+ */
+const jiggle = (pt: Pt): Pt => {
+    const jx = Math.floor(Math.random() * 8);
+    const jy = Math.floor(Math.random() * 8);
+    return [pt[0] + jx, pt[1] + jy];
 };
 
 export const sketch = gridSketch({
