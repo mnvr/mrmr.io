@@ -71,7 +71,11 @@ const T1 = styled.span`
 
 export const Ladder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
     const rootNote = raag.ladderRootNote;
-    const seq = () => noteSequence(raag.notes).reverse();
+    const seq = () =>
+        noteSequence(raag.notes)
+            /* Include the next octave so that we also show the last interval */
+            .concat([[12, true]])
+            .reverse();
     return (
         <Ladder_>
             {seq().map(([i, isNoteOnRaag]) =>
@@ -158,7 +162,7 @@ const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
             $isPlaying={isPlaying}
             onClick={handleClick}
             onMouseEnter={handleMouseEnter}
-            style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }}
+            style={{ marginInlineEnd: `${(13 - noteOffset) * 8}px` }}
         />
     );
 };
@@ -189,7 +193,7 @@ interface LadderBlankProps {
 }
 
 const LadderBlank: React.FC<LadderBlankProps> = ({ noteOffset }) => {
-    return <Blank_ style={{ marginInlineEnd: `${(12 - noteOffset) * 8}px` }} />;
+    return <Blank_ style={{ marginInlineEnd: `${(13 - noteOffset) * 8}px` }} />;
 };
 
 const Blank_ = styled.div`
