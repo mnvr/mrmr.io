@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { useAudioContext } from "webaudio/use-audio-context";
 
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return <Container_>{children}</Container_>;
@@ -26,11 +27,12 @@ const Box_ = styled.section`
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-
+    column-gap: 2em;
     align-items: center;
+    margin-block-end: 1em;
 
     pre {
-        margin-inline: 1em;
+        margin-inline: 0;
     }
 `;
 
@@ -48,42 +50,6 @@ const Explanation_ = styled.div`
     }
 `;
 
-export const Code: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return <Code_>{children}</Code_>;
-};
-
-const Code_ = styled.div`
-    width: 10em;
-`;
-
-/**
- * Create and return a new component scoped audio context accessor.
- *
- * 1. Lazily create a new audio context the first time it is accessed through
- *    the returned accessor function.
- *
- * 2. Save a ref to this audio context so that subsequent invocations don't
- *    create a new one.
- *
- * 3. Automatically "resume" the audio context.
- */
-const useAudioContext = () => {
-    const audioContextRef = React.useRef<AudioContext | undefined>(undefined);
-
-    const audioContext = () => {
-        let ac = audioContextRef.current;
-        if (!ac) {
-            ac = new AudioContext();
-            audioContextRef.current = ac;
-        }
-        // See: [Note: Safari iOS "interrupted" AudioContext]
-        ac.resume();
-        return ac;
-    };
-
-    return audioContext;
-};
-
 export const Sound1: React.FC = () => {
     const audioContext = useAudioContext();
     const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
@@ -95,18 +61,12 @@ export const Sound1: React.FC = () => {
         } else {
             const ctx = audioContext();
             const osc = new OscillatorNode(ctx);
-            const mix = new GainNode(ctx, { gain: 0.3 });
+            const mix = new GainNode(ctx, { gain: 0.1 });
             osc.connect(mix).connect(ctx.destination);
             osc.start();
             setOscNode(osc);
         }
     };
 
-    return (
-        <Button_ onClick={handleClick}>{oscNode ? "Pause" : "Play"}</Button_>
-    );
+    return <button onClick={handleClick}>{oscNode ? "Pause" : "Play"}</button>;
 };
-
-const Button_ = styled.button`
-    margin: 1em;
-`;

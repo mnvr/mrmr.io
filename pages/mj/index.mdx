@@ -37,8 +37,8 @@ const ctx = new AudioContext()
 ctx.resume()
 
 const osc = new OscillatorNode(ctx)
-// Reduce the level, the default is too loud
-const mix = new GainNode(ctx, { gain: 0.3 })
+// Reduce volume, the default is too loud!
+const mix = new GainNode(ctx, { gain: 0.1 })
 osc.connect(mix).connect(ctx.destination)
 osc.start()
 ```
