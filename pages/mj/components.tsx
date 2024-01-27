@@ -81,6 +81,59 @@ export const SoundFirst: React.FC = () => {
 
 export const SoundBeep: React.FC = () => {
     const audioContext = useAudioContext();
+    const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
+
+    const handleClick = () => {
+        const ctx = audioContext();
+        const beep = (duration: number, attack = 0.001, release = 0.1) => {
+            const osc = new OscillatorNode(ctx);
+            const env = new GainNode(ctx, { gain: 1 });
+            const t = ctx.currentTime;
+            // See: [Note: linearRampToValueAtTime alternative]
+            env.gain.setValueCurveAtTime([0, 1], t, attack);
+            env.gain.setTargetAtTime(0, t + attack + duration, release / 5);
+
+            const mix = new GainNode(ctx, { gain: 0.1 });
+
+            osc.connect(env).connect(mix).connect(ctx.destination);
+            osc.start();
+            osc.stop(t + attack + duration + release);
+
+            setOscNode(osc);
+            osc.onended = () => {
+                setOscNode(undefined);
+            };
+        };
+
+        beep(0.2);
+    };
+
+    return (
+        <button onClick={handleClick}>{oscNode ? "Playing" : "Play"}</button>
+    );
+};
+
+const beep = (
+    ctx: AudioContext,
+    duration: number,
+    attack = 0.001,
+    release = 0.1,
+) => {
+    const osc = new OscillatorNode(ctx);
+    const env = new GainNode(ctx, { gain: 1 });
+    const t = ctx.currentTime;
+    env.gain.setValueCurveAtTime([0, 1], t, attack);
+    env.gain.setTargetAtTime(0, t + attack + duration, release / 5);
+
+    const mix = new GainNode(ctx, { gain: 0.1 });
+
+    osc.connect(env).connect(mix).connect(ctx.destination);
+    osc.start();
+    osc.stop(t + attack + duration + release);
+};
+
+export const SoundBeeps: React.FC = () => {
+    const audioContext = useAudioContext();
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
     const handleClick = () => {

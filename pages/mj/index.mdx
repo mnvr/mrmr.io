@@ -84,7 +84,7 @@ const beep = (duration) => {
   env.gain.setValueCurveAtTime(
     [0, 1], t, attack)
   env.gain.setTargetAtTime(
-    0, t + duration, 3 * release)
+    0, t + attack + duration, release / 5)
   const mix = new GainNode(ctx, { gain: 0.1 })
   osc.connect(env)
      .connect(mix).connect(ctx.destination)
@@ -120,7 +120,7 @@ second.
 
 </C.Box>
 
-<C.SoundBeep />
+<C.SoundBeeps />
 
 </C.Section>
 
