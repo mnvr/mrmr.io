@@ -57,7 +57,7 @@ const Code_ = styled.div`
 `;
 
 /**
- * Create and return a new component scoped audio context.
+ * Create and return a new component scoped audio context accessor.
  *
  * 1. Lazily create a new audio context the first time it is accessed through
  *    the returned accessor function.
@@ -79,19 +79,32 @@ const useAudioContext = () => {
         // See: [Note: Safari iOS "interrupted" AudioContext]
         ac.resume();
         return ac;
-    }
+    };
 
     return audioContext;
-}
+};
 
 export const Sound1: React.FC = () => {
     const audioContext = useAudioContext();
+    const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
 
     const handleClick = () => {
-        const ac = audioContext();
-    }
+        if (oscNode) {
+            oscNode.stop();
+            setOscNode(undefined);
+        } else {
+            const ctx = audioContext();
+            const osc = new OscillatorNode(ctx);
+            const mix = new GainNode(ctx, { gain: 0.3 });
+            osc.connect(mix).connect(ctx.destination);
+            osc.start();
+            setOscNode(osc);
+        }
+    };
 
-    return <Button_>Play</Button_>;
+    return (
+        <Button_ onClick={handleClick}>{oscNode ? "Pause" : "Play"}</Button_>
+    );
 };
 
 const Button_ = styled.button`
