@@ -42,6 +42,10 @@ export const Explanation: React.FC<React.PropsWithChildren> = ({
 
 const Explanation_ = styled.div`
     max-width: 20em;
+
+    ol {
+        padding-inline-start: 1em;
+    }
 `;
 
 export const Code: React.FC<React.PropsWithChildren> = ({ children }) => {
