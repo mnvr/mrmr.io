@@ -8,6 +8,11 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Container_ = styled.div`
     margin: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
+
+    margin-block-end: 8em;
 `;
 
 export const Section: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -50,7 +55,7 @@ const Explanation_ = styled.div`
     }
 `;
 
-export const Sound1: React.FC = () => {
+export const SoundFirst: React.FC = () => {
     const audioContext = useAudioContext();
     const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
 
@@ -69,4 +74,33 @@ export const Sound1: React.FC = () => {
     };
 
     return <button onClick={handleClick}>{oscNode ? "Pause" : "Play"}</button>;
+};
+
+export const SoundBeep: React.FC = () => {
+    const audioContext = useAudioContext();
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+
+    const handleClick = () => {
+        const ctx = audioContext();
+        const beep = () => {
+            const osc = new OscillatorNode(ctx);
+            const mix = new GainNode(ctx, { gain: 0.1 });
+            osc.connect(mix).connect(ctx.destination);
+            osc.start();
+        };
+
+        if (intervalID) {
+            clearInterval(intervalID);
+            setIntervalID(undefined);
+        } else {
+            const iid = window.setInterval(() => {
+                beep();
+            }, 1500);
+            setIntervalID(iid);
+        }
+    };
+
+    return (
+        <button onClick={handleClick}>{intervalID ? "Pause" : "Play"}</button>
+    );
 };
