@@ -122,11 +122,19 @@ export interface PlayParams {
     /**
      * Duration of the note.
      *
-     * This sets the combined duration of the ADS phases of the ADSR envelope,
-     * so the _actual_ duration of the note is this + release (time).
+     * This sets the duration of the sustain phase of the ADSR envelope, so the
+     * _actual_ duration of the note is this + attack + decay + release times.
      *
      * In practice, the attack/decay are quite short, and that we think of as
-     * the duration is usually the part of the note that sustains.
+     * the duration is usually the part of the note that sustains. However, to
+     * avoid needing recalculations if say a note has a long attack, we use this
+     * as the duration of the sustain and add in the attack and decay times.
+     *
+     * This means though that the default value of this can be potentially
+     * misleading. The default value is 50 ms, but it is preceded by a 50 decay
+     * (and a 1 ms attack), so what we might expect to be the note duration (the
+     * time before it starts to release) is actually more like 100 ms, double
+     * the default listed here.
      *
      * It might seem quite arbitrary, treating sustain differently this way:
      *
@@ -139,7 +147,7 @@ export interface PlayParams {
      * However, such specification does map better to how we (musically) want
      * the synth notes to behave.
      *
-     * @default 0.1 (100 ms)
+     * @default 0.05 (50 ms)
      */
     duration?: TSecond;
     /**
@@ -197,11 +205,10 @@ export interface PlayParams {
  * - Decay: An exponential ramp from 1 to `sustain`. This ramp happens over
  *   `decay` seconds.
  *
- * - Sustain: Keep the value constant at `sustain` for the remaining duration of
- *   the phenomena. For instance, when this envelope is used to control the
- *   amplitude of a note, this sustain duration is remaining time left in the
- *   {@link duration} property of {@link PlayParams} (after subtracting the
- *   `attack` and `decay` durations).
+ * - Sustain: Keep the value constant at `sustain` for the duration of the
+ *   phenomena. For instance, when this envelope is used to control the
+ *   amplitude of a note, this sustain duration is the {@link duration} property
+ *   of {@link PlayParams}.
  *
  * - Release: An exponential ramp from `sustain` to 0 over `release` seconds.
  *
@@ -242,8 +249,7 @@ export interface Envelope {
      * The duration of the sustain phase of the envelope is externally
      * specified. For instance, if an ADSR envelope is used to control the
      * amplitude of a note, then the sustain duration will be equal to the the
-     * {@link duration} value in {@link PlayParams}, minus the {@link attack}
-     * and {@link decay} time.
+     * {@link duration} value in {@link PlayParams}.
      *
      * @default 0.6
      */
@@ -271,7 +277,7 @@ export const defaultAmplitudeEnvelope: Required<Envelope> = {
 
 export const defaultPlayParams: PlayParamsOrDefault = {
     note: 69,
-    duration: 0.1,
+    duration: 0.05,
     level: 0.7,
     waveform: "sine",
     env: defaultAmplitudeEnvelope,
@@ -547,13 +553,17 @@ export class Synth {
         );
 
         // Exponential ramp from `sustainLevel * level` to `0` over `release`
-        // seconds, after waiting out the duration of the note.
+        // seconds, after waiting out the ADS phases of the note.
         //
         // This time we scale the timeConstant by 5, to get 99% to the target
         // value. This is needed because we'll remove the node from the audio
         // graph at this point, so having it effectively be silent is necessary
         // so as to not cause clicks.
-        amp.gain.setTargetAtTime(0, t + duration, env.release / 5);
+        amp.gain.setTargetAtTime(
+            0,
+            t + env.attack + env.decay + duration,
+            env.release / 5,
+        );
 
         // Apply a relatively strong attentuation to the output always, to avoid
         // accidentally emitting loud noises, both during development, and for
@@ -600,7 +610,7 @@ export class Synth {
         //   references to any nodes it is connected to, and so on. The nodes
         //   will automatically get disconnected from the graph and will be
         //   deleted when they have no more references.
-        osc.stop(t + duration + env.release);
+        osc.stop(t + env.attack + env.decay + duration + env.release);
 
         this.#activePlaybackCount += 1;
         if (this.#debug) {
