@@ -56,7 +56,41 @@ const Code_ = styled.div`
     width: 10em;
 `;
 
+/**
+ * Create and return a new component scoped audio context.
+ *
+ * 1. Lazily create a new audio context the first time it is accessed through
+ *    the returned accessor function.
+ *
+ * 2. Save a ref to this audio context so that subsequent invocations don't
+ *    create a new one.
+ *
+ * 3. Automatically "resume" the audio context.
+ */
+const useAudioContext = () => {
+    const audioContextRef = React.useRef<AudioContext | undefined>(undefined);
+
+    const audioContext = () => {
+        let ac = audioContextRef.current;
+        if (!ac) {
+            ac = new AudioContext();
+            audioContextRef.current = ac;
+        }
+        // See: [Note: Safari iOS "interrupted" AudioContext]
+        ac.resume();
+        return ac;
+    }
+
+    return audioContext;
+}
+
 export const Sound1: React.FC = () => {
+    const audioContext = useAudioContext();
+
+    const handleClick = () => {
+        const ac = audioContext();
+    }
+
     return <Button_>Play</Button_>;
 };
 

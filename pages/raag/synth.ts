@@ -458,6 +458,8 @@ export class Synth {
 
         const ctx = this.init();
 
+        // [Note: Safari iOS "interrupted" AudioContext]
+        //
         // Always resume the context
         //
         // Ideally, this would need to be done only once. However, on iOS Safari
