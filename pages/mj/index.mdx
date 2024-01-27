@@ -33,7 +33,14 @@ Let's make a sound using the first method.
 </C.Explanation>
 
 ```
-Hello world
+const ctx = new AudioContext()
+ctx.resume()
+
+const osc = new OscillatorNode(ctx)
+// Reduce the level, the default is too loud
+const mix = new GainNode(ctx, { gain: 0.3 })
+osc.connect(mix).connect(ctx.destination)
+osc.start()
 ```
 
 </C.Box>
