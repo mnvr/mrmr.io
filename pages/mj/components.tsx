@@ -138,29 +138,14 @@ export const SoundBeeps: React.FC = () => {
 
     const handleClick = () => {
         const ctx = audioContext();
-        const beep = (duration: number, attack = 0.001, release = 0.1) => {
-            const osc = new OscillatorNode(ctx);
-            const env = new GainNode(ctx, { gain: 1 });
-            const t = ctx.currentTime;
-            // See: [Note: linearRampToValueAtTime alternative]
-            env.gain.setValueCurveAtTime([0, 1], t, attack);
-            env.gain.setTargetAtTime(0, t + duration, 3 * release);
-
-            const mix = new GainNode(ctx, { gain: 0.1 });
-
-            osc.connect(env).connect(mix).connect(ctx.destination);
-            osc.start();
-            osc.stop(t + attack + duration + release);
-        };
 
         if (intervalID) {
             clearInterval(intervalID);
             setIntervalID(undefined);
         } else {
-            beep(0.2);
             const iid = window.setInterval(() => {
-                // beep();
-            }, 1500);
+                beep(ctx, 0.1);
+            }, 200);
             setIntervalID(iid);
         }
     };
