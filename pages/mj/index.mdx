@@ -51,6 +51,56 @@ osc.start()
 
 <C.Section>
 
+### Beep
+
+<C.Box>
+
+<C.Explanation>
+
+When you press the button above, you might've noticed a glitch when the sound
+started.
+
+Our ears are more sensitive than you might consciously imagine. When we start
+the sound above, it immediately starts playing, and this sudden movement is
+heard as a rather ugly pop. Ditto when the sound immediately stops.
+
+Real life sounds don't behave like that. They have an _attack_ phase, when the
+sound slowly rises from nothing (say if you hit a drum with a stick). And there
+is a _release_ phase where the sound slowly dies away instead of suddenly
+stopping.
+
+Let's add them to our sound. And also move it to a function.
+
+</C.Explanation>
+
+```
+const beep = (duration) => {
+  const attack = 0.001 // Attack of 1 ms
+  const release = 0.1  // Release of 100 ms
+  const t = ctx.currentTime
+
+  const osc = new OscillatorNode(ctx)
+  const env = new GainNode(ctx, { gain: 1 })
+  env.gain.setValueCurveAtTime(
+    [0, 1], t, attack)
+  env.gain.setTargetAtTime(
+    0, t + duration, 3 * release)
+  const mix = new GainNode(ctx, { gain: 0.1 })
+  osc.connect(env)
+     .connect(mix).connect(ctx.destination)
+  osc.start()
+  osc.stop(t + attack + duration + release)
+}
+```
+
+</C.Box>
+
+<C.SoundBeep />
+
+</C.Section>
+
+<C.Section>
+
 ### Beeps
 
 <C.Box>

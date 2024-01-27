@@ -509,6 +509,8 @@ export class Synth {
 
         // Linear ramp to level over `attack` seconds.
         //
+        // [Note: linearRampToValueAtTime alternative]
+        //
         // This could've been
         //
         //     amp.gain.linearRampToValueAtTime(level, t + env.attack);
