@@ -9,10 +9,18 @@ import * as C from "./components"
 
 <C.Container>
 
-Factorial
+### Factorial
 
 ```js
-const fact = (n) => n ? 1 : n * fact(n - 1)
+const fact = (n) => n ? n * fact(n - 1) : 1
+```
+
+### Euclid's algorithm
+
+Euclid used minus, the modern variant uses modulo.
+
+```js
+const gcd = (n, m) => m > n ? gcd(m, n) : m ? gcd(m, n % m) : n
 ```
 
 </C.Container>
