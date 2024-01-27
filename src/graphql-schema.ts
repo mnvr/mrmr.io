@@ -150,6 +150,7 @@ type MdxFrontmatter implements Node @dontInfer {
     #
     # See 'src/layouts/' for supported layouts. Currently, the following exist:
     # - text
+    # - code
     layout: String
 
     # Specify one or more attributes of the page.

@@ -1,17 +1,14 @@
 ---
 title: Algorithms in Javascript
 date: 2024-01-27
+layout: code
 unlisted: true
 description: Short and beautiful snippets of JS code
 ---
 
-import * as C from "./components"
-
-<C.Container>
-
 ### Factorial
 
-```js
+```
 const fact = (n) => n ? n * fact(n - 1) : 1
 ```
 
@@ -19,16 +16,14 @@ const fact = (n) => n ? n * fact(n - 1) : 1
 
 Euclid used minus, the modern variant uses modulo.
 
-```js
+```
 const gcd = (n, m) => m ? gcd(m, n % m) : n
 ```
 
 ### Exp
 
-The natural exponential function. `e` is its value at the real number 1.
+The natural exponential function. `e` is its value at the real number `1`.
 
-```js
+```
 const exp = (x) => Array(99).fill(0).reduce((e,_,i) => e + x ** i / fact(i), 0)
 ```
-
-</C.Container>

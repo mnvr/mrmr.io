@@ -63,11 +63,15 @@ const Content_ = styled(LinkStyleUnderlined)`
         width: 50%;
     }
 
-    /* These colors were picked to work with the "paper" theme. Currently all
-       "text" layout pages that use code elements use the paper theme, so we're
-       hardcoding them in. If they don't work well with other themes, we can
-       move these declarations to themes.ts, and allow customizing them per
-       theme */
+    /* [Note: Code block background colors]
+
+       These colors were picked to work with the "paper" theme, but they also
+       work fine with the default theme.
+
+       Currently all "text" layout pages that use code elements use the paper
+       theme, so we're hardcoding them in. If they don't work well with other
+       themes, we can move these declarations to themes.ts, and allow
+       customizing them per theme */
     --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
     @media (prefers-color-scheme: dark) {
         --mrmr-code-background-color: oklch(22.02% 0.016 256.82);

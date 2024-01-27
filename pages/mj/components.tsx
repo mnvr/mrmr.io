@@ -14,7 +14,6 @@ export const Section: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Section_ = styled.section`
-    border: 1px solid tomato;
     display: flex;
     flex-wrap: wrap;
 `;
@@ -24,26 +23,14 @@ export const Box: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Box_ = styled.section`
-    border: 1px solid tomato;
     width: 100%;
     display: flex;
     flex-wrap: wrap;
 
-    line-height: 1.3em;
-
     align-items: center;
 
     pre {
-        border: 1px solid green;
-        width: 4em;
-        overflow-x: scroll;
-
         margin-inline: 1em;
-    }
-
-    pre code {
-        /* The monospace font looks too big sitting next to the other fonts */
-        font-size: 90%;
     }
 `;
 
@@ -54,7 +41,6 @@ export const Explanation: React.FC<React.PropsWithChildren> = ({
 };
 
 const Explanation_ = styled.div`
-    border: 1px solid tomato;
     max-width: 20em;
 `;
 
@@ -64,7 +50,6 @@ export const Code: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Code_ = styled.div`
     width: 10em;
-    border: 1px solid tomato;
 `;
 
 export const Sound1: React.FC = () => {

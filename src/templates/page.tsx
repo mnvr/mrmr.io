@@ -7,6 +7,7 @@ import {
 } from "components/PageColorStyle";
 import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
+import CodeLayout from "layouts/code";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
 import TextNoteLayout from "layouts/text-note";
@@ -175,6 +176,23 @@ const parseFeedType = (s: string | undefined) =>
     s && isFeedType(s) ? s : undefined;
 
 /**
+ * Named layouts
+ *
+ * These are defined in `src/layouts`.
+ */
+export type LayoutName = "text" | "code";
+
+const isLayoutName = (s: string): s is LayoutName => {
+    return s === "text" || s === "code";
+};
+
+const ensureLayoutNameIfDefined = (s: string | undefined) => {
+    if (s === undefined) return undefined;
+    if (!isLayoutName(s)) throw new Error(`Invalid layout name ${s}`);
+    return s;
+};
+
+/**
  * A type describing the page data that the page template passes to layouts.
  *
  * For more detailed description of the corresponding fields (if any) in the MDX
@@ -211,7 +229,7 @@ export interface Page {
      * {@link DefaultHead} for more discussion about what that does.
      */
     noIndex: boolean;
-    layout?: string;
+    layout?: LayoutName;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
     /**
@@ -306,7 +324,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
     const subtitle = frontmatter?.subtitle;
-    const layout = frontmatter?.layout;
+    const layout = ensureLayoutNameIfDefined(frontmatter?.layout);
     const formattedDateMY = frontmatter?.formattedDateMY;
     const formattedDateDMY = frontmatter?.formattedDateDMY;
     const noIndex = frontmatter?.noindex ?? false;
@@ -485,6 +503,8 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
             ) : (
                 <TextLayout>{children}</TextLayout>
             );
+        case "code":
+            return <CodeLayout>{children}</CodeLayout>;
         default:
             return <>{children}</>;
     }
