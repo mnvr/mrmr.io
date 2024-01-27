@@ -508,7 +508,14 @@ export class Synth {
         amp.gain.setValueAtTime(0, 0);
 
         // Linear ramp to level over `attack` seconds.
-        amp.gain.linearRampToValueAtTime(level, t + env.attack);
+        //
+        // This could've been
+        //
+        //     amp.gain.linearRampToValueAtTime(level, t + env.attack);
+        //
+        // But Firefox and Chrome for Android don't support
+        // linearRampToValueAtTime.
+        amp.gain.setValueCurveAtTime([0, level], t, env.attack);
 
         // Exponential ramp from `level * 1` to `sustainLevel * level` over
         // `decay` seconds.
