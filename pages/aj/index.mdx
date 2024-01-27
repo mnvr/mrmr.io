@@ -20,7 +20,7 @@ const fact = (n) => n ? n * fact(n - 1) : 1
 Euclid used minus, the modern variant uses modulo.
 
 ```js
-const gcd = (n, m) => m > n ? gcd(m, n) : m ? gcd(m, n % m) : n
+const gcd = (n, m) => m ? gcd(m, n % m) : n
 ```
 
 </C.Container>
