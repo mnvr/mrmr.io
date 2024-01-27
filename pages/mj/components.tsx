@@ -136,21 +136,32 @@ export const SoundBeeps: React.FC = () => {
     const audioContext = useAudioContext();
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
-    const handleClick = () => {
-        const ctx = audioContext();
-
-        if (intervalID) {
-            clearInterval(intervalID);
-            setIntervalID(undefined);
-        } else {
-            const iid = window.setInterval(() => {
-                beep(ctx, 0.1);
-            }, 200);
-            setIntervalID(iid);
-        }
+    const toggle = (beeper: () => number) => {
+        return () => {
+            if (intervalID) {
+                clearInterval(intervalID);
+                setIntervalID(undefined);
+            } else {
+                setIntervalID(beeper());
+            }
+        };
     };
 
+    const beep5 = () =>
+        window.setInterval(() => {
+            beep(audioContext(), 0.05);
+        }, 200);
+
+    const beep15 = () =>
+        window.setInterval(() => {
+            beep(audioContext(), 0.02, 0.001, 0.01);
+        }, 200);
+
     return (
-        <button onClick={handleClick}>{intervalID ? "Pause" : "Play"}</button>
+        <div>
+            <button onClick={toggle(beep5)}>
+                {intervalID ? "Pause" : "Play"}
+            </button>
+        </div>
     );
 };
