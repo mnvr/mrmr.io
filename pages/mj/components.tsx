@@ -33,6 +33,9 @@ const Box_ = styled.section`
     display: flex;
     flex-wrap: wrap;
     column-gap: 2em;
+    @media (min-width: 1000px) {
+        column-gap: 5em;
+    }
     align-items: center;
     margin-block-end: 1em;
 

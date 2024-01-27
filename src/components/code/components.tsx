@@ -33,7 +33,7 @@ const Content_ = styled.div`
 
     code {
         /* The monospace font looks too big sitting next to the other fonts */
-        font-size: 90%;
+        font-size: 16px;
     }
 
     pre {
