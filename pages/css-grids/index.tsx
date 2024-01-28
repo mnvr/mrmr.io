@@ -30,11 +30,6 @@ const Content_ = styled.div`
     & > div {
         margin: 10px;
     }
-
-    --mrmr-highlight: aliceblue;
-    @media (prefers-color-scheme: dark) {
-        --mrmr-highlight: darkslateblue;
-    }
 `;
 
 const Bordered = styled.div`
