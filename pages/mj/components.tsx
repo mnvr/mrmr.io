@@ -163,30 +163,47 @@ export const SoundEuclidean: React.FC = () => {
     const audioContext = useAudioContext();
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
+    const [seqIndex, setSeqIndex] = React.useState(0);
+    const seq = [1, 0, 0, 1, 0, 0, 1, 0];
+
     const handleClick = () => {
         if (intervalID) {
             clearInterval(intervalID);
             setIntervalID(undefined);
         } else {
             setIntervalID(
-                window.setInterval(() => {
-                    beep(audioContext(), 0.01);
-                }, 1000 / 7),
+                window.setInterval(
+                    () => {
+                        setSeqIndex((seqIndex) => (seqIndex + 1) % seq.length);
+                    },
+                    (1000 * 7) / 7,
+                ),
             );
         }
     };
 
+    // console.log(seqIndex);
+
+    React.useEffect(() => {
+        if (intervalID && seq[seqIndex] === 1) {
+            // console.log("play");
+            beep(audioContext(), 0.01);
+        }
+    }, [seqIndex]);
+
     return (
         <div>
             <E_>
-                <div />
-                <div />
-                <div />
-                <div />
-                <div />
-                <div />
-                <div />
-                <div />
+                {seq.map((v, i) => (
+                    <div
+                        key={i}
+                        className={
+                            intervalID && v === 1 && i === seqIndex
+                                ? "playing"
+                                : ""
+                        }
+                    />
+                ))}
             </E_>
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
@@ -203,8 +220,13 @@ const E_ = styled.div`
 
     display: flex;
     gap: 1em;
+
     & > div {
         width: 10px;
         border: 1px solid tomato;
+    }
+
+    & > div.playing {
+        background-color: tomato;
     }
 `;
