@@ -19,34 +19,23 @@ export interface ColorPaletteSet {
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
     body {
-        --mrmr-background-color-1: ${(props) => props.colors.backgroundColor1};
-        --mrmr-color-1: ${(props) => props.colors.color1};
-        --mrmr-color-2: ${(props) => props.colors.color2};
-        --mrmr-color-3: ${(props) => props.colors.color3};
-        --mrmr-color-4: ${(props) => props.colors.color4};
-        --mrmr-background-color-1-transparent: ${(props) =>
-            props.colors.backgroundColor1Transparent};
-        --mrmr-color-1-transparent: ${(props) =>
-            props.colors.color1Transparent};
+        --mrmr-background: ${(props) => props.colors.background};
+        --mrmr-text: ${(props) => props.colors.text};
+        --mrmr-title: ${(props) => props.colors.title};
+        --mrmr-secondary: ${(props) => props.colors.secondary};
+        --mrmr-tertiary: ${(props) => props.colors.tertiary};
 
         @media (prefers-color-scheme: dark) {
-            --mrmr-background-color-1: ${(props) =>
-                props.darkColors?.backgroundColor1 ??
-                props.colors.backgroundColor1};
-            --mrmr-color-1: ${(props) =>
-                props.darkColors?.color1 ?? props.colors.color1};
-            --mrmr-color-2: ${(props) =>
-                props.darkColors?.color2 ?? props.colors.color2};
-            --mrmr-color-3: ${(props) =>
-                props.darkColors?.color3 ?? props.colors.color3};
-            --mrmr-color-4: ${(props) =>
-                props.darkColors?.color4 ?? props.colors.color4};
-            --mrmr-background-color-1-transparent: ${(props) =>
-                props.darkColors?.backgroundColor1Transparent ??
-                props.colors.backgroundColor1Transparent};
-            --mrmr-color-1-transparent: ${(props) =>
-                props.darkColors?.color1Transparent ??
-                props.colors.color1Transparent};
+            --mrmr-background: ${(props) =>
+                props.darkColors?.background ?? props.colors.background};
+            --mrmr-text: ${(props) =>
+                props.darkColors?.text ?? props.colors.text};
+            --mrmr-title: ${(props) =>
+                props.darkColors?.title ?? props.colors.title};
+            --mrmr-secondary: ${(props) =>
+                props.darkColors?.secondary ?? props.colors.secondary};
+            --mrmr-tertiary: ${(props) =>
+                props.darkColors?.tertiary ?? props.colors.tertiary};
         }
     }
 `;

@@ -31,20 +31,20 @@ const Content_ = styled.div`
         margin: 10px;
     }
 
-    --mrmr-highlight-color: aliceblue;
+    --mrmr-highlight: aliceblue;
     @media (prefers-color-scheme: dark) {
-        --mrmr-highlight-color: darkslateblue;
+        --mrmr-highlight: darkslateblue;
     }
 `;
 
 const Bordered = styled.div`
     p {
         font-size: smaller;
-        color: var(--mrmr-color-3);
+        color: var(--mrmr-secondary);
         margin-block: 0;
 
         b {
-            color: var(--mrmr-color-1);
+            color: var(--mrmr-text);
             font-weight: normal;
         }
     }
@@ -178,7 +178,7 @@ const Fr2 = styled(C6)`
     grid-template-columns: 1fr 1fr 1fr;
 
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight-color);
+        background-color: var(--mrmr-highlight);
         min-width: 300px;
     }
 `;
@@ -313,7 +313,7 @@ const MaxContent = styled(C6)`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight-color);
+        background-color: var(--mrmr-highlight);
         font-size: 3rem;
     }
 `;
@@ -338,7 +338,7 @@ const MaxContentFlex = styled(C6)`
     flex-wrap: wrap;
     grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight-color);
+        background-color: var(--mrmr-highlight);
         font-size: 3rem;
     }
     div {
@@ -404,7 +404,7 @@ const OverlapBG = styled(C2)`
         grid-area: 1 / 1;
     }
     div:nth-child(2) {
-        background-color: var(--mrmr-highlight-color);
+        background-color: var(--mrmr-highlight);
     }
 `;
 

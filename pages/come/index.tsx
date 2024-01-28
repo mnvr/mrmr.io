@@ -45,7 +45,7 @@ const Caption = styled.p`
     margin-block-end: 2rem;
     font-weight: 300;
     letter-spacing: 0.025ch;
-    color: var(--mrmr-color-2);
+    color: var(--mrmr-title);
 `;
 
 const Text: React.FC = () => {
@@ -76,7 +76,7 @@ const P = styled.p`
     font-style: italic;
     font-weight: 300;
     letter-spacing: 0.025ch;
-    color: var(--mrmr-color-1);
+    color: var(--mrmr-text);
 `;
 
 const Footer: React.FC = () => {

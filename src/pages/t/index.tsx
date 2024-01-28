@@ -70,7 +70,7 @@ const Title_ = styled.h1`
 
     font-family: serif;
     font-style: italic;
-    color: var(--mrmr-color-4);
+    color: var(--mrmr-tertiary);
 `;
 
 const TagList: React.FC<TagsProps> = ({ tags }) => {
@@ -93,7 +93,7 @@ const TagLI = styled.li<{ color?: string }>`
     color: ${(props) => props.color ?? "inherit"};
     margin-block: 1rem;
     a {
-        color: var(--mrmr-color-1);
+        color: var(--mrmr-text);
     }
 `;
 

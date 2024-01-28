@@ -6,8 +6,8 @@ import { ensure, ensureString } from "utils/ensure";
  * A set of colors, or as Picasso would say, a palette.
  *
  * The two important ones are the main background - foreground color pair
- * `backgroundColor1` and `color1`. Rest of them are more like accents with
- * rather specific and arbitrary uses.
+ * `background` and `text`. Rest of them are more like accents with specific and
+ * sometimes arbitrary uses.
  *
  * Color pickers
  * -------------
@@ -101,30 +101,27 @@ export interface ColorPalette {
      * Each of these is a a string representation of the colors that CSS can
      * understand.
      */
-    backgroundColor1: string;
-    color1: string;
-    color2: string;
-    color3: string;
-    color4: string;
-
-    backgroundColor1Transparent: string;
-    color1Transparent: string;
+    background: string;
+    text: string;
+    title: string;
+    secondary: string;
+    tertiary: string;
 }
 
 /**
  * Parse an array of colors into a {@link ColorPalette}.
  *
  * The first two values are the only required ones, and they're used as the
- * primary background (`backgroundColor1`) and foreground (`color1`) colors.
+ * text background (`background`) and foreground (`text`) colors.
  *
  * Rest everything either
  * - falls back to these two if not explicitly specified,
  * - or is heuristically computed from these two base colors.
  *
  * A common interpretation of the colors in the various positions is described
- * in the documentation for {@link Theme} (background / text / title / secondary
- * / misc), but really is up to the markup in each page to decide what to do
- * with this list and use them in a way appropriate to its content.
+ * in the documentation for {@link Theme} (background / text / title /
+ * secondary / tertiary), but really is up to the markup in each page to decide
+ * what to do with this list and use them in a way appropriate to its content.
  */
 export const parseColorPalette = (
     colors: readonly (string | undefined)[] | undefined,
@@ -141,24 +138,19 @@ export const parseColorPalette = (
     // A temporary alias
     const c = (cs?: string) => (cs ? color(cs) : undefined);
 
-    const backgroundColor1 = ensure(c(all[0]));
-    const color1 = ensure(c(all[1]));
-    const color2 = c(all[2]) ?? color1;
-    const color3 = c(all[3]) ?? color2;
-    const color4 = c(all[4]) ?? setAlpha(color3, 0.7);
-
-    const backgroundColor1Transparent = setAlpha(backgroundColor1, 0.3);
-    const color1Transparent = setAlpha(color1, 0.3);
+    const background = ensure(c(all[0]));
+    const text = ensure(c(all[1]));
+    const title = c(all[2]) ?? text;
+    const secondary = c(all[3]) ?? title;
+    const tertiary = c(all[4]) ?? setAlpha(secondary, 0.7);
 
     // Return their string representations.
     return {
-        backgroundColor1: backgroundColor1.toString(),
-        color1: color1.toString(),
-        color2: color2.toString(),
-        color3: color3.toString(),
-        color4: color4.toString(),
-        backgroundColor1Transparent: backgroundColor1Transparent.toString(),
-        color1Transparent: color1Transparent.toString(),
+        background: background.toString(),
+        text: text.toString(),
+        title: title.toString(),
+        secondary: secondary.toString(),
+        tertiary: tertiary.toString(),
     };
 };
 

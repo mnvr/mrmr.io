@@ -20,7 +20,7 @@ export const Title: React.FC = ({}) => {
 };
 
 const Title_ = styled.div`
-    background-color: var(--mrmr-color-1);
+    background-color: var(--mrmr-text);
     padding-inline: 1rem;
     padding-block: 3rem;
     font-size: 2rem;
@@ -38,7 +38,7 @@ const Title_ = styled.div`
     }
 
     h3 {
-        color: var(--mrmr-background-color-1);
+        color: var(--mrmr-background);
         margin: 0;
     }
 
@@ -47,7 +47,7 @@ const Title_ = styled.div`
         box-sizing: border-box;
         width: 4rem;
         height: 4rem;
-        border: 2px solid var(--mrmr-background-color-1);
+        border: 2px solid var(--mrmr-background);
     }
 `;
 
@@ -64,13 +64,13 @@ export const Text = styled.div`
     }
 
     p:nth-child(even) {
-        color: var(--mrmr-color-2);
+        color: var(--mrmr-title);
     }
 `;
 
 export const Signoff = styled(SignoffContents)`
-    background-color: var(--mrmr-color-1);
-    color: var(--mrmr-background-color-1);
+    background-color: var(--mrmr-text);
+    color: var(--mrmr-background);
     padding: 1rem;
     padding-block-start: 1.3rem;
     line-height: 1.45;
@@ -90,8 +90,8 @@ export const Footer: React.FC = () => {
 };
 
 const Footer_ = styled.div`
-    background-color: var(--mrmr-color-2);
-    color: var(--mrmr-background-color-1);
+    background-color: var(--mrmr-title);
+    color: var(--mrmr-background);
     padding: 1rem;
     padding-block-start: 1.4rem;
     min-height: 60svh;

@@ -44,7 +44,7 @@ const TitleContainer = styled.div`
 `;
 
 const Caption = styled.small`
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
 `;
 
 export const Footer: React.FC = () => {
@@ -73,7 +73,7 @@ export const HRMQ = styled.hr`
 `;
 
 export const MarginQuote = styled.p`
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
     font-family: serif;
     font-style: italic;
     margin-block-start: 1.5rem;
@@ -90,7 +90,7 @@ export const Example = styled.blockquote`
 `;
 
 export const Sub = styled.span`
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
 `;
 
 export const Aside: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -102,8 +102,8 @@ export const Aside: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const AsideBQ = styled.blockquote`
-    color: var(--mrmr-color-3);
-    border-inline-start: 2px dotted var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
+    border-inline-start: 2px dotted var(--mrmr-secondary);
     margin-inline-start: 0.1rem;
     padding-inline-start: 0.5rem;
 `;

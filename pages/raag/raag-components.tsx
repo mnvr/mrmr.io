@@ -66,7 +66,7 @@ const RaagName_ = styled.div`
 `;
 
 const T1 = styled.span`
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
 `;
 
 export const Ladder: React.FC<PropsWithSynthAndRaag> = ({ synth, raag }) => {
@@ -177,13 +177,13 @@ const Note_ = styled.div<NoteProps_>`
 
     background-color: ${(props) =>
         props.$isPlaying
-            ? "var(--mrmr-color-2)"
+            ? "var(--mrmr-title)"
             : props.$isHighlighted === true
               ? "darkkhaki"
-              : "var(--mrmr-color-3)"};
+              : "var(--mrmr-secondary)"};
 
     &:hover {
-        background-color: var(--mrmr-color-2);
+        background-color: var(--mrmr-title);
     }
 `;
 
@@ -197,7 +197,7 @@ const LadderBlank: React.FC<LadderBlankProps> = ({ noteOffset }) => {
 };
 
 const Blank_ = styled.div`
-    background-color: var(--mrmr-color-3);
+    background-color: var(--mrmr-secondary);
 
     opacity: 0.2;
 `;
@@ -377,7 +377,7 @@ const Intervals_ = styled.div`
     max-width: 400px;
 
     font-size: 44px;
-    color: var(--mrmr-color-3);
+    color: var(--mrmr-secondary);
 `;
 
 /** An individual interval */
@@ -413,10 +413,10 @@ const Interval_ = styled.div<NoteProps_>`
     cursor: pointer;
 
     color: ${(props) =>
-        props.$isPlaying ? "var(--mrmr-color-2)" : "var(--mrmr-color-3)"};
+        props.$isPlaying ? "var(--mrmr-title)" : "var(--mrmr-secondary)"};
 
     &:hover {
-        color: var(--mrmr-color-2);
+        color: var(--mrmr-title);
     }
 `;
 
@@ -502,11 +502,11 @@ const Piano_ = styled.div`
         z-index: 1;
         height: 120px;
 
-        background-color: var(--mrmr-background-color-1);
+        background-color: var(--mrmr-background);
     }
 
     & > div.major.on {
-        background-color: var(--mrmr-color-3);
+        background-color: var(--mrmr-secondary);
         opacity: 0.6;
     }
 

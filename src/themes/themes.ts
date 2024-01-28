@@ -21,11 +21,11 @@ export interface Theme {
      * Whilst the interpretation of colors is up to the markup in each page, a
      * usual factoring is to have the following meaning to the list of colors:
      *
-     * 1. background (--mrmr-background-color-1)
-     * 2. text (--mrmr-color-1)
-     * 3. title (--mrmr-color-2)
-     * 4. secondary text (--mrmr-color-3)
-     * 5. arbitrary uses (--mrmr-color-4)
+     * 1. Background (--mrmr-background)
+     * 2. Text (--mrmr-text)
+     * 3. Title (--mrmr-title)
+     * 4. Secondary text (--mrmr-secondary)
+     * 5. Even lighter text (--mrmr-tertiary)
      */
     colors: ColorPalette;
     /**

@@ -36,8 +36,8 @@ export const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
                     onMouseLeave={() => setHoverPage(undefined)}
                 >
                     <PageItem
-                        $backgroundColor={page.colors?.backgroundColor1}
-                        $color={page.colors?.color1}
+                        $backgroundColor={page.colors?.background}
+                        $color={page.colors?.text}
                     >
                         <BackgroundImage page={page} />
                         <PageItemContent>
@@ -79,7 +79,7 @@ const PageGrid = styled.div`
     }
 
     a:hover {
-        border: 1px solid var(--mrmr-color-1-transparent);
+        border: 1px solid var(--mrmr-tertiary);
     }
 `;
 

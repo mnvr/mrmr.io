@@ -288,8 +288,8 @@ const Info_ = styled.div`
     /* See Note: [Workaround - Safari doesn't support rem units on SVG elements] */
     font-size: 2rem;
 
-    color: var(--mrmr-color-4);
+    color: var(--mrmr-tertiary);
     a:hover {
-        color: var(--mrmr-color-1);
+        color: var(--mrmr-text);
     }
 `;
