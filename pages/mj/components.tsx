@@ -165,6 +165,7 @@ export const SoundEuclidean: React.FC = () => {
 
     const [seqIndex, setSeqIndex] = React.useState(0);
     const seq = [1, 0, 0, 1, 0, 0, 1, 0];
+    const seq2 = [1, 0, 1, 0, 1, 0, 1, 0];
 
     const handleClick = () => {
         if (intervalID) {
@@ -176,7 +177,7 @@ export const SoundEuclidean: React.FC = () => {
                     () => {
                         setSeqIndex((seqIndex) => (seqIndex + 1) % seq.length);
                     },
-                    (1000 * 7) / 7,
+                    (1000 * 1) / 7,
                 ),
             );
         }
@@ -189,12 +190,28 @@ export const SoundEuclidean: React.FC = () => {
             // console.log("play");
             beep(audioContext(), 0.01);
         }
+        if (intervalID && seq2[seqIndex] === 1) {
+            // console.log("play");
+            beep(audioContext(), 0.01, 0.01, 0.01);
+        }
     }, [seqIndex]);
 
     return (
         <div>
             <E_>
                 {seq.map((v, i) => (
+                    <div
+                        key={i}
+                        className={
+                            intervalID && v === 1 && i === seqIndex
+                                ? "playing"
+                                : ""
+                        }
+                    />
+                ))}
+            </E_>
+            <E_>
+                {seq2.map((v, i) => (
                     <div
                         key={i}
                         className={
