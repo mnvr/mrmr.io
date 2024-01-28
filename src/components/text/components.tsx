@@ -318,8 +318,7 @@ export const SignoffHindi: React.FC = () => {
 
 const Signoff_ = styled.div`
     margin-block-start: 4.5rem;
-
-    line-height: 1.45;
+    line-height: 27px;
     color: var(--mrmr-secondary-color);
 `;
 
@@ -369,8 +368,7 @@ export const Footer: React.FC = () => {
 };
 
 const LinkContainer = styled.div`
-    /** Add a bit of extra margin to account for the underline under links */
-    margin-block-end: 10px;
+    margin-block: 1em;
 `;
 
 /**
@@ -406,22 +404,19 @@ export const FooterHindi: React.FC = () => {
 const Footer_ = styled.footer`
     margin-block-start: 3.9rem;
 
-    font-size: 0.9rem;
-    line-height: 2.5;
+    font-size: 16px;
+    line-height: 27px;
 
     ul {
         margin: 0;
+        /* Extra .2 at the end to account for the line below the links */
+        margin-block-end: 1.2em;
         list-style: circle;
-        padding-inline-start: 1.8rem;
-
-        /* Similar to the extra margin under LinkContainers, to account for the
-           underline underneath links */
-        padding-block-end: 5px;
+        padding-inline-start: 2em;
     }
 
     li {
-        padding-inline-start: 2px;
-        list-style-position: outside;
+        margin-block: 1em;
     }
 `;
 
@@ -439,7 +434,8 @@ const Tags: React.FC<TagsProps> = (props) => {
 };
 
 const Tags_ = styled.div`
-    margin-block-end: 10px;
+    margin-block: 1em;
+    margin-block-end: 1.2em;
 `;
 
 const TagsTitle = styled.span`
@@ -486,10 +482,7 @@ const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
 };
 
 const FooterSection_ = styled.div`
-    /* Similar but not the same as Tags_. There is a visual abstraction that I'm
-       missing that would give the footer vertical rhythm, and am just manually
-       tottering about for now, adding these paddings here and there. */
-    margin-block-end: 7px;
+    margin-block: 1em;
 `;
 
 const FooterListTitle = styled.div`
