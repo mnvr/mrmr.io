@@ -89,7 +89,7 @@ const Title: React.FC<{ page: Page }> = ({ page }) => {
 
 const Title_ = styled.div`
     margin-block: 8rem;
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
     opacity: 0.53;
 `;
 
@@ -111,7 +111,7 @@ const Title2: React.FC = () => {
 
 const Title2_ = styled.div`
     margin-block: 8rem;
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
 
     a {
         text-decoration: none;

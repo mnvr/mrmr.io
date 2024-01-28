@@ -20,8 +20,8 @@ body {
 /* Use CSS variables to define background colors. This simplifies changing them
    around on page load using styled components without causing FOUC */
 body {
-    background-color: var(--mrmr-background);
-    color: var(--mrmr-text);
+    background-color: var(--mrmr-background-color);
+    color: var(--mrmr-text-color);
 }
 
 /*
@@ -64,8 +64,8 @@ hr {
 
 /* Set the background of mark elements to the CSS variable from our theme. By
    default, browsers use yellow as the background of mark elements, but the
-   default value of --mrmr-highlight is also yellow, so this has no effect other
-   than allowing pages to change this value if they wish. */
+   default value of "--mrmr-highlight-color" is also yellow, so this has no
+   effect other than allowing pages to change this value if they wish. */
 mark {
-    background-color: var(--mrmr-highlight);
+    background-color: var(--mrmr-highlight-color);
 }

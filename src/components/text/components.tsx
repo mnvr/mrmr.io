@@ -40,7 +40,7 @@ const Content_ = styled(LinkStyleUnderlined)`
     line-height: 1.5;
 
     blockquote {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
         /* Reset the margin. We'll instead use the padding, so that our border
            appears flush to the left, and the padding in between before the
            blockquote's content starts. */
@@ -86,7 +86,7 @@ const Content_ = styled(LinkStyleUnderlined)`
         font-size: 90%;
         padding-block: 0.1rem;
         padding-inline: 0.3rem;
-        border: 1px solid var(--mrmr-secondary);
+        border: 1px solid var(--mrmr-secondary-color);
     }
 
     code {
@@ -181,7 +181,7 @@ const Title_ = styled.h3`
     margin-block: 1.8rem;
 
     font-size: 1.4rem;
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
 `;
 
 const TitleAndSubtitle_ = styled.div`
@@ -207,14 +207,14 @@ const TitleAndSubtitle_ = styled.div`
            independent of content).
            */
         margin-inline: -1px;
-        color: var(--mrmr-title);
+        color: var(--mrmr-title-color);
     }
 
     p {
         margin-block: 0.3rem;
         margin-inline: 1px;
         font-size: 0.9rem;
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
     }
 `;
 
@@ -227,7 +227,7 @@ export const T1 = styled.h1`
     }
 
     /* Same color as other titles */
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
 `;
 
 /**
@@ -340,7 +340,7 @@ const Signoff_ = styled.div`
     margin-block-start: 4.5rem;
 
     line-height: 1.45;
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 /**
@@ -463,7 +463,7 @@ const Tags_ = styled.div`
 `;
 
 const TagsTitle = styled.span`
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 const TagsList: React.FC<TagsProps> = ({ tags }) => {
@@ -489,7 +489,7 @@ const TagSeparator: React.FC = () => {
 };
 
 const TagSeparator_ = styled.span`
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 interface RelatedPostsProps {
@@ -514,7 +514,7 @@ const FooterSection_ = styled.div`
 
 const FooterListTitle = styled.div`
     /* Snuggle just a bit with the list items to provide a sectioning effect */
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 const RelatedPostsHindi: React.FC<RelatedPostsProps> = (props) => {

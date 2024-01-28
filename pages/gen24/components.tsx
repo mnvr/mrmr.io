@@ -82,7 +82,7 @@ const BannerH = styled.h3`
     @media (max-width: 900px) {
         margin-inline: 1rem;
     }
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
     font-weight: 300;
 `;
 
@@ -141,7 +141,7 @@ const Description_ = styled.div`
     }
 
     pre {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
         /* See: Note: [Styling markdown code blocks] */
         padding-inline: 1rem;
         padding-block: 0.5rem;

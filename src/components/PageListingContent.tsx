@@ -185,7 +185,7 @@ const PageItemLI = styled.li`
 `;
 
 const Description = styled.span`
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 interface FooterProps {

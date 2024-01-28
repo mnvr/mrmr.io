@@ -47,7 +47,7 @@ const Title_ = styled.div`
         margin-block-end: 7px;
 
         .muted {
-            color: var(--mrmr-secondary);
+            color: var(--mrmr-secondary-color);
             margin-inline-start: -5px;
         }
 
@@ -58,7 +58,7 @@ const Title_ = styled.div`
         font-size: 1.6em;
 
         .muted {
-            color: var(--mrmr-secondary);
+            color: var(--mrmr-secondary-color);
         }
     }
 `;

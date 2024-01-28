@@ -40,6 +40,6 @@ const PlayIconWrapper = styled.div`
     font-size: 2rem;
 
     &:hover {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
     }
 `;

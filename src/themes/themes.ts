@@ -21,11 +21,11 @@ export interface Theme {
      * Whilst the interpretation of colors is up to the markup in each page, a
      * usual factoring is to have the following meaning to the list of colors:
      *
-     * 1. Background (--mrmr-background)
-     * 2. Text (--mrmr-text)
-     * 3. Title (--mrmr-title)
-     * 4. Secondary text (--mrmr-secondary)
-     * 5. Highlight (--mrmr-highlight)
+     * 1. Background (--mrmr-background-color)
+     * 2. Text (--mrmr-text-color)
+     * 3. Title (--mrmr-title-color)
+     * 4. Secondary text (--mrmr-secondary-color)
+     * 5. Highlight (--mrmr-highlight-color)
      *
      * Only background and text need to be specified, rest have the following
      * defaults:
@@ -36,7 +36,7 @@ export interface Theme {
      *
      * In addition, the theme also contains the following derived colors:
      *
-     * - Tertiary, say for even lighter text (--mrmr-tertiary). It is set to
+     * - Tertiary, say for even lighter text (--mrmr-tertiary-color). It is set to
      *   secondary with 70% opacity.
      */
     colors: ColorPalette;

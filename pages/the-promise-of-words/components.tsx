@@ -87,13 +87,13 @@ const EssayContainer_ = styled.div`
         padding-inline: 0.5rem;
         border-radius: 2pt;
 
-        background-color: var(--mrmr-text);
-        color: var(--mrmr-background);
+        background-color: var(--mrmr-text-color);
+        color: var(--mrmr-background-color);
     }
 
     p#poem {
-        background-color: var(--mrmr-background);
-        color: var(--mrmr-text);
+        background-color: var(--mrmr-background-color);
+        color: var(--mrmr-text-color);
     }
 `;
 
@@ -167,7 +167,7 @@ export const Info: React.FC = () => {
 };
 
 const InfoContainer = styled.div`
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
 
     margin-block: 6rem;
 

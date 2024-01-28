@@ -44,8 +44,8 @@ export const LinkStyleUnderlined = styled.div`
  * This is a subset of {@link LinkStyleUnderlined}.
  *
  * - Links will be bold, but will not have a text decoration. Instead,
- *   --mrmr-tertiary, which is by default a 70% opacity variation of
- *   --mrmr-text, will be used as the link color.
+ *   --mrmr-tertiary-color, which is by default a 70% opacity variation of
+ *   --mrmr-text-color, will be used as the link color.
  *
  * - Hover state will show a yellow background.
  */
@@ -56,7 +56,7 @@ export const LinkStyleBoldHover = styled.div`
     }
 
     a:visited {
-        color: var(--mrmr-tertiary);
+        color: var(--mrmr-tertiary-color);
     }
 
     a:hover {

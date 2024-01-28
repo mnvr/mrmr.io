@@ -34,7 +34,7 @@ const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
 export default TagListingPage;
 
 const Title_ = styled.div<{ color?: string }>`
-    color: ${(props) => props.color ?? "var(--mrmr-tertiary)"};
+    color: ${(props) => props.color ?? "var(--mrmr-tertiary-color)"};
 `;
 
 export const Head: HeadFC<Queries.TagListingPageQuery> = ({ data }) => {

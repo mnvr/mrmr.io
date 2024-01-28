@@ -79,7 +79,7 @@ const PageGrid = styled.div`
     }
 
     a:hover {
-        border: 1px solid var(--mrmr-tertiary);
+        border: 1px solid var(--mrmr-tertiary-color);
     }
 `;
 

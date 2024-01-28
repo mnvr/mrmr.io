@@ -77,7 +77,7 @@ const H1 = styled.h1`
 
 const SubText = styled.p`
     font-size: smaller;
-    color: var(--mrmr-secondary);
+    color: var(--mrmr-secondary-color);
 `;
 
 const Content: React.FC = () => {

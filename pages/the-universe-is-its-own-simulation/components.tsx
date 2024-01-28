@@ -94,7 +94,7 @@ const Title_ = styled.div`
 
 const Caption = styled.div`
     line-height: 1.3;
-    color: var(--mrmr-title);
+    color: var(--mrmr-title-color);
 `;
 
 export const Poem: React.FC = () => {

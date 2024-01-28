@@ -132,7 +132,11 @@ const DayCard_ = styled.div<DayCardProps_>`
     border: 1px solid ${(props) => props.color};
 
     background-image:
-        linear-gradient(to right, var(--mrmr-background) 50%, transparent),
+        linear-gradient(
+            to right,
+            var(--mrmr-background-color) 50%,
+            transparent
+        ),
         /* Nothing seems to break if url is undefined */
             url(${(props) => props.$previewImageSrc});
     background-position: top right;
@@ -149,7 +153,7 @@ const DayCard_ = styled.div<DayCardProps_>`
     gap: 0.7rem;
 
     svg {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
     }
 
     &:hover {

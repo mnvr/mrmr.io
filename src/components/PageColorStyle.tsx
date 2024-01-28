@@ -41,25 +41,25 @@ export interface ColorPaletteSet {
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
     body {
-        --mrmr-background: ${(props) => props.colors.background};
-        --mrmr-text: ${(props) => props.colors.text};
-        --mrmr-title: ${(props) => props.colors.title};
-        --mrmr-secondary: ${(props) => props.colors.secondary};
-        --mrmr-tertiary: ${(props) => props.colors.tertiary};
-        --mrmr-highlight: ${(props) => props.highlightColor ?? props.colors.highlight};
+        --mrmr-background-color: ${(props) => props.colors.background};
+        --mrmr-text-color: ${(props) => props.colors.text};
+        --mrmr-title-color: ${(props) => props.colors.title};
+        --mrmr-secondary-color: ${(props) => props.colors.secondary};
+        --mrmr-tertiary-color: ${(props) => props.colors.tertiary};
+        --mrmr-highlight-color: ${(props) => props.highlightColor ?? props.colors.highlight};
 
         @media (prefers-color-scheme: dark) {
-            --mrmr-background: ${(props) =>
+            --mrmr-background-color: ${(props) =>
                 props.darkColors?.background ?? props.colors.background};
-            --mrmr-text: ${(props) =>
+            --mrmr-text-color: ${(props) =>
                 props.darkColors?.text ?? props.colors.text};
-            --mrmr-title: ${(props) =>
+            --mrmr-title-color: ${(props) =>
                 props.darkColors?.title ?? props.colors.title};
-            --mrmr-secondary: ${(props) =>
+            --mrmr-secondary-color: ${(props) =>
                 props.darkColors?.secondary ?? props.colors.secondary};
-            --mrmr-tertiary: ${(props) =>
+            --mrmr-tertiary-color: ${(props) =>
                 props.darkColors?.tertiary ?? props.colors.tertiary};
-            --mrmr-highlight: ${(props) =>
+            --mrmr-highlight-color: ${(props) =>
                 props.highlightColorDark ??
                 props.highlightColor ??
                 props.darkColors?.highlight ??

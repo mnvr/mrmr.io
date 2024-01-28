@@ -35,11 +35,11 @@ const Content_ = styled.div`
 const Bordered = styled.div`
     p {
         font-size: smaller;
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
         margin-block: 0;
 
         b {
-            color: var(--mrmr-text);
+            color: var(--mrmr-text-color);
             font-weight: normal;
         }
     }
@@ -173,7 +173,7 @@ const Fr2 = styled(C6)`
     grid-template-columns: 1fr 1fr 1fr;
 
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight);
+        background-color: var(--mrmr-highlight-color);
         min-width: 300px;
     }
 `;
@@ -308,7 +308,7 @@ const MaxContent = styled(C6)`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight);
+        background-color: var(--mrmr-highlight-color);
         font-size: 3rem;
     }
 `;
@@ -333,7 +333,7 @@ const MaxContentFlex = styled(C6)`
     flex-wrap: wrap;
     grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
     div:nth-child(3) {
-        background-color: var(--mrmr-highlight);
+        background-color: var(--mrmr-highlight-color);
         font-size: 3rem;
     }
     div {
@@ -399,7 +399,7 @@ const OverlapBG = styled(C2)`
         grid-area: 1 / 1;
     }
     div:nth-child(2) {
-        background-color: var(--mrmr-highlight);
+        background-color: var(--mrmr-highlight-color);
     }
 `;
 

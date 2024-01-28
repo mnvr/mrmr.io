@@ -206,7 +206,7 @@ const SectionTitle = styled.div<SectionTitleProps>`
     margin-inline-start: 1.7rem;
     font-family: serif;
     font-style: italic;
-    color: var(--mrmr-tertiary);
+    color: var(--mrmr-tertiary-color);
 `;
 
 const RecentPagesTitle: React.FC = () => {
@@ -261,11 +261,11 @@ const RecentPageListing_ = styled.ul`
     }
 
     a:visited {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
     }
 
     a:hover {
-        color: var(--mrmr-title);
+        color: var(--mrmr-title-color);
 
         background-color: oklch(96.74% 0 0);
         @media (prefers-color-scheme: dark) {
@@ -291,7 +291,7 @@ const RecentPageItem: React.FC<RecentPage> = ({ title, description, slug }) => {
 const RecentPageDescription = styled.span`
     font-family: serif;
     font-style: italic;
-    color: var(--mrmr-tertiary);
+    color: var(--mrmr-tertiary-color);
 `;
 
 const Poem: React.FC = () => {
@@ -315,7 +315,7 @@ const Poem_ = styled.p`
     margin-inline-start: 2rem;
     font-family: serif;
     line-height: 1.4;
-    color: var(--mrmr-tertiary);
+    color: var(--mrmr-tertiary-color);
 `;
 
 const ExternalLinks: React.FC = () => {
@@ -337,11 +337,11 @@ const LinkButtonsContainer = styled.div`
     margin-inline-start: 1.7rem;
 
     a {
-        color: var(--mrmr-tertiary);
+        color: var(--mrmr-tertiary-color);
     }
 
     a:hover {
-        color: var(--mrmr-title);
+        color: var(--mrmr-title-color);
     }
 `;
 
@@ -382,11 +382,11 @@ const InternalLinks_ = styled.div`
     }
 
     a {
-        color: var(--mrmr-tertiary);
+        color: var(--mrmr-tertiary-color);
         text-decoration: none;
     }
 
     a:hover {
-        color: var(--mrmr-title);
+        color: var(--mrmr-title-color);
     }
 `;

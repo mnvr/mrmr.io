@@ -28,7 +28,7 @@ export const Notes = styled.div`
     font-style: italic;
 
     .muted {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
         opacity: 0.5;
     }
 `;
@@ -132,7 +132,7 @@ const Mapping_ = styled.div`
     flex-direction: column;
 
     .muted {
-        color: var(--mrmr-secondary);
+        color: var(--mrmr-secondary-color);
         opacity: 0.5;
     }
 `;
