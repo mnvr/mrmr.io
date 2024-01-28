@@ -25,14 +25,19 @@ export interface Theme {
      * 2. Text (--mrmr-text)
      * 3. Title (--mrmr-title)
      * 4. Secondary text (--mrmr-secondary)
-     * 5. Even lighter text (--mrmr-tertiary)
+     * 5. Highlight (--mrmr-highlight)
      *
      * Only background and text need to be specified, rest have the following
      * defaults:
      *
      * - title defaults to text
      * - secondary defaults to text
-     * - tertiary defaults to secondary with 70% opacity
+     * - highlight defaults to yellow
+     *
+     * In addition, the theme also contains the following derived colors:
+     *
+     * - Tertiary, for even lighter text (--mrmr-tertiary). It is set to text
+     *   with 70% opacity.
      */
     colors: ColorPalette;
     /**
@@ -84,7 +89,6 @@ export const frontPageTheme: Theme = {
         "oklch(90.00% 0.008 286.75)",
         "oklch(100.0% 0.008 286.75)",
         "oklch(78.61% 0.021 285.75)",
-        "oklch(78.17% 0.021 260.75)", // section headers
     ]),
 };
 

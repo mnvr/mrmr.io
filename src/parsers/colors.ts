@@ -106,6 +106,7 @@ export interface ColorPalette {
     title: string;
     secondary: string;
     tertiary: string;
+    highlight: string;
 }
 
 /**
@@ -115,14 +116,20 @@ export interface ColorPalette {
  * background (`background`) and foreground (`text`) colors.
  *
  * Rest everything has a default:
+ *
  * - title defaults to text
  * - secondary defaults to text
- * - tertiary defaults to secondary at 70% opacity
+ * - highlight defaults to yellow
+ *
+ * Or is derived
+ *
+ * - tertiary is set to text at 70% opacity
  *
  * A common interpretation of the colors in the various positions is described
  * in the documentation for {@link Theme} (background / text / title / secondary
- * / tertiary), but really is up to the markup in each page to decide what to do
- * with this list and use them in a way appropriate to its content.
+ * / tertiary / highlight), but really is up to the markup in each page to do
+ * what it wants with this list and use them in a way appropriate for its
+ * content.
  */
 export const parseColorPalette = (
     colors: readonly (string | undefined)[] | undefined,
@@ -138,12 +145,13 @@ export const parseColorPalette = (
 
     // A temporary alias
     const c = (cs?: string) => (cs ? color(cs) : undefined);
-
     const background = ensure(c(all[0]));
     const text = ensure(c(all[1]));
     const title = c(all[2]) ?? text;
     const secondary = c(all[3]) ?? text;
-    const tertiary = c(all[4]) ?? setAlpha(secondary, 0.7);
+    const highlight = c(all[4]) ?? ensure(c("yellow"));
+
+    const tertiary = setAlpha(text, 0.7);
 
     // Return their string representations.
     return {
@@ -152,6 +160,7 @@ export const parseColorPalette = (
         title: title.toString(),
         secondary: secondary.toString(),
         tertiary: tertiary.toString(),
+        highlight: highlight.toString(),
     };
 };
 

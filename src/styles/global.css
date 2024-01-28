@@ -61,3 +61,11 @@ hr {
         opacity: 0.1;
     }
 }
+
+/* Set the background of mark elements to the CSS variable from our theme. By
+   default, browsers use yellow as the background of mark elements, but the
+   default value of --mrmr-highlight is also yellow, so this has no effect other
+   than allowing pages to change this value if they wish. */
+mark {
+    background-color: var(--mrmr-highlight);
+}

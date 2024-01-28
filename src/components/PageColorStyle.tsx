@@ -24,6 +24,7 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
         --mrmr-title: ${(props) => props.colors.title};
         --mrmr-secondary: ${(props) => props.colors.secondary};
         --mrmr-tertiary: ${(props) => props.colors.tertiary};
+        --mrmr-highlight: ${(props) => props.colors.highlight};
 
         @media (prefers-color-scheme: dark) {
             --mrmr-background: ${(props) =>
@@ -36,6 +37,8 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
                 props.darkColors?.secondary ?? props.colors.secondary};
             --mrmr-tertiary: ${(props) =>
                 props.darkColors?.tertiary ?? props.colors.tertiary};
+            --mrmr-highlight: ${(props) =>
+                props.darkColors?.highlight ?? props.colors.highlight};
         }
     }
 `;
