@@ -90,10 +90,7 @@ const RaagList_ = styled.ul`
 
         a {
             text-decoration: none;
-            opacity: 0.94;
-            @media (prefers-color-scheme: dark) {
-                opacity: 0.84;
-            }
+            opacity: 0.87;
         }
 
         a:hover {

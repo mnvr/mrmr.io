@@ -26,6 +26,8 @@ const ContentContainer = styled.div`
     @media (min-width: 360px) {
         margin-inline: 1rem;
     }
+
+    letter-spacing: 1px;
 `;
 
 const Song: React.FC = () => {
