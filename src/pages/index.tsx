@@ -207,10 +207,6 @@ const SectionTitle = styled.div<SectionTitleProps>`
     font-family: serif;
     font-style: italic;
     color: var(--mrmr-tertiary);
-    @media (prefers-color-scheme: dark) {
-        /** Use a hardcoded tweaked section title color for dark mode */
-        color: oklch(78.17% 0.021 260.75);
-    }
 `;
 
 const RecentPagesTitle: React.FC = () => {

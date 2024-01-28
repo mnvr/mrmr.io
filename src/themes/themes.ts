@@ -36,8 +36,8 @@ export interface Theme {
      *
      * In addition, the theme also contains the following derived colors:
      *
-     * - Tertiary, for even lighter text (--mrmr-tertiary). It is set to text
-     *   with 70% opacity.
+     * - Tertiary, say for even lighter text (--mrmr-tertiary). It is set to
+     *   secondary with 70% opacity.
      */
     colors: ColorPalette;
     /**

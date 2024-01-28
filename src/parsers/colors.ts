@@ -123,7 +123,7 @@ export interface ColorPalette {
  *
  * Or is derived
  *
- * - tertiary is set to text at 70% opacity
+ * - tertiary is set to secondary at 70% opacity
  *
  * A common interpretation of the colors in the various positions is described
  * in the documentation for {@link Theme} (background / text / title / secondary
@@ -151,7 +151,7 @@ export const parseColorPalette = (
     const secondary = c(all[3]) ?? text;
     const highlight = c(all[4]) ?? ensure(c("yellow"));
 
-    const tertiary = setAlpha(text, 0.7);
+    const tertiary = setAlpha(secondary, 0.7);
 
     // Return their string representations.
     return {
