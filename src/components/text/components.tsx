@@ -85,9 +85,10 @@ const Content_ = styled(LinkStyleUnderlined)`
     }
 
     pre {
-        /* Note: [Styling markdown code blocks]
+        /* [Note: Styling markdown code blocks]
+
            These rules are primarily aimed at backtick terminated "code blocks"
-           in Markdown. */
+           in Markdown, which are rendered to HTML as pre > code. */
         background-color: var(--mrmr-code-background-color);
         padding: 1rem;
         /* On small screens, the block's background extends to the edge (beacuse
@@ -109,10 +110,6 @@ const Content_ = styled(LinkStyleUnderlined)`
            that the max width of this column is restricted by the screen size).
            */
         margin-inline: -1rem;
-
-        /* If the lines in code block do not fit, add a horizontal scroll to the
-           pre element instead of increasing the width of the page contents. */
-        overflow-x: scroll;
     }
 
     /* [Note: Syntax highlighting in MDX code blocks]

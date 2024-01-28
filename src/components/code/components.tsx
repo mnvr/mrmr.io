@@ -5,6 +5,7 @@ import styled from "styled-components";
  * Container for the "code" layout
  *
  * - Designed for containing arbitrary content but having some blocks of code.
+ *
  * - Initially designed to work with the default theme, should also work with
  *   the "paper" theme.
  *
@@ -19,17 +20,14 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Content_ = styled.div`
     margin: 1rem;
-
-    /* p { */
-        line-height: 1.3;
-    /* } */
+    @media (max-width: 500px) {
+        margin-inline: 0.8rem;
+    }
 
     pre {
-        /* See [Note: Styling markdown code blocks] */
+        /* See: [Note: Styling markdown code blocks] */
         background-color: var(--mrmr-code-background-color);
-        overflow-x: scroll;
-        padding-inline: 1rem;
-        padding-block: 1em;
+        padding: 1rem;
         margin-inline: -1rem;
     }
 `;

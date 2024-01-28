@@ -133,12 +133,22 @@ const Description_ = styled.div`
     }
 
     pre {
-        color: var(--mrmr-secondary-color);
         /* See: Note: [Styling markdown code blocks] */
         padding-inline: 1rem;
         padding-block: 0.5rem;
         border-radius: 5px;
         background-color: oklch(90% 0 0 / 0.1);
+    }
+
+    @media (max-width: 500px) {
+        /* Make code blocks smaller on small screens to avoid overflow */
+        code {
+            font-size: 13px;
+        }
+
+        pre {
+            padding-inline: 0.8rem;
+        }
     }
 `;
 

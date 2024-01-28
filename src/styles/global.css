@@ -24,7 +24,8 @@ body {
        space to the lines.
 
        Even this is usually not enough for long form text content, where 1.5
-       might be a value. We set our default to the more conservative 1.3 here.
+       might be a more appropriate value. We set our default to the more
+       conservative 1.3 here though.
 
        MDN also recommends using unitless values for line-height, since they
        play better with inheritance (they show an example of <h*> tags getting
@@ -88,12 +89,10 @@ mark {
 code {
     /* The monospace font looks too big sitting next to the other fonts */
     font-size: 15px;
-    /* Give it an increased line height to compensate a bit */
-    line-height: 1.4;
 }
 
 pre {
     /* If the lines in code block do not fit, add a horizontal scroll to the
        pre element instead of increasing the width of the page contents. */
-    overflow-x: scroll;
+    overflow-x: auto;
 }

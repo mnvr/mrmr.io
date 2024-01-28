@@ -97,8 +97,13 @@ const DayUL = styled.ul`
     list-style: none;
     padding-inline-start: 0;
 
+    /* Give the list items a horizontal inset, but only on larger screens */
+    @media (min-width: 500px) {
+        margin-inline: 1rem;
+    }
+
     li {
-        margin: 1rem;
+        margin-block: 1rem;
     }
 `;
 

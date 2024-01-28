@@ -62,14 +62,14 @@ def <b>bfs</b>(s, adj):<br/>
 };
 
 const CodeBlocks_ = styled.div`
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.4;
 
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-
-    margin-block: 2rem;
+    gap: 1em;
+    margin-block-end: 2em;
 
     b {
         color: var(--mrmr-highlight-color);

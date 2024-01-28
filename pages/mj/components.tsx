@@ -7,7 +7,12 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Container_ = styled.div`
-    margin: 1em;
+    /* On big enough screens, give ourselves an additional margin (the code
+       layout that we use already provides a basic margin) */
+    @media (min-width: 500px) {
+        margin: 1em;
+    }
+
     display: flex;
     flex-direction: column;
     gap: 4em;

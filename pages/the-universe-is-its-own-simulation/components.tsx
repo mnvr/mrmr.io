@@ -119,7 +119,6 @@ const PoemP = styled.p`
     font-family: serif;
     font-style: italic;
     font-size: 1.03rem;
-    line-height: 1.3;
 
     color: white;
 `;
