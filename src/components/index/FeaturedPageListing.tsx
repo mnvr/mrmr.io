@@ -144,7 +144,7 @@ const BackgroundImageContainer = styled.div`
 `;
 
 const PageItemContent = styled.div`
-    padding-block: 0.33rem;
+    padding-block: 0.2rem;
     padding-inline: 0.66rem;
 
     grid-area: 1 / 1;
