@@ -1,5 +1,10 @@
 import { Link } from "gatsby";
-import { GatsbyImage, getImage, type ImageDataLike } from "gatsby-plugin-image";
+import {
+    GatsbyImage,
+    getImage,
+    getSrc,
+    type ImageDataLike,
+} from "gatsby-plugin-image";
 import { type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import styled, { createGlobalStyle } from "styled-components";
@@ -98,16 +103,29 @@ const PageItem = styled.div<PageItemProps>`
 `;
 
 const BackgroundImage: React.FC<{ page: FeaturedPage }> = ({ page }) => {
-    const previewImage = page.previewImage;
-    const image = previewImage ? getImage(previewImage) : undefined;
-
-    // Use an empty alt since this is a decorative background image
-    return (
-        <BackgroundImageContainer>
-            {image && <GatsbyImage image={image} alt="" />}
-        </BackgroundImageContainer>
-    );
+    return <BackgroundImageM previewImage={page.previewImage} />;
 };
+
+interface BackgroundImageMProps {
+    previewImage?: ImageDataLike;
+}
+
+const BackgroundImageM = React.memo(
+    ({ previewImage }: BackgroundImageMProps) => {
+        const image = previewImage ? getImage(previewImage) : undefined;
+
+        // Use an empty alt since this is a decorative background image
+        return (
+            <BackgroundImageContainer>
+                {image && <GatsbyImage image={image} alt="" />}
+            </BackgroundImageContainer>
+        );
+    },
+    (prevProps, props) => Object.is(imgSrc(prevProps), imgSrc(props)),
+);
+
+const imgSrc = ({ previewImage }: BackgroundImageMProps) =>
+    previewImage ? getSrc(previewImage) : undefined;
 
 const BackgroundImageContainer = styled.div`
     grid-area: 1 / 1;
