@@ -204,6 +204,9 @@ const SectionTitle = styled.div<SectionTitleProps>`
     margin-block-start: ${(props) => props.$marginBlockStart ?? "2.6rem"};
     margin-block-end: ${(props) => props.$marginBlockEnd ?? "2.6rem"};
     margin-inline-start: 1.7rem;
+    @media (max-width: 500px) {
+        margin-inline-start: 1rem;
+    }
     font-family: serif;
     font-style: italic;
     color: var(--mrmr-tertiary-color);
@@ -249,6 +252,9 @@ const RecentPageListing: React.FC<RecentPageListingProps> = ({ pages }) => {
 
 const RecentPageListing_ = styled.ul`
     margin-inline: 2rem;
+    @media (max-width: 500px) {
+        margin-inline: 1rem;
+    }
 
     list-style: none;
     padding-inline-start: 0;
@@ -335,6 +341,9 @@ const ExternalLinks: React.FC = () => {
 const LinkButtonsContainer = styled.div`
     margin-block: 2rem;
     margin-inline-start: 1.7rem;
+    @media (max-width: 500px) {
+        margin-inline: 1rem;
+    }
 
     a {
         color: var(--mrmr-tertiary-color);
@@ -362,6 +371,10 @@ const InternalLinks_ = styled.div`
     margin-block-start: 2.6rem;
     margin-block-end: 2.6rem;
     margin-inline-start: 1.7rem;
+    @media (max-width: 500px) {
+        margin-inline: 1rem;
+    }
+
     font-family: serif;
     font-style: italic;
 
