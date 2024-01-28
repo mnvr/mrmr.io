@@ -125,19 +125,11 @@ const Description_ = styled.div`
     max-width: 30rem;
 
     p {
-        line-height: 1.5rem;
+        line-height: 1.5;
     }
 
     a {
         font-weight: normal;
-    }
-
-    code {
-        /* The monospace font looks too big sitting next to the other fonts */
-        font-size: 90%;
-        @media (max-width: 450px) {
-            font-size: 78%;
-        }
     }
 
     pre {
@@ -147,7 +139,6 @@ const Description_ = styled.div`
         padding-block: 0.5rem;
         border-radius: 5px;
         background-color: oklch(90% 0 0 / 0.1);
-        overflow-x: scroll;
     }
 `;
 

@@ -40,7 +40,7 @@ export interface ColorPaletteSet {
 }
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
-    body {
+    :root {
         --mrmr-background-color: ${(props) => props.colors.background};
         --mrmr-text-color: ${(props) => props.colors.text};
         --mrmr-title-color: ${(props) => props.colors.title};
@@ -64,6 +64,17 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
                 props.highlightColor ??
                 props.darkColors?.highlight ??
                 props.colors.highlight};
+        }
+
+        /* [Note: Code block background colors]
+
+           These colors were picked to work with the "paper" theme, but they
+           also work fine with the default theme. They should be generally okay,
+           and we haven't yet had the need to tweak them for other themes, so
+           these are "hardcoded variables" */
+        --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
+        @media (prefers-color-scheme: dark) {
+            --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
         }
     }
 `;

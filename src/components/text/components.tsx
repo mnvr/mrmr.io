@@ -63,36 +63,19 @@ const Content_ = styled(LinkStyleUnderlined)`
         width: 50%;
     }
 
-    /* [Note: Code block background colors]
-
-       These colors were picked to work with the "paper" theme, but they also
-       work fine with the default theme.
-
-       Currently all "text" layout pages that use code elements use the paper
-       theme, so we're hardcoding them in. If they don't work well with other
-       themes, we can move these declarations to themes.ts, and allow
-       customizing them per theme */
-    --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
-    @media (prefers-color-scheme: dark) {
-        --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
-    }
-
     kbd {
         /* By default, the browsers I've checked in (Safari and Chrome, both on
            macOS) the kbd elements is styled to use the monospace font.
 
            Here we tweak this a bit */
 
-        font-size: 90%;
+        font-size: 0.9rem;
         padding-block: 0.1rem;
         padding-inline: 0.3rem;
         border: 1px solid var(--mrmr-secondary-color);
     }
 
     code {
-        /* The monospace font looks too big sitting next to the other fonts */
-        font-size: 90%;
-
         background-color: var(--mrmr-code-background-color);
         padding-block: 0.2rem;
     }

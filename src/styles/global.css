@@ -15,6 +15,21 @@ body {
 
     /* Set the font */
     font-family: system-ui, sans-serif;
+
+    /* Start with a known line height.
+
+       The default is browser / font dependent, with MDN mentioning that Firefox
+       uses 1.2 usually. Safari on macOS with system-ui seems more like 1.0. In
+       general, that feels too squished, so as a default give more breathing
+       space to the lines.
+
+       Even this is usually not enough for long form text content, where 1.5
+       might be a value. We set our default to the more conservative 1.3 here.
+
+       MDN also recommends using unitless values for line-height, since they
+       play better with inheritance (they show an example of <h*> tags getting
+       squished when using a em value. */
+    line-height: 1.3;
 }
 
 /* Use CSS variables to define background colors. This simplifies changing them
@@ -68,4 +83,17 @@ hr {
    effect other than allowing pages to change this value if they wish. */
 mark {
     background-color: var(--mrmr-highlight-color);
+}
+
+code {
+    /* The monospace font looks too big sitting next to the other fonts */
+    font-size: 15px;
+    /* Give it an increased line height to compensate a bit */
+    line-height: 1.4;
+}
+
+pre {
+    /* If the lines in code block do not fit, add a horizontal scroll to the
+       pre element instead of increasing the width of the page contents. */
+    overflow-x: scroll;
 }

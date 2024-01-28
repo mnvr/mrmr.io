@@ -29,15 +29,6 @@ const Main = styled.main`
     display: grid;
     place-content: center;
 
-    p {
-        /* Give more breathing space to the lines.
-         *
-         * The default is browser / font dependent, with MDN mentioning that Firefox
-         * uses 1.2 usually. Safari on macOS with system-ui seems more like 1.0 rem.
-         */
-        line-height: 1.3;
-    }
-
     a {
         text-decoration: none;
         border-bottom: 1px solid currentColor;

@@ -62,7 +62,7 @@ def <b>bfs</b>(s, adj):<br/>
 };
 
 const CodeBlocks_ = styled.div`
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.4;
 
     display: flex;

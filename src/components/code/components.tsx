@@ -20,21 +20,9 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 const Content_ = styled.div`
     margin: 1rem;
 
-    /* 1.5 (used by the text layout) might be a bit too much styling, but the
-       browser default (~1.2) feels too squished. Give these pages a bit extra,
-       they can override this in their CSS if needed */
-    line-height: 1.3;
-
-    /* See [Note: Code block background colors] */
-    --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
-    @media (prefers-color-scheme: dark) {
-        --mrmr-code-background-color: oklch(22.02% 0.016 256.82);
-    }
-
-    code {
-        /* The monospace font looks too big sitting next to the other fonts */
-        font-size: 16px;
-    }
+    /* p { */
+        line-height: 1.3;
+    /* } */
 
     pre {
         /* See [Note: Styling markdown code blocks] */
