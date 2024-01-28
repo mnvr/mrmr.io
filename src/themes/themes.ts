@@ -26,6 +26,13 @@ export interface Theme {
      * 3. Title (--mrmr-title)
      * 4. Secondary text (--mrmr-secondary)
      * 5. Even lighter text (--mrmr-tertiary)
+     *
+     * Only background and text need to be specified, rest have the following
+     * defaults:
+     *
+     * - title defaults to text
+     * - secondary defaults to text
+     * - tertiary defaults to secondary with 70% opacity
      */
     colors: ColorPalette;
     /**

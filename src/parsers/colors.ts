@@ -111,17 +111,18 @@ export interface ColorPalette {
 /**
  * Parse an array of colors into a {@link ColorPalette}.
  *
- * The first two values are the only required ones, and they're used as the
- * text background (`background`) and foreground (`text`) colors.
+ * The first two values are the only required ones, and they're used as the text
+ * background (`background`) and foreground (`text`) colors.
  *
- * Rest everything either
- * - falls back to these two if not explicitly specified,
- * - or is heuristically computed from these two base colors.
+ * Rest everything has a default:
+ * - title defaults to text
+ * - secondary defaults to text
+ * - tertiary defaults to secondary at 70% opacity
  *
  * A common interpretation of the colors in the various positions is described
- * in the documentation for {@link Theme} (background / text / title /
- * secondary / tertiary), but really is up to the markup in each page to decide
- * what to do with this list and use them in a way appropriate to its content.
+ * in the documentation for {@link Theme} (background / text / title / secondary
+ * / tertiary), but really is up to the markup in each page to decide what to do
+ * with this list and use them in a way appropriate to its content.
  */
 export const parseColorPalette = (
     colors: readonly (string | undefined)[] | undefined,
@@ -141,7 +142,7 @@ export const parseColorPalette = (
     const background = ensure(c(all[0]));
     const text = ensure(c(all[1]));
     const title = c(all[2]) ?? text;
-    const secondary = c(all[3]) ?? title;
+    const secondary = c(all[3]) ?? text;
     const tertiary = c(all[4]) ?? setAlpha(secondary, 0.7);
 
     // Return their string representations.
