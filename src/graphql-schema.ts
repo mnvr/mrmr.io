@@ -124,6 +124,20 @@ type MdxFrontmatter implements Node @dontInfer {
     # "default" theme is used.
     theme: String
 
+    # Override just the highlight color
+    #
+    # By default, the highlight color is taken as the fifth color in the array
+    # of colors that define a palette (if the page uses explicitly specified
+    # colors), or comes from the theme (if the page uses a theme). However,
+    # sometimes it is convenient for a page to keep the rest of the colors the
+    # same (say, use a predefined color palette from a theme) but just provide a
+    # custom highlight color.
+    #
+    # This property allows a page to do that. There is also a dark mode variant
+    # that can be specified (if the dark mode highlight should be different).
+    highlight_color: String @proxy(from: "highlight-color")
+    highlight_color_dark: String @proxy(from: "highlight-color-dark")
+
     # Set this to true to prevent this page from showing up in the site wide
     # listings, e.g. '/all' or '/notes'.
     unlisted: Boolean

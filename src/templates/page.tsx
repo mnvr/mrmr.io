@@ -141,6 +141,8 @@ export const query = graphql`
                 colors
                 dark_colors
                 theme
+                highlight_color
+                highlight_color_dark
                 attributes
                 tags {
                     label
@@ -238,6 +240,11 @@ export interface Page {
      */
     theme?: string;
     /**
+     * A way to override just the highlight color.
+     */
+    highlightColor?: string;
+    highlightColorDark?: string;
+    /**
      * A list of (possibly empty) attributes for the page.
      *
      * This list is populated from the "attributes" field in the frontmatter.
@@ -331,6 +338,8 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
+    const highlightColor = frontmatter?.highlight_color;
+    const highlightColorDark = frontmatter?.highlight_color_dark;
     const attributes = filterDefined(frontmatter?.attributes);
 
     const tags = filterDefined(frontmatter?.tags).map(({ label, tag }) => {
@@ -392,6 +401,8 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         colors,
         darkColors,
         theme,
+        highlightColor,
+        highlightColorDark,
         attributes,
         tags,
         relatedPageLinks,

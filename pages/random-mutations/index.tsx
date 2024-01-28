@@ -72,7 +72,7 @@ const CodeBlocks_ = styled.div`
     margin-block: 2rem;
 
     b {
-        color: red;
+        color: var(--mrmr-highlight);
     }
 `;
 
@@ -125,6 +125,6 @@ const About_ = styled.div`
     line-height: 1.4;
 
     p:first-child b {
-        color: red;
+        color: var(--mrmr-highlight);
     }
 `;

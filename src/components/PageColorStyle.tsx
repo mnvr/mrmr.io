@@ -8,13 +8,35 @@ import { createGlobalStyle } from "styled-components";
  * care about.
  */
 export interface ColorPaletteSet {
+    /**
+     * The colors that form the palette.
+     */
     colors: ColorPalette;
     /**
-     * Optional dark mode overrides
+     * Optional dark mode overrides.
      *
      * If these are not present, we'll use the light mode `colors` always.
      */
     darkColors?: ColorPalette;
+    /**
+     * Optional override for the highlight color.
+     *
+     * By default, the highlight color is taken as the fifth color in the array
+     * of colors that define a palette. However, sometimes it is convenient for
+     * a page to keep the rest of the colors the same (say, use a predefined
+     * color palette from a theme) but just add a bit of color (pun intended) by
+     * using a custom highlight color.
+     *
+     * Thus we allow customizing the highlight color in isolation.
+     */
+    highlightColor?: string;
+    /**
+     * Optional override for the dark mode highlight color.
+     *
+     * If this is not specified, but a {@link highlightColor} is specified, then
+     * {@link highlightColor} will also be used in dark mode.
+     */
+    highlightColorDark?: string;
 }
 
 export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
@@ -24,7 +46,7 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
         --mrmr-title: ${(props) => props.colors.title};
         --mrmr-secondary: ${(props) => props.colors.secondary};
         --mrmr-tertiary: ${(props) => props.colors.tertiary};
-        --mrmr-highlight: ${(props) => props.colors.highlight};
+        --mrmr-highlight: ${(props) => props.highlightColor ?? props.colors.highlight};
 
         @media (prefers-color-scheme: dark) {
             --mrmr-background: ${(props) =>
@@ -38,7 +60,10 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
             --mrmr-tertiary: ${(props) =>
                 props.darkColors?.tertiary ?? props.colors.tertiary};
             --mrmr-highlight: ${(props) =>
-                props.darkColors?.highlight ?? props.colors.highlight};
+                props.highlightColorDark ??
+                props.highlightColor ??
+                props.darkColors?.highlight ??
+                props.colors.highlight};
         }
     }
 `;
@@ -51,10 +76,7 @@ export const PageColorStyle = createGlobalStyle<ColorPaletteSet>`
  * either a {@link Page} or a {@link Theme} to {@link paletteSetOrFallback}
  * function.
  */
-interface MaybeColorPaletteSet {
-    colors?: ColorPalette;
-    darkColors?: ColorPalette;
-}
+type MaybeColorPaletteSet = Partial<ColorPaletteSet>;
 
 /**
  * Convenience method to construct a color palette set from the given palettes.
@@ -67,10 +89,30 @@ interface MaybeColorPaletteSet {
 export const paletteSetOrFallback = (
     ...paletteSets: readonly (MaybeColorPaletteSet | undefined)[]
 ) => {
+    // It is not necessary that both the overrides and the colors come from the
+    // same set (e.g. the highlight-color might be specified on the page, but
+    // the rest of the colors might come from the theme).
+    //
+    // So first find the overrides, then merge them into the colors in a second
+    // pass.
+    let highlightColor: string | undefined;
+    let highlightColorDark: string | undefined;
+
+    for (const set of paletteSets) {
+        if (!set) continue;
+        if (set.highlightColor) {
+            highlightColor = set.highlightColor;
+            highlightColorDark = set.highlightColorDark;
+            break;
+        }
+    }
+
     for (const set of paletteSets) {
         if (!set) continue;
         const { colors, darkColors } = set;
-        if (colors) return { colors, darkColors };
+        if (colors)
+            return { colors, darkColors, highlightColor, highlightColorDark };
     }
+
     throw new Error("None of the fallbacks defined the color palette");
 };
