@@ -158,3 +158,53 @@ export const SoundBeeps: React.FC = () => {
         <button onClick={handleClick}>{intervalID ? "Pause" : "Play"}</button>
     );
 };
+
+export const SoundEuclidean: React.FC = () => {
+    const audioContext = useAudioContext();
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+
+    const handleClick = () => {
+        if (intervalID) {
+            clearInterval(intervalID);
+            setIntervalID(undefined);
+        } else {
+            setIntervalID(
+                window.setInterval(() => {
+                    beep(audioContext(), 0.01);
+                }, 1000 / 7),
+            );
+        }
+    };
+
+    return (
+        <div>
+            <E_>
+                <div />
+                <div />
+                <div />
+                <div />
+                <div />
+                <div />
+                <div />
+                <div />
+            </E_>
+            <button onClick={handleClick}>
+                {intervalID ? "Pause" : "Play"}
+            </button>
+        </div>
+    );
+};
+
+const E_ = styled.div`
+    /* border: 1px solid tomato; */
+    width: 40em;
+    height: 100px;
+    margin-block-end: 1em;
+
+    display: flex;
+    gap: 1em;
+    & > div {
+        width: 10px;
+        border: 1px solid tomato;
+    }
+`;
