@@ -6,8 +6,12 @@ layout: code
 attributes:
     - note
 tags:
-    - label: Swift
+    - label: JavaScript
 ---
+
+import * as C from "./components";
+
+<C.Container>
 
 ### Factorial
 
@@ -28,5 +32,8 @@ const gcd = (n, m) => m ? gcd(m, n % m) : n
 The natural exponential function. `e` is its value at the real number `1`.
 
 ```
-const exp = (x) => Array(99).fill(0).reduce((e,_,i) => e + x ** i / fact(i), 0)
+const exp = (x) => Array(99).fill(0).reduce(
+    (e, _, i) => e + x ** i / fact(i), 0)
 ```
+
+</C.Container>
