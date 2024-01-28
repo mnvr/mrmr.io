@@ -86,7 +86,7 @@ const beep = (duration) => {
   const t = ctx.currentTime
 
   const osc = new OscillatorNode(ctx)
-  const env = new GainNode(ctx, { gain: 1 })
+  const env = new GainNode(ctx)
   env.gain.setValueCurveAtTime(
     [0, 1], t, attack)
   env.gain.setTargetAtTime(
