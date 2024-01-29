@@ -18,7 +18,7 @@ const Container_ = styled.div`
     flex-direction: column;
     gap: 4em;
 
-    margin-block-end: 8em;
+    margin-block-end: 6em;
 `;
 
 export const Section: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -35,6 +35,8 @@ export const Box: React.FC<React.PropsWithChildren> = ({ children }) => {
 };
 
 const Box_ = styled.section`
+    /* Limit to 100% so that pre blocks start showing a scroll instead of
+       making the entire section expand */
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -47,6 +49,12 @@ const Box_ = styled.section`
 
     pre {
         margin-inline: 0;
+    }
+
+    @media (max-width: 500px) {
+        pre {
+            margin-inline: -1rem;
+        }
     }
 `;
 
