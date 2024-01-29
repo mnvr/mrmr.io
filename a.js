@@ -6,8 +6,9 @@ const euclid = (n, m) => {
 
     const fold = (n, m, seq) => {
         if (m < 2) return seq;
-        const leading = seq.slice(0, seq.length - m);
-        const trailing = seq.slice(-1 * m);
+        const sm = Math.min(m, seq.length - m);
+        const leading = seq.slice(0, seq.length - sm);
+        const trailing = seq.slice(-1 * sm);
         const llen = leading.length;
         const tlen = trailing.length;
 
@@ -32,4 +33,6 @@ const euclid = (n, m) => {
 };
 
 
-console.log(euclid(3, 8))
+//console.log(euclid(3, 8))
+//console.log(euclid(13, 5))
+console.log(euclid(5, 8))
