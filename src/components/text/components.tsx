@@ -90,7 +90,12 @@ const Content_ = styled(LinkStyleUnderlined)`
            These rules are primarily aimed at backtick terminated "code blocks"
            in Markdown, which are rendered to HTML as pre > code. */
         background-color: var(--mrmr-code-background-color);
-        padding: 1rem;
+        /* Since we have a non-white background, use the (stronger) title color
+           instead of the text color for increased contrast */
+        color: var(--mrmr-title-color);
+        padding-block: 1rem;
+        /* Just slighly more than margin-inline below */
+        padding-inline: 1.1rem;
         /* On small screens, the block's background extends to the edge (beacuse
            of the negative margin we apply before). So don't apply the border
            radius, which looks odd when otherwise the background spans the

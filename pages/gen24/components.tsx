@@ -142,7 +142,7 @@ const Description_ = styled.div`
 
     @media (max-width: 500px) {
         /* Make code blocks smaller on small screens to avoid overflow */
-        code {
+        pre code {
             font-size: 13px;
         }
 

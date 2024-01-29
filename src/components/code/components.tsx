@@ -27,7 +27,20 @@ const Content_ = styled.div`
     pre {
         /* See: [Note: Styling markdown code blocks] */
         background-color: var(--mrmr-code-background-color);
-        padding: 1rem;
+        color: var(--mrmr-title-color);
+        padding-block: 1rem;
+        padding-inline: 1.1rem;
         margin-inline: -1rem;
+    }
+
+    @media (max-width: 500px) {
+        /* Make code blocks smaller on small screens to avoid overflow */
+        pre code {
+            font-size: 13px;
+        }
+
+        pre {
+            padding-inline: 1.1rem;
+        }
     }
 `;
