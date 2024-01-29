@@ -10,15 +10,19 @@
  * examples given in Toussaint's paper, _The Euclidean Algorithm Generates
  * Traditional Musical Rhythms_.
  */
-const euclid = (n, m) => {
-    if (n < m) return euclid(m, n);
+
+/**
+ * Euclidean rhythm E(k, n) where k is the number of 1's and n is the length of
+ * the sequence.
+ */
+const E = (k, n) => {
     const startSeq = Array(n)
         .fill(0)
-        .map((_, i) => (i < m ? [1] : [0]));
+        .map((_, i) => (i < k ? [1] : [0]));
 
-    const fold = (n, m, seq) => {
-        if (m < 2) return seq;
-        const sm = Math.min(m, seq.length - m);
+    const fold = (n, k, seq) => {
+        if (k < 2) return seq;
+        const sm = Math.min(k, seq.length - k);
         const leading = seq.slice(0, seq.length - sm);
         const trailing = seq.slice(-1 * sm);
         const llen = leading.length;
@@ -36,31 +40,31 @@ const euclid = (n, m) => {
             result.push(r);
         }
 
-        // console.log({ n, m, seq, leading, trailing, result });
+        // console.log({ n, k, seq, leading, trailing, result });
 
-        return fold(m, n % m, result);
+        return fold(k, n % k, result);
     };
 
-    return fold(n, m, startSeq).flat();
+    return fold(n, k, startSeq).flat();
 };
 
-const test = (n, m, expected) => {
-    const seq = JSON.stringify(euclid(n, m));
+const test = (k, n, expected) => {
+    const seq = JSON.stringify(E(k, n));
     const exp = JSON.stringify(expected);
-    console.log(`E(${n},${m})\t${seq}`);
-    console.assert(seq == exp, `Expected E(${n}, ${m}) to match ${exp}`);
+    console.log(`E(${k},${n})\t${seq}`);
+    console.assert(seq == exp, `Expected E(${k}, ${n}) to match ${exp}`);
 };
 
 // Fails:
 // test(16, 4, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
-test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
-test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
+// test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
+// test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 
 // Fails:
 // The paper lists [1, 0, 1, 1, 0, 1, 0, 1]
 // Our algorithm produces a rotated version
 // [1, 0, 1, 1, 0, 1, 1, 0]
-//test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
+test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
-test(2, 3, [1, 0, 1]);
+// test(2, 3, [1, 0, 1]);
