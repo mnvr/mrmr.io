@@ -2,25 +2,71 @@ import * as React from "react";
 import styled from "styled-components";
 import { ensure } from "utils/ensure";
 import { useAudioContext } from "webaudio/use-audio-context";
+import { beep } from "../sound";
 
-const beep = (
-    ctx: AudioContext,
-    duration: number,
-    attack = 0.001,
-    release = 0.1,
-) => {
-    const osc = new OscillatorNode(ctx);
-    const env = new GainNode(ctx);
-    const t = ctx.currentTime;
-    env.gain.setValueCurveAtTime([0, 1], t, attack);
-    env.gain.setTargetAtTime(0, t + attack + duration, release / 5);
+export const E38: React.FC = () => {
+    const getAudioContext = useAudioContext();
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
-    const mix = new GainNode(ctx, { gain: 0.1 });
+    const [seqIndex, setSeqIndex] = React.useState(0);
+    const seq = [1, 0, 0, 1, 0, 0, 1, 0];
 
-    osc.connect(env).connect(mix).connect(ctx.destination);
-    osc.start();
-    osc.stop(t + attack + duration + release);
+    const handleClick = () => {
+        if (intervalID) {
+            clearInterval(intervalID);
+            setIntervalID(undefined);
+        } else {
+            setIntervalID(
+                window.setInterval(
+                    () =>
+                        setSeqIndex((seqIndex) => (seqIndex + 1) % seq.length),
+                    (1000 * 1) / 7,
+                ),
+            );
+        }
+    };
+
+    React.useEffect(() => {
+        if (intervalID && seq[seqIndex] === 1) {
+            beep(getAudioContext(), 0.01);
+        }
+    }, [seqIndex]);
+
+    return (
+        <div>
+            <Beats>
+                {seq.map((v, i) => (
+                    <div
+                        key={i}
+                        className={
+                            intervalID && v === 1 && i === seqIndex ? "on" : ""
+                        }
+                    />
+                ))}
+            </Beats>
+            <button onClick={handleClick}>
+                {intervalID ? "Pause" : "Play"}
+            </button>
+        </div>
+    );
 };
+
+const Beats = styled.div`
+    height: 100px;
+    margin-block: 1em;
+
+    display: flex;
+    gap: 18px;
+
+    & > div {
+        width: 10px;
+        border: 1px solid tomato;
+    }
+
+    & > div.on {
+        background-color: tomato;
+    }
+`;
 
 const synth = (
     ctx: AudioContext,
@@ -57,7 +103,7 @@ const synth = (
 };
 
 export const SoundEuclidean: React.FC = () => {
-    const audioContext = useAudioContext();
+    const getAudioContext = useAudioContext();
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
     const [seqIndex, setSeqIndex] = React.useState(0);
@@ -93,11 +139,11 @@ export const SoundEuclidean: React.FC = () => {
             osc3?.stop();
             setOsc3(undefined);
         } else {
-            setOsc1(synth(audioContext(), 1, 220, 1, 1));
+            setOsc1(synth(getAudioContext(), 1, 220, 1, 1));
             // setOsc2(synth(audioContext(), 1, 110, 1, 1));
-            setOsc3(synth(audioContext(), 1, 330, 1, 1));
+            setOsc3(synth(getAudioContext(), 1, 330, 1, 1));
 
-            setOsc2(synth(audioContext(), 1, 487, 1, 1));
+            setOsc2(synth(getAudioContext(), 1, 487, 1, 1));
 
             setIntervalID(
                 window.setInterval(
@@ -118,13 +164,13 @@ export const SoundEuclidean: React.FC = () => {
     React.useEffect(() => {
         if (intervalID && seq[seqIndex] === 1) {
             // console.log("play");
-            beep(audioContext(), 0.01);
+            beep(getAudioContext(), 0.01);
         }
         if (intervalID && seq2[seqIndex] === 1) {
             // console.log("play");
             // beep(audioContext(), 0.02, 0.01, 0.01);
             beep(
-                audioContext(),
+                getAudioContext(),
                 0.02 + 0.1 * ensure(seq3[seqIndex3]),
                 0.01 + 0.1 * (1 - ensure(seq3[seqIndex3])),
                 0.01 + 0.1 * ensure(seq3b[seqIndex3]),

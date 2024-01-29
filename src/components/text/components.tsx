@@ -105,6 +105,11 @@ const Content_ = styled(LinkStyleUnderlined)`
             border-radius: 4px;
         }
 
+        /* Since we're tweaking the other margins and paddings, also explicitly
+           set the block margin. This is the same as the browser default for
+           Chrome (Safari only does 1em margin-top currently) */
+        margin-block: 1rem;
+
         /* Extend outward the same as the inline-padding. This way, the actual
            content of the pre block is left-aligned with the normal text, only
            the background of it extends out and gets a padding from.

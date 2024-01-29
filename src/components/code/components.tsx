@@ -20,7 +20,7 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Content_ = styled.div`
     margin: 1rem;
-    @media (max-width: 500px) {
+    @media (width < 500px) {
         margin-inline: 0.8rem;
     }
 
@@ -30,10 +30,11 @@ const Content_ = styled.div`
         color: var(--mrmr-title-color);
         padding-block: 1rem;
         padding-inline: 1.1rem;
+        margin-block: 1rem;
         margin-inline: -1rem;
     }
 
-    @media (max-width: 500px) {
+    @media (width < 500px) {
         /* Make code blocks smaller on small screens to avoid overflow */
         pre code {
             font-size: 13px;

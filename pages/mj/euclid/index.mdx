@@ -2,18 +2,66 @@
 title: Euclidean rhythms
 date: 2024-01-25
 unlisted: true
-description: Exploring Euclidean rhythms
+description: Visualizing Euclidean rhythms
 layout: code
 ---
 
 import * as C from "../components";
-import * as S from "./sounds";
+import * as D from "./demos";
 
 <C.Container>
 
 <C.Section>
 
-<S.SoundEuclidean />
+### Euclid's algorithm
+
+<C.Box>
+
+<C.Explanation>
+Sometimes proclaimed as the oldest algorithm put down on paper, Euclid's
+algorithm is enthralling in its recursive simplicity.
+
+Euclid's version used a minus instead of a modulo (%), but otherwise here it is
+in its full glory.
+
+</C.Explanation>
+
+{/* prettier-ignore */}
+```js
+const gcd = (n, m) => m ? gcd(m, n % m) : 1
+```
+
+</C.Box>
+
+</C.Section>
+
+<C.Section>
+
+### Beats
+
+<C.Box>
+
+<C.Explanation>
+
+At the surface level it is calculating the GCD, the largest number that divides
+both `n` and `m`. But really it is unravelling a number pair.
+
+In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many of the
+"erratic" sounding drum beats used across the world. For example, here is `E(3,
+8)`.
+
+</C.Explanation>
+
+<D.E38 />
+
+</C.Box>
+
+</C.Section>
+
+<C.Section>
+
+{/* TODO */}
+{/* <D.SoundEuclidean /> */}
 
 </C.Section>
 

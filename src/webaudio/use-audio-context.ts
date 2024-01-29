@@ -14,7 +14,7 @@ import * as React from "react";
 export const useAudioContext = () => {
     const audioContextRef = React.useRef<AudioContext | undefined>(undefined);
 
-    const audioContext = () => {
+    const getAudioContext = () => {
         let ac = audioContextRef.current;
         if (!ac) {
             ac = new AudioContext();
@@ -25,5 +25,5 @@ export const useAudioContext = () => {
         return ac;
     };
 
-    return audioContext;
+    return getAudioContext;
 };

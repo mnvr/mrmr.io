@@ -9,15 +9,15 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 const Container_ = styled.div`
     /* On big enough screens, give ourselves an additional margin (the code
        layout that we use already provides a basic margin) */
-    @media (min-width: 500px) {
-        margin: 1em;
+    @media (width > 500px) {
+        margin-inline: 1em;
     }
 
     display: flex;
     flex-direction: column;
     gap: 4em;
 
-    margin-block-end: 6em;
+    margin-block-end: 6rem;
 `;
 
 export const Section: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -33,14 +33,14 @@ export const Box: React.FC<React.PropsWithChildren> = ({ children }) => {
     return <Box_>{children}</Box_>;
 };
 
-const Box_ = styled.section`
+const Box_ = styled.div`
     /* Limit to 100% so that pre blocks start showing a scroll instead of
        making the entire section expand */
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     column-gap: 2em;
-    @media (min-width: 1000px) {
+    @media (width > 1000px) {
         column-gap: 5em;
     }
     align-items: center;
@@ -50,7 +50,7 @@ const Box_ = styled.section`
         margin-inline: 0;
     }
 
-    @media (max-width: 500px) {
+    @media (width < 60em) {
         pre {
             margin-inline: -1rem;
         }
