@@ -15,7 +15,8 @@ import * as C from "./components";
 
 ### Factorial
 
-```
+{/* prettier-ignore */}
+```js
 const fact = (n) => n ? n * fact(n - 1) : 1
 ```
 
@@ -23,7 +24,8 @@ const fact = (n) => n ? n * fact(n - 1) : 1
 
 Euclid used minus, the modern variant uses modulo.
 
-```
+{/* prettier-ignore */}
+```js
 const gcd = (n, m) => m ? gcd(m, n % m) : n
 ```
 
@@ -31,7 +33,8 @@ const gcd = (n, m) => m ? gcd(m, n % m) : n
 
 The natural exponential function. `e` is its value at the real number `1`.
 
-```
+{/* prettier-ignore */}
+```js
 const exp = (x) => Array(99).fill(0).reduce(
     (e, _, i) => e + x ** i / fact(i), 0)
 ```

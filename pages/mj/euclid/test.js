@@ -49,12 +49,13 @@ const E = (k, n) => {
         if (k < 2) return seq;
 
         let result = [...seq];
+        // console.log({n, k, result});
         for (let i = 0; i < k; i++) {
-            console.log({ i, k, result });
+            // console.log({ i, k, result });
             result[i] = [...result[i], ...result[result.length - i - 1]];
         }
         result = result.slice(0, -k);
-        console.log("after slicing", result);
+        // console.log("after slicing", result);
 
         return fold(k, n % k, result);
     };
@@ -73,7 +74,7 @@ const test = (k, n, expected) => {
 // test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
 test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
-// test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
+test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 
 // The paper lists        [1, 0, 1, 1, 0, 1, 1, 0]
 // Our algorithm produces [1, 0, 1, 1, 0, 1, 0, 1]
