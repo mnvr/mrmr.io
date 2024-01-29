@@ -53,7 +53,8 @@ export const E38: React.FC = () => {
 
 const Beats = styled.div`
     height: 100px;
-    margin-block: 1em;
+    margin-block-start: 1em;
+    margin-block-end: 1.5em;
 
     display: flex;
     gap: 18px;
@@ -67,6 +68,14 @@ const Beats = styled.div`
         background-color: tomato;
     }
 `;
+
+const euclid = (n: number, m: number): number[] => {
+    if (n < m) return euclid(m, n);
+    const seq = Array(n)
+        .fill(0)
+        .map((_, i) => (i < m ? [1] : [0]));
+    return seq.flat();
+};
 
 const synth = (
     ctx: AudioContext,
