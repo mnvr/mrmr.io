@@ -40,7 +40,7 @@ const E = (k, n) => {
             result.push(r);
         }
 
-        console.log({ n, k, seq, leading, trailing, result });
+        // console.log({ n, k, seq, leading, trailing, result });
 
         return fold(k, n % k, result);
     };
@@ -69,3 +69,13 @@ test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 test(5, 8, [1, 0, 1, 1, 0, 1, 0, 1]);
 
 test(2, 3, [1, 0, 1]);
+test(1, 2, [1, 0]);
+test(1, 3, [1, 0, 0]);
+test(2, 5, [1, 0, 1, 0, 0]);
+test(3, 4, [1, 0, 1, 1]);
+// The paper lists [1, 0, 1, 0, 1], our version starts on the second onset
+test(3, 5, [1, 0, 1, 1, 0]);
+test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
+// The paper lists [1, 0, 1, 0, 1, 0, 1], our version starts on the fourth onset
+test(4, 7, [1, 0, 1, 1, 0, 1, 0]);
+test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
