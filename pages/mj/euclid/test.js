@@ -49,17 +49,20 @@ const E = (k, n) => {
         if (k < 2) return seq;
 
         let result = [...seq];
-        // console.log({n, k, result});
+        console.log({ n, k, result });
         for (let i = 0; i < k; i++) {
-            // console.log({ i, k, result });
             result[i] = [...result[i], ...result[result.length - i - 1]];
+            console.log({ i, k, result });
         }
         result = result.slice(0, -k);
-        // console.log("after slicing", result);
+        console.log("after slicing", result);
 
         return fold(k, n % k, result);
     };
 
+    if (k > n - k) {
+        return fold(k, n - k, startSeq).flat();
+    }
     return fold(n, k, startSeq).flat();
 };
 
@@ -75,13 +78,7 @@ const test = (k, n, expected) => {
 
 test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
 test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
-
-// The paper lists        [1, 0, 1, 1, 0, 1, 1, 0]
-// Our algorithm produces [1, 0, 1, 1, 0, 1, 0, 1]
-// which is equivalent
-// After rotating         [         1, 0, 1, 1, 0, 1, 0, 1]
-//                        [1, 0, 1]
-// test(5, 8, [1, 0, 1, 1, 0, 1, 0, 1]);
+test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
 // test(2, 3, [1, 0, 1]);
 // test(1, 2, [1, 0]);
