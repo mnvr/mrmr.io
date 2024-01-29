@@ -49,13 +49,13 @@ const E = (k, n) => {
         if (k < 2) return seq;
 
         let result = [...seq];
-        console.log({ n, k, result });
+        // console.log({ n, k, result });
         for (let i = 0; i < k; i++) {
             result[i] = [...result[i], ...result[result.length - i - 1]];
-            console.log({ i, k, result });
+            // console.log({ i, k, result });
         }
         result = result.slice(0, -k);
-        console.log("after slicing", result);
+        // console.log("after slicing", result);
 
         return fold(k, n % k, result);
     };
@@ -80,24 +80,20 @@ test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
 test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
-// test(2, 3, [1, 0, 1]);
-// test(1, 2, [1, 0]);
-// test(1, 3, [1, 0, 0]);
-// test(2, 5, [1, 0, 1, 0, 0]);
-// test(3, 4, [1, 0, 1, 1]);
-// // The paper lists [1, 0, 1, 0, 1], our version starts on the second onset
-// test(3, 5, [1, 0, 1, 1, 0]);
-// test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
-// // The paper lists [1, 0, 1, 0, 1, 0, 1], our version starts on the fourth onset
-// test(4, 7, [1, 0, 1, 1, 0, 1, 0]);
-// test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
+// The paper lists [1, 0, 1], we get a rotated version
+test(2, 3, [1, 1, 0]);
+test(1, 2, [1, 0]);
+test(1, 3, [1, 0, 0]);
+test(2, 5, [1, 0, 1, 0, 0]);
+// The paper lists [1, 0, 1, 1], we get a rotated version
+test(3, 4, [1, 1, 1, 0]);
+test(3, 5, [1, 0, 1, 0, 1]);
+test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
+test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
+test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
 
-// // To match the one in the paper:
-// // [1,0,1,1,0,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,1,0]
-// // [1,0,1,1,0,1,0,1,0,1,0,1,0,1,1,0,1,0,1,0,1,0,1,0]
-// // We need to rotate our version
-// // [1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]
-// // [                      1,0,1,1,0,1,0,1,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0]
+test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
+
 // test(
 //     13,
 //     24,
