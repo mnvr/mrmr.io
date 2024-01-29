@@ -30,6 +30,7 @@ export const CodeBlocks: React.FC = () => {
         <CodeBlocks_>
             <div>
                 <pre>
+                    <code>
 def <b>dfs</b>(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
@@ -40,11 +41,13 @@ def <b>dfs</b>(s, adj):<br/>
 {"            "}visited.add(u)<br/>
 {"            "}for v in adj.get(u, []):<br/>
 {"                "}xs.append(v)<br/>
+                    </code>
                 </pre>
             </div>
 
             <div>
                 <pre>
+                    <code>
 def <b>bfs</b>(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
@@ -55,6 +58,7 @@ def <b>bfs</b>(s, adj):<br/>
 {"            "}visited.add(u)<br/>
 {"            "}for v in adj.get(u, []):<br/>
 {"                "}xs.append(v)<br/>
+                    </code>
                 </pre>
             </div>
         </CodeBlocks_>
@@ -72,6 +76,8 @@ const CodeBlocks_ = styled.div`
     margin-block-end: 2em;
 
     b {
+        /* See: [Note: Variable width monospace font] */
+        font-weight: 400;
         color: var(--mrmr-highlight-color);
     }
 `;
@@ -87,25 +93,12 @@ export const About: React.FC = () => {
             </p>
 
             <p>
-                The code on the left (
-                <code>
-                    <b>dfs</b>
-                </code>
-                ) does a depth first search, the code on the right (
-                <code>
-                    <b>bfs</b>
-                </code>
-                ) does a breath first search. These are two entirely different
-                algorithms, with entirely different outcomes. Yet the difference
-                in the code between the two is just a single letter (The extra{" "}
-                <code>
-                    <b>0</b>
-                </code>{" "}
-                in the{" "}
-                <code>
-                    <b>bfs</b>
-                </code>{" "}
-                version).
+                The code on the left (<code>dfs</code>) does a depth first
+                search, the code on the right (<code>bfs</code>) does a breath
+                first search. These are two entirely different algorithms, with
+                entirely different outcomes. Yet the difference in the code
+                between the two is just a single letter (The extra{" "}
+                <code>0</code> in the <code>bfs</code> version).
             </p>
 
             <p>
