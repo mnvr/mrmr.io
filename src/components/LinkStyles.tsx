@@ -1,6 +1,21 @@
 import styled from "styled-components";
 
 /**
+ * A container that styles links (<a> elements) within its children to have a
+ * yellow hover background.
+ */
+export const LinkStyleHover = styled.div`
+    a:hover {
+        background-color: hsl(60, 100%, 85%);
+        color: oklch(40% 0 0);
+        @media (prefers-color-scheme: dark) {
+            background-color: yellow;
+            color: oklch(20% 0 0);
+        }
+    }
+`;
+
+/**
  * A container that styles links (<a> elements) within its children to behave
  * like "old-school" HTML links.
  *
@@ -9,7 +24,7 @@ import styled from "styled-components";
  *
  * - Hover state will show a yellow background.
  */
-export const LinkStyleUnderlined = styled.div`
+export const LinkStyleUnderlined = styled(LinkStyleHover)`
     a {
         text-decoration: none;
         border-bottom: 1px solid blue;
@@ -28,12 +43,26 @@ export const LinkStyleUnderlined = styled.div`
 
     a:hover {
         border-bottom-color: transparent;
-        background-color: hsl(60, 100%, 85%);
-        color: oklch(40% 0 0);
-        @media (prefers-color-scheme: dark) {
-            background-color: yellow;
-            color: oklch(20% 0 0);
-        }
+    }
+`;
+
+/**
+ * A container that styles links (<a> elements) within its children to look
+ * less conspicous within the text.
+ *
+ * - Links will have the same color and underline as the current color, without
+ *   any distinction between visited and unvisited links.
+ *
+ * - Hover state will show a yellow background.
+ */
+export const LinkStyleInherited = styled(LinkStyleHover)`
+    a {
+        text-decoration: none;
+        border-bottom: 1px solid currentColor;
+    }
+
+    a:hover {
+        border-bottom-color: transparent;
     }
 `;
 
@@ -59,6 +88,9 @@ export const LinkStyleBoldHover = styled.div`
         color: var(--mrmr-tertiary-color);
     }
 
+    /* We need to inline LinkStyleHover here because otherwise the a:visited
+       color overrides the a:hover color since the a:visited comes later in the
+       source order */
     a:hover {
         background-color: hsl(60, 100%, 85%);
         color: oklch(40% 0 0);
