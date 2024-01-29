@@ -40,7 +40,7 @@ const E = (k, n) => {
             result.push(r);
         }
 
-        // console.log({ n, k, seq, leading, trailing, result });
+        console.log({ n, k, seq, leading, trailing, result });
 
         return fold(k, n % k, result);
     };
@@ -56,15 +56,16 @@ const test = (k, n, expected) => {
 };
 
 // Fails:
-// test(16, 4, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+// test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
-// test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
-// test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
+test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
+test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 
-// Fails:
-// The paper lists [1, 0, 1, 1, 0, 1, 0, 1]
-// Our algorithm produces a rotated version
-// [1, 0, 1, 1, 0, 1, 1, 0]
-test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
+// The paper lists        [1, 0, 1, 1, 0, 1, 1, 0]
+// Our algorithm produces [1, 0, 1, 1, 0, 1, 0, 1]
+// which is equivalent
+// After rotating         [         1, 0, 1, 1, 0, 1, 0, 1]
+//                        [1, 0, 1]
+test(5, 8, [1, 0, 1, 1, 0, 1, 0, 1]);
 
-// test(2, 3, [1, 0, 1]);
+test(2, 3, [1, 0, 1]);
