@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "styled-components";
+import { ensure } from "utils/ensure";
 import { useAudioContext } from "webaudio/use-audio-context";
 
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -262,9 +263,9 @@ export const SoundEuclidean: React.FC = () => {
             // beep(audioContext(), 0.02, 0.01, 0.01);
             beep(
                 audioContext(),
-                0.02 + 0.1 * seq3[seqIndex3],
-                0.01 + 0.1 * (1 - seq3[seqIndex3]),
-                0.01 + 0.1 * seq3b[seqIndex3],
+                0.02 + 0.1 * ensure(seq3[seqIndex3]),
+                0.01 + 0.1 * (1 - ensure(seq3[seqIndex3])),
+                0.01 + 0.1 * ensure(seq3b[seqIndex3]),
             );
         }
     }, [seqIndex, seqIndex3]);

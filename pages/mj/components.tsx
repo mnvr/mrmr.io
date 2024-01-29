@@ -1,4 +1,4 @@
-import { LinkStyleHover, LinkStyleInherited } from "components/LinkStyles";
+import { LinkStyleHover } from "components/LinkStyles";
 import * as React from "react";
 import styled from "styled-components";
 import { useAudioContext } from "webaudio/use-audio-context";
