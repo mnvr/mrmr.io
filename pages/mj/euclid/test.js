@@ -39,16 +39,15 @@ const E = (k, n) => {
         //   or we run out of zeros.
 
         while (z > 0 || k > 1) {
-            const m = k;
-            for (let i = 0; i < m; i++) {
+            for (let i = 0; i < k; i++) {
                 seqs[i] = [...seqs[i], ...seqs[seqs.length - 1 - i]];
             }
-            seqs = seqs.slice(0, seqs.length - m);
-            if (debug) console.log(`moved ${m}`, { n, k, z, seqs });
+            seqs = seqs.slice(0, seqs.length - k);
+            if (debug) console.log(`moved ${k}`, { n, k, z, seqs });
+            z = z - k;
             const d = n - k;
             n = Math.max(k, d);
             k = Math.min(k, d);
-            z = z - m;
             if (debug) console.log({ d, n, k, z });
         }
 
