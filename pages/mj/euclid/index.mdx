@@ -14,22 +14,23 @@ import * as D from "./demos";
 
 <C.Section>
 
-### Cycling with Euclid
+### Not just beats
 
 <C.Box>
 
 <C.Explanation>
 
-Here is a player that cycles through various Euclidean rhythms.
+It is customary to use Euclidean rhythms to trigger onsets of beats, but there
+is nothing stopping us from using it as an organic pattern for other purposes.
+Here we use it to modulate the attack of notes.
 
 </C.Explanation>
 
-<D.Cycle />
+<D.Modulate />
 
 </C.Box>
 
 </C.Section>
-
 
 <C.Section>
 
@@ -135,6 +136,24 @@ const E = (k, n) => {
     return s.flat()
 }
 ```
+
+</C.Box>
+
+</C.Section>
+
+<C.Section>
+
+### Cycling with Euclid
+
+<C.Box>
+
+<C.Explanation>
+
+Here is a player that cycles through various Euclidean rhythms.
+
+</C.Explanation>
+
+<D.Cycle />
 
 </C.Box>
 

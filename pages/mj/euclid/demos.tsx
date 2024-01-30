@@ -185,3 +185,56 @@ const Beats2 = styled.div`
         background-color: var(--mrmr-highlight-color);
     }
 `;
+
+export const Modulate: React.FC = () => {
+    const getAudioContext = useAudioContext();
+
+    const [k, n] = [8, 13];
+    const seq = E(k, n);
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    /* Phase */
+    const [p, setP] = React.useState(0);
+
+    const handleClick = () => {
+        if (intervalID) {
+            clearInterval(intervalID);
+            setIntervalID(undefined);
+        } else {
+            setIntervalID(
+                window.setInterval(
+                    () => setP((p) => (p + 1) % seq.length),
+                    (1000 * 1) / 7,
+                ),
+            );
+        }
+    };
+
+    React.useEffect(() => {
+        if (intervalID) {
+            const attack = seq[p] === 1 ? 0.001 : 0.001;
+            beep(getAudioContext(), 0.02, attack);
+        }
+    }, [intervalID, p]);
+
+    return (
+        <div>
+            <Beats>
+                {seq.map((v, i) => (
+                    <div
+                        key={i}
+                        className={
+                            intervalID && v === 1
+                                ? i === p
+                                    ? "accent"
+                                    : "on"
+                                : ""
+                        }
+                    />
+                ))}
+            </Beats>
+            <button onClick={handleClick}>
+                {intervalID ? "Pause" : "Play"}
+            </button>
+        </div>
+    );
+};
