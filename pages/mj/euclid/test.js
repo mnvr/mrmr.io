@@ -53,7 +53,7 @@ const E = (k, n) => {
 
     while (z > 0 || k > 1) {
         for (let i = 0; i < k; i++) {
-            seqs[i] = [...seqs[i], ...seqs[seqs.length - 1 - i]];
+            seqs[i].push(...seqs[seqs.length - 1 - i]);
         }
         seqs = seqs.slice(0, seqs.length - k);
         z = z - k;
