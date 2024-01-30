@@ -26,8 +26,6 @@ const E = (k, n) => {
     const debug = false;
 
     const fold = (n, k, z, seqs) => {
-        let result = [...seqs];
-
         // Description from the paper:
         //
         // > If there is more than one zero the algorithm moves zeros in stages.
@@ -43,10 +41,10 @@ const E = (k, n) => {
         while (z > 0 || k > 1) {
             const m = k;
             for (let i = 0; i < m; i++) {
-                result[i] = [...result[i], ...result[result.length - 1 - i]];
+                seqs[i] = [...seqs[i], ...seqs[seqs.length - 1 - i]];
             }
-            result = result.slice(0, result.length - m);
-            if (debug) console.log(`moved ${m}`, { n, k, z, result });
+            seqs = seqs.slice(0, seqs.length - m);
+            if (debug) console.log(`moved ${m}`, { n, k, z, seqs });
             const d = n - k;
             n = Math.max(k, d);
             k = Math.min(k, d);
@@ -54,7 +52,7 @@ const E = (k, n) => {
             if (debug) console.log({ d, n, k, z });
         }
 
-        return result;
+        return seqs;
     };
 
     // Description of Euclid's algorithm from the paper:
