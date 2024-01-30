@@ -77,39 +77,56 @@ interface CycleState {
     /** The `n` in `E(k, n)` */
     n: number;
     /** The phase of (i.e. the offset into) the current E(k, n) */
-    ph: number;
-    /**
-     * If we're currently playing, then this is the ID of the `setInterval`
-     * that is ticking along, doing the timing for us.
-     */
-    intervalID?: number;
+    p: number;
 }
 
 const initialCycleState: CycleState = {
     k: 3,
     n: 4,
-    ph: 0,
+    p: 0,
 };
 
-type CycleAction = { type: "tick" } | { type: "play" } | { type: "pause" };
+type CycleAction = { type: "tick" };
 
 const cycleReducer: React.Reducer<CycleState, CycleAction> = (
     state,
     action,
 ) => {
-    return state;
+    switch (action.type) {
+        case "tick":
+            let { k, n, p } = state;
+            p = p + 1;
+            if (p === n) {
+                p = 0;
+                k = k + 1;
+                if (k === n) {
+                    k = 2;
+                    n = n + 1;
+                    if (n === 13) {
+                        n = 4;
+                    }
+                }
+            }
+            return { k, n, p };
+    }
 };
 
 export const Cycle: React.FC = () => {
     const getAudioContext = useAudioContext();
     const [state, dispatch] = React.useReducer(cycleReducer, initialCycleState);
 
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const { k, n, p } = state;
+    const seq = E(k, n);
 
-    const [seqIndex, setSeqIndex] = React.useState(0);
-    const seq = [1, 0, 0, 1, 0, 0, 1, 0];
-    const seq2 = E(3, 8);
-    console.assert(JSON.stringify(seq) == JSON.stringify(seq2));
+    /**
+     * If we're currently playing, then this is the ID of the `setInterval`
+     * that is ticking along, doing the timing for us.
+     *
+     * This is kept outside of the reducer's state because we getting this value
+     * (by calling setInterval) requires invoke dispatch itself. Having this be
+     * part of the reducer's state gets all cyclic.
+     */
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
     const handleClick = () => {
         if (intervalID) {
@@ -118,8 +135,7 @@ export const Cycle: React.FC = () => {
         } else {
             setIntervalID(
                 window.setInterval(
-                    () =>
-                        setSeqIndex((seqIndex) => (seqIndex + 1) % seq.length),
+                    () => dispatch({ type: "tick" }),
                     (1000 * 1) / 7,
                 ),
             );
@@ -127,10 +143,10 @@ export const Cycle: React.FC = () => {
     };
 
     React.useEffect(() => {
-        if (intervalID && seq[seqIndex] === 1) {
+        if (intervalID && seq[p] === 1) {
             beep(getAudioContext(), 0.01);
         }
-    }, [intervalID, seqIndex]);
+    }, [intervalID, p]);
 
     return (
         <div>
@@ -138,9 +154,7 @@ export const Cycle: React.FC = () => {
                 {seq.map((v, i) => (
                     <div
                         key={i}
-                        className={
-                            intervalID && v === 1 && i === seqIndex ? "on" : ""
-                        }
+                        className={intervalID && v === 1 && i === p ? "on" : ""}
                     />
                 ))}
             </Beats2>
