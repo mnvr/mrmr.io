@@ -207,9 +207,9 @@ export const Modulate: React.FC = () => {
     React.useEffect(() => {
         if (intervalID && onset[p]) {
             if (accent[p]) {
-                beep(getAudioContext(), 0.05, 0.01, 0.1);
+                beep(getAudioContext(), 0.02, 0.01, 0.1);
             } else {
-                beep(getAudioContext(), 0.1, 0.001, 0.1);
+                beep(getAudioContext(), 0.08, 0.001, 0.1);
             }
         }
     }, [intervalID, p]);
