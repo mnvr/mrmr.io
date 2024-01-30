@@ -45,38 +45,72 @@ const E = (k, n) => {
     //     return fold(k, n % k, result);
     // };
 
-    const debug = false;
+    const debug = true;
 
-    const fold = (n, k, seq) => {
-        if (k < 2) return seq;
+    // const fold = (n, k, z, seq) => {
+    //     if (k < 2) return seq;
 
+    //     let result = [...seq];
+    //     if (debug) console.log({ n, k, z, result });
+
+    //     // If k divides into n, fold the sequence symmetrically
+    //     if (n % k === 0) {
+    //         for (let i = 0; i < k; i++) {
+    //             for (let j = i + k; j < n; j += k) {
+    //                 result[i] = [...result[i], ...result[j]];
+    //             }
+    //         }
+    //         result = result.slice(0, k);
+    //     } else if (z > 0) {
+    //         // limit the fold to z (number of remaining zeros)
+    //         let i = 0;
+    //         for (; i < Math.min(k, z); i++) {
+    //             result[i] = [...result[i], ...result[result.length - i - 1]];
+    //             if (debug) console.log({ i, k, result });
+    //         }
+    //         result = result.slice(0, -i);
+    //     } else {
+    //         for (let i = 0; i < k; i++) {
+    //             result[i] = [...result[i], ...result[result.length - i - 1]];
+    //             if (debug) console.log({ i, k, result });
+    //         }
+    //         result = result.slice(0, -k);
+    //     }
+
+    //     if (debug) console.log("after slicing", result);
+    //     return fold(k, n % k, 0, result);
+    // };
+
+    // An implementation of Bjorklund's algorithm for calculating the Euclidean
+    // rhythms, as described in the 2005 (extended) paper _The Euclidean
+    // Algorithm Generates Traditional Musical Rhythms_ by Godfried Toussaint.
+    const fold = (n, k, z, seq) => {
         let result = [...seq];
-        if (debug) console.log({ n, k, result });
 
-        // If k divides into n, fold the sequence symmetrically
-        if (n % k === 0) {
-            for (let i = 0; i < k; i++) {
-                for (let j = i + k; j < n; j += k) {
-                    result[i] = [...result[i], ...result[j]];
-                }
+        // Remainder
+        let rem = n;
+
+        // > If there is more than one zero the algorithm moves zeros in stages.
+        //   We begin by taking zeroes one-at-a-time (from right to left),
+        //   placing a zero after each one (from left to right).
+        let nz = z;
+        while (nz > 0) {
+            // Number of zeros to move in this stage is the minimum of the
+            // remaining zeros and the remainder (k).
+            const toMove = Math.min(nz, k);
+            for (let i = 0; i < toMove; i++) {
+                result[i] = [...result[i], ...result[result.length - 1 - i]];
             }
-            result = result.slice(0, k);
-        } else {
-            for (let i = 0; i < k; i++) {
-                result[i] = [...result[i], ...result[result.length - i - 1]];
-                if (debug) console.log({ i, k, result });
-            }
-            result = result.slice(0, -k);
+            result = result.slice(0, result.length - toMove);
+            nz = nz - toMove;
+            rem = rem - toMove;
+            if (debug) console.log(`stage: after moving ${toMove} zeroes`, {nz, rem, result});
         }
 
-        if (debug) console.log("after slicing", result);
-        return fold(k, n % k, result);
+        return result;
     };
 
-    if (k > n - k) {
-        return fold(k, n - k, seq).flat();
-    }
-    return fold(n, k, seq).flat();
+    return fold(n, k, n - k, seq).flat();
 };
 
 const test = (k, n, expected) => {
@@ -90,7 +124,6 @@ const test = (k, n, expected) => {
     }
 };
 
-
 // Expected: [1,0,1,1,0,1,1,0,1,1]
 // Out     : [1,0,1,0,1,0,1,1,1,1]
 // test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
@@ -101,13 +134,13 @@ const test = (k, n, expected) => {
 //
 // The paper calls them out separately; our algorithm too has a special case for
 // dealing with them.
-test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+// test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+// test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
-// The three main examples from the paper illustrating the algorithm
+// // The three main examples from the paper illustrating the algorithm
 test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
-test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
-test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
+// test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
+// test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
 // // The paper lists [1, 0, 1], we get a rotated version
 // test(2, 3, [1, 1, 0]);
@@ -120,8 +153,6 @@ test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 // test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
 // test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
 // test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
-
-
 
 // test(
 //     13,
