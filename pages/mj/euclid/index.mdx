@@ -37,7 +37,7 @@ const gcd = (n, m) => m ? gcd(m, n % m) : n
 
 <C.Section>
 
-### Beats
+### Euclidean rhythms
 
 <C.Box>
 
@@ -46,9 +46,8 @@ const gcd = (n, m) => m ? gcd(m, n % m) : n
 At the surface level it is calculating the GCD, the largest number that divides
 both `n` and `m`. But really it is unravelling a number pair.
 
-In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many of the
-"erratic" sounding drum beats used across the world. For example, here is `E(3,
-8)`.
+In 2005, Godfried Toussaint realized that Euclid's algorithm encodes most of the
+drum beats used across the world. For example, here is `E(3, 8)`.
 
 </C.Explanation>
 
@@ -66,8 +65,7 @@ In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many of the
 
 <C.Explanation>
 
-Here is a naive implementation of the code to compute the Euclidean beats for a
-given pair of numbers.
+Here is an implementation of the algorithm described by Toussaint.
 
 At each step, we "fold" the trailing part of the sequence into the leading part.
 How much of the trailing part to fold is given by the value of `gcd(n, m)` at
@@ -77,7 +75,27 @@ that step.
 
 {/* prettier-ignore */}
 ```js
+const E = (k, n) => {
+    let s = Array(n).fill(0)
+        .map((_, i) => (i < k ? [1] : [0]))
 
+    let d = n - k
+    n = Math.max(k, d)
+    k = Math.min(k, d)
+    let z = d
+
+    while (z > 0 || k > 1) {
+        for (let i = 0; i < k; i++)
+            s[i].push(...s[s.length - 1 - i])
+        s.splice(-k)
+        z = z - k
+        d = n - k
+        n = Math.max(k, d)
+        k = Math.min(k, d)
+    }
+
+    return s.flat()
+}
 ```
 
 </C.Box>
