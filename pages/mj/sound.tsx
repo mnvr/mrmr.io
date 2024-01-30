@@ -3,8 +3,9 @@ export const beep = (
     duration: number,
     attack = 0.001,
     release = 0.1,
+    frequency = 440,
 ) => {
-    const osc = new OscillatorNode(ctx);
+    const osc = new OscillatorNode(ctx, { frequency });
     const env = new GainNode(ctx);
     const t = ctx.currentTime;
 
