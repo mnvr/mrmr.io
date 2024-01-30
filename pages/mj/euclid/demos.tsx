@@ -261,3 +261,72 @@ const Beats3 = styled.div`
         background-color: lawngreen;
     }
 `;
+
+export const Everything: React.FC = () => {
+    const getAudioContext = useAudioContext();
+    const [state, dispatch] = React.useReducer(cycleReducer, initialCycleState);
+
+    const seq38 = E(3, 8);
+
+    const { k, n, p } = state;
+    const seq = E(k, n);
+
+    /**
+     * If we're currently playing, then this is the ID of the `setInterval` that
+     * is ticking along, doing the timing for us.
+     *
+     * This is kept outside of the reducer's state because mutations to this
+     * value involve side effects.
+     */
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+
+    const handleClick = () => {
+        if (intervalID) {
+            clearInterval(intervalID);
+            setIntervalID(undefined);
+        } else {
+            setIntervalID(
+                window.setInterval(() => dispatch({ type: "tick" }), 1000 / 7),
+            );
+        }
+    };
+
+    React.useEffect(() => {
+        if (intervalID) {
+            if (seq38[p % seq38.length]) {
+                beep(getAudioContext(), 0.01);
+            }
+            if (seq[p]) {
+                beep(getAudioContext(), 0.01);
+            }
+        }
+    }, [intervalID, p]);
+
+    return (
+        <div>
+            <Beats>
+                {seq38.map((v, i) => (
+                    <div
+                        key={i}
+                        className={
+                            intervalID && v && i === p % seq38.length
+                                ? "on"
+                                : ""
+                        }
+                    />
+                ))}
+            </Beats>
+            <Beats>
+                {seq.map((v, i) => (
+                    <div
+                        key={i}
+                        className={intervalID && v && i === p ? "on" : ""}
+                    />
+                ))}
+            </Beats>
+            <button onClick={handleClick}>
+                {intervalID ? "Pause" : "Play"}
+            </button>
+        </div>
+    );
+};
