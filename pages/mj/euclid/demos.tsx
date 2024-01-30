@@ -85,16 +85,19 @@ interface CycleState {
     intervalID?: number;
 }
 
-type CycleAction = { type: "tick" } | { type: "play" } | { type: "pause" };
-
-function cycleReducer(state: CycleState, action: CycleAction): CycleState {
-    return state;
-}
-
 const initialCycleState: CycleState = {
     k: 3,
     n: 4,
     ph: 0,
+};
+
+type CycleAction = { type: "tick" } | { type: "play" } | { type: "pause" };
+
+const cycleReducer: React.Reducer<CycleState, CycleAction> = (
+    state,
+    action,
+) => {
+    return state;
 };
 
 export const Cycle: React.FC = () => {
