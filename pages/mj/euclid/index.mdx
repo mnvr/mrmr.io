@@ -46,8 +46,8 @@ const gcd = (n, m) => m ? gcd(m, n % m) : n
 At the surface level it is calculating the GCD, the largest number that divides
 both `n` and `m`. But really it is unravelling a number pair.
 
-In 2005, Godfried Toussaint realized that Euclid's algorithm encodes most of the
-drum beats used across the world. For example, here is `E(3, 8)`.
+In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many drum
+beats. For example, here is `E(3, 8)`.
 
 </C.Explanation>
 
@@ -65,11 +65,30 @@ drum beats used across the world. For example, here is `E(3, 8)`.
 
 <C.Explanation>
 
-Here is an implementation of the algorithm described by Toussaint.
+Here is an implementation of the algorithm described by Toussaint. At each step,
+we "fold" the end of the sequence into the beginning. How much to fold is given
+by the value of `gcd(n, m)` at that step.
 
-At each step, we "fold" the trailing part of the sequence into the leading part.
-How much of the trailing part to fold is given by the value of `gcd(n, m)` at
-that step.
+When we call this function with two numbers (_the number of 1's_, and _the
+length of the sequence_), it returns a sequence where the 1's are maximally
+displaced. e.g. if you copy paste this code to your browser's developer tools,
+and then call `E(3,8)`, you'll get
+
+```
+> E(3,8)
+[1, 0, 0, 1, 0, 0, 1, 0]
+```
+
+Somewhat surprisingly, this function is all we need to describe most real world
+rhythms.
+
+<small>
+
+See [the source code for this
+site](https://github.com/mnvr/mrmr.io/blob/main/pages/mj/euclid/test.js) for a
+version of this function with comments and more examples.
+
+</small>
 
 </C.Explanation>
 
