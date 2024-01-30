@@ -188,10 +188,12 @@ const Beats2 = styled.div`
 export const Modulate: React.FC = () => {
     const getAudioContext = useAudioContext();
 
-    const [k, n] = [8, 13];
-    const seq = E(k, n);
+    const [ko, ka, n] = [8, 4, 13];
+    const onset = E(ko, n);
+    const accent = E(ka, n);
+
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
-    /* Phase */
+    /* Phase, indexes into both onset and accent */
     const [p, setP] = React.useState(0);
 
     const handleClick = () => {
@@ -201,7 +203,7 @@ export const Modulate: React.FC = () => {
         } else {
             setIntervalID(
                 window.setInterval(
-                    () => setP((p) => (p + 1) % seq.length),
+                    () => setP((p) => (p + 1) % n),
                     (1000 * 1) / 7,
                 ),
             );
@@ -209,31 +211,61 @@ export const Modulate: React.FC = () => {
     };
 
     React.useEffect(() => {
-        if (intervalID) {
-            const attack = seq[p] === 1 ? 0.001 : 0.001;
-            beep(getAudioContext(), 0.02, attack);
+        if (intervalID && onset[p]) {
+            if (accent[p]) {
+                beep(getAudioContext(), 0.05, 0.01, 0.1);
+            } else {
+                beep(getAudioContext(), 0.1, 0.001, 0.1);
+            }
         }
     }, [intervalID, p]);
 
     return (
         <div>
-            <Beats>
-                {seq.map((v, i) => (
+            <Beats3>
+                {onset.map((o, i) => (
                     <div
                         key={i}
                         className={
-                            intervalID && v === 1
-                                ? i === p
+                            intervalID && p === i
+                                ? accent[i] === 1
                                     ? "accent"
-                                    : "on"
+                                    : o === 1
+                                      ? "onset"
+                                      : ""
                                 : ""
                         }
                     />
                 ))}
-            </Beats>
+            </Beats3>
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
         </div>
     );
 };
+
+const Beats3 = styled.div`
+    width: 300px;
+    height: 10px;
+    margin-block-start: 1em;
+    margin-block-end: 1.5em;
+
+    display: flex;
+    justify-content: space-between;
+
+    & > div {
+        width: 10px;
+        border: 1px solid var(--mrmr-highlight-color);
+        box-sizing: border-box;
+        border-radius: 5px;
+    }
+
+    & > div.onset {
+        background-color: var(--mrmr-highlight-color);
+    }
+
+    & > div.accent {
+        background-color: yellow;
+    }
+`;
