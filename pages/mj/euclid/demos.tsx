@@ -120,12 +120,11 @@ export const Cycle: React.FC = () => {
     const seq = E(k, n);
 
     /**
-     * If we're currently playing, then this is the ID of the `setInterval`
-     * that is ticking along, doing the timing for us.
+     * If we're currently playing, then this is the ID of the `setInterval` that
+     * is ticking along, doing the timing for us.
      *
-     * This is kept outside of the reducer's state because we getting this value
-     * (by calling setInterval) requires invoke dispatch itself. Having this be
-     * part of the reducer's state gets all cyclic.
+     * This is kept outside of the reducer's state because mutations to this
+     * value involve side effects.
      */
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
