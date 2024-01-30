@@ -39,8 +39,9 @@ const E = (k, n) => {
         //
         // > The process stops when the remainder consists of only one sequence,
         //   or we run out of zeros.
+
         while (z > 0 || k > 1) {
-            const m = z > 0 && k > 1 ? Math.min(z, k) : z > 0 ? z : k;
+            const m = z > 0 && k > 0 ? Math.min(z, k) : z > 0 ? z : k;
             for (let i = 0; i < m; i++) {
                 result[i] = [...result[i], ...result[result.length - 1 - i]];
             }
@@ -50,7 +51,7 @@ const E = (k, n) => {
             n = Math.max(k, d);
             k = Math.min(k, d);
             z = z - m;
-            if (debug) console.log({ r, n, k, z });
+            if (debug) console.log({ d, n, k, z });
         }
 
         return result;
@@ -67,18 +68,18 @@ const E = (k, n) => {
     //   Bjorklund's algorithm uses the repeated subtraction form of division
     //   just as Euclid did in his _Elements_.
 
-    const m = n - k;
-    n = Math.max(k, m);
-    k = Math.min(k, m);
-    return fold(n, k, m, seqs).flat();
+    const d = n - k;
+    n = Math.max(k, d);
+    k = Math.min(k, d);
+    return fold(n, k, d, seqs).flat();
 };
 
 const test = (k, n, expected) => {
     const seq = JSON.stringify(E(k, n));
     const exp = JSON.stringify(expected);
-    console.log(`E(${k},${n})\t${seq}`);
+    console.log(`E(${k},${n}) ${seq}`);
     if (seq != exp) {
-        console.log(`Expectd\t${exp}`);
+        console.log(`Expected ${exp}`);
         console.assert(seq == exp, `Expected E(${k}, ${n}) to match ${exp}`);
     }
 };
@@ -93,22 +94,21 @@ test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
 test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
 test(2, 3, [1, 0, 1]);
-// test(1, 2, [1, 0]);
-// test(1, 3, [1, 0, 0]);
-// test(2, 5, [1, 0, 1, 0, 0]);
-// // // The paper lists [1, 0, 1, 1], we get a rotated version
-// // test(3, 4, [1, 1, 1, 0]);
-// test(3, 5, [1, 0, 1, 0, 1]);
-// test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
-// test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
-// test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
+test(1, 2, [1, 0]);
+test(1, 3, [1, 0, 0]);
+// The paper lists [1, 0, 1, 0, 0], and also the rotated variant starting on the
+// second onset which our implementation produces.
+test(2, 5, [1, 0, 0, 1, 0]);
+test(3, 4, [1, 0, 1, 1]);
+test(3, 5, [1, 0, 1, 0, 1]);
+// The paper lists [1, 0, 1, 0, 1, 0, 0], and the rotated variant starting on
+// the third onset which our implementation produces.
+test(3, 7, [1, 0, 0, 1, 0, 1, 0]);
+test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
 
-// Expected: [1,0,1,1,0,1,1,0,1,1]
-// Out     : [1,0,1,0,1,0,1,1,1,1]
 test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
-
-// test(
-//     13,
-//     24,
-//     [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-// );
+test(
+    13,
+    24,
+    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
+);
