@@ -23,7 +23,7 @@ const E = (k, n) => {
         .fill(0)
         .map((_, i) => (i < k ? [1] : [0]));
 
-    const debug = true;
+    const debug = false;
 
     const fold = (n, k, z, seqs) => {
         let result = [...seqs];
@@ -46,9 +46,9 @@ const E = (k, n) => {
             }
             result = result.slice(0, result.length - m);
             if (debug) console.log(`moved ${m}`, { n, k, z, result });
-            const r = n - k;
-            n = Math.max(k, r);
-            k = Math.min(k, r);
+            const d = n - k;
+            n = Math.max(k, d);
+            k = Math.min(k, d);
             z = z - m;
             if (debug) console.log({ r, n, k, z });
         }
@@ -56,10 +56,21 @@ const E = (k, n) => {
         return result;
     };
 
-    const r = n - k;
-    n = Math.max(k, r);
-    k = Math.min(k, r);
-    return fold(n, k, r, seqs).flat();
+    // Description of Euclid's algorithm from the paper:
+    //
+    // > Repeatedly replace the larger of the two numbers by their difference
+    //   until both are equal. This then is the GCD.
+    //
+    // > If the inputs m and k to Euclid's algorithm are equal to the number of
+    //   zeros and ones respectively, then Bjorklund's algorithm (with n = m +
+    //   k) has the same structure as the Euclidean algorithm. Indeed,
+    //   Bjorklund's algorithm uses the repeated subtraction form of division
+    //   just as Euclid did in his _Elements_.
+
+    const m = n - k;
+    n = Math.max(k, m);
+    k = Math.min(k, m);
+    return fold(n, k, m, seqs).flat();
 };
 
 const test = (k, n, expected) => {
@@ -72,32 +83,29 @@ const test = (k, n, expected) => {
     }
 };
 
-// Expected: [1,0,1,1,0,1,1,0,1,1]
-// Out     : [1,0,1,0,1,0,1,1,1,1]
-// test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
-
-// ---
-
 // Regular / periodic / "isochronous" rhythms
-// test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-// test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
-// // The three main examples from the paper illustrating the algorithm
+// The three main examples from the paper illustrating the algorithm
 test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
 test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
-// test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
+test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
-// // The paper lists [1, 0, 1], we get a rotated version
-// test(2, 3, [1, 1, 0]);
+test(2, 3, [1, 0, 1]);
 // test(1, 2, [1, 0]);
 // test(1, 3, [1, 0, 0]);
 // test(2, 5, [1, 0, 1, 0, 0]);
-// // The paper lists [1, 0, 1, 1], we get a rotated version
-// test(3, 4, [1, 1, 1, 0]);
+// // // The paper lists [1, 0, 1, 1], we get a rotated version
+// // test(3, 4, [1, 1, 1, 0]);
 // test(3, 5, [1, 0, 1, 0, 1]);
 // test(3, 7, [1, 0, 1, 0, 1, 0, 0]);
 // test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
 // test(4, 9, [1, 0, 1, 0, 1, 0, 1, 0, 0]);
+
+// Expected: [1,0,1,1,0,1,1,0,1,1]
+// Out     : [1,0,1,0,1,0,1,1,1,1]
+test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
 
 // test(
 //     13,
