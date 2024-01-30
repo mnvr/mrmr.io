@@ -19,40 +19,9 @@
  * maximally spaced out (in a fractal sense).
  */
 const E = (k, n) => {
-    const seqs = Array(n)
+    let seqs = Array(n)
         .fill(0)
         .map((_, i) => (i < k ? [1] : [0]));
-
-    const debug = false;
-
-    const fold = (n, k, z, seqs) => {
-        // Description from the paper:
-        //
-        // > If there is more than one zero the algorithm moves zeros in stages.
-        //   We begin by taking zeroes one-at-a-time (from right to left),
-        //   placing a zero after each one (from left to right).
-        //
-        // The same stages happen but with the "remainder" right-most sequences
-        // after the zeros have been exhausted. Then,
-        //
-        // > The process stops when the remainder consists of only one sequence,
-        //   or we run out of zeros.
-
-        while (z > 0 || k > 1) {
-            for (let i = 0; i < k; i++) {
-                seqs[i] = [...seqs[i], ...seqs[seqs.length - 1 - i]];
-            }
-            seqs = seqs.slice(0, seqs.length - k);
-            if (debug) console.log(`moved ${k}`, { n, k, z, seqs });
-            z = z - k;
-            const d = n - k;
-            n = Math.max(k, d);
-            k = Math.min(k, d);
-            if (debug) console.log({ d, n, k, z });
-        }
-
-        return seqs;
-    };
 
     // Description of Euclid's algorithm from the paper:
     //
@@ -65,10 +34,35 @@ const E = (k, n) => {
     //   Bjorklund's algorithm uses the repeated subtraction form of division
     //   just as Euclid did in his _Elements_.
 
-    const d = n - k;
+    let d = n - k;
     n = Math.max(k, d);
     k = Math.min(k, d);
-    return fold(n, k, d, seqs).flat();
+    let z = d;
+
+    // Description of Bjorklund's algorithm the paper:
+    //
+    // > If there is more than one zero the algorithm moves zeros in stages. We
+    //   begin by taking zeroes one-at-a-time (from right to left), placing a
+    //   zero after each one (from left to right).
+    //
+    // The same stages happen but with the "remainder" right-most sequences
+    // after the zeros have been exhausted. Then,
+    //
+    // > The process stops when the remainder consists of only one sequence, or
+    //   we run out of zeros.
+
+    while (z > 0 || k > 1) {
+        for (let i = 0; i < k; i++) {
+            seqs[i] = [...seqs[i], ...seqs[seqs.length - 1 - i]];
+        }
+        seqs = seqs.slice(0, seqs.length - k);
+        z = z - k;
+        d = n - k;
+        n = Math.max(k, d);
+        k = Math.min(k, d);
+    }
+
+    return seqs.flat();
 };
 
 const test = (k, n, expected) => {
