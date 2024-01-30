@@ -314,7 +314,6 @@ export const Everything: React.FC = () => {
                 //     } else {
                 // beep(getAudioContext(), 0.1, 0.001, 0.1, 140);
                 beep(getAudioContext(), 0.1, 0.001, 0.1, 110);
-
             }
         }
     }, [intervalID, p]);
