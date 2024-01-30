@@ -22,14 +22,14 @@ export const E38: React.FC = () => {
                 window.setInterval(
                     () =>
                         setSeqIndex((seqIndex) => (seqIndex + 1) % seq.length),
-                    (1000 * 1) / 7,
+                    1000 / 7,
                 ),
             );
         }
     };
 
     React.useEffect(() => {
-        if (intervalID && seq[seqIndex] === 1) {
+        if (intervalID && seq[seqIndex]) {
             beep(getAudioContext(), 0.01);
         }
     }, [intervalID, seqIndex]);
@@ -41,7 +41,7 @@ export const E38: React.FC = () => {
                     <div
                         key={i}
                         className={
-                            intervalID && v === 1 && i === seqIndex ? "on" : ""
+                            intervalID && v && i === seqIndex ? "on" : ""
                         }
                     />
                 ))}
@@ -134,16 +134,13 @@ export const Cycle: React.FC = () => {
             setIntervalID(undefined);
         } else {
             setIntervalID(
-                window.setInterval(
-                    () => dispatch({ type: "tick" }),
-                    (1000 * 1) / 7,
-                ),
+                window.setInterval(() => dispatch({ type: "tick" }), 1000 / 7),
             );
         }
     };
 
     React.useEffect(() => {
-        if (intervalID && seq[p] === 1) {
+        if (intervalID && seq[p]) {
             beep(getAudioContext(), 0.01);
         }
     }, [intervalID, p]);
@@ -154,7 +151,7 @@ export const Cycle: React.FC = () => {
                 {seq.map((v, i) => (
                     <div
                         key={i}
-                        className={intervalID && v === 1 && i === p ? "on" : ""}
+                        className={intervalID && v && i === p ? "on" : ""}
                     />
                 ))}
             </Beats2>
@@ -202,10 +199,7 @@ export const Modulate: React.FC = () => {
             setIntervalID(undefined);
         } else {
             setIntervalID(
-                window.setInterval(
-                    () => setP((p) => (p + 1) % n),
-                    (1000 * 1) / 7,
-                ),
+                window.setInterval(() => setP((p) => (p + 1) % n), 1000 / 7),
             );
         }
     };
@@ -227,12 +221,10 @@ export const Modulate: React.FC = () => {
                     <div
                         key={i}
                         className={
-                            intervalID && p === i
-                                ? o === 1
-                                    ? accent[i]
-                                        ? "accent"
-                                        : "onset"
-                                    : ""
+                            intervalID && o && p === i
+                                ? accent[i]
+                                    ? "accent"
+                                    : "onset"
                                 : ""
                         }
                     />
