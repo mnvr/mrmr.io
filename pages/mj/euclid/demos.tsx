@@ -71,8 +71,36 @@ const Beats = styled.div`
     }
 `;
 
-export const ManyE: React.FC = () => {
+interface CycleState {
+    /** The `k` in `E(k, n)` */
+    k: number;
+    /** The `n` in `E(k, n)` */
+    n: number;
+    /** The phase of (i.e. the offset into) the current E(k, n) */
+    ph: number;
+    /**
+     * If we're currently playing, then this is the ID of the `setInterval`
+     * that is ticking along, doing the timing for us.
+     */
+    intervalID?: number;
+}
+
+type CycleAction = { type: "tick" } | { type: "play" } | { type: "pause" };
+
+function cycleReducer(state: CycleState, action: CycleAction): CycleState {
+    return state;
+}
+
+const initialCycleState: CycleState = {
+    k: 3,
+    n: 4,
+    ph: 0,
+};
+
+export const Cycle: React.FC = () => {
     const getAudioContext = useAudioContext();
+    const [state, dispatch] = React.useReducer(cycleReducer, initialCycleState);
+
     const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
     const [seqIndex, setSeqIndex] = React.useState(0);
