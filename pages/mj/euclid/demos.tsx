@@ -1,8 +1,8 @@
 import * as React from "react";
+import { E } from "sound/e";
 import styled from "styled-components";
 import { useAudioContext } from "webaudio/use-audio-context";
 import { beep } from "../sound";
-import { E } from "./er.mjs";
 
 export const E38: React.FC = () => {
     const getAudioContext = useAudioContext();

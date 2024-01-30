@@ -1,13 +1,13 @@
 /**
  * An implementation of Bjorklund's algorithm for calculating the Euclidean
- * rhythms, as described in the 2005 (extended) paper _The Euclidean //
- * Algorithm Generates Traditional Musical Rhythms_ by Godfried Toussaint.
+ * rhythms, as described in the 2005 (extended) paper _The Euclidean Algorithm
+ * Generates Traditional Musical Rhythms_ by Godfried Toussaint.
  *
  * This is a standalone JavaScript file that also serves as a test bed for our
- * algorithm. It is in JavaScript so that it can directly be invoked without
- * needing transpilation - uncomment `runTests` at the bottom of this file and:
+ * algorithm. It is in JavaScript so that it can directly be executed without
+ * needing transpilation:
  *
- *     node pages/mj/euclid/er.mjs
+ *     node pages/mj/euclid/er.js
  *
  * It will then generate some Euclidean Rhythms, and compare them against the
  * examples given in Toussaint's paper.
@@ -23,7 +23,7 @@
  * @returns number[] A sequence of 1's and 0's with the 1's maximally spaced out
  * using Euclid's algorithm.
  */
-export const E = (k, n) => {
+const E = (k, n) => {
     let seqs = Array(n)
         .fill(0)
         .map((_, i) => (i < k ? [1] : [0]));
@@ -138,5 +138,4 @@ const runTests = () => {
     );
 };
 
-// Uncomment this when running standalone, say via `node er.mjs`
-//runTests()
+runTests();
