@@ -41,7 +41,7 @@ const E = (k, n) => {
         //   or we run out of zeros.
 
         while (z > 0 || k > 1) {
-            const m = z > 0 && k > 0 ? Math.min(z, k) : z > 0 ? z : k;
+            const m = k;
             for (let i = 0; i < m; i++) {
                 result[i] = [...result[i], ...result[result.length - 1 - i]];
             }
