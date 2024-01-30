@@ -3,11 +3,11 @@
  * rhythms, as described in the 2005 (extended) paper _The Euclidean //
  * Algorithm Generates Traditional Musical Rhythms_ by Godfried Toussaint.
  *
- * This is a standalone JavaScript program  meant as a test bed for our
- * algorithm.  It is in JavaScript so that it can directly be invoked without
- * needing transpilation:
+ * This is a standalone JavaScript file that also serves as a test bed for our
+ * algorithm. It is in JavaScript so that it can directly be invoked without
+ * needing transpilation - uncomment `runTests` at the bottom of this file and:
  *
- *     node pages/mj/euclid/test.js
+ *     node pages/mj/euclid/er.mjs
  *
  * It will then generate some Euclidean Rhythms, and compare them against the
  * examples given in Toussaint's paper.
@@ -17,8 +17,13 @@
  * Euclidean rhythm E(k, n) where k is the number of 1's and n is the length of
  * the sequence. The property that such sequences have is that the 1's are
  * maximally spaced out (in a fractal sense).
+ *
+ * @param {number} k The number of 1's in the sequence.
+ * @param {number} n The length of the sequence.
+ * @returns number[] A sequence of 1's and 0's with the 1's maximally spaced out
+ * using Euclid's algorithm.
  */
-const E = (k, n) => {
+export const E = (k, n) => {
     let seqs = Array(n)
         .fill(0)
         .map((_, i) => (i < k ? [1] : [0]));
@@ -99,31 +104,39 @@ const test = (k, n, expected) => {
     }
 };
 
-// Regular / periodic / "isochronous" rhythms
-test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
-test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+const runTests = () => {
+    // Regular / periodic / "isochronous" rhythms
+    test(4, 16, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
+    test(3, 12, [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0]);
 
-// The three main examples from the paper illustrating the algorithm
-test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
-test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
-test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
+    // The three main examples from the paper illustrating the algorithm
+    test(5, 13, [1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0]);
+    test(3, 8, [1, 0, 0, 1, 0, 0, 1, 0]);
+    test(5, 8, [1, 0, 1, 1, 0, 1, 1, 0]);
 
-test(2, 3, [1, 0, 1]);
-test(1, 2, [1, 0]);
-test(1, 3, [1, 0, 0]);
-// The paper lists [1, 0, 1, 0, 0], and also the rotated variant starting on the
-// second onset which our implementation produces.
-test(2, 5, [1, 0, 0, 1, 0]);
-test(3, 4, [1, 0, 1, 1]);
-test(3, 5, [1, 0, 1, 0, 1]);
-// The paper lists [1, 0, 1, 0, 1, 0, 0], and the rotated variant starting on
-// the third onset which our implementation produces.
-test(3, 7, [1, 0, 0, 1, 0, 1, 0]);
-test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
+    test(2, 3, [1, 0, 1]);
+    test(1, 2, [1, 0]);
+    test(1, 3, [1, 0, 0]);
+    // The paper lists [1, 0, 1, 0, 0], and also the rotated variant starting on
+    // the second onset which our implementation produces.
+    test(2, 5, [1, 0, 0, 1, 0]);
+    test(3, 4, [1, 0, 1, 1]);
+    test(3, 5, [1, 0, 1, 0, 1]);
+    // The paper lists [1, 0, 1, 0, 1, 0, 0], and the rotated variant starting
+    // on the third onset which our implementation produces.
+    test(3, 7, [1, 0, 0, 1, 0, 1, 0]);
+    test(4, 7, [1, 0, 1, 0, 1, 0, 1]);
 
-test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
-test(
-    13,
-    24,
-    [1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
-);
+    test(7, 10, [1, 0, 1, 1, 0, 1, 1, 0, 1, 1]);
+    test(
+        13,
+        24,
+        [
+            1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1,
+            0,
+        ],
+    );
+};
+
+// Uncomment this when running standalone, say via `node er.mjs`
+//runTests()

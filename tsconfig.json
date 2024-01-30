@@ -29,6 +29,11 @@
         "resolveJsonModule": true,
         /* Allow absolute imports of files in `src/` */
         "baseUrl": "./src",
+
+        /* Allow importing .js/.mjs files */
+        "allowJs": true,
+        /* Setting allowJs also requires setting the outDir */
+        "outDir": ".cache/mrmr-out",
     },
     "include": [
         "./src/**/*",
