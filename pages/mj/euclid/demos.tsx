@@ -265,26 +265,14 @@ const Beats3 = styled.div`
 export const Everything: React.FC = () => {
     const getAudioContext = useAudioContext();
     const [state, dispatch] = React.useReducer(cycleReducer, initialCycleState);
-    // const [p, setP] = React.useState(0);
-
-    const seq38 = E(3, 8);
+    const [intervalID, setIntervalID] = React.useState<number | undefined>();
 
     const { k, n, p } = state;
-    // const [k, n] = [7, 8];
     const seq = E(k, n);
 
-    const [ko, ka, n3] = [7, 3, 8];
-    const onset = E(ko, n3);
-    // const accent = E(ka, n3);
-
-    /**
-     * If we're currently playing, then this is the ID of the `setInterval` that
-     * is ticking along, doing the timing for us.
-     *
-     * This is kept outside of the reducer's state because mutations to this
-     * value involve side effects.
-     */
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const n8 = 8;
+    const seq38 = E(3, 8);
+    const seq78 = E(7, 8);
 
     const handleClick = () => {
         if (intervalID) {
@@ -293,26 +281,20 @@ export const Everything: React.FC = () => {
         } else {
             setIntervalID(
                 window.setInterval(() => dispatch({ type: "tick" }), 1000 / 7),
-                // window.setInterval(() => setP((p) => (p + 1) % n), 1000 / 7),
             );
         }
     };
 
     React.useEffect(() => {
         if (intervalID) {
-            if (seq38[p % seq38.length]) {
+            if (seq38[p % n8]) {
                 beep(getAudioContext(), 0.01, 0.001, 0.1, 660);
             }
             if (seq[p]) {
                 beep(getAudioContext(), 0.01);
                 beep(getAudioContext(), 0.005, 0.001, 0.02, 660);
             }
-            if (onset[p % n3]) {
-                //     if (accent[p % n3]) {
-                //         beep(getAudioContext(), 0.01, 0.001, 0.1, 110);
-                //         // beep(getAudioContext(), 0.5, 0.1, 0.1, 110);
-                //     } else {
-                // beep(getAudioContext(), 0.1, 0.001, 0.1, 140);
+            if (seq78[p % n8]) {
                 beep(getAudioContext(), 0.1, 0.001, 0.1, 110);
             }
         }
@@ -324,11 +306,7 @@ export const Everything: React.FC = () => {
                 {seq38.map((v, i) => (
                     <div
                         key={i}
-                        className={
-                            intervalID && v && i === p % seq38.length
-                                ? "on"
-                                : ""
-                        }
+                        className={intervalID && v && i === p % n8 ? "on" : ""}
                     />
                 ))}
             </Beats>
@@ -341,10 +319,10 @@ export const Everything: React.FC = () => {
                 ))}
             </Beats>
             <Beats>
-                {onset.map((v, i) => (
+                {seq78.map((v, i) => (
                     <div
                         key={i}
-                        className={intervalID && v && i === p % n3 ? "on" : ""}
+                        className={intervalID && v && i === p % n8 ? "on" : ""}
                     />
                 ))}
             </Beats>
