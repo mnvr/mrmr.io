@@ -63,11 +63,12 @@ const Beats = styled.div`
 
     & > div {
         width: 10px;
-        border: 1px solid tomato;
+        border: 1px solid var(--mrmr-highlight-color);
+        box-sizing: border-box;
     }
 
     & > div.on {
-        background-color: tomato;
+        background-color: var(--mrmr-highlight-color);
     }
 `;
 
@@ -100,7 +101,7 @@ const cycleReducer: React.Reducer<CycleState, CycleAction> = (
                 p = 0;
                 k = k + 1;
                 if (k === n) {
-                    k = 2;
+                    k = n < 5 ? 1 : 3;
                     n = n + 1;
                     if (n === 13) {
                         n = 4;
@@ -166,7 +167,7 @@ export const Cycle: React.FC = () => {
 };
 
 const Beats2 = styled.div`
-    height: 20px;
+    height: 40px;
     margin-block-start: 1em;
     margin-block-end: 1.5em;
 
@@ -176,11 +177,11 @@ const Beats2 = styled.div`
 
     & > div {
         width: 20px;
-        border: 1px solid tomato;
-        border-radius: 2px;
+        border: 1px solid var(--mrmr-highlight-color);
+        box-sizing: border-box;
     }
 
     & > div.on {
-        background-color: tomato;
+        background-color: var(--mrmr-highlight-color);
     }
 `;
