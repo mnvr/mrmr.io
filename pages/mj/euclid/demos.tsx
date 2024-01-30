@@ -188,7 +188,7 @@ const Beats2 = styled.div`
 export const Modulate: React.FC = () => {
     const getAudioContext = useAudioContext();
 
-    const [ko, ka, n] = [8, 4, 13];
+    const [ko, ka, n] = [9, 4, 15];
     const onset = E(ko, n);
     const accent = E(ka, n);
 
@@ -228,11 +228,11 @@ export const Modulate: React.FC = () => {
                         key={i}
                         className={
                             intervalID && p === i
-                                ? accent[i] === 1
-                                    ? "accent"
-                                    : o === 1
-                                      ? "onset"
-                                      : ""
+                                ? o === 1
+                                    ? accent[i]
+                                        ? "accent"
+                                        : "onset"
+                                    : ""
                                 : ""
                         }
                     />
@@ -266,6 +266,6 @@ const Beats3 = styled.div`
     }
 
     & > div.accent {
-        background-color: yellow;
+        background-color: lawngreen;
     }
 `;
