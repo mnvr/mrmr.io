@@ -46,17 +46,20 @@ const Description2: React.FC = () => {
     return (
         <>
             <p>
-                For <b>Day 14</b>, I created a{" "}
+                For <b>Day 14</b>, I made a{" "}
                 <C.ELink href="https://mnvr.github.io/gm1k">
-                    generative piece of music in 410 bytes of JS
+                    song in 410 bytes of JS
+                </C.ELink>
+                . For <b>Day 31</b>, I made another one{" "}
+                <C.ELink href="https://mnvr.github.io/gm1k/e">
+                    using Euclidean rhythms
                 </C.ELink>
                 .
             </p>
             <p>
-                I've also created{" "}
+                I also created{" "}
                 <Link to="cover">
-                    a demonstration to show how much can be done just by simple,
-                    basic grids
+                    a tutorial to show how much can be done just by basic grids
                 </Link>{" "}
                 - I start with the simplest possible grid, and derive the cover
                 art that you see at the top.
