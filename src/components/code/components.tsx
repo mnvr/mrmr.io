@@ -20,9 +20,6 @@ export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
 
 const Content_ = styled.div`
     margin: 1rem;
-    @media (width < 500px) {
-        margin-inline: 0.8rem;
-    }
 
     pre {
         /* See: [Note: Styling markdown code blocks] */
@@ -35,13 +32,15 @@ const Content_ = styled.div`
     }
 
     @media (width < 500px) {
+        margin-inline: 0.8rem;
+        pre {
+            /* inverse of the above margin to ensure end-to-end code blocks */
+            margin-inline: -0.8rem;
+        }
+
         /* Make code blocks smaller on small screens to avoid overflow */
         pre code {
             font-size: 13px;
-        }
-
-        pre {
-            padding-inline: 1.1rem;
         }
     }
 `;

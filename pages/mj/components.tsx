@@ -45,13 +45,9 @@ const Box_ = styled.div`
     align-items: center;
     margin-block-end: 1em;
 
-    pre {
-        margin-inline: 0;
-    }
-
-    @media (width < 60em) {
+    @media (width > 60em) {
         pre {
-            margin-inline: -1rem;
+            margin-inline: 0;
         }
     }
 `;
