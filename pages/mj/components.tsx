@@ -17,8 +17,6 @@ const Container_ = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4em;
-
-    margin-block-end: 6rem;
 `;
 
 export const Section: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -72,28 +70,25 @@ const Explanation_ = styled(LinkStyleHover)`
     }
 `;
 
-export const Footer: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Footer: React.FC = () => {
     return (
         <Footer_>
-            {children && (
-                <p>
-                    <small>{children}</small>
-                </p>
-            )}
-            <p>
-                <small>
-                    <Link to="/">mrmr.io</Link>
-                </small>
-            </p>
+            <small>
+                <Link to="/">mrmr.io</Link>
+            </small>
         </Footer_>
     );
 };
 
-const Footer_ = styled.div`
+const Footer_ = styled.footer`
+    margin-block: 1rem;
+
     a {
         text-decoration: none;
         color: var(--mrmr-secondary-color);
     }
 
-    margin-block-end: -4rem;
+    a:hover {
+        color: var(--mrmr-title-color);
+    }
 `;
