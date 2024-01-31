@@ -146,28 +146,32 @@ export const Cycle: React.FC = () => {
     }, [intervalID, p]);
 
     return (
-        <div>
-            <Beats2>
+        <Cycle_>
+            <CycleBeats>
                 {seq.map((v, i) => (
                     <div
                         key={i}
                         className={intervalID && v && i === p ? "on" : ""}
                     />
                 ))}
-            </Beats2>
+            </CycleBeats>
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </div>
+        </Cycle_>
     );
 };
 
-const Beats2 = styled.div`
+const Cycle_ = styled.div`
+    width: 300px;
+    max-width: 100%;
+`;
+
+const CycleBeats = styled.div`
     height: 40px;
     margin-block-start: 1em;
     margin-block-end: 1.5em;
 
-    width: 300px;
     display: flex;
     justify-content: space-between;
 
@@ -215,8 +219,8 @@ export const Modulate: React.FC = () => {
     }, [intervalID, p]);
 
     return (
-        <div>
-            <Beats3>
+        <Modulate_>
+            <ModulateBeats>
                 {onset.map((o, i) => (
                     <div
                         key={i}
@@ -229,16 +233,20 @@ export const Modulate: React.FC = () => {
                         }
                     />
                 ))}
-            </Beats3>
+            </ModulateBeats>
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </div>
+        </Modulate_>
     );
 };
 
-const Beats3 = styled.div`
+const Modulate_ = styled.div`
     width: 300px;
+    max-width: 100%;
+`;
+
+const ModulateBeats = styled.div`
     height: 10px;
     margin-block-start: 1em;
     margin-block-end: 1.5em;
