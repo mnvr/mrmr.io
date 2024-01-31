@@ -1,4 +1,5 @@
 import { LinkStyleHover } from "components/LinkStyles";
+import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 
@@ -69,4 +70,30 @@ const Explanation_ = styled(LinkStyleHover)`
     ol {
         padding-inline-start: 1em;
     }
+`;
+
+export const Footer: React.FC<React.PropsWithChildren> = ({ children }) => {
+    return (
+        <Footer_>
+            {children && (
+                <p>
+                    <small>{children}</small>
+                </p>
+            )}
+            <p>
+                <small>
+                    <Link to="/">mrmr.io</Link>
+                </small>
+            </p>
+        </Footer_>
+    );
+};
+
+const Footer_ = styled.div`
+    a {
+        text-decoration: none;
+        color: var(--mrmr-secondary-color);
+    }
+
+    margin-block-end: -4rem;
 `;
