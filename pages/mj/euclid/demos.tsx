@@ -35,7 +35,7 @@ export const E38: React.FC = () => {
     }, [intervalID, seqIndex]);
 
     return (
-        <div>
+        <BeatBox>
             <Beats>
                 {seq.map((v, i) => (
                     <div
@@ -49,17 +49,27 @@ export const E38: React.FC = () => {
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </div>
+        </BeatBox>
     );
 };
+
+const BeatBox = styled.div`
+    width: 300px;
+    max-width: 100%;
+`;
 
 const Beats = styled.div`
     height: 100px;
     margin-block-start: 1em;
     margin-block-end: 1.5em;
 
+    width: 100%;
     display: flex;
     gap: 18px;
+
+    @media (width < 400px) {
+        gap: min((100% - 12 * 10px) / 11, 18px);
+    }
 
     & > div {
         width: 10px;
@@ -146,7 +156,7 @@ export const Cycle: React.FC = () => {
     }, [intervalID, p]);
 
     return (
-        <Cycle_>
+        <BeatBox>
             <CycleBeats>
                 {seq.map((v, i) => (
                     <div
@@ -158,14 +168,9 @@ export const Cycle: React.FC = () => {
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </Cycle_>
+        </BeatBox>
     );
 };
-
-const Cycle_ = styled.div`
-    width: 300px;
-    max-width: 100%;
-`;
 
 const CycleBeats = styled.div`
     height: 40px;
@@ -219,7 +224,7 @@ export const Modulate: React.FC = () => {
     }, [intervalID, p]);
 
     return (
-        <Modulate_>
+        <BeatBox>
             <ModulateBeats>
                 {onset.map((o, i) => (
                     <div
@@ -237,14 +242,9 @@ export const Modulate: React.FC = () => {
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </Modulate_>
+        </BeatBox>
     );
 };
-
-const Modulate_ = styled.div`
-    width: 300px;
-    max-width: 100%;
-`;
 
 const ModulateBeats = styled.div`
     height: 10px;
@@ -309,7 +309,7 @@ export const Everything: React.FC = () => {
     }, [intervalID, p]);
 
     return (
-        <div>
+        <BeatBox>
             <Beats>
                 {seq38.map((v, i) => (
                     <div
@@ -337,6 +337,6 @@ export const Everything: React.FC = () => {
             <button onClick={handleClick}>
                 {intervalID ? "Pause" : "Play"}
             </button>
-        </div>
+        </BeatBox>
     );
 };
