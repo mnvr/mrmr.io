@@ -6,11 +6,11 @@ theme: paper
 layout: text
 tags:
     - tag: rant
-      label: The princess is in another castle
 related:
     - /react-io
 ---
 
+import { AttributedQuote } from "components/text/components.tsx";
 import { RefLink } from "components/text/extra";
 
 This is a yarn of three threads, and it got a bit long. The tldr is
@@ -24,7 +24,7 @@ This is a yarn of three threads, and it got a bit long. The tldr is
 The story is personal, but I hope readers find something they can relate to in
 their own life stream (I guess that's the point of blogs)
 
-## Apple doesn't care for you, Mr. Developer
+### Apple doesn't care for you, Mr. Developer
 
 Apple cares for me as a customer, but it doesn’t care for me as a developer.
 This dynamic had been subconsciously griefing me for years, until I was able to
@@ -36,7 +36,8 @@ reverse arrow from Apple to the developers.
 If all developers stopped building for Apple's platforms tomorrow, Apple will
 still survive, almost intact, since it doesn’t hurt their core value prop (I'll
 expand on this below). Apple has no dependency on individual developers. They
-care and collaborate with corporate dev “partners”, but that's different.
+care for and need to collaborate with corporate dev “partners”, but that's
+different.
 
 Since companies, especially ginormous multinationals, behave in purely game
 theoretic cost/benefit terms, and since Apple has no reason to care about
@@ -63,8 +64,8 @@ there who would know an O(n) algorithm for fixing this bug. But no, this bug has
 persisted for years (I've counted), and it is unlikely to be fixed in the future
 unless it gets accidentally fixed as part of some overhaul.
 
-Apologies for the snide, I know some great people who work at Google. My point
-is that Google isn't fixing this bug not because it doesn’t know how to, but
+Apologies for the snide, I know some great people who work there. My point is
+that Google isn't fixing this bug not because it doesn’t know how to, but
 because it doesn’t care. This bug has zero impact on its bottom line.
 
 The people like me who use alternate search engines like DDG have already moved
@@ -94,7 +95,7 @@ With Apple I didn’t understand the dynamics.
 2009-ish. I struggled to find a computer for my mom. Windows (at that time, I
 don't know about now) was just too insecure. Linux required constant tech
 support. Eventually I prepared for her an OpenBSD machine running Firefox and a
-basic game (bubbles I think).
+basic game (Bubbles I think).
 
 Obviously, this was not ideal. It fulfilled some goals - it worked without
 requiring any tech support when I wasn't around, and I was ensuring her data
@@ -106,9 +107,9 @@ Around this time, I joined a new job as a developer for a company that was
 making iOS apps. After a week or so of using the mac at work it hit me - _this
 is the computer I wanted for my mom!_
 
-**That is Apple’s value prop.**
+That is Apple’s value prop.
 
-As soon as I had enough saved I bought her a MacBook. And heartfeltly thanked
+As soon as I had saved enough I bought her a MacBook. And heartfeltly thanked
 Steve Jobs for engendering it.
 
 The earth has done many a revolutions since then, and Jobs has left earth, and
@@ -122,10 +123,8 @@ The people running Apple know all this. In the deep dungeons of Menlo Park when
 there are meetings of the core council, after all the sacrificial lambs have
 been slain and the blood and gore washed away, out comes the elder spreadsheet
 that encodes Apple’s business model, but nowhere in them is any cell, input or
-output, which involves developers.
-
-Sure, Apple wouldn’t mind if developers are happy. But it knows it doesn’t need
-to care if they are.
+output, which involves developers. Sure, Apple doesn't mind if developers are
+also happy. But it knows it doesn’t need to care if they are.
 
 This lack of caring is never expressed out loud. It isn’t some conspiracy, it
 just is one of those things - you wouldn’t walk up to someone who you don’t care
@@ -161,8 +160,8 @@ the same generic “Spotify” approach to music.
 > the Justin Frankel era of Winamp, and haven't seen how a music player can
 > provide a fast, seamless, endless _yet_ still personal approach to music.
 >
-> That era is not coming back because it relied on piracy, but luckily that's
-> not a problem! and that's the great thing about Apple Music's catalog. We can
+> That era is not coming back because it relied on piracy, but luckily we don't
+> need to anymore - that's the great thing about Apple's music catalog! We can
 > recreate that experience without needing to sail the high seas.
 
 So that's the backstory. Now recently I had a bunch of free time, and thought
@@ -204,7 +203,7 @@ single entity owns. Even benevolence can be ruined by incompetence.
 The web platform is in a precarious place – overreaching governments, browser
 duopolies, a complex developer ecosystem – so it is not a given it’ll remain
 thriving. But so far it has survived. And every year longer it survives, the
-more the chances that it’ll continue to survive in the future.
+more the chances that it’ll continue to thrive in the future.
 
 Ironically Google is the good guy here, they’re doing great work for the web. On
 the other hand, literally every single workaround I’ve had to write in the
@@ -215,7 +214,7 @@ recent past in web related code has been due to Safari's princessness.
 Which brings me to the third thread of this story, how all this made me
 reevalute my relationship with companies.
 
-Someone I know, someone who has a better grip on living than me, once told me
+Someone I know, someone who has a better grip on living than me, told me once
 that it's not useful to put people into the buckets of good and bad. People are
 a mix. Bad folks can do good actions sometimes, and vice versa.
 
@@ -236,11 +235,13 @@ interaction with them - I can reduce my dependence on them when they try to put
 me in a zero sum game, or reengage more with them if they're willing to be more
 symbiotic. Nothing is set in stone, really.
 
-<C.AttributedQuote attribution="Steve Jobs">
+---
+
+<AttributedQuote attribution="Steve Jobs, Make Something Wonderful">
 
 I think most large companies and medium-size companies, and even small
 companies, are starting to look at the web as the ultimate direct-to-customer
 distribution chain, bypassing all middlemen, going directly from the supplier to
 the consumer.
 
-</C.AttributedQuote>
+</AttributedQuote>
