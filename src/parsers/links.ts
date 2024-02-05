@@ -6,7 +6,8 @@ export type KnownDomain =
     | "twitter"
     | "instagram"
     | "youtube"
-    | "reddit";
+    | "reddit"
+    | "mastodon";
 
 /** A type guard for {@link KnownDomain}s */
 export const isKnownDomain = (s: string): s is KnownDomain => {
@@ -15,7 +16,8 @@ export const isKnownDomain = (s: string): s is KnownDomain => {
         s == "twitter" ||
         s == "instagram" ||
         s == "youtube" ||
-        s == "reddit"
+        s == "reddit" ||
+        s == "mastodon"
     );
 };
 
@@ -32,6 +34,8 @@ const titleForKnownDomain = (d: KnownDomain) => {
             return "YouTube";
         case "reddit":
             return "Reddit";
+        case "mastodon":
+            return "Mastodon";
     }
 };
 
@@ -59,8 +63,8 @@ export interface ParsedSlug {
 /** General link parser */
 export const parseLink = (s: string) => {
     const hostname = new URL(s).hostname;
-    // Currently all the known domains we have end in a .com, so we can just
-    // slice that off.
+    // Currently all the known domains we have end in a tld (mastodon.social for
+    // mastodon, .com for the rest), so we can just slice that off.
     const domain = hostname.split(".")[0];
     const knownDomain = domain && isKnownDomain(domain) ? domain : undefined;
     // Use one of the special cased titles if it is a known domain, otherwise

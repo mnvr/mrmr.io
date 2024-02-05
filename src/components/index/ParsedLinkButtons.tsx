@@ -1,6 +1,7 @@
 import { ExternalLink } from "components/ExternalLink";
 import { type ParsedLink } from "parsers/links";
 import * as React from "react";
+import { BsMastodon } from "react-icons/bs";
 import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 import { FiGithub, FiLink } from "react-icons/fi";
 import { RiRedditLine } from "react-icons/ri";
@@ -82,6 +83,7 @@ const KnownLinkIcon: React.FC<IconProps> = ({ link }) => {
     if (knownDomain == "instagram") return <InstagramIcon link={link} />;
     if (knownDomain == "youtube") return <YouTubeIcon link={link} />;
     if (knownDomain == "reddit") return <RedditIcon link={link} />;
+    if (knownDomain == "mastodon") return <MastodonIcon link={link} />;
     // If it is not one of the known domains, return the generic link icon.
     return <GenericLinkIcon link={link} />;
 };
@@ -104,6 +106,10 @@ const YouTubeIcon: React.FC<IconProps> = ({ link }) => {
 
 const RedditIcon: React.FC<IconProps> = ({ link }) => {
     return <RiRedditLine title={link.title} />;
+};
+
+const MastodonIcon: React.FC<IconProps> = ({ link }) => {
+    return <BsMastodon title={link.title} />;
 };
 
 const GenericLinkIcon: React.FC<IconProps> = ({ link }) => {

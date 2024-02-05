@@ -328,8 +328,9 @@ const ExternalLinks: React.FC = () => {
     const links = parseLinks([
         "https://github.com/mnvr",
         "https://twitter.com/mnvrth",
+        "https://mastodon.social/@mnvr",
         "https://instagram.com/manavrt",
-        "https://youtube.com/@mnvrth",
+        // "https://youtube.com/@mnvrth",
     ]);
     return (
         <LinkButtonsContainer>
