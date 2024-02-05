@@ -372,8 +372,7 @@ const convertMIDINoteToFrequency = (m: MIDINote) => {
 /**
  * Yet Another Synth, yes.
  *
- * yes uses the WebAudio API, specifically audio worklets, to dynamically
- * generate and play sounds in a browser.
+ * yes uses the standard WebAudio API to generate and play sounds in a browser.
  */
 export class Synth {
     ctx?: AudioContext;
