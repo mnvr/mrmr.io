@@ -327,8 +327,8 @@ const Poem_ = styled.p`
 const ExternalLinks: React.FC = () => {
     const links = parseLinks([
         "https://github.com/mnvr",
-        "https://twitter.com/mnvrth",
         "https://mastodon.social/@mnvr",
+        "https://twitter.com/mnvrth",
         "https://instagram.com/manavrt",
         // "https://youtube.com/@mnvrth",
     ]);

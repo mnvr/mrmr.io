@@ -109,7 +109,7 @@ const RedditIcon: React.FC<IconProps> = ({ link }) => {
 };
 
 const MastodonIcon: React.FC<IconProps> = ({ link }) => {
-    return <BsMastodon title={link.title} />;
+    return <BsMastodon size="0.95em" title={link.title} />;
 };
 
 const GenericLinkIcon: React.FC<IconProps> = ({ link }) => {
