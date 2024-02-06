@@ -383,17 +383,6 @@ export class Synth {
     #debug = false;
 
     /**
-     * Count of outstanding playbacks.
-     *
-     * When we start playing in response to a call of `play()`, this value is
-     * incremented. When the corresponding node ends, this value is decremented.
-     *
-     * It is used to then suspend the audio context if there is nothing
-     * remaining to be played.
-     */
-    #activePlaybackCount = 0;
-
-    /**
      * Call this method in response to a user action, like a tap.
      *
      * The browsers autoplay policy prevents JavaScript code from unilaterally
@@ -620,12 +609,10 @@ export class Synth {
         //   deleted when they have no more references.
         osc.stop(t + env.attack + env.decay + duration + env.release);
 
-        this.#activePlaybackCount += 1;
         if (this.#debug) {
             this.log(`note ${Math.round(freq)} hz: ${JSON.stringify(vParams)}`);
         }
         osc.onended = () => {
-            this.#activePlaybackCount -= 1;
             if (this.#debug) {
                 this.log(`note ${Math.round(freq)} hz done`);
             }
