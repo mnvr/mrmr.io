@@ -310,7 +310,7 @@ const Poem: React.FC = () => {
             <br />
             &nbsp;&nbsp;they tell me <i>it’s all right</i>
             <br />
-            in the <i>wind</i> rustle leaves
+            in the wind rustle leaves
             <br />
             &nbsp;&nbsp;the moon, and the <i>night</i>
         </Poem_>
