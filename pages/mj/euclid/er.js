@@ -73,7 +73,7 @@ const E = (k, n) => {
 /** The tinier variant that we show in the tutorial text */
 // prettier-ignore
 const Et = (k, n) => {
-    let s = Array(n).fill(0)
+    let s = Array(n).fill()
         .map((_, i) => (i < k ? [1] : [0]))
 
     let d = n - k

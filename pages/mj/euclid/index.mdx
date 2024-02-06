@@ -96,7 +96,7 @@ version of this function with comments and more examples.
 {/* prettier-ignore */}
 ```js
 const E = (k, n) => {
-    let s = Array(n).fill(0)
+    let s = Array(n).fill()
         .map((_, i) => (i < k ? [1] : [0]))
 
     let d = n - k

@@ -35,7 +35,7 @@ The natural exponential function. `e` is its value at the real number `1`.
 
 {/* prettier-ignore */}
 ```js
-const exp = (x) => Array(99).fill(0).reduce(
+const exp = (x) => Array(99).fill().reduce(
     (e, _, i) => e + x ** i / fact(i), 0)
 ```
 
