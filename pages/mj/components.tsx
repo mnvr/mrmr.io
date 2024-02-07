@@ -80,7 +80,8 @@ const Footer_ = styled.footer`
     margin-block: 1rem;
 
     a {
-        text-decoration: none;
+        text-underline-position: under;
+        text-underline-offset: 0.1rem;
         color: var(--mrmr-secondary-color);
     }
 
