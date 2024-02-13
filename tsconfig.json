@@ -22,7 +22,7 @@
         "forceConsistentCasingInFileNames": true,
         /* Make array indexing return undefineds (as they indeed can) */
         "noUncheckedIndexedAccess": true,
-        /* Require the `type` modifier When importing types */
+        /* Require the `type` modifier when importing types */
         "verbatimModuleSyntax": true,
 
         /* Allow importing JSON files directly */
