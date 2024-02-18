@@ -20,10 +20,14 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
  */
 const NotesPage: React.FC<PageProps<Queries.NotesPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
-    const extraLink = <Link to={"/all"}>Other posts</Link>;
+    const extraLinks = (
+        <div>
+            <Link to={"/all"}>Other posts</Link>
+        </div>
+    );
 
     return (
-        <PageListingContent {...{ pages, extraLink }}>
+        <PageListingContent {...{ pages, extraLinks }}>
             <Title_>
                 notes <span>& playgrounds</span>
             </Title_>

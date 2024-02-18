@@ -22,10 +22,14 @@ const TagListingPage: React.FC<PageProps<Queries.TagListingPageQuery>> = ({
 }) => {
     const pages = parsePages(data);
     const tag = parseTag(data);
-    const extraLink = <Link to={"/t"}>Tags</Link>;
+    const extraLinks = (
+        <div>
+            <Link to={"/t"}>Tags</Link>
+        </div>
+    );
 
     return (
-        <PageListingContent {...{ pages, extraLink }}>
+        <PageListingContent {...{ pages, extraLinks }}>
             <Title_ color={tag.color}>{tag.tag}</Title_>
         </PageListingContent>
     );

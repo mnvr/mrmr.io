@@ -11,11 +11,10 @@ import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 /** A listing of posts in the "/all" feed */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
-    const extraLink = <Link to={"/t"}>Tags</Link>;
-    const showRSSLink = true;
+    const extraLinks = <ExtraLinks />;
 
     return (
-        <PageListingContent {...{ pages, extraLink, showRSSLink }}>
+        <PageListingContent {...{ pages, extraLinks }}>
             <Title_>all posts</Title_>
         </PageListingContent>
     );
@@ -60,3 +59,32 @@ export const query = graphql`
 
 const parsePages = (data: Queries.AllPageQuery): PageListingPage[] =>
     replaceNullsWithUndefineds(data.allMdx).nodes.map(parsePageListingPageData);
+
+const ExtraLinks: React.FC = () => {
+    return (
+        <>
+            <div>
+                <LinkToRSSFeed />
+            </div>
+            <div>
+                <Link to={"/notes"}>Notes and TILs</Link>
+            </div>
+            <div>
+                <Link to={"/t"}>Tags</Link>
+            </div>
+        </>
+    );
+};
+
+const LinkToRSSFeed: React.FC = () => {
+    return (
+        <a
+            rel="alternate"
+            type="application/rss+xml"
+            title="All posts on mrmr.io"
+            href="/rss.xml"
+        >
+            RSS feed
+        </a>
+    );
+};

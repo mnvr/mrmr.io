@@ -13,10 +13,16 @@ import { type RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
 interface PageListingContentProps {
     /** The ordered list of pages to show */
     pages: PageListingPage[];
-    /** An optional extra link to show in the footer, in addition to "Home" */
-    extraLink?: React.ReactNode;
-    /** If true, add a link to the site's RSS feed in the footer. */
-    showRSSLink?: boolean;
+    /**
+     * Optional extra content to show in the footer
+     *
+     * The footer always shows the "Home" link. This React node is shown above
+     * it. Generally, it'll be one or more extra links we want to show. If
+     * that's what you're trying to do, embed each link in a <div /> to get the
+     * styling to work properly, and wrap them all in a fragment that is passed
+     * as this property.
+     */
+    extraLinks?: React.ReactNode;
 }
 
 /** The parsed data for each page item that we show in the listing */
@@ -41,7 +47,7 @@ export interface PageListingPage {
  */
 const PageListingContent: React.FC<
     React.PropsWithChildren<PageListingContentProps>
-> = ({ pages, extraLink, showRSSLink, children }) => {
+> = ({ pages, extraLinks, children }) => {
     return (
         <main>
             <PageColorStyle {...paperDarkTheme} />
@@ -49,7 +55,7 @@ const PageListingContent: React.FC<
                 <Title>{children}</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
-                    <Footer showRSSLink={showRSSLink}>{extraLink}</Footer>
+                    <Footer>{extraLinks}</Footer>
                 </LinkStyleUnderlined>
             </WideColumn>
         </main>
@@ -188,23 +194,10 @@ const Description = styled.span`
     color: var(--mrmr-secondary-color);
 `;
 
-interface FooterProps {
-    /** Same as {@link showRSSLink} from {@link PageListingContentProps} */
-    showRSSLink?: boolean;
-}
-
-export const Footer: React.FC<React.PropsWithChildren<FooterProps>> = ({
-    showRSSLink,
-    children,
-}) => {
+export const Footer: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Footer_>
-            {showRSSLink && (
-                <div>
-                    <LinkToRSSFeed />
-                </div>
-            )}
-            <div>{children}</div>
+            {children}
             <div>
                 <Link to={"/"}>Home</Link>
             </div>
@@ -220,19 +213,6 @@ const Footer_ = styled.footer`
     flex-direction: column;
     gap: 1rem;
 `;
-
-const LinkToRSSFeed: React.FC = () => {
-    return (
-        <a
-            rel="alternate"
-            type="application/rss+xml"
-            title="All posts on mrmr.io"
-            href="/rss.xml"
-        >
-            RSS
-        </a>
-    );
-};
 
 /**
  * A GraphQL fragment that can be emdedded in page queries to get the data
