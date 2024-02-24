@@ -28,13 +28,13 @@
         /* Allow importing JSON files directly */
         "resolveJsonModule": true,
         /* Allow absolute imports of files in `src/` */
-        "baseUrl": "./src",
+        "baseUrl": "./src"
     },
     "include": [
         "./src/**/*",
         "./pages/**/*",
         "./gatsby-node.ts",
         "./gatsby-config.ts",
-        "./plugins/**/*",
-    ],
+        "./plugins/**/*"
+    ]
 }
