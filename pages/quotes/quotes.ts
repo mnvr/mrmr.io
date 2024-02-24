@@ -86,4 +86,5 @@ export const quotes: string[] = [
     "Those who are downtrodden, and have been walked over, are still deserving of music and the light",
     "Who has not been amazed to learn that the function y = e^x, like a phoenix rising again from its own ashes, is its own derivative",
     "How do we approach the falling night",
+    "If philosophy is based on reason and rationality, then why is there so much disagreement?",
 ];
