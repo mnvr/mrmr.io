@@ -89,4 +89,5 @@ export const quotes: string[] = [
     "If philosophy is based on reason and rationality, then why is there so much disagreement?",
     "Look up and wonder, who else dreams on distant worlds, under the same stars?",
     "Do not go gentle into that good night. Rage, rage against the dying of the light.",
+    "To fix hallucinations, LLMs need to dream",
 ];
