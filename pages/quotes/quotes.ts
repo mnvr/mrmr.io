@@ -93,4 +93,5 @@ export const quotes: string[] = [
     "Even if the machine were perfect, it was made for imperfect hands",
     "Being confronted with strong intelligence: It’s this uncanny and slowly evolving feeling that nothing the opponent do makes sense, only for them to succeed",
     "The world is so big and I am so small; but the wonder is that I can be myself",
+    "We are the music-makers / the dreamers of dreams / wandering by lone sea breakers / sitting by desolate streams",
 ];
