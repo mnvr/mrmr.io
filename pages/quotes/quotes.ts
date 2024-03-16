@@ -91,5 +91,6 @@ export const quotes: string[] = [
     "Do not go gentle into that good night. Rage, rage against the dying of the light.",
     "To fix hallucinations, LLMs need to dream",
     "Even if the machine were perfect, it was made for imperfect hands",
-    "Being confronted with strong intelligence. It’s this uncanny and slowly evolving feeling that nothing the opponent do makes sense, only for them to succeed.",
+    "Being confronted with strong intelligence: It’s this uncanny and slowly evolving feeling that nothing the opponent do makes sense, only for them to succeed",
+    "The world is so big and I am so small; but the wonder is that I can be myself",
 ];
