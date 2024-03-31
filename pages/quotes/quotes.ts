@@ -97,4 +97,6 @@ export const quotes: string[] = [
     "A Deepness in The Sky",
     "Tomorrow on a million moons, a million suns will rise – On you they shine forever, no shadows eclipse your ride",
     "Thinking that the entire world is rational and comprehensible is effectively the same thing as beliveving in god",
+    "The pressure of privilege",
+    "The entropy of victory"
 ];
