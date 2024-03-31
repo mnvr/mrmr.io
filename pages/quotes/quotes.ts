@@ -101,4 +101,5 @@ export const quotes: string[] = [
     "The entropy of victory",
     "They do not suffer less because they have no words",
     "I shall continue to explore – the astonishment of living!",
+    "To understand everything is to forgive everything",
 ];
