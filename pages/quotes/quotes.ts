@@ -103,4 +103,5 @@ export const quotes: string[] = [
     "They do not suffer less because they have no words",
     "I shall continue to explore – the astonishment of living!",
     "To understand everything is to forgive everything",
+    "Now that you don't have to be perfect, you can be good",
 ];
