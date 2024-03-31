@@ -95,4 +95,5 @@ export const quotes: string[] = [
     "The world is so big and I am so small; but the wonder is that I can be myself",
     "We are the music-makers / the dreamers of dreams / wandering by lone sea breakers / sitting by desolate streams",
     "A Deepness in The Sky",
+    "Tomorrow on a million moons, a million suns will rise",
 ];
