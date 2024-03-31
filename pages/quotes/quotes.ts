@@ -100,4 +100,5 @@ export const quotes: string[] = [
     "The pressure of privilege",
     "The entropy of victory",
     "They do not suffer less because they have no words",
+    "I shall continue to explore – the astonishment of living!",
 ];
