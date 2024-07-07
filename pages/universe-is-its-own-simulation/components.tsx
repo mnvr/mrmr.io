@@ -159,7 +159,7 @@ export const MutedSpan = styled.span`
 export const Footer: React.FC = () => {
     return (
         <Footer_>
-            <FooterHomePageLink />
+            <Link to={"/"}>Home</Link>
         </Footer_>
     );
 };
@@ -167,51 +167,22 @@ export const Footer: React.FC = () => {
 const Footer_ = styled.div`
     margin-block-start: 4rem;
     margin-block-end: 5rem;
-`;
 
-export const FooterHomePageLink: React.FC = ({}) => {
-    return (
-        <LinkContainer>
-            <Link to={"/"} title={"More posts"}>
-                <LinkContents>
-                    <CaptionContainer>Home</CaptionContainer>
-                </LinkContents>
-            </Link>
-        </LinkContainer>
-    );
-};
-
-const LinkContainer = styled.div`
     display: flex;
     justify-content: center;
 
-    a {
-        text-decoration: none;
-        opacity: 0.5;
-    }
-
-    a:hover {
-        opacity: 0.77;
-    }
-`;
-
-const LinkContents = styled.div`
-    display: flex;
-
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-
-    img {
-        border-radius: 5px;
-    }
-`;
-
-const CaptionContainer = styled.div`
-    font-size: 0.7rem;
+    font-size: small;
     font-weight: 600;
 
     text-align: center;
 
-    color: oklch(48% 0 0);
+    color: oklch(30% 0 0 / 50%);
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: oklch(0% 0 0 / 50%);
+    }
 `;
