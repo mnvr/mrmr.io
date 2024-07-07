@@ -8,7 +8,7 @@ import * as E from "./src/utils/ensure";
 const config: GatsbyConfig = {
     siteMetadata: {
         title: "mrmr.io",
-        description: "Words, music and art by Manav",
+        description: "Manav's blog, maybe",
         siteUrl: "https://mrmr.io",
     },
     graphqlTypegen: true,
