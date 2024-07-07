@@ -4,11 +4,7 @@ import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import {
-    BuildTimePageContext,
-    type FrontmatterTag,
-    type PageLink,
-} from "templates/page";
+import { BuildTimePageContext, type PageLink } from "templates/page";
 import { isNote, isPoem } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
@@ -339,11 +335,10 @@ const Signoff_ = styled.div`
  */
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { tags, relatedPageLinks, linkedFromPageLinks } = page;
+    const { relatedPageLinks, linkedFromPageLinks } = page;
 
     return (
         <Footer_>
-            {tags.length > 0 && <Tags tags={tags} />}
             {relatedPageLinks.length > 0 && (
                 <RelatedPosts links={relatedPageLinks} />
             )}
@@ -428,54 +423,6 @@ const Footer_ = styled.footer`
     li {
         margin-block: 1em;
     }
-`;
-
-interface TagsProps {
-    tags: FrontmatterTag[];
-}
-
-const Tags: React.FC<TagsProps> = (props) => {
-    return (
-        <Tags_>
-            <TagsTitle>Tags: </TagsTitle>
-            <TagsList {...props} />
-        </Tags_>
-    );
-};
-
-const Tags_ = styled.div`
-    margin-block: 1em;
-    margin-block-end: 1.2em;
-`;
-
-const TagsTitle = styled.span`
-    color: var(--mrmr-secondary-color);
-`;
-
-const TagsList: React.FC<TagsProps> = ({ tags }) => {
-    return (
-        <span>
-            {tags.map((tag, i) => (
-                <span key={i}>
-                    <TagItem tag={tag} />
-                    {i < tags.length - 1 && <TagSeparator />}
-                </span>
-            ))}
-        </span>
-    );
-};
-
-const TagItem: React.FC<{ tag: FrontmatterTag }> = ({ tag }) => {
-    const { label, slug } = tag;
-    return slug ? <Link to={slug}>{label}</Link> : <span>{label}</span>;
-};
-
-const TagSeparator: React.FC = () => {
-    return <TagSeparator_>{", "}</TagSeparator_>;
-};
-
-const TagSeparator_ = styled.span`
-    color: var(--mrmr-secondary-color);
 `;
 
 interface RelatedPostsProps {

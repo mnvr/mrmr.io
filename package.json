@@ -32,7 +32,6 @@
         "gatsby-plugin-styled-components": "^6.13.1",
         "gatsby-source-filesystem": "^5.13.1",
         "gatsby-transformer-sharp": "^5.13.1",
-        "gatsby-transformer-yaml": "^5.13.1",
         "react": "^18",
         "react-device-detect": "^2.2",
         "react-dom": "^18",

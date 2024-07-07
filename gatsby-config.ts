@@ -68,24 +68,6 @@ const config: GatsbyConfig = {
             },
         },
 
-        // Load data from YAML files in `src/data` into GraphQL.
-        //
-        // This does the step 1, of sourcing those files. For step 2, we install
-        // the gatsby-transformer-yaml plugin and enable it below.
-        {
-            resolve: "gatsby-source-filesystem",
-            options: {
-                name: "data",
-                path: "./src/data/",
-            },
-        },
-
-        // Convert YAML file nodes into GraphQL nodes.
-        //
-        // The contents of top level arrays, say 'foo', defined a .yaml file
-        // located in `src/data` will be available in GraphQL as `dataYaml.foo`.
-        "gatsby-transformer-yaml",
-
         // Generate an RSS feed (mirroring /all) at /rss.xml
         //
         // Note that this file is only generated when running in production mode

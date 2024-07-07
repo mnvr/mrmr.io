@@ -37,14 +37,6 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
             });
         });
     }
-
-    // Attach a slug field to all TagsYaml nodes.
-    if (node.internal.type == "TagsYaml") {
-        const tag = ensureString(node["tag"]);
-        const name = "slug";
-        const value = `/t/${tag}`;
-        createNodeField({ node, name, value });
-    }
 };
 
 const feedForMdxNode = (node: Record<string, unknown>) => {

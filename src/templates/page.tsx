@@ -22,7 +22,6 @@ import {
     replaceNullsWithUndefineds,
     type RecursivelyReplaceNullWithUndefined,
 } from "utils/replace-nulls";
-import { capitalize } from "utils/string";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -144,15 +143,6 @@ export const query = graphql`
                 highlight_color
                 highlight_color_dark
                 attributes
-                tags {
-                    label
-                    tag {
-                        tag
-                        fields {
-                            slug
-                        }
-                    }
-                }
                 related
             }
             fields {
@@ -252,12 +242,6 @@ export interface Page {
      */
     attributes: string[];
     /**
-     * A list of (possibly empty) tags for the page.
-     *
-     * This list is populated from the "tags" field in the frontmatter.
-     */
-    tags: FrontmatterTag[];
-    /**
      * A list of (links to) related pages.
      *
      * This list is populated from the slugs specified in the "related" field
@@ -308,22 +292,6 @@ export interface PageLink {
     title: string;
 }
 
-/**
- * A tag in the frontmatter
- *
- * For more details, see the documentation for thee `MdxFrontmatterTag` GraphQL
- * type defined in `graphql-schema.ts`.
- */
-export interface FrontmatterTag {
-    /** The label to show for the tag. This can be an arbitrary string. */
-    label: string;
-    /**
-     * If this tag is one of the predefined ones in `data/tags.yaml`, then
-     * this'll contain the slug from the corresponding {@link Tag} structure.
-     */
-    slug?: string;
-}
-
 export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const data = replaceNullsWithUndefineds(data_);
     const { mdx, images, mp3s } = data;
@@ -341,16 +309,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const highlightColor = frontmatter?.highlight_color;
     const highlightColorDark = frontmatter?.highlight_color_dark;
     const attributes = filterDefined(frontmatter?.attributes);
-
-    const tags = filterDefined(frontmatter?.tags).map(({ label, tag }) => {
-        if (label === undefined && tag === undefined)
-            throw new Error(
-                `Obtained a tag without either label or tag: ${frontmatter}`,
-            );
-        if (!label) label = capitalize(ensure(tag).tag);
-        const slug = tag?.fields?.slug;
-        return { label, slug };
-    });
 
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
@@ -404,7 +362,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         highlightColor,
         highlightColorDark,
         attributes,
-        tags,
         relatedPageLinks,
         linkedFromPageLinks,
         generatedPreviewImage,
