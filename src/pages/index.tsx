@@ -329,7 +329,7 @@ const ExternalLinks: React.FC = () => {
         "https://github.com/mnvr",
         "https://mastodon.social/@mnvr",
         "https://twitter.com/mnvrth",
-        "https://instagram.com/manavrt",
+        // "https://instagram.com/manavrt",
         // "https://youtube.com/@mnvrth",
     ]);
     return (
