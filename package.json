@@ -22,7 +22,7 @@
         "@p5-wrapper/react": "^4.4",
         "babel-plugin-styled-components": "^2.1",
         "colorjs.io": "^0.5",
-        "gatsby": "^5.13.1",
+        "gatsby": "^5.13.6",
         "gatsby-plugin-catch-links": "^5.13.1",
         "gatsby-plugin-feed": "^5.13.1",
         "gatsby-plugin-image": "^3.13.1",
