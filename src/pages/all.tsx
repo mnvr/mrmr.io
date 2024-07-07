@@ -69,9 +69,6 @@ const ExtraLinks: React.FC = () => {
             <div>
                 <Link to={"/notes"}>Notes and TILs</Link>
             </div>
-            <div>
-                <Link to={"/t"}>Tags</Link>
-            </div>
         </>
     );
 };
