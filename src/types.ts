@@ -1,25 +1,4 @@
-import { Pattern } from "@strudel/core";
-import HydraRenderer, { type HydraSynth } from "hydra-synth";
 import type p5 from "p5";
-
-/**
- * A function that renders a Hydra visualization
- */
-export type HydraVis = ({ h }: HydraVisProps) => void;
-
-/** Props passed to {@link HydraVis} */
-export interface HydraVisProps {
-    /** The HydraRenderer instance whose canvas we're rendering to */
-    hr: HydraRenderer;
-    /** A convenience alias for `hr.synth` */
-    h: HydraSynth;
-}
-
-/**
- * A pattern describing a song written using TidalCycles (specifically, it's
- * JavaScript port, Strudel).
- */
-export type StrudelSong = () => Pattern;
 
 /**
  * A function that renders a P5 visualization
