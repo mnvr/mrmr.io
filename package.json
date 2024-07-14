@@ -4,7 +4,6 @@
     "private": true,
     "description": "mrmr.io /mur mur dot eye oh/",
     "author": "Manav Rathi <manav@mrmr.io>",
-    "type": "module",
     "scripts": {
         "dev": "gatsby develop",
         "start": "gatsby develop",
