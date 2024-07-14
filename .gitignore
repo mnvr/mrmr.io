@@ -8,3 +8,7 @@ node_modules/
 .cache/
 public
 src/gatsby-types.d.ts
+
+# Vite
+dist
+*.local
