@@ -44,13 +44,15 @@
         "@types/loadable__component": "^5.13",
         "@types/node": "^20.14.10",
         "@types/p5": "1.7.6",
-        "@types/react": "^18",
         "@types/react-dom": "^18",
         "@types/react-transition-group": "^4",
+        "@types/react": "^18",
+        "@vitejs/plugin-react": "^4",
         "gatsby-plugin-root-import": "^2",
-        "prettier": "^3",
         "prettier-plugin-organize-imports": "^4",
-        "typescript": "^5"
+        "prettier": "^3",
+        "typescript": "^5",
+        "vite": "^5"
     },
     "packageManager": "yarn@1.22.22"
 }
