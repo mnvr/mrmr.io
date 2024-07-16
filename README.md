@@ -1,5 +1,3 @@
-# [**mrmr.io**](https://mrmr.io)
-
 Source code for [**mrmr.io**](https://mrmr.io)
 
 ## Running locally
@@ -10,7 +8,3 @@ development server with live reloads by using:
 ```
 yarn dev
 ```
-
-## About
-
-Copyright (c) 2023 [Manav Rathi](https://github.com/mnvr)
