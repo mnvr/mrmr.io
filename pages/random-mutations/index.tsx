@@ -31,7 +31,7 @@ export const CodeBlocks: React.FC = () => {
             <div>
                 <pre>
                     <code>
-def <b>dfs</b>(s, adj):<br/>
+def dfs(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
 {"    "}while xs:<br/>
@@ -48,7 +48,7 @@ def <b>dfs</b>(s, adj):<br/>
             <div>
                 <pre>
                     <code>
-def <b>bfs</b>(s, adj):<br/>
+def bfs(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
 {"    "}while xs:<br/>
@@ -90,23 +90,6 @@ export const About: React.FC = () => {
                 evolution to explore vast landscapes. A demonstration using
                 code, but the same principle applies to single letter changes in
                 DNA.
-            </p>
-
-            <p>
-                The code on the left (<code>dfs</code>) does a depth first
-                search, the code on the right (<code>bfs</code>) does a breath
-                first search. These are two entirely different algorithms, with
-                entirely different outcomes. Yet the difference in the code
-                between the two is just a single letter (The extra{" "}
-                <code>0</code> in the <code>bfs</code> version).
-            </p>
-
-            <p>
-                It is totally conceivable to imagine a mindless evolutionary
-                process that makes this single letter "mistake" when copying
-                over the code (or DNA), and ends up with an entirely different
-                organism than its peers. Thereafter, it is just lather, rinse
-                and repeat.
             </p>
         </About_>
     );
