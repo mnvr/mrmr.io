@@ -1,6 +1,4 @@
-import { Link } from "gatsby";
 import * as React from "react";
-import { RiInformationLine } from "react-icons/ri";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import styled from "styled-components";
 import { ensure, ensureNumber } from "utils/ensure";
@@ -16,7 +14,6 @@ export const Content: React.FC = () => {
             <QuotesContainer>
                 <Quotes {...{ parsedQuotes }} />
             </QuotesContainer>
-            <Info />
         </Main>
     );
 };
@@ -265,31 +262,5 @@ const Blinking = styled.span`
         100% {
             opacity: 1;
         }
-    }
-`;
-
-const Info: React.FC = () => {
-    return (
-        <Info_>
-            <Link to="/quotes/about">
-                <RiInformationLine title="About" />
-            </Link>
-        </Info_>
-    );
-};
-
-const Info_ = styled.div`
-    position: absolute;
-    /* Same as the margin on Main */
-    margin: 1rem;
-    bottom: 0;
-    right: 0;
-
-    /* See Note: [Workaround - Safari doesn't support rem units on SVG elements] */
-    font-size: 2rem;
-
-    color: var(--mrmr-tertiary-color);
-    a:hover {
-        color: var(--mrmr-text-color);
     }
 `;
