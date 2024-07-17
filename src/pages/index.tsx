@@ -4,19 +4,19 @@ import {
     PageColorStyle,
     paletteSetOrFallback,
 } from "components/PageColorStyle";
-import {
-    BodyBackgroundColorTransitionStyle,
-    FeaturedPageListing,
-    type FeaturedPage,
-} from "components/index/FeaturedPageListing";
 import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
-import { getSrc } from "gatsby-plugin-image";
-import { parseColorPalette } from "parsers/colors";
-import React from "react";
+import {
+    GatsbyImage,
+    getImage,
+    getSrc,
+    type ImageDataLike,
+} from "gatsby-plugin-image";
+import { parseColorPalette, type ColorPalette } from "parsers/colors";
+import React, { useState } from "react";
 import { BsArrowRightShort, BsMastodon } from "react-icons/bs";
 import { FaTwitter } from "react-icons/fa";
 import { FiGithub } from "react-icons/fi";
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import { frontPageTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
@@ -26,9 +26,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const recentPages = parseRecentPages(data);
     const featuredPages = parseFeaturedPages(data);
 
-    const [hoverPage, setHoverPage] = React.useState<
-        FeaturedPage | undefined
-    >();
+    const [hoverPage, setHoverPage] = useState<FeaturedPage | undefined>();
 
     // If the user is hovering on the link to a page, use that page's colors.
     // Otherwise use the index pages' own color palette.
@@ -151,6 +149,13 @@ export const query = graphql`
                 }
             }
         }
+    }
+`;
+
+/** A CSS transition that makes the background color changes more pleasing */
+const BodyBackgroundColorTransitionStyle = createGlobalStyle`
+    body {
+        transition: background-color 200ms ease-out;
     }
 `;
 
@@ -299,6 +304,158 @@ const RecentPageDescription = styled.span`
     font-family: serif;
     font-style: italic;
     color: var(--mrmr-tertiary-color);
+`;
+
+/** The data for each page required by the {@link FeaturedPageListing} component */
+interface FeaturedPage {
+    title: string;
+    slug: string;
+    colors?: ColorPalette;
+    darkColors?: ColorPalette;
+    previewImage?: ImageDataLike;
+}
+
+interface FeaturedPageListingProps {
+    /** The ordered list of pages to show */
+    pages: FeaturedPage[];
+    /** A function that is called when the user hovers over a link to a page */
+    setHoverPage: (page: FeaturedPage | undefined) => void;
+}
+
+const FeaturedPageListing: React.FC<FeaturedPageListingProps> = ({
+    pages,
+    setHoverPage,
+}) => {
+    const n = pages.length;
+    return (
+        <FPageGrid>
+            {pages.map((page, i) => (
+                <Link
+                    key={page.slug}
+                    to={page.slug}
+                    onMouseEnter={() => setHoverPage(page)}
+                    onMouseLeave={() => setHoverPage(undefined)}
+                >
+                    <FPageItem
+                        $backgroundColor={page.colors?.background}
+                        $color={page.colors?.text}
+                    >
+                        <FBackgroundImage page={page} />
+                        <FPageItemContent>
+                            <FPageItemP>{page.title.toLowerCase()}</FPageItemP>
+                            <FPageItemCount>{n - i}</FPageItemCount>
+                        </FPageItemContent>
+                    </FPageItem>
+                </Link>
+            ))}
+        </FPageGrid>
+    );
+};
+
+const FPageGrid = styled.div`
+    padding-inline: 2px;
+
+    display: flex;
+    flex-wrap: wrap;
+    /* Instead of this gap (that mirrors the padding-inline above), we rely on
+       the transparent / hover border below */
+    /* gap: 2px; */
+
+    font-weight: 500;
+    font-variant: small-caps;
+
+    a {
+        text-decoration: none;
+        /* Keep a transparent border of the same thickness as the border that
+           would be used in the hover state. This avoids a layout shift on
+           hover. */
+        border: 1px solid transparent;
+    }
+
+    a:hover {
+        border: 1px solid var(--mrmr-tertiary-color);
+    }
+`;
+
+interface FPageItemProps {
+    $backgroundColor?: string;
+    $color?: string;
+}
+
+const FPageItem = styled.div<FPageItemProps>`
+    background-color: ${(props) => props.$backgroundColor ?? "inherit"};
+    color: ${(props) => props.$color ?? "inherit"};
+    width: 13.7ch;
+    height: 9.7ch;
+
+    display: grid;
+`;
+
+const FBackgroundImage: React.FC<{ page: FeaturedPage }> = ({ page }) => {
+    return <FBackgroundImageM previewImage={page.previewImage} />;
+};
+
+interface FBackgroundImageMProps {
+    previewImage?: ImageDataLike;
+}
+
+const FBackgroundImageM = React.memo(
+    ({ previewImage }: FBackgroundImageMProps) => {
+        const image = previewImage ? getImage(previewImage) : undefined;
+
+        // Use an empty alt since this is a decorative background image
+        return (
+            <FBackgroundImageContainer>
+                {image && <GatsbyImage image={image} alt="" />}
+            </FBackgroundImageContainer>
+        );
+    },
+    (prevProps, props) => Object.is(imgSrc(prevProps), imgSrc(props)),
+);
+
+const imgSrc = ({ previewImage }: FBackgroundImageMProps) =>
+    previewImage ? getSrc(previewImage) : undefined;
+
+const FBackgroundImageContainer = styled.div`
+    grid-area: 1 / 1;
+
+    /* Same size as parent */
+    width: 13.7ch;
+    height: 9.7ch;
+
+    /* Chrome 119 on macOS (and possibly others) still require the -webkit
+       vendor prefix for both mask-image and linear-gradient */
+    -webkit-mask-image: -webkit-linear-gradient(
+        transparent,
+        rgba(0, 0, 0, 0.3)
+    );
+    mask-image: linear-gradient(transparent, rgba(0, 0, 0, 0.3));
+`;
+
+const FPageItemContent = styled.div`
+    padding-block: 0.2rem;
+    padding-inline: 0.66rem;
+
+    grid-area: 1 / 1;
+    z-index: 1;
+
+    position: relative;
+`;
+
+const FPageItemP = styled.p`
+    margin: 0.25rem 0;
+    /* Set the width to the width of the smallest word. This causes each word to
+       be on its own line */
+    width: min-content;
+`;
+
+const FPageItemCount = styled.div`
+    position: absolute;
+    bottom: 0.59rem;
+    right: 0.66rem;
+    font-size: 80%;
+    font-style: italic;
+    opacity: 0.8;
 `;
 
 const Poem: React.FC = () => {
