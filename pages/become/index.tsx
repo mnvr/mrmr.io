@@ -13,8 +13,7 @@ import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
-import { type Sequencer } from "webaudio/audio";
-import { createSequencer } from "./sequencer";
+import { type Sequencer, createSequencer } from "./sequencer";
 import { draw } from "./sketch";
 
 export const Content: React.FC = () => {
