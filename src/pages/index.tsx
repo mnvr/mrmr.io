@@ -12,12 +12,10 @@ import {
 import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc } from "gatsby-plugin-image";
 import { parseColorPalette } from "parsers/colors";
-import { parseLinks, type ParsedLink } from "parsers/links";
 import React from "react";
 import { BsArrowRightShort, BsMastodon } from "react-icons/bs";
-import { FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
-import { FiGithub, FiLink } from "react-icons/fi";
-import { RiRedditLine } from "react-icons/ri";
+import { FaTwitter } from "react-icons/fa";
+import { FiGithub } from "react-icons/fi";
 import styled from "styled-components";
 import { frontPageTheme } from "themes/themes";
 import { ensure } from "utils/ensure";
@@ -328,16 +326,27 @@ const Poem_ = styled.p`
 `;
 
 const ExternalLinks: React.FC = () => {
-    const links = parseLinks([
-        "https://github.com/mnvr",
-        "https://twitter.com/mnvrth",
-        "https://mastodon.social/@mnvr",
-        // "https://instagram.com/manavrt",
-        // "https://youtube.com/@mnvrth",
-    ]);
     return (
         <LinkButtonsContainer>
-            <ParsedLinkButtons links={links} />
+            <ParsedLinkRow>
+                <ExternalLink href="https://github.com/mnvr">
+                    <IconContainer>
+                        <FiGithub title="GitHub" />
+                    </IconContainer>
+                </ExternalLink>
+
+                <ExternalLink href="https://twitter.com/mnvrth">
+                    <IconContainer>
+                        <FaTwitter title="Twitter" />
+                    </IconContainer>
+                </ExternalLink>
+
+                <ExternalLink href="https://mastodon.social/@mnvr">
+                    <IconContainer>
+                        <BsMastodon size="0.95em" title="Mastodon" />;
+                    </IconContainer>
+                </ExternalLink>
+            </ParsedLinkRow>
         </LinkButtonsContainer>
     );
 };
@@ -358,52 +367,11 @@ const LinkButtonsContainer = styled.div`
     }
 `;
 
-export interface ParsedLinkButtonsProps {
-    /** The links to show */
-    links?: ParsedLink[];
-}
-
-/**
- * A row of icons buttons, each linking to one of the passed in links.
- *
- * Each of these links will open in an new tab. @see {@link ParsedLinkButton}.
- */
-export const ParsedLinkButtons: React.FC<ParsedLinkButtonsProps> = ({
-    links,
-}) => {
-    return (
-        <ParsedLinkRow>
-            {links?.map((link) => (
-                <ParsedLinkButton key={link.url} link={link} />
-            ))}
-        </ParsedLinkRow>
-    );
-};
-
 const ParsedLinkRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 1.3rem;
 `;
-
-/**
- * A button that shows a {@link ParsedLink}, special casing the icons for
- * {@link KnownDomains}.
- *
- * The link will open in a new tab.
- *
- * @see {@link ParsedLinkButtons}
- */
-const ParsedLinkButton: React.FC<IconProps> = ({ link }) => {
-    const { url } = link;
-    return (
-        <ExternalLink href={url}>
-            <IconContainer>
-                <KnownLinkIcon link={link} />
-            </IconContainer>
-        </ExternalLink>
-    );
-};
 
 const IconContainer = styled.div`
     /** Ensure sufficient tap area for mobile devices */
@@ -424,48 +392,6 @@ const IconContainer = styled.div`
     /* Set the size of the icon */
     font-size: 1.9rem;
 `;
-
-type IconProps = { link: ParsedLink };
-
-const KnownLinkIcon: React.FC<IconProps> = ({ link }) => {
-    const { knownDomain } = link;
-    if (knownDomain == "github") return <GithubIcon link={link} />;
-    if (knownDomain == "twitter") return <TwittterIcon link={link} />;
-    if (knownDomain == "instagram") return <InstagramIcon link={link} />;
-    if (knownDomain == "youtube") return <YouTubeIcon link={link} />;
-    if (knownDomain == "reddit") return <RedditIcon link={link} />;
-    if (knownDomain == "mastodon") return <MastodonIcon link={link} />;
-    // If it is not one of the known domains, return the generic link icon.
-    return <GenericLinkIcon link={link} />;
-};
-
-const GithubIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiGithub title={link.title} />;
-};
-
-const TwittterIcon: React.FC<IconProps> = ({ link }) => {
-    return <FaTwitter title={link.title} />;
-};
-
-const InstagramIcon: React.FC<IconProps> = ({ link }) => {
-    return <FaInstagram title={link.title} />;
-};
-
-const YouTubeIcon: React.FC<IconProps> = ({ link }) => {
-    return <FaYoutube title={link.title} />;
-};
-
-const RedditIcon: React.FC<IconProps> = ({ link }) => {
-    return <RiRedditLine title={link.title} />;
-};
-
-const MastodonIcon: React.FC<IconProps> = ({ link }) => {
-    return <BsMastodon size="0.95em" title={link.title} />;
-};
-
-const GenericLinkIcon: React.FC<IconProps> = ({ link }) => {
-    return <FiLink size="0.95em" title={link.title} />;
-};
 
 const InternalLinks: React.FC = () => {
     return (
