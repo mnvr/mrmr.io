@@ -9,7 +9,6 @@ import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
-import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
 import { type Sequencer, createSequencer } from "./sequencer";
 import { draw } from "./sketch";
@@ -23,7 +22,7 @@ export const Content: React.FC = () => {
 
     return (
         <div>
-            <PlayerP5WebAudio {...{ draw, sequencer }} />
+            <PlayerP5WebAudio {...{ sequencer }} />
             <Description />
         </div>
     );
@@ -113,17 +112,6 @@ const FooterContents = styled.footer`
 
 interface PlayerP5WebAudioProps {
     /**
-     * The P5 visualization to render
-     *
-     * Specifically, this is the draw function that is rendered by P5 for each
-     * frame. Whilst we can also support the setup function too, in practice
-     * using split setup / draw functions causes problems with hot-reload, and
-     * it is easier just to redraw everything in draw and not do anything in
-     * setup at all; that way, hot reloading (when the draw function changes)
-     * doesn't need to bother running setup again to reset the canvas state.
-     */
-    draw: P5Draw;
-    /**
      * A function to construct the WebAudio graph to play audio in the page.
      */
     sequencer: Sequencer;
@@ -137,7 +125,7 @@ interface PlayerP5WebAudioProps {
  */
 const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
-> = ({ draw, sequencer }) => {
+> = ({ sequencer }) => {
     const p5Ref = useRef<p5 | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
@@ -241,7 +229,6 @@ const PlayerP5WebAudio: React.FC<
                 $showOverlay={showOverlay}
             >
                 <ReelSizedP5SketchBox
-                    draw={draw}
                     p5Ref={p5Ref}
                     isPaused={!isPlaying}
                     audioContext={audioContext}
@@ -379,11 +366,6 @@ const ExpandButton: React.FC = () => {
 
 interface P5SketchBoxProps {
     /**
-     * The draw function to render the P5 sketch.
-     */
-    draw: P5Draw;
-
-    /**
      * A function that is called to determine the size of the sketch.
      *
      * It should return a pair of numbers, representing the width and the height
@@ -420,6 +402,45 @@ interface P5SketchBoxProps {
     audioContext?: AudioContext;
 }
 
+interface ReelSizedP5SketchBoxProps
+    extends Omit<P5SketchBoxProps, "computeSize"> {
+    /**
+     * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
+     * expand to fill the window.
+     */
+    restrictAspectRatio?: boolean;
+}
+
+/**
+ * A specialization of {@link P5SketchBox} that implements the
+ * {@link computeSize} function, creating a reel sized container.
+ */
+const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = (props) => {
+    // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
+    // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
+    // that as the height. However, if the window is smaller than that, we limit
+    // to the window's height.
+    const defaultHeight = 640;
+    const aspectRatio = 9 / 16;
+
+    const computeSize = (p5: p5): [number, number] => {
+        if (props.restrictAspectRatio) {
+            // Compute the sizes based on the aspect ratios
+            const height = Math.min(defaultHeight, p5.windowHeight);
+            const width = height * aspectRatio;
+            return [width, height];
+        } else {
+            // Let it expand to use the first screenful
+            return [p5.windowWidth, p5.windowHeight];
+        }
+    };
+
+    const ourProps = { computeSize };
+    const mergedProps = { ...ourProps, ...props };
+
+    return <P5SketchBox {...mergedProps} />;
+};
+
 /**
  * A container showing a P5 sketch
  *
@@ -431,7 +452,6 @@ interface P5SketchBoxProps {
  * audio source.
  */
 const P5SketchBox: React.FC<P5SketchBoxProps> = ({
-    draw,
     computeSize,
     p5Ref,
     isPaused,
@@ -488,43 +508,4 @@ const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     };
 
     return <ReactP5Wrapper sketch={sketch} />;
-};
-
-interface ReelSizedP5SketchBoxProps
-    extends Omit<P5SketchBoxProps, "computeSize"> {
-    /**
-     * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
-     * expand to fill the window.
-     */
-    restrictAspectRatio?: boolean;
-}
-
-/**
- * A specialization of {@link P5SketchBox} that implements the
- * {@link computeSize} function, creating a reel sized container.
- */
-const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = (props) => {
-    // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
-    // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
-    // that as the height. However, if the window is smaller than that, we limit
-    // to the window's height.
-    const defaultHeight = 640;
-    const aspectRatio = 9 / 16;
-
-    const computeSize = (p5: p5): [number, number] => {
-        if (props.restrictAspectRatio) {
-            // Compute the sizes based on the aspect ratios
-            const height = Math.min(defaultHeight, p5.windowHeight);
-            const width = height * aspectRatio;
-            return [width, height];
-        } else {
-            // Let it expand to use the first screenful
-            return [p5.windowWidth, p5.windowHeight];
-        }
-    };
-
-    const ourProps = { computeSize };
-    const mergedProps = { ...ourProps, ...props };
-
-    return <P5SketchBox {...mergedProps} />;
 };
