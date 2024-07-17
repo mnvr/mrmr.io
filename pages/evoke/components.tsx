@@ -1,6 +1,6 @@
 import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
 import { ensure } from "utils/ensure";
