@@ -1,18 +1,18 @@
 import { LinkStyleUnderlined } from "components/LinkStyles";
-import * as C from "components/text/components";
 import { Link } from "gatsby";
+import { Container, Signoff, Title } from "layouts/text";
 import * as React from "react";
 import styled from "styled-components";
 
 export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <Layout_>
-            <C.Container>
-                <C.Title />
+            <Container>
+                <Title />
                 {children}
-                <C.Signoff />
+                <Signoff />
                 <Footer />
-            </C.Container>
+            </Container>
         </Layout_>
     );
 };

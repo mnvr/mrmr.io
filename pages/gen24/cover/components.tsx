@@ -1,7 +1,7 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
 import { LinkStyleUnderlined } from "components/LinkStyles";
-import { Signoff } from "components/text/components";
 import { Link } from "gatsby";
+import { Signoff } from "layouts/text";
 import * as React from "react";
 import styled from "styled-components";
 import { zeroPad2 } from "utils/string";

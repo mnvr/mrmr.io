@@ -1,17 +1,17 @@
 import { LinkStyleUnderlined } from "components/LinkStyles";
-import * as T from "components/text/components";
-import * as React from "react";
+import { Footer, Signoff, Title } from "layouts/text";
+import React from "react";
 import styled from "styled-components";
 
 export const Content: React.FC = () => {
     return (
         <Main>
-            <T.Title />
+            <Title />
             <CodeBlocks />
             <About />
-            <T.Signoff />
+            <Signoff />
             <LinkStyleUnderlined>
-                <T.Footer />
+                <Footer />
             </LinkStyleUnderlined>
         </Main>
     );

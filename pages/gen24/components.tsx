@@ -1,7 +1,7 @@
 import { type P5WrapperProps } from "@p5-wrapper/react";
 import { ELink } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
-import { Signoff } from "components/text/components";
+import { Signoff } from "layouts/text";
 import { Link } from "gatsby";
 import { useIsDarkMode } from "hooks/use-is-dark-mode";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
