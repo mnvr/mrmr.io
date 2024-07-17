@@ -1,7 +1,6 @@
 import { graphql, useStaticQuery } from "gatsby";
 import React from "react";
 import "styles/global.css";
-import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 import { fullURLForSlug } from "utils/url";
@@ -102,7 +101,8 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     const siteDescription = site?.siteMetadata?.description;
 
     const pageTitle =
-        title ?? [titlePrefix, siteTitle].filter(isDefined).join(" · ");
+        title ??
+        [titlePrefix, siteTitle].filter((x) => x !== undefined).join(" · ");
     const pageDescription = description ?? siteDescription;
 
     let canonicalURL: string | undefined;

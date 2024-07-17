@@ -1,4 +1,3 @@
-import { isDefined } from "utils/array";
 import { color, setAlpha } from "utils/colorsjs";
 import { ensure, ensureString } from "utils/ensure";
 
@@ -136,7 +135,7 @@ export const parseColorPalette = (
 ) => {
     if (!colors) return;
 
-    const all = colors.filter(isDefined);
+    const all = colors.filter((c) => c !== undefined);
     if (all.length < 2) {
         throw new Error(
             "At least 2 colors are required to construct a palette",
