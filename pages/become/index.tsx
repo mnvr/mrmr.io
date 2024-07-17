@@ -50,31 +50,6 @@ const PlayerP5WebAudio: React.FC<
 
     let showOverlay = !isPlaying;
 
-    // If true, then we'll restrict the aspect ratio of the canvas to match a
-    // portrait aspect ratio.
-    //
-    // Restricting the aspect ratio is useful when recording, and we'll always
-    // do this when we're in the special record mode.
-    //
-    // And there might be some sketches that might not look great when expanded
-    // to arbitrary ratios, so that's another reason why we might want to
-    // restrict the aspect ratio.
-    //
-    // But these (relatively) edge cases aside, it'd have been a better default
-    // to expand to the window, and only restrict the size for these special
-    // cases.
-    //
-    // We don't do that though, because the 2d canvas performance is horrible on
-    // Safari as of today. The same sketch renders smoothly on Chrome, even on a
-    // full screen, whilst on Safari going beyond the restricted aspect ratio
-    // size starts to stutter.
-    //
-    // So instead of unilaterally switching to the full screen on all browsers;
-    // and instead, we introduce a new button that allows the user to expand the
-    // canvas. Is this a better idea than doing a Chrome user agent check? I
-    // don't quite know.
-    let restrictAspectRatio = !shouldExpand;
-
     const expandCanvas = () => {
         setShouldExpand(true);
         // This'll usually be called after the P5's setup method has already
@@ -132,11 +107,11 @@ const PlayerP5WebAudio: React.FC<
             >
                 <P5SketchBox
                     p5Ref={p5Ref}
+                    shouldExpand={shouldExpand}
                     isPaused={!isPlaying}
                     audioContext={audioContext}
-                    restrictAspectRatio={restrictAspectRatio}
                 />
-                {restrictAspectRatio &&
+                {!shouldExpand &&
                     /* Show the expand button only on Chrome where the expanded
                        animation runs at full FPS. On other browsers (I tested
                        Safari) the user might expand it initially and then
@@ -269,13 +244,13 @@ interface P5SketchBoxProps {
      * This ref can then subsequently be used to perform actions on the P5
      * object externally. e.g. it can be used to resume looping.
      */
-    p5Ref?: React.MutableRefObject<P5CanvasInstance | undefined>;
+    p5Ref: React.MutableRefObject<P5CanvasInstance | undefined>;
 
     /**
-     * If true, restrict the canvas to a portrait aspect ratio. Otherwise let it
-     * expand to fill the window.
+     * If true, expand the canvas to fill the window. Otherwise we restrict it
+     * to a portrait aspect ratio.
      */
-    restrictAspectRatio?: boolean;
+    shouldExpand: boolean;
 
     /**
      * If true, then pause the draw function by calling P5 `noLoop`.
@@ -285,7 +260,7 @@ interface P5SketchBoxProps {
      * prop to false when the user starts the audio. This way, the frameCount
      * moves in a deterministic sync with the audio being played.
      */
-    isPaused?: boolean;
+    isPaused: boolean;
 
     /**
      * The audio context in which audio is being (or will be) played.
@@ -294,13 +269,13 @@ interface P5SketchBoxProps {
      * associated audio, or (b) if the sketch does indeed have audio, but
      * playback has not started at least once.
      */
-    audioContext?: AudioContext;
+    audioContext: AudioContext | undefined;
 }
 
 /** A container showing a P5 sketch. */
 const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     p5Ref,
-    restrictAspectRatio,
+    shouldExpand,
     isPaused,
     audioContext,
 }) => {
@@ -311,14 +286,14 @@ const P5SketchBox: React.FC<P5SketchBoxProps> = ({
     const aspectRatio = 9 / 16;
 
     const computeSize = (p5: p5): [number, number] => {
-        if (restrictAspectRatio) {
+        if (shouldExpand) {
+            // Let it expand to use the first screenful
+            return [p5.windowWidth, p5.windowHeight];
+        } else {
             // Compute the sizes based on the aspect ratios
             const height = Math.min(defaultHeight, p5.windowHeight);
             const width = height * aspectRatio;
             return [width, height];
-        } else {
-            // Let it expand to use the first screenful
-            return [p5.windowWidth, p5.windowHeight];
         }
     };
 
