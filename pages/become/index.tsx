@@ -475,21 +475,12 @@ const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         return canvas;
     };
 
+    const audioTime = () => audioContext?.currentTime ?? 0;
+
     const windowResized = (p5: P5CanvasInstance) => {
         const [width, height] = computeSize(p5);
 
         p5.resizeCanvas(width, height);
-    };
-
-    const env = {
-        audioTime: () => {
-            return audioContext?.currentTime ?? 0;
-        },
-        pageTime: () => {
-            // `performance.now` is in milliseconds. convert it to seconds so
-            // that we have the same external interface as `audioTime` above.
-            return performance.now() / 1000;
-        },
     };
 
     const sketch: Sketch = (p5) => {
@@ -503,7 +494,7 @@ const P5SketchBox: React.FC<P5SketchBoxProps> = ({
         }
 
         p5.setup = () => setup(p5);
-        p5.draw = () => draw(p5, env);
+        p5.draw = () => draw(p5, audioTime);
         p5.windowResized = () => windowResized(p5);
     };
 
