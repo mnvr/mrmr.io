@@ -42,11 +42,7 @@ export const draw = (p5: p5, env: P5DrawEnv) => {
 
     // Switch to black and jiggle the stars in the latter 3/10ths of some of the
     // 3rd bars (the one with the repeating snares).
-    if (
-        !isIntro &&
-        [2, 14].includes(audio.bar) &&
-        Math.floor(audio.barOffset * 10) >= 7
-    ) {
+    if (!isIntro && audio.bar == 2 && Math.floor(audio.barOffset * 10) >= 7) {
         p5.background(0);
         p5.scale(1.02 + audio.bar / 100 + Math.random() * 0.005);
     }
