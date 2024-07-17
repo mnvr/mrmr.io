@@ -2,7 +2,7 @@ import { WideColumn } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
 import { Link, graphql } from "gatsby";
-import * as React from "react";
+import React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
 import { filterDefined } from "utils/array";

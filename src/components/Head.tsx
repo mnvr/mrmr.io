@@ -1,5 +1,5 @@
 import { graphql, useStaticQuery } from "gatsby";
-import * as React from "react";
+import React from "react";
 import "styles/global.css";
 import { isDefined } from "utils/array";
 import { ensure } from "utils/ensure";
