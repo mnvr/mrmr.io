@@ -25,8 +25,8 @@ export const createSequencer = (mp3s: Record<string, string>) => {
         // loop...
         const loop = (at: number) => {
             const sp = source(pad);
-            sp.onended = (ev: Event) => {
-                // Schedule the next to next one
+            sp.onended = () => {
+                // Schedule the next to next one.
                 loop(at + 2 * d);
             };
             sp.start(at);
