@@ -5,7 +5,7 @@ import * as React from "react";
 import styled from "styled-components";
 import { paperTheme } from "themes/themes";
 
-const NotFoundPage: React.FC<PageProps> = () => {
+const Page: React.FC<PageProps> = () => {
     return (
         <Main>
             <Content />
@@ -13,7 +13,7 @@ const NotFoundPage: React.FC<PageProps> = () => {
     );
 };
 
-export default NotFoundPage;
+export default Page;
 
 export const Head: HeadFC = () => {
     return (

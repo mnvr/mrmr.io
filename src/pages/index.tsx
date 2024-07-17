@@ -22,7 +22,7 @@ import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 /** The home page for mrmr.io */
-const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
+const Page: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     const recentPages = parseRecentPages(data);
     const featuredPages = parseFeaturedPages(data);
 
@@ -48,7 +48,7 @@ const IndexPage: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
     );
 };
 
-export default IndexPage;
+export default Page;
 
 export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
     const description = "words | colors / music •◦◎◉⦿ code";

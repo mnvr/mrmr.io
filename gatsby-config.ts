@@ -117,9 +117,8 @@ const config: GatsbyConfig = {
 };
 
 /**
- * Construct RSS itemOptions [1] from the site metadata and the
- * {@link PageListingPageData} fragments produced by the "AllPageFeed" GraphQL
- * query.
+ * Construct RSS itemOptions [1] from the site metadata and the result of a
+ * "AllPageFeed" GraphQL query.
  *
  * We pass this as the serialize argument to the "gatsby-plugin-feed". The
  * plugin will call it when it is constructing the RSS feed for our site, and
