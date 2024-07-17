@@ -18,7 +18,7 @@ const Page: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
         <main>
             <PageColorStyle {...paperDarkTheme} />
             <Column>
-                <Title />
+                <Title>all posts</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
                     <Footer />
@@ -90,26 +90,16 @@ const parsePages = (data: Queries.AllPageQuery): PageListingPage[] => {
     });
 };
 
-const Title: React.FC = () => {
-    return (
-        <Title_>
-            <h1>all posts</h1>
-        </Title_>
-    );
-};
-
-const Title_ = styled.div`
+const Title = styled.h1`
     margin-block-start: 2rem;
     @media (min-width: 600px) {
         margin-block-start: 3rem;
     }
 
-    h1 {
-        font-family: serif;
-        font-style: italic;
+    font-family: serif;
+    font-style: italic;
 
-        opacity: 0.5;
-    }
+    opacity: 0.5;
 `;
 
 interface PageListingProps {
@@ -215,7 +205,7 @@ const Description = styled.span`
     color: var(--mrmr-secondary-color);
 `;
 
-export const Footer: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const Footer: React.FC = () => {
     return (
         <Footer_>
             <div>
