@@ -328,25 +328,23 @@ const Poem_ = styled.p`
 const ExternalLinks: React.FC = () => {
     return (
         <LinkButtonsContainer>
-            <ParsedLinkRow>
-                <ExternalLink href="https://github.com/mnvr">
-                    <IconContainer>
-                        <FiGithub title="GitHub" />
-                    </IconContainer>
-                </ExternalLink>
+            <ExternalLink href="https://github.com/mnvr">
+                <IconContainer>
+                    <FiGithub title="GitHub" />
+                </IconContainer>
+            </ExternalLink>
 
-                <ExternalLink href="https://twitter.com/mnvrth">
-                    <IconContainer>
-                        <FaTwitter title="Twitter" />
-                    </IconContainer>
-                </ExternalLink>
+            <ExternalLink href="https://twitter.com/mnvrth">
+                <IconContainer>
+                    <FaTwitter title="Twitter" />
+                </IconContainer>
+            </ExternalLink>
 
-                <ExternalLink href="https://mastodon.social/@mnvr">
-                    <IconContainer>
-                        <BsMastodon size="0.95em" title="Mastodon" />;
-                    </IconContainer>
-                </ExternalLink>
-            </ParsedLinkRow>
+            <ExternalLink href="https://mastodon.social/@mnvr">
+                <IconContainer>
+                    <BsMastodon size="0.95em" title="Mastodon" />
+                </IconContainer>
+            </ExternalLink>
         </LinkButtonsContainer>
     );
 };
@@ -358,6 +356,10 @@ const LinkButtonsContainer = styled.div`
         margin-inline: 1rem;
     }
 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.3rem;
+
     a {
         color: var(--mrmr-tertiary-color);
     }
@@ -365,12 +367,6 @@ const LinkButtonsContainer = styled.div`
     a:hover {
         color: var(--mrmr-title-color);
     }
-`;
-
-const ParsedLinkRow = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.3rem;
 `;
 
 const IconContainer = styled.div`
