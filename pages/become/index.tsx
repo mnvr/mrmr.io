@@ -28,98 +28,14 @@ export const Content: React.FC = () => {
     );
 };
 
-const Poem: React.FC = () => {
-    return (
-        <p>
-            To all of you stuck in the words
-            <br />
-            of dead poets
-            <br />
-            Go out and find the living ones
-            <br />
-            <br />
-            If you can’t find them
-            <br />
-            Become
-            <br />
-        </p>
-    );
-};
-
-const Description: React.FC = () => {
-    return (
-        <>
-            <PoemContainer>
-                <Poem />
-            </PoemContainer>
-            <FooterContainer>
-                <Footer />
-            </FooterContainer>
-        </>
-    );
-};
-
-const PoemContainer = styled.div`
-    display: grid;
-    place-content: center start;
-    min-height: 100svh;
-    padding: 1.3rem;
-
-    line-height: 1.5;
-`;
-
-const Footer: React.FC = () => {
-    return (
-        <FooterContents>
-            <small>
-                <p>
-                    by <Link to="/">manav</Link> · july 2023
-                </p>
-                <p id="footer-description">
-                    the song was composed in garageband, and the visuals were
-                    generated using p5js. source code and stems are on{" "}
-                    <ELink href="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
-                        github
-                    </ELink>
-                </p>
-            </small>
-        </FooterContents>
-    );
-};
-
-const FooterContainer = styled.div`
-    padding: 1.3rem;
-    margin-block-end: 4rem;
-`;
-
-const FooterContents = styled.footer`
-    color: oklch(99% 0 0 / 0.7);
-
-    p#footer-description {
-        max-width: 21rem;
-        color: oklch(96% 0 0 / 0.6);
-    }
-
-    a {
-        text-decoration: none;
-        border-bottom: 1px solid currentColor;
-    }
-
-    a:hover {
-        color: oklch(99% 0 0 / 1);
-    }
-`;
-
 interface PlayerP5WebAudioProps {
-    /**
-     * A function to construct the WebAudio graph to play audio in the page.
-     */
+    /** A function to construct the WebAudio graph to play. */
     sequencer: Sequencer;
 }
 
 /**
- * Show a full screen with a reel sized P5 sketch, and a play button that
- * controls the playback of the provided MP3 file.
+ * Show a P5 sketch, and a play button that controls the playback of the
+ * provided {@link sequencer}.
  *
  * The player takes up at least the first screen height.
  */
@@ -143,8 +59,8 @@ const PlayerP5WebAudio: React.FC<
     let showOverlay = !isPlaying;
     if (isRecording) showOverlay = false;
 
-    // If true, then we'll restrict the aspect ratio of the canvas to match
-    // Instagram Reel sizes.
+    // If true, then we'll restrict the aspect ratio of the canvas to match a
+    // portrait aspect ratio.
     //
     // Restricting the aspect ratio is useful when recording, and we'll always
     // do this when we're in the special record mode.
@@ -228,7 +144,7 @@ const PlayerP5WebAudio: React.FC<
                 onClick={toggleShouldPlay}
                 $showOverlay={showOverlay}
             >
-                <ReelSizedP5SketchBox
+                <P5SketchBox
                     p5Ref={p5Ref}
                     isPaused={!isPlaying}
                     audioContext={audioContext}
@@ -468,3 +384,85 @@ const P5SketchBox: React.FC<P5SketchBoxProps> = ({
 
     return <ReactP5Wrapper sketch={sketch} />;
 };
+
+const Poem: React.FC = () => {
+    return (
+        <p>
+            To all of you stuck in the words
+            <br />
+            of dead poets
+            <br />
+            Go out and find the living ones
+            <br />
+            <br />
+            If you can’t find them
+            <br />
+            Become
+            <br />
+        </p>
+    );
+};
+
+const Description: React.FC = () => {
+    return (
+        <>
+            <PoemContainer>
+                <Poem />
+            </PoemContainer>
+            <FooterContainer>
+                <Footer />
+            </FooterContainer>
+        </>
+    );
+};
+
+const PoemContainer = styled.div`
+    display: grid;
+    place-content: center start;
+    min-height: 100svh;
+    padding: 1.3rem;
+
+    line-height: 1.5;
+`;
+
+const Footer: React.FC = () => {
+    return (
+        <FooterContents>
+            <small>
+                <p>
+                    by <Link to="/">manav</Link> · july 2023
+                </p>
+                <p id="footer-description">
+                    the song was composed in garageband, and the visuals were
+                    generated using p5js. source code and stems are on{" "}
+                    <ELink href="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
+                        github
+                    </ELink>
+                </p>
+            </small>
+        </FooterContents>
+    );
+};
+
+const FooterContainer = styled.div`
+    padding: 1.3rem;
+    margin-block-end: 4rem;
+`;
+
+const FooterContents = styled.footer`
+    color: oklch(99% 0 0 / 0.7);
+
+    p#footer-description {
+        max-width: 21rem;
+        color: oklch(96% 0 0 / 0.6);
+    }
+
+    a {
+        text-decoration: none;
+        border-bottom: 1px solid currentColor;
+    }
+
+    a:hover {
+        color: oklch(99% 0 0 / 1);
+    }
+`;
