@@ -1,4 +1,3 @@
-import { unique } from "utils/array";
 import { ensure } from "utils/ensure";
 import { ignoredWords } from "./quotes";
 
@@ -165,11 +164,13 @@ const potentialSegments = (s: string) => {
  * whilst also discarding ignored words.
  */
 const potentialWords = (s: string): string[] =>
-    unique(
-        potentialSegments(s)
-            .flatMap((sg) => (typeof sg === "string" ? [] : sg))
-            .map((w) => w.toLowerCase()),
-    ).filter((w) => !ignoredWordSet.has(w));
+    [
+        ...new Set(
+            potentialSegments(s)
+                .flatMap((sg) => (typeof sg === "string" ? [] : sg))
+                .map((w) => w.toLowerCase()),
+        ),
+    ].filter((w) => !ignoredWordSet.has(w));
 
 /**
  * A set of common / filler words like "is", "the" etc that we ignore when

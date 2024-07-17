@@ -9,10 +9,3 @@
  */
 export const filterDefined = <T>(xs?: readonly (T | undefined)[]): T[] =>
     xs?.filter((t): t is Exclude<typeof t, undefined> => t !== undefined) ?? [];
-
-/**
- * Return all the unique values in the array.
- *
- * This converts the array into a set, and back again.
- */
-export const unique = <T>(xs: Array<T>): Array<T> => [...new Set(xs)];
