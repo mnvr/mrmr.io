@@ -10,21 +10,7 @@ export const Column: React.FC<React.PropsWithChildren> = ({ children }) => {
     );
 };
 
-/** A wider variant of {@link Column} */
-export const WideColumn: React.FC<React.PropsWithChildren> = ({ children }) => {
-    return (
-        <WideGrid>
-            <Middle>{children}</Middle>
-        </WideGrid>
-    );
-};
-
 const Grid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr min(24em, 100%) 3fr;
-`;
-
-const WideGrid = styled.div`
     display: grid;
     grid-template-columns: 1fr min(31em, 100%) 5fr;
 `;

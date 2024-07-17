@@ -1,4 +1,4 @@
-import { WideColumn } from "components/Column";
+import { Column } from "components/Column";
 import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
@@ -8,11 +8,11 @@ import { raagBhairav, raagYaman } from "./raag";
 export const Contents: React.FC = ({}) => {
     return (
         <Container_>
-            <WideColumn>
+            <Column>
                 <Title />
                 <RaagList />
                 <Footer />
-            </WideColumn>
+            </Column>
         </Container_>
     );
 };

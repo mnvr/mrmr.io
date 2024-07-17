@@ -1,4 +1,4 @@
-import { WideColumn } from "components/Column";
+import { Column } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
@@ -33,9 +33,9 @@ export default TextLayout;
  */
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
-        <WideColumn>
+        <Column>
             <Content_>{children}</Content_>
-        </WideColumn>
+        </Column>
     );
 };
 

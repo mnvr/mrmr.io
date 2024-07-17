@@ -1,4 +1,4 @@
-import { WideColumn } from "components/Column";
+import { Column } from "components/Column";
 import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import * as React from "react";
@@ -25,10 +25,10 @@ export interface PropsWithSynthAndRaag {
 export const RaagColumn: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
         <RaagColumn_>
-            <WideColumn>
+            <Column>
                 {children}
                 <Footer />
-            </WideColumn>
+            </Column>
         </RaagColumn_>
     );
 };

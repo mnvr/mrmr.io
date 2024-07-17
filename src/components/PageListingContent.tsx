@@ -1,4 +1,4 @@
-import { WideColumn } from "components/Column";
+import { Column } from "components/Column";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { PageColorStyle } from "components/PageColorStyle";
 import { Link, graphql } from "gatsby";
@@ -50,13 +50,13 @@ const PageListingContent: React.FC<
     return (
         <main>
             <PageColorStyle {...paperDarkTheme} />
-            <WideColumn>
+            <Column>
                 <Title>{children}</Title>
                 <LinkStyleUnderlined>
                     <PageListing {...{ pages }} />
                     <Footer>{extraLinks}</Footer>
                 </LinkStyleUnderlined>
-            </WideColumn>
+            </Column>
         </main>
     );
 };
