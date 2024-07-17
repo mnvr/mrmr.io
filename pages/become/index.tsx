@@ -366,14 +366,6 @@ const ExpandButton: React.FC = () => {
 
 interface P5SketchBoxProps {
     /**
-     * A function that is called to determine the size of the sketch.
-     *
-     * It should return a pair of numbers, representing the width and the height
-     * of the box.
-     */
-    computeSize: (p5: p5) => [number, number];
-
-    /**
      * A ref to the P5 instance that'll be set by {@link P5SketchBox} when setup
      * is first called.
      *
@@ -381,6 +373,12 @@ interface P5SketchBoxProps {
      * object externally. e.g. it can be used to resume looping.
      */
     p5Ref?: React.MutableRefObject<P5CanvasInstance | undefined>;
+
+    /**
+     * If true, restrict the canvas to a portrait aspect ratio. Otherwise let it
+     * expand to fill the window.
+     */
+    restrictAspectRatio?: boolean;
 
     /**
      * If true, then pause the draw function by calling P5 `noLoop`.
@@ -402,29 +400,21 @@ interface P5SketchBoxProps {
     audioContext?: AudioContext;
 }
 
-interface ReelSizedP5SketchBoxProps
-    extends Omit<P5SketchBoxProps, "computeSize"> {
-    /**
-     * If true, restrict the canvas to the Reel aspect ratio. Otherwise let it
-     * expand to fill the window.
-     */
-    restrictAspectRatio?: boolean;
-}
-
-/**
- * A specialization of {@link P5SketchBox} that implements the
- * {@link computeSize} function, creating a reel sized container.
- */
-const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = (props) => {
-    // Instagram's recommended Reel size is 1080x1920 pixels (9:16 aspect ratio)
-    // For @3x devices, that'll translate to 1920/3 = 640 points, and we use
-    // that as the height. However, if the window is smaller than that, we limit
-    // to the window's height.
+/** A container showing a P5 sketch. */
+const P5SketchBox: React.FC<P5SketchBoxProps> = ({
+    p5Ref,
+    restrictAspectRatio,
+    isPaused,
+    audioContext,
+}) => {
+    // Use a 9:16 aspect ratio. For @3x devices, that's 1920/3 = 640 points, and
+    // we use that as the height. However, if the window is smaller than that,
+    // we limit to the window's height.
     const defaultHeight = 640;
     const aspectRatio = 9 / 16;
 
     const computeSize = (p5: p5): [number, number] => {
-        if (props.restrictAspectRatio) {
+        if (restrictAspectRatio) {
             // Compute the sizes based on the aspect ratios
             const height = Math.min(defaultHeight, p5.windowHeight);
             const width = height * aspectRatio;
@@ -435,28 +425,6 @@ const ReelSizedP5SketchBox: React.FC<ReelSizedP5SketchBoxProps> = (props) => {
         }
     };
 
-    const ourProps = { computeSize };
-    const mergedProps = { ...ourProps, ...props };
-
-    return <P5SketchBox {...mergedProps} />;
-};
-
-/**
- * A container showing a P5 sketch
- *
- * This is meant to be an relatively generic component, and usually you'd want
- * to use one which handles the sizing for you. e.g. a `ReelSizedP5SketchBox`
- * or a `SquareP5Sketch`.
- *
- * It however has various hooks and controls to allow us to synchronize with an
- * audio source.
- */
-const P5SketchBox: React.FC<P5SketchBoxProps> = ({
-    computeSize,
-    p5Ref,
-    isPaused,
-    audioContext,
-}) => {
     const setup = (p5: p5) => {
         const [width, height] = computeSize(p5);
 
