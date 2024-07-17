@@ -1,9 +1,9 @@
 import Color from "colorjs.io";
 import type p5 from "p5";
-import { extractAudioMarkersAtTime } from "p5/audio";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
+import { extractAudioMarkersAtTime } from "./song";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5, env: P5DrawEnv) => {
