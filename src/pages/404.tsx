@@ -2,7 +2,6 @@ import { DefaultHead } from "components/Head";
 import { PageColorStyle } from "components/PageColorStyle";
 import { Link, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
-import { BsArrowRightShort } from "react-icons/bs";
 import styled from "styled-components";
 import { paperTheme } from "themes/themes";
 
@@ -83,18 +82,11 @@ const Content: React.FC = () => {
                 Or maybe it never did.
             </p>
 
-            <SubText>
-                If you think this page should've been here
-                <br />
-                and there is some issue,
-                <br />
-                <a href="https://github.com/mnvr/mrmr.io/issues">
-                    please let me know!
-                    <BsArrowRightShort />
-                </a>
+            <SubText style={{ marginBlockStart: "1rem" }}>
+                <a href="https://github.com/mnvr/mrmr.io">Source code</a>
             </SubText>
 
-            <SubText style={{ marginBlockStart: "2rem" }}>
+            <SubText>
                 <Link to="/">Home</Link>
             </SubText>
         </div>
