@@ -57,7 +57,7 @@ export const draw = (p5: p5, env: P5DrawEnv) => {
     gridCirclesAndStars(p5, { gap, strokeCircle, strokeStar, rotateStar });
 };
 
-// Extracted from "become.mp3"
+// Extracted from the song.
 const trackInfo = {
     duration: 39.272743,
     bpm: 110,

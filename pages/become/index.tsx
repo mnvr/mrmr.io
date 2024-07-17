@@ -76,14 +76,11 @@ const Footer: React.FC = () => {
         <FooterContents>
             <small>
                 <p>
-                    music, words and art by <Link to="/">manav</Link> · july
-                    2023
+                    by <Link to="/">manav</Link> · july 2023
                 </p>
                 <p id="footer-description">
                     the song was composed in garageband, and the visuals were
-                    generated using p5js. the source code for the sketch is open
-                    - you can download both the garageband file and the p5 code
-                    from my{" "}
+                    generated using p5js. source code and stems are on{" "}
                     <ELink href="https://github.com/mnvr/mrmr.io/tree/main/pages/become">
                         github
                     </ELink>
