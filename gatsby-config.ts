@@ -88,7 +88,7 @@ const config: GatsbyConfig = {
                         query: `
                             query AllPageFeed {
                                 allMdx(
-                                    filter: { fields: { feed: { eq: "/all" } } }
+                                    filter: { frontmatter: { unlisted: { ne: true } } }
                                     sort: [
                                         { frontmatter: { date: DESC } }
                                         { frontmatter: { title: ASC } }
@@ -99,7 +99,6 @@ const config: GatsbyConfig = {
                                             title
                                             description
                                             date(formatString: "")
-                                            attributes
                                         }
                                         fields {
                                             slug

@@ -67,7 +67,7 @@ export const Head: HeadFC<Queries.IndexPageQuery> = ({ data }) => {
  *
  * - In particular, fetch the preview (meta/og:image) image.
  *
- * Fetch a few recent of pages in the '/all' feed, sorted by recency.
+ * Fetch a few recent pages (what'd be shown in '/all'), sorted by recency.
  *
  * Fetch all pages tagged "front-page", sorted by recency.
  *
@@ -93,7 +93,7 @@ export const query = graphql`
         }
         recentPages: allMdx(
             limit: 7
-            filter: { fields: { feed: { eq: "/all" } } }
+            filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }

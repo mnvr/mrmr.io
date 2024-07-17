@@ -5,7 +5,6 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
-import { isNote } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
 /**
@@ -334,25 +333,11 @@ const Signoff_ = styled.div`
  * Designed for use with a plain text post.
  */
 export const Footer: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
     return (
         <Footer_>
-            {isNote(page) ? (
-                <>
-                    <LinkContainer>
-                        <Link to={"/notes"}>All notes</Link>
-                    </LinkContainer>
-                    <LinkContainer>
-                        <Link to={"/all"}>All posts</Link>
-                    </LinkContainer>
-                </>
-            ) : (
-                <LinkContainer>
-                    <Link to={"/all"}>All posts</Link>
-                </LinkContainer>
-            )}
-
+            <LinkContainer>
+                <Link to={"/all"}>All posts</Link>
+            </LinkContainer>
             <LinkContainer>
                 <Link to={"/"}>Home</Link>
             </LinkContainer>

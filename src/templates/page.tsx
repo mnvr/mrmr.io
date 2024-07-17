@@ -10,13 +10,12 @@ import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import CodeLayout from "layouts/code";
 import TextLayout from "layouts/text";
 import TextHindiLayout from "layouts/text-hindi";
-import TextNoteLayout from "layouts/text-note";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
 import { filterDefined } from "utils/array";
-import { isHindiContent, isNote } from "utils/attributes";
+import { isHindiContent } from "utils/attributes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -140,7 +139,6 @@ export const query = graphql`
             }
             fields {
                 slug
-                feed
             }
             generatedPreviewImage: previewImageTemplate {
                 gatsbyImageData(
@@ -150,15 +148,6 @@ export const query = graphql`
         }
     }
 `;
-
-export type FeedType = "/all" | "/notes";
-
-const isFeedType = (s: string): s is FeedType => {
-    return s === "/all" || s === "/notes";
-};
-
-const parseFeedType = (s: string | undefined) =>
-    s && isFeedType(s) ? s : undefined;
 
 /**
  * Named layouts
@@ -186,8 +175,6 @@ const ensureLayoutNameIfDefined = (s: string | undefined) => {
 export interface Page {
     /** The page's slug */
     slug: string;
-    /** The feed that this page is classified under */
-    feed?: FeedType;
     /** Title of the page */
     title: string;
     /** An (optional) subtitle for the page */
@@ -264,6 +251,7 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 
     const frontmatter = mdx?.frontmatter;
     const title = ensure(frontmatter?.title);
+    const description = frontmatter?.description;
     const subtitle = frontmatter?.subtitle;
     const layout = ensureLayoutNameIfDefined(frontmatter?.layout);
     const formattedDateMY = frontmatter?.formattedDateMY;
@@ -279,9 +267,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
 
     const slug = ensure(mdx?.fields?.slug);
-    const feed = parseFeedType(mdx?.fields?.feed);
-
-    const description = frontmatter?.description;
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
 
@@ -310,7 +295,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
 
     return {
         slug,
-        feed,
         title,
         subtitle,
         description,
@@ -361,8 +345,6 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
         case "text":
             return isHindiContent(page) ? (
                 <TextHindiLayout>{children}</TextHindiLayout>
-            ) : isNote(page) ? (
-                <TextNoteLayout>{children}</TextNoteLayout>
             ) : (
                 <TextLayout>{children}</TextLayout>
             );

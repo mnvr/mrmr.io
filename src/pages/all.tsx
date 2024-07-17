@@ -3,12 +3,12 @@ import PageListingContent, {
     parsePageListingPageData,
     type PageListingPage,
 } from "components/PageListingContent";
-import { Link, graphql, type HeadFC, type PageProps } from "gatsby";
+import { graphql, type HeadFC, type PageProps } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
-/** A listing of posts in the "/all" feed */
+/** A listing of posts that are not explicitly unlisted. */
 const AllPage: React.FC<PageProps<Queries.AllPageQuery>> = ({ data }) => {
     const pages = parsePages(data);
     const extraLinks = <ExtraLinks />;
@@ -35,16 +35,12 @@ export const Head: HeadFC = () => {
 };
 
 /**
- * Fetch pages in the "/all" feed, sorted by recency.
- *
- * Right now this returns all pages; if this list grows too big then we can add
- * a limit here.
+ * Fetch pages that are not unlisted, sorted by recency.
  */
 export const query = graphql`
     query AllPage {
         allMdx(
-            filter: { fields: { feed: { eq: "/all" } } }
-
+            filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
                 { frontmatter: { date: DESC } }
                 { frontmatter: { title: ASC } }
@@ -62,14 +58,9 @@ const parsePages = (data: Queries.AllPageQuery): PageListingPage[] =>
 
 const ExtraLinks: React.FC = () => {
     return (
-        <>
-            <div>
-                <LinkToRSSFeed />
-            </div>
-            <div>
-                <Link to={"/notes"}>Notes and TILs</Link>
-            </div>
-        </>
+        <div>
+            <LinkToRSSFeed />
+        </div>
     );
 };
 

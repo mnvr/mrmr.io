@@ -15,40 +15,19 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
 }) => {
     const { createNodeField } = actions;
 
-    // To all MDX nodes:
-    // - Attach a "slug" field.
-    // - Attach a "feed" field that indicates which all listings should this
-    //   page be surfaced in.
+    // Attach a "slug" field to all MDX nodes.
     if (node.internal.type == "Mdx") {
         // Do not add a trailing slash to the generated paths.
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
-        const feed = isUnlistedOnCreateNode(node) ? undefined : "/all";
 
-        const newFields = { slug, feed };
-
-        Object.entries(newFields).forEach(([name, value]) => {
-            createNodeField({
-                node,
-                name,
-                value,
-            });
+        createNodeField({
+            node,
+            name: "slug",
+            value: slug,
         });
     }
-};
-
-const isUnlistedOnCreateNode = (node: Record<string, unknown>) => {
-    const fm = node.frontmatter;
-    if (
-        fm &&
-        typeof fm === "object" &&
-        "unlisted" in fm &&
-        typeof fm["unlisted"] === "boolean"
-    ) {
-        return fm.unlisted;
-    }
-    return false;
 };
 
 export const createPages: GatsbyNode<

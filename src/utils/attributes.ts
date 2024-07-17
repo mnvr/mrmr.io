@@ -2,7 +2,6 @@
 
 interface PageLike {
     slug: string;
-    feed?: string;
     attributes: string[];
 }
 
@@ -14,9 +13,3 @@ interface PageLike {
 export const isHindiContent = ({ attributes }: PageLike) =>
     attributes.includes("hindi");
 
-/**
- * Return true if this is a note.
- *
- * A note is something that appears in the "/notes" feed.
- */
-export const isNote = ({ feed }: PageLike) => feed === "/notes";
