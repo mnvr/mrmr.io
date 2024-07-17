@@ -1,7 +1,6 @@
 import type { P5CanvasInstance, Sketch } from "@p5-wrapper/react";
 import { IconButton, PlayButton } from "components/Buttons";
 import { ELink } from "components/ExternalLink";
-import { LoadingIndicator } from "components/LoadingIndicator";
 import { Link } from "gatsby";
 import type p5 from "p5";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
@@ -321,6 +320,29 @@ const SketchContainer = styled.div<SketchContainerProps>`
        same grid position so that the play button appears on top (with the
        overlay behind it) when playback is stopped. */
     grid-area: 1/-1;
+`;
+
+const LoadingIndicator = styled.div`
+    /* Same size as the IconButton components, in particular, PlayButton */
+    width: 2rem;
+    height: 2rem;
+
+    /* Give it a thick rounded border, except at the bottom */
+    border-radius: 50%;
+    border: 3px white dotted;
+    border-bottom-color: transparent;
+
+    /* Rotate it, at 1 revolutions per second */
+    animation: rotate 1s ease-out infinite;
+
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
 `;
 
 const PlayButtonContainer = styled.div`
