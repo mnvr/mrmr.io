@@ -116,7 +116,6 @@ export const query = graphql`
             nodes {
                 frontmatter {
                     title
-                    related
                 }
                 fields {
                     slug
@@ -138,7 +137,6 @@ export const query = graphql`
                 highlight_color
                 highlight_color_dark
                 attributes
-                related
             }
             fields {
                 slug

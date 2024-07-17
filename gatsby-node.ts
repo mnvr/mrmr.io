@@ -6,8 +6,7 @@ import { type PageTemplateContext } from "types/gatsby";
 // Need to use the full path here to, using absolute paths with automatic "src"
 // prefixing doesn't work in gatsby-node.ts.
 import { typeDefs } from "./src/graphql-schema";
-import { ensure, ensureString } from "./src/utils/ensure";
-import { hasArrayKey, hasBooleanKey } from "./src/utils/object";
+import { ensure } from "./src/utils/ensure";
 
 export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     node,
@@ -25,7 +24,7 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
         // This matches the `trailingSlash` option in `gatsby-config.ts`.
         const trailingSlash = false;
         const slug = createFilePath({ node, getNode, trailingSlash });
-        const feed = feedForMdxNode(node);
+        const feed = isUnlistedOnCreateNode(node) ? undefined : "/all";
 
         const newFields = { slug, feed };
 
@@ -39,41 +38,17 @@ export const onCreateNode: GatsbyNode["onCreateNode"] = ({
     }
 };
 
-const feedForMdxNode = (node: Record<string, unknown>) => {
-    const { unlisted, attributes } = parseOnCreateNodeMdxNode(node);
-
-    // Unlisted pages are not shown in any feed.
-    if (unlisted) {
-        return undefined;
+const isUnlistedOnCreateNode = (node: Record<string, unknown>) => {
+    const fm = node.frontmatter;
+    if (
+        fm &&
+        typeof fm === "object" &&
+        "unlisted" in fm &&
+        typeof fm["unlisted"] === "boolean"
+    ) {
+        return fm.unlisted;
     }
-
-    // By default, all MDX pages are shown in /all (and similar listings).
-    let feed: string | undefined = "/all";
-
-    // Pages with the "note" or "playground" attribute go to the /notes feed.
-    if (attributes?.includes("note") || attributes?.includes("playground")) {
-        feed = "/notes";
-    }
-
-    return feed;
-};
-
-const parseOnCreateNodeMdxNode = (node: Record<string, unknown>) => {
-    let unlisted: boolean | undefined;
-    let attributes: string[] | undefined;
-
-    const frontmatter = node.frontmatter;
-    if (frontmatter && typeof frontmatter === "object") {
-        if (hasBooleanKey(frontmatter, "unlisted")) {
-            unlisted = frontmatter.unlisted;
-        }
-
-        if (hasArrayKey(frontmatter, "attributes")) {
-            attributes = frontmatter.attributes?.map((s) => ensureString(s));
-        }
-    }
-
-    return { unlisted, attributes };
+    return false;
 };
 
 export const createPages: GatsbyNode<
