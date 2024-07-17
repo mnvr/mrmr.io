@@ -1,10 +1,10 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { useAudioContext } from "webaudio/use-audio-context";
 import { beep } from "./sound";
 
 export const FirstSound: React.FC = () => {
     const getAudioContext = useAudioContext();
-    const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
+    const [oscNode, setOscNode] = useState<OscillatorNode | undefined>();
 
     const handleClick = () => {
         if (oscNode) {
@@ -25,7 +25,7 @@ export const FirstSound: React.FC = () => {
 
 export const Beep: React.FC = () => {
     const getAudioContext = useAudioContext();
-    const [oscNode, setOscNode] = React.useState<OscillatorNode | undefined>();
+    const [oscNode, setOscNode] = useState<OscillatorNode | undefined>();
 
     const handleClick = () => {
         const ctx = getAudioContext();
@@ -59,7 +59,7 @@ export const Beep: React.FC = () => {
 
 export const Beeps: React.FC = () => {
     const getAudioContext = useAudioContext();
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const [intervalID, setIntervalID] = useState<number | undefined>();
 
     const handleClick = () => {
         if (intervalID) {

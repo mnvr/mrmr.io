@@ -12,8 +12,7 @@
  * @returns number[] A sequence of 1's and 0's with the 1's maximally spaced out
  * using Euclid's algorithm.
  *
- * @see `pages/mj/euclid/test.js` for a standalone JavaScript version of this
- * function with examples.
+ * @see `test.js` for a JavaScript version of this function with examples.
  */
 export const E = (k: number, n: number): number[] => {
     let seqs = Array(n)

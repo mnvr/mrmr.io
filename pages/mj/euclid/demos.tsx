@@ -1,14 +1,14 @@
-import * as React from "react";
-import { E } from "sound/e";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useAudioContext } from "webaudio/use-audio-context";
 import { beep } from "../sound";
+import { E } from "./e";
 
 export const E38: React.FC = () => {
     const getAudioContext = useAudioContext();
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const [intervalID, setIntervalID] = useState<number | undefined>();
 
-    const [seqIndex, setSeqIndex] = React.useState(0);
+    const [seqIndex, setSeqIndex] = useState(0);
     const seq = [1, 0, 0, 1, 0, 0, 1, 0];
     const seq2 = E(3, 8);
     console.assert(JSON.stringify(seq) == JSON.stringify(seq2));
@@ -28,7 +28,7 @@ export const E38: React.FC = () => {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (intervalID && seq[seqIndex]) {
             beep(getAudioContext(), 0.01);
         }
@@ -136,7 +136,7 @@ export const Cycle: React.FC = () => {
      * This is kept outside of the reducer's state because mutations to this
      * value involve side effects.
      */
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const [intervalID, setIntervalID] = useState<number | undefined>();
 
     const handleClick = () => {
         if (intervalID) {
@@ -149,7 +149,7 @@ export const Cycle: React.FC = () => {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (intervalID && seq[p]) {
             beep(getAudioContext(), 0.01);
         }
@@ -198,9 +198,9 @@ export const Modulate: React.FC = () => {
     const onset = E(ko, n);
     const accent = E(ka, n);
 
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const [intervalID, setIntervalID] = useState<number | undefined>();
     /* Phase, indexes into both onset and accent */
-    const [p, setP] = React.useState(0);
+    const [p, setP] = useState(0);
 
     const handleClick = () => {
         if (intervalID) {
@@ -213,7 +213,7 @@ export const Modulate: React.FC = () => {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (intervalID && onset[p]) {
             if (accent[p]) {
                 beep(getAudioContext(), 0.02, 0.01, 0.1);
@@ -273,7 +273,7 @@ const ModulateBeats = styled.div`
 export const Everything: React.FC = () => {
     const getAudioContext = useAudioContext();
     const [state, dispatch] = React.useReducer(cycleReducer, initialCycleState);
-    const [intervalID, setIntervalID] = React.useState<number | undefined>();
+    const [intervalID, setIntervalID] = useState<number | undefined>();
 
     const { k, n, p } = state;
     const seq = E(k, n);
@@ -293,7 +293,7 @@ export const Everything: React.FC = () => {
         }
     };
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (intervalID) {
             if (seq38[p % n8]) {
                 beep(getAudioContext(), 0.01, 0.001, 0.1, 660);
