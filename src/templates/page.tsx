@@ -18,10 +18,7 @@ import type { PageTemplateContext } from "types/gatsby";
 import { filterDefined } from "utils/array";
 import { isHindiContent, isNote } from "utils/attributes";
 import { ensure } from "utils/ensure";
-import {
-    replaceNullsWithUndefineds,
-    type RecursivelyReplaceNullWithUndefined,
-} from "utils/replace-nulls";
+import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
 const PageTemplate: React.FC<
     PageProps<Queries.PageTemplateQuery, PageTemplateContext>
@@ -50,7 +47,7 @@ export default PageTemplate;
 export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
     data,
 }) => {
-    const { title, description, slug, noIndex, images, generatedPreviewImage } =
+    const { title, description, slug, images, generatedPreviewImage } =
         parsePage(data);
     const canonicalPath = slug;
 
@@ -69,7 +66,6 @@ export const Head: HeadFC<Queries.PageTemplateQuery, PageTemplateContext> = ({
                 description,
                 canonicalPath,
                 previewImagePath,
-                noIndex,
             }}
         />
     );
@@ -135,7 +131,6 @@ export const query = graphql`
                 formattedDateMY: date(formatString: "MMM YYYY")
                 formattedDateDMY: date(formatString: "DD MMMM YYYY")
                 formatted_signoff_date
-                noindex
                 layout
                 colors
                 dark_colors
@@ -213,14 +208,6 @@ export interface Page {
      * the "signoff-date" field in the frontmatter.
      */
     formattedSignoffDate?: string;
-    /**
-     * If true, then we add the "noindex" meta tag to the head of the page to
-     * prevent search engines from indexing the page.
-     *
-     * See the documentation of the {@link noIndex} field in the props for
-     * {@link DefaultHead} for more discussion about what that does.
-     */
-    noIndex: boolean;
     layout?: LayoutName;
     colors?: ColorPalette;
     darkColors?: ColorPalette;
@@ -241,19 +228,6 @@ export interface Page {
      * See: Note: [List of supported page attributes].
      */
     attributes: string[];
-    /**
-     * A list of (links to) related pages.
-     *
-     * This list is populated from the slugs specified in the "related" field
-     * from the frontmatter.
-     */
-    relatedPageLinks: PageLink[];
-    /**
-     * A list of backlinks to pages that link here via the related field.
-     *
-     * i.e. these are the pages whose {@link relatedPageLinks} link here.
-     */
-    linkedFromPageLinks: PageLink[];
     /**
      * A preview image generated from a template using tint colors
      *
@@ -286,12 +260,6 @@ export interface Page {
     mp3s: Record<string, string>;
 }
 
-/** The slug to a page, and a title to show in the anchor tag */
-export interface PageLink {
-    slug: string;
-    title: string;
-}
-
 export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const data = replaceNullsWithUndefineds(data_);
     const { mdx, images, mp3s } = data;
@@ -302,7 +270,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const layout = ensureLayoutNameIfDefined(frontmatter?.layout);
     const formattedDateMY = frontmatter?.formattedDateMY;
     const formattedDateDMY = frontmatter?.formattedDateDMY;
-    const noIndex = frontmatter?.noindex ?? false;
     const colors = parseColorPalette(frontmatter?.colors);
     const darkColors = parseColorPalette(frontmatter?.dark_colors);
     const theme = frontmatter?.theme;
@@ -319,8 +286,6 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const description = frontmatter?.description;
 
     const generatedPreviewImage = mdx?.generatedPreviewImage;
-
-    const { relatedPageLinks, linkedFromPageLinks } = parsePageLinks(data);
 
     // Gatsby's `StaticImage` component currently doesn't support paths that are
     // outside the `src` directory. Our user pages live in the top-level `pages`
@@ -355,84 +320,16 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
         formattedDateMY,
         formattedDateDMY,
         formattedSignoffDate,
-        noIndex,
         colors,
         darkColors,
         theme,
         highlightColor,
         highlightColorDark,
         attributes,
-        relatedPageLinks,
-        linkedFromPageLinks,
         generatedPreviewImage,
         images: pageImages,
         mp3s: pageMP3s,
     };
-};
-
-/**
- * Return two sets of links - pages that are related to us, and the pages that
- * link to us.
- */
-const parsePageLinks = (
-    data: RecursivelyReplaceNullWithUndefined<Queries.PageTemplateQuery>,
-) => {
-    // This really only needs the mdx and allMdx fields, but there doesn't seem
-    // to be a way to get at the TypeScript types of the named nested parts of
-    // the PageTemplateQuery, so we just pass the entire thing over to us.
-    const { mdx, allMdx } = data;
-
-    // To obtain the titles corresponding to related pages, we need to join
-    // using the slugs of related pages (if any) specified in the frontmatter of
-    // this page. There might be better (but more involved) ways of doing this:
-    // for now we just fetch the list of all pages and do the join here in code.
-    //
-    // In a very crude benchmark (`time yarn build`) done after the initial
-    // implementation,  this doesn't seem to have made any noticeable
-    // difference. But if we run into performance issues when the number of
-    // pages grows, this might be a possible thing to consider optimizing (e.g.
-    // using the @link Gatsby extension for foreign-key fields in GraphQL).
-
-    const relatedPageLinks: PageLink[] = [];
-    const linkedFromPageLinks: PageLink[] = [];
-
-    // The number of related links is expected to be small (a few at max), so we
-    // just iterate over these O(n^2) lists instead of indexing them into a maps
-    // first.
-
-    const mySlug = ensure(mdx?.fields?.slug);
-
-    mdx?.frontmatter?.related?.forEach((relatedSlug) => {
-        relatedSlug &&
-            allMdx.nodes?.forEach((n) => {
-                if (n.fields?.slug === relatedSlug) {
-                    if (n.frontmatter?.related?.includes(mySlug))
-                        throw new Error(
-                            `Bidirectional links are not allowed: The page ${relatedSlug} links to ${mySlug} and vice versa.`,
-                        );
-
-                    relatedPageLinks.push({
-                        slug: relatedSlug,
-                        title: ensure(n.frontmatter?.title),
-                    });
-                }
-            });
-    });
-
-    allMdx.nodes?.forEach((node) => {
-        const nodeSlug = ensure(node.fields?.slug);
-        nodeSlug !== mySlug &&
-            node.frontmatter?.related?.forEach((relatedSlug) => {
-                if (relatedSlug === mySlug) {
-                    linkedFromPageLinks.push({
-                        slug: nodeSlug,
-                        title: ensure(node.frontmatter?.title),
-                    });
-                }
-            });
-    });
-
-    return { relatedPageLinks, linkedFromPageLinks };
 };
 
 /**

@@ -73,23 +73,6 @@ interface HeadProps {
      * the page.
      */
     previewImagePath?: string;
-
-    /**
-     * If true, then we add the noindex meta tag to the head of the page.
-     *
-     *    <meta name="robots" content="noindex">
-     *
-     * This prevents search engines from indexing the page.
-     *
-     * There is a similar mechanism, the robots.txt file. We could prevent
-     * search engines from indexing a page by adding a "Disallow: /path" entry
-     * in the site-wide robots.txt. However, somewhat curiously, that will not
-     * prevent crawlers from indexing the page if they find a link to the page
-     * from elsewhere on the internet. I don't have empirical certainity of
-     * which mechanism is better, but reading about what they do, the noindex
-     * meta tag seems to be a better fit for what we wish.
-     */
-    noIndex?: boolean;
 }
 
 export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
@@ -98,7 +81,6 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
     description,
     canonicalPath,
     previewImagePath,
-    noIndex,
     children,
 }) => {
     const data = useStaticQuery<Queries.HeadQuery>(graphql`
@@ -172,7 +154,6 @@ export const DefaultHead: React.FC<React.PropsWithChildren<HeadProps>> = ({
                 </>
             )}
             {canonicalURL && <link rel="canonical" href={canonicalURL} />}
-            {noIndex && <meta name="robots" content="noindex" />}
             {children}
         </>
     );

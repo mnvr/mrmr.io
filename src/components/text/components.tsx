@@ -4,7 +4,7 @@ import { SignoffContents } from "components/Signoff";
 import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
-import { BuildTimePageContext, type PageLink } from "templates/page";
+import { BuildTimePageContext } from "templates/page";
 import { isNote, isPoem } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
@@ -329,22 +329,15 @@ const Signoff_ = styled.div`
 `;
 
 /**
- * A minimal Footer containing link to related posts, all posts and home.
+ * A minimal Footer containing link all posts and home.
  *
  * Designed for use with a plain text post.
  */
 export const Footer: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { relatedPageLinks, linkedFromPageLinks } = page;
 
     return (
         <Footer_>
-            {relatedPageLinks.length > 0 && (
-                <RelatedPosts links={relatedPageLinks} />
-            )}
-            {linkedFromPageLinks.length > 0 && (
-                <LinkedFromPosts links={linkedFromPageLinks} />
-            )}
             {isPoem(page) && (
                 <LinkContainer>
                     <Link to={"/poems"}>More poems</Link>
@@ -381,16 +374,12 @@ const LinkContainer = styled.div`
  */
 export const FooterHindi: React.FC = () => {
     const page = ensure(React.useContext(BuildTimePageContext));
-    const { relatedPageLinks } = page;
 
     // Note: this footer is not kept in sync with all the possible content that
     // can be in the default (English) footer. Only what is used in Hindi pages
     // has been added so far.
     return (
         <Footer_>
-            {relatedPageLinks.length > 0 && (
-                <RelatedPostsHindi links={relatedPageLinks} />
-            )}
             {isPoem(page) && (
                 <LinkContainer>
                     <Link to={"/poems"}>और कविताएँ</Link>
@@ -424,55 +413,3 @@ const Footer_ = styled.footer`
         margin-block: 1em;
     }
 `;
-
-interface RelatedPostsProps {
-    links: PageLink[];
-}
-
-const RelatedPosts: React.FC<RelatedPostsProps> = (props) => {
-    return (
-        <FooterSection_>
-            <FooterListTitle>Related posts</FooterListTitle>
-            <RelatedPostsList {...props} />
-        </FooterSection_>
-    );
-};
-
-const FooterSection_ = styled.div`
-    margin-block: 1em;
-`;
-
-const FooterListTitle = styled.div`
-    /* Snuggle just a bit with the list items to provide a sectioning effect */
-    color: var(--mrmr-secondary-color);
-`;
-
-const RelatedPostsHindi: React.FC<RelatedPostsProps> = (props) => {
-    return (
-        <div>
-            <FooterListTitle>सम्बन्धित रचनाएँ</FooterListTitle>
-            <RelatedPostsList {...props} />
-        </div>
-    );
-};
-
-const RelatedPostsList: React.FC<RelatedPostsProps> = ({ links }) => {
-    return (
-        <ul>
-            {links.map(({ slug, title }) => (
-                <li key={slug}>
-                    <Link to={slug}>{title}</Link>
-                </li>
-            ))}
-        </ul>
-    );
-};
-
-const LinkedFromPosts: React.FC<RelatedPostsProps> = (props) => {
-    return (
-        <FooterSection_>
-            <FooterListTitle>Linked from</FooterListTitle>
-            <RelatedPostsList {...props} />
-        </FooterSection_>
-    );
-};

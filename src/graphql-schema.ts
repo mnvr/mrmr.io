@@ -142,14 +142,6 @@ type MdxFrontmatter implements Node @dontInfer {
     # listings, e.g. '/all' or '/notes'.
     unlisted: Boolean
 
-    # Set this to true to prevent search engines from indexing the page.
-    #
-    # This causes the "noindex" meta tag to the be added to the generated HTML
-    # for the page to prevent it from being indexed by search engines. This can
-    # be useful, e.g., when we have non-deterministic or dynamically generated
-    # content, say like the '/quotes' page.
-    noindex: Boolean
-
     # Specify a layout to use.
     #
     # By default, the minimal CSS resets are made (primarily, setting the body
@@ -184,13 +176,5 @@ type MdxFrontmatter implements Node @dontInfer {
     #   Move this page to the top of the listing for that month.
     #
     attributes: [String]
-
-    # Specify the slugs of related pages.
-    #
-    # Some layouts show this list to show links to these related pages in the
-    # footer of the page.
-    #
-    # Data type is list of strings. Default is empty.
-    related: [String]
 }
 `;
