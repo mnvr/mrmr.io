@@ -6,7 +6,7 @@ import { Link } from "gatsby";
 import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
 import type p5 from "p5";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
@@ -18,7 +18,7 @@ import { createSequencer } from "./sequencer";
 import { draw } from "./sketch";
 
 export const Content: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
+    const page = ensure(useContext(BuildTimePageContext));
     let { mp3s } = page;
 
     const sequencer = createSequencer(mp3s);
@@ -143,7 +143,7 @@ interface PlayerP5WebAudioProps {
 const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ draw, sequencer }) => {
-    const p5Ref = React.useRef<p5 | undefined>();
+    const p5Ref = useRef<p5 | undefined>();
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
         useWebAudioPlayback(sequencer);
@@ -152,8 +152,8 @@ const PlayerP5WebAudio: React.FC<
     // in the URL. This will:
     // 1. Disable the overlay and hide the play button so as to remove any extra
     //    animations when audio starts playing.
-    const [isRecording, setIsRecording] = React.useState(false);
-    React.useEffect(() => {
+    const [isRecording, setIsRecording] = useState(false);
+    useEffect(() => {
         if (window.location.hash === "#record") setIsRecording(true);
     }, []);
 
@@ -185,7 +185,7 @@ const PlayerP5WebAudio: React.FC<
     // don't quite know.
     let restrictAspectRatio = true;
 
-    const [shouldExpand, setShouldExpand] = React.useState(false);
+    const [shouldExpand, setShouldExpand] = useState(false);
     const expandCanvas = () => {
         setShouldExpand(true);
         // This'll usually be called after the P5's setup method has already
@@ -225,7 +225,7 @@ const PlayerP5WebAudio: React.FC<
     //
     // Source for this workaround:
     // https://stackoverflow.com/questions/65450735/backdrop-filter-doesnt-work-on-safari-most-of-the-times
-    React.useEffect(() => {
+    useEffect(() => {
         // We need this workaround only on Safari
         if (!(isSafari || isMobileSafari)) return;
         setTimeout(() => {
