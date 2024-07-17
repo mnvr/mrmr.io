@@ -15,7 +15,6 @@ import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
 import { filterDefined } from "utils/array";
-import { isHindiContent } from "utils/attributes";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -343,7 +342,7 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
 }) => {
     switch (page.layout) {
         case "text":
-            return isHindiContent(page) ? (
+            return page.attributes.includes("hindi") ? (
                 <TextHindiLayout>{children}</TextHindiLayout>
             ) : (
                 <TextLayout>{children}</TextLayout>
