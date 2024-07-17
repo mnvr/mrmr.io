@@ -6,7 +6,6 @@ import React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
 import { filterDefined } from "utils/array";
-import { isBumped } from "utils/attributes";
 import { ensure } from "utils/ensure";
 import { type RecursivelyReplaceNullWithUndefined } from "utils/replace-nulls";
 
@@ -111,9 +110,6 @@ type PageOrDate = PageListingPage | string;
  * within the same calendar month are grouped. This grouping is done by
  * interspersing the original list of pages with strings representing the
  * section titles (the month + year).
- *
- * Within each grouping, move pages that have been "bumped" to the top of the
- * listing for that month.
  */
 const sectionByMonth = (pages: PageListingPage[]): PageOrDate[] => {
     let currentDate: string | undefined;
@@ -124,11 +120,7 @@ const sectionByMonth = (pages: PageListingPage[]): PageOrDate[] => {
             bumpSlot = result.length;
             result.push((currentDate = page.formattedDateMY));
         }
-        if (isBumped(page)) {
-            result.splice(++bumpSlot, 0, page);
-        } else {
-            result.push(page);
-        }
+        result.push(page);
     });
 
     return result;

@@ -20,11 +20,3 @@ export const isHindiContent = ({ attributes }: PageLike) =>
  * A note is something that appears in the "/notes" feed.
  */
 export const isNote = ({ feed }: PageLike) => feed === "/notes";
-
-/**
- * Return true if this page should be kept at the top of groupings in listings.
- *
- * This looks to see if the page has the "bumped" attribute.
- */
-export const isBumped = ({ attributes }: PageLike) =>
-    attributes.includes("bumped");
