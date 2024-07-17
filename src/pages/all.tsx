@@ -6,7 +6,6 @@ import { graphql, Link, type HeadFC, type PageProps } from "gatsby";
 import React from "react";
 import styled from "styled-components";
 import { paperDarkTheme } from "themes/themes";
-import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -84,7 +83,8 @@ const parsePages = (data: Queries.AllPageQuery): PageListingPage[] => {
         const title = ensure(frontmatter?.title);
         const description = frontmatter?.description;
         const formattedDateMY = ensure(frontmatter?.formattedDateMY);
-        const attributes = filterDefined(frontmatter?.attributes);
+        const attributes =
+            frontmatter?.attributes?.filter((x) => x !== undefined) ?? [];
 
         return { slug, title, description, formattedDateMY, attributes };
     });

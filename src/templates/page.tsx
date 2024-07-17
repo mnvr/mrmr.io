@@ -14,7 +14,6 @@ import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";
 import type { PageTemplateContext } from "types/gatsby";
-import { filterDefined } from "utils/array";
 import { ensure } from "utils/ensure";
 import { replaceNullsWithUndefineds } from "utils/replace-nulls";
 
@@ -260,7 +259,8 @@ export const parsePage = (data_: Queries.PageTemplateQuery): Page => {
     const theme = frontmatter?.theme;
     const highlightColor = frontmatter?.highlight_color;
     const highlightColorDark = frontmatter?.highlight_color_dark;
-    const attributes = filterDefined(frontmatter?.attributes);
+    const attributes =
+        frontmatter?.attributes?.filter((x) => x !== undefined) ?? [];
 
     const formattedSignoffDate =
         frontmatter?.formatted_signoff_date ?? formattedDateMY;
