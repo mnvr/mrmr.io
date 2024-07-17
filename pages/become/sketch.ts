@@ -3,7 +3,7 @@ import type p5 from "p5";
 import type { P5DrawEnv } from "types";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
-import { extractAudioMarkersAtTime } from "./song";
+import { extractAudioMarkersAtTime } from "./track";
 
 // This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5, env: P5DrawEnv) => {

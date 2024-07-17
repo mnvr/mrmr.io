@@ -3,7 +3,6 @@ import { IconButton, PlayButton } from "components/Buttons";
 import { ELink } from "components/ExternalLink";
 import { LoadingIndicator } from "components/LoadingIndicator";
 import { Link } from "gatsby";
-import { useWebAudioPlayback } from "hooks/use-web-audio-playback";
 import type p5 from "p5";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -15,6 +14,7 @@ import type { P5Draw } from "types";
 import { ensure } from "utils/ensure";
 import { type Sequencer, createSequencer } from "./sequencer";
 import { draw } from "./sketch";
+import { useWebAudioPlayback } from "./use-web-audio-playback";
 
 export const Content: React.FC = () => {
     const page = ensure(useContext(BuildTimePageContext));
