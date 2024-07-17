@@ -43,21 +43,12 @@ const PlayerP5WebAudio: React.FC<
     React.PropsWithChildren<PlayerP5WebAudioProps>
 > = ({ sequencer }) => {
     const p5Ref = useRef<p5 | undefined>();
+    const [shouldExpand, setShouldExpand] = useState(false);
 
     const { isPlaying, isLoading, audioContext, toggleShouldPlay } =
         useWebAudioPlayback(sequencer);
 
-    // Switch to a special "recording" mode if the "#record" fragment is present
-    // in the URL. This will:
-    // 1. Disable the overlay and hide the play button so as to remove any extra
-    //    animations when audio starts playing.
-    const [isRecording, setIsRecording] = useState(false);
-    useEffect(() => {
-        if (window.location.hash === "#record") setIsRecording(true);
-    }, []);
-
     let showOverlay = !isPlaying;
-    if (isRecording) showOverlay = false;
 
     // If true, then we'll restrict the aspect ratio of the canvas to match a
     // portrait aspect ratio.
@@ -82,9 +73,8 @@ const PlayerP5WebAudio: React.FC<
     // and instead, we introduce a new button that allows the user to expand the
     // canvas. Is this a better idea than doing a Chrome user agent check? I
     // don't quite know.
-    let restrictAspectRatio = true;
+    let restrictAspectRatio = !shouldExpand;
 
-    const [shouldExpand, setShouldExpand] = useState(false);
     const expandCanvas = () => {
         setShouldExpand(true);
         // This'll usually be called after the P5's setup method has already
@@ -98,10 +88,6 @@ const PlayerP5WebAudio: React.FC<
             p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
         }
     };
-    if (shouldExpand) restrictAspectRatio = false;
-
-    // Unconditionally restrict the aspect ratio if we're recording
-    if (isRecording) restrictAspectRatio = true;
 
     // Workaround for Safari not using the backdrop-filter on initial page load.
     //
@@ -158,8 +144,7 @@ const PlayerP5WebAudio: React.FC<
                        thinking that was the only option */
                     isChrome &&
                     !isPlaying &&
-                    !isLoading &&
-                    !isRecording && (
+                    !isLoading && (
                         <ExpandButtonContainer onClick={expandCanvas}>
                             <ExpandButton />
                         </ExpandButtonContainer>
@@ -167,11 +152,7 @@ const PlayerP5WebAudio: React.FC<
             </SketchContainer>
             {!isPlaying && (
                 <PlayButtonContainer onClick={toggleShouldPlay}>
-                    {isLoading ? (
-                        <LoadingIndicator />
-                    ) : (
-                        !isRecording && <PlayButton />
-                    )}
+                    {isLoading ? <LoadingIndicator /> : <PlayButton />}
                 </PlayButtonContainer>
             )}
         </Grid>
