@@ -345,19 +345,10 @@ export const Footer: React.FC = () => {
     );
 };
 
-const LinkContainer = styled.div`
-    margin-block: 1em;
-`;
-
 /**
  * A variant of {@link Footer} for pages with Hindi content.
  */
 export const FooterHindi: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-
-    // Note: this footer is not kept in sync with all the possible content that
-    // can be in the default (English) footer. Only what is used in Hindi pages
-    // has been added so far.
     return (
         <Footer_>
             <LinkContainer>
@@ -369,6 +360,10 @@ export const FooterHindi: React.FC = () => {
         </Footer_>
     );
 };
+
+const LinkContainer = styled.div`
+    margin-block: 1em;
+`;
 
 const Footer_ = styled.footer`
     margin-block-start: 3.9rem;
