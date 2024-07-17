@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useRef } from "react";
 
 /**
  * Create and return a new component scoped audio context accessor.
@@ -12,7 +12,7 @@ import * as React from "react";
  * 3. Automatically "resume" the audio context.
  */
 export const useAudioContext = () => {
-    const audioContextRef = React.useRef<AudioContext | undefined>(undefined);
+    const audioContextRef = useRef<AudioContext | undefined>(undefined);
 
     const getAudioContext = () => {
         let ac = audioContextRef.current;

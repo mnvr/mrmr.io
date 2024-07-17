@@ -1,5 +1,5 @@
+import { useAudioContext } from "hooks/use-audio-context";
 import React, { useState } from "react";
-import { useAudioContext } from "webaudio/use-audio-context";
 import { beep } from "./sound";
 
 export const FirstSound: React.FC = () => {
