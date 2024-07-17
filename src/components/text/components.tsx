@@ -5,7 +5,7 @@ import { Link } from "gatsby";
 import * as React from "react";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
-import { isNote, isPoem } from "utils/attributes";
+import { isNote } from "utils/attributes";
 import { ensure } from "utils/ensure";
 
 /**
@@ -338,11 +338,6 @@ export const Footer: React.FC = () => {
 
     return (
         <Footer_>
-            {isPoem(page) && (
-                <LinkContainer>
-                    <Link to={"/poems"}>More poems</Link>
-                </LinkContainer>
-            )}
             {isNote(page) ? (
                 <>
                     <LinkContainer>
@@ -380,11 +375,6 @@ export const FooterHindi: React.FC = () => {
     // has been added so far.
     return (
         <Footer_>
-            {isPoem(page) && (
-                <LinkContainer>
-                    <Link to={"/poems"}>और कविताएँ</Link>
-                </LinkContainer>
-            )}
             <LinkContainer>
                 <Link to={"/all"}>सारी रचनाएँ</Link>
             </LinkContainer>

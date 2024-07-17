@@ -166,9 +166,6 @@ type MdxFrontmatter implements Node @dontInfer {
     # - "front-page"
     #   This page will be shown in the home (front page) listing.
     #
-    # - "poem"
-    #   This page will be shown in the /poems listing
-    #
     # - "hindi"
     #   This page contents are in Hindi.
     #

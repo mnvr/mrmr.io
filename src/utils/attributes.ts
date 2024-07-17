@@ -15,13 +15,6 @@ export const isHindiContent = ({ attributes }: PageLike) =>
     attributes.includes("hindi");
 
 /**
- * Return true if this is a poem.
- *
- * This looks to see if the page has the "poem" attribute.
- */
-export const isPoem = ({ attributes }: PageLike) => attributes.includes("poem");
-
-/**
  * Return true if this is a note.
  *
  * A note is something that appears in the "/notes" feed.
