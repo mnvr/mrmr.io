@@ -61,5 +61,6 @@ export const quotes: string[] = [
     "Thinking that the entire world is rational and comprehensible is effectively the same thing as believing in god.",
     "They do not suffer less because they have no words",
     "Now that you don't have to be perfect, you can be good",
-    "The only will there is is the will of God. The lack of free will is not a problem, for it aligns us with the will of God. Individual free will must be transcended in order to align with God."
+    "The only will there is is the will of God. The lack of free will is not a problem, for it aligns us with the will of God. Individual free will must be transcended in order to align with God.",
+    "A poem is never finished, only abandoned",
 ];
