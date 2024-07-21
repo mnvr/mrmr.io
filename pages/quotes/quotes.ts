@@ -68,4 +68,5 @@ export const quotes: string[] = [
     "A distorted and unstable self-image or sense of self",
     "All invitations must proceed from heaven perhaps",
     "It is never too late to be what you might have been",
+    "At last, he loses his identity",
 ];
