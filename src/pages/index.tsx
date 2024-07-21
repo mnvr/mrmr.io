@@ -570,7 +570,8 @@ const InternalLinks: React.FC = () => {
 };
 
 const InternalLinks_ = styled.div`
-    margin-block: 2.6rem;
+    margin-block-start: 2.8rem;
+    margin-block-end: 2.9rem;
     margin-inline-start: 1.7rem;
     @media (max-width: 500px) {
         margin-inline: 1rem;
