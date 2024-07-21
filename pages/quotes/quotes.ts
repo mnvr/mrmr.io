@@ -66,4 +66,5 @@ export const quotes: string[] = [
     "It is not our youth but our childhood we should be worried of losing about",
     "What nursing has to do is to put the patient in the best condition for nature to act upon him",
     "A distorted and unstable self-image or sense of self",
+    "All invitations must proceed from heaven perhaps",
 ];
