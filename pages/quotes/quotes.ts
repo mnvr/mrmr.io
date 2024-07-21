@@ -54,6 +54,7 @@ export const quotes: string[] = [
     "“If today were the last day of my life, would I want to do what I am about to do today?” And whenever the answer has been “No” for too many days in a row, I know I need to change something",
     "Look up and wonder, who else dreams on distant worlds, under the same stars?",
     "Do not go gentle into that good night. Rage, rage against the dying of the light.",
+    "If philosophy is based on reason and rationality, then why is there so much disagreement?",
     "The world is so big and I am so small; but the wonder is that I can be myself",
     "A Deepness in The Sky",
     "Tomorrow on a million moons, a million suns will rise.",
