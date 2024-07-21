@@ -549,23 +549,36 @@ const IconContainer = styled.div`
 const InternalLinks: React.FC = () => {
     return (
         <InternalLinks_>
-            <Link to="/all" title="All posts">
-                <h2>
-                    all posts
-                    <BsArrowRightShort />
-                </h2>
-            </Link>
+            <div>
+                <Link to="/all" title="All posts">
+                    <h2>
+                        all posts
+                        <BsArrowRightShort />
+                    </h2>
+                </Link>
+            </div>
+            <div>
+                <Link to="/quotes" title="Quotes">
+                    <h2>
+                        quotes
+                        <BsArrowRightShort />
+                    </h2>
+                </Link>
+            </div>
         </InternalLinks_>
     );
 };
 
 const InternalLinks_ = styled.div`
-    margin-block-start: 2.6rem;
-    margin-block-end: 2.6rem;
+    margin-block: 2.6rem;
     margin-inline-start: 1.7rem;
     @media (max-width: 500px) {
         margin-inline: 1rem;
     }
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 
     font-family: serif;
     font-style: italic;
