@@ -74,4 +74,5 @@ export const quotes: string[] = [
     "The end of life is not knowledge but action",
     `"yet" is such a hopeful word`,
     "Keeping it in your head until it writes itself down without your interference",
+    "All sorts of things we think matter don't, she said, so long as you don't wake up in the morning with no hope in you.",
 ];
