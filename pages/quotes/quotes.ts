@@ -67,4 +67,5 @@ export const quotes: string[] = [
     "What nursing has to do is to put the patient in the best condition for nature to act upon him",
     "A distorted and unstable self-image or sense of self",
     "All invitations must proceed from heaven perhaps",
+    "It is never too late to be what you might have been",
 ];
