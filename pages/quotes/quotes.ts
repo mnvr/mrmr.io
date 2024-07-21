@@ -70,4 +70,6 @@ export const quotes: string[] = [
     "It is never too late to be what you might have been",
     "At last, he loses his identity",
     "A momentary stay against confusion",
+    "The reward of a thing well done is to have done it",
+    "The end of life is not knowledge but action",
 ];
