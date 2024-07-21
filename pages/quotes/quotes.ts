@@ -73,4 +73,5 @@ export const quotes: string[] = [
     "The reward of a thing well done is to have done it",
     "The end of life is not knowledge but action",
     `"yet" is such a hopeful word`,
+    "Keeping it in your head until it writes itself down without your interference",
 ];
