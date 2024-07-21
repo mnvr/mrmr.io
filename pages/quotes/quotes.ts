@@ -64,4 +64,5 @@ export const quotes: string[] = [
     "The only will there is is the will of God. The lack of free will is not a problem, for it aligns us with the will of God. Individual free will must be transcended in order to align with God.",
     "A poem is never finished, only abandoned",
     "It is not our youth but our childhood we should be worried of losing about",
+    "What nursing has to do is to put the patient in the best condition for nature to act upon him",
 ];
