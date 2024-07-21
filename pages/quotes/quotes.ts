@@ -69,4 +69,5 @@ export const quotes: string[] = [
     "All invitations must proceed from heaven perhaps",
     "It is never too late to be what you might have been",
     "At last, he loses his identity",
+    "A momentary stay against confusion",
 ];
