@@ -184,12 +184,15 @@ const ignoredWordSet = new Set<string>(ignoredWords);
  * @param quote The quote string to parse.
  * @param quoteIndicesForWord A map keyed by (lowercased) words, to the indices
  * of the quotes in which that word occurs.
+ *
+ * Only the first occurence of a word in the string is linked.
  */
 const parseQuote = (
     quote: string,
     quoteIndicesForWord: Map<string, number[]>,
-): ParsedQuote =>
-    consolidateSegments(
+): ParsedQuote => {
+    const hasBeenLinked = new Set<string>();
+    return consolidateSegments(
         potentialSegments(quote).map((sg) => {
             if (typeof sg === "string") {
                 // Return non-word segments as it is.
@@ -199,7 +202,8 @@ const parseQuote = (
                 // segments (later on we'll consolidate them too when possible).
                 const word = ensure(sg[0]);
                 const key = word.toLowerCase();
-                if (quoteIndicesForWord.get(key)) {
+                if (quoteIndicesForWord.get(key) && !hasBeenLinked.has(key)) {
+                    hasBeenLinked.add(key);
                     return sg;
                 } else {
                     return word;
@@ -207,6 +211,7 @@ const parseQuote = (
             }
         }),
     );
+};
 
 /**
  * Combine consecutive non-word segments into a single one.
