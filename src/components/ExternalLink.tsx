@@ -49,11 +49,13 @@ export const RefLink: React.FC<
     React.PropsWithChildren<React.AnchorHTMLAttributes<HTMLAnchorElement>>
 > = ({ ...props }) => {
     return (
-        <RefLinkSuperscript_>
-            <ExternalLink {...props}>
-                <ImArrowUpRight2 />
-            </ExternalLink>
-        </RefLinkSuperscript_>
+        <small>
+            <RefLinkSuperscript_>
+                <ExternalLink {...props}>
+                    <ImArrowUpRight2 />
+                </ExternalLink>
+            </RefLinkSuperscript_>
+        </small>
     );
 };
 
