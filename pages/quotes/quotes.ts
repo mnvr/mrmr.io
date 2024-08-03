@@ -77,4 +77,5 @@ export const quotes: string[] = [
     "All sorts of things we think matter don't, she said, so long as you don't wake up in the morning with no hope in you.",
     "All achievement is a bondage",
     "It is dark because you are trying to hard. Lightly child, lightly. Learn to do everything lightly.",
+    "Nothing new will be said here, nor have I any skill in composition. Therefore I do not imagine that I can benefit others. I have done this to perfume my own mind.",
 ];
