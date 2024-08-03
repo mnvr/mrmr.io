@@ -75,5 +75,6 @@ export const quotes: string[] = [
     `"yet" is such a hopeful word`,
     "Keeping it in your head until it writes itself down without your interference",
     "All sorts of things we think matter don't, she said, so long as you don't wake up in the morning with no hope in you.",
-    "All achievement is a bondage"
+    "All achievement is a bondage",
+    "It is dark because you are trying to hard. Lightly child, lightly. Learn to do everything lightly.",
 ];
