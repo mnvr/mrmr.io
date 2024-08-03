@@ -66,6 +66,7 @@ const PlayerP5WebAudio: React.FC<
     // We need some workarounds for Safari. This is a potentially incorrect
     // but currently working test.
     const isSafari =
+        typeof navigator != "undefined" &&
         navigator.userAgent.includes("Safari") &&
         !navigator.userAgent.includes("Chrome");
 
