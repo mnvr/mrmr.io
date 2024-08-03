@@ -5,7 +5,6 @@ import { Link } from "gatsby";
 import type p5 from "p5";
 import ReactP5Wrapper from "p5/ReactP5Wrapper";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { isChrome, isMobileSafari, isSafari } from "react-device-detect";
 import { FaExpandAlt } from "react-icons/fa";
 import styled from "styled-components";
 import { BuildTimePageContext } from "templates/page";
@@ -64,6 +63,12 @@ const PlayerP5WebAudio: React.FC<
         }
     };
 
+    // We need some workarounds for Safari. This is a potentially incorrect
+    // but currently working test.
+    const isSafari =
+        navigator.userAgent.includes("Safari") &&
+        !navigator.userAgent.includes("Chrome");
+
     // Workaround for Safari not using the backdrop-filter on initial page load.
     //
     // We overlay a frosted glass effect on top of the sketch when playback is
@@ -86,8 +91,8 @@ const PlayerP5WebAudio: React.FC<
     // Source for this workaround:
     // https://stackoverflow.com/questions/65450735/backdrop-filter-doesnt-work-on-safari-most-of-the-times
     useEffect(() => {
-        // We need this workaround only on Safari
-        if (!(isSafari || isMobileSafari)) return;
+        // We need this workaround only on Safari.
+        if (!isSafari) return;
         setTimeout(() => {
             const el = ensure(
                 window.document.getElementById("sketch-container"),
@@ -112,12 +117,12 @@ const PlayerP5WebAudio: React.FC<
                     audioContext={audioContext}
                 />
                 {!shouldExpand &&
-                    /* Show the expand button only on Chrome where the expanded
-                       animation runs at full FPS. On other browsers (I tested
-                       Safari) the user might expand it initially and then
-                       suffer through the horribly laggy animation and go away
-                       thinking that was the only option */
-                    isChrome &&
+                    /* On Chrome the expanded animation runs at full FPS and we
+                      show an expand button. On Safari the user might expand it
+                      initially and then suffer through the horribly laggy
+                      animation and go away thinking that was the only option.
+                      For convenience, assume a duopoly. */
+                    !isSafari &&
                     !isPlaying &&
                     !isLoading && (
                         <ExpandButtonContainer onClick={expandCanvas}>
