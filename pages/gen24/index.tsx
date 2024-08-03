@@ -1,7 +1,7 @@
 import { useDayPreviewImages } from "components/gen24/preview-images";
 import { Link } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
-import { useIsDarkMode } from "hooks/use-is-dark-mode";
+import { useMediaQuery } from "hooks/use-media-query";
 import * as React from "react";
 import { HiOutlineChevronRight } from "react-icons/hi";
 import styled from "styled-components";
@@ -71,7 +71,7 @@ const Description2: React.FC = () => {
 
 const DayList: React.FC = () => {
     const dayPreviewImages = useDayPreviewImages();
-    const isDarkMode = useIsDarkMode();
+    const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
     const withColorAdjustment = (day: Day): Day => {
         const color = (isDarkMode ? day.darkColor : day.color) ?? day.color;

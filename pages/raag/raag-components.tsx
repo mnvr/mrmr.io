@@ -1,8 +1,8 @@
 import { Column } from "components/Column";
 import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
+import { useMediaQuery } from "hooks/use-media-query";
 import * as React from "react";
-import { isMobile } from "react-device-detect";
 import { FaChevronRight } from "react-icons/fa6";
 import styled from "styled-components";
 import type {
@@ -136,6 +136,7 @@ interface NoteProps {
 const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
     // `true` if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
+    const hasHover = useMediaQuery("(hover: hover)");
 
     const playNote = () => {
         setIsPlaying(true);
@@ -153,7 +154,7 @@ const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
         // onMouseEnter events to fire, causing the sound to be played twice.
         // There isn't a hover interaction on mobiles anyways, so we just ignore
         // hover actions when on mobile (to prevent the double playback).
-        if (isMobile) return;
+        if (!hasHover) return;
         if (synth.canAutoplay) playNote();
     };
 

@@ -2,7 +2,7 @@ import { type P5WrapperProps } from "@p5-wrapper/react";
 import { ELink } from "components/ExternalLink";
 import { LinkStyleUnderlined } from "components/LinkStyles";
 import { Link } from "gatsby";
-import { useIsDarkMode } from "hooks/use-is-dark-mode";
+import { useMediaQuery } from "hooks/use-media-query";
 import { Signoff } from "layouts/text";
 import ReactP5WrapperWithFade from "p5/ReactP5WrapperWithFade";
 import * as React from "react";
@@ -87,7 +87,7 @@ const BannerH = styled.h3`
 `;
 
 export const SketchContainer: React.FC<P5WrapperProps> = ({ sketch }) => {
-    const isDarkMode = useIsDarkMode();
+    const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
     return (
         <SketchContainer_>
             <ReactP5WrapperWithFade {...{ sketch, isDarkMode }} />
