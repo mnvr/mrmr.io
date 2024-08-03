@@ -3,6 +3,7 @@ import { LinkStyleBoldHover } from "components/LinkStyles";
 import { Link } from "gatsby";
 import { useMediaQuery } from "hooks/use-media-query";
 import * as React from "react";
+import { createContext, useContext, useState } from "react";
 import { FaChevronRight } from "react-icons/fa6";
 import styled from "styled-components";
 import type {
@@ -22,14 +23,30 @@ export interface PropsWithSynthAndRaag {
     raag: Raag;
 }
 
+/**
+ * `true` if the current device supports the hover interaction.
+ *
+ * [Note: Ignore onMouseEnter on touch devices]
+ *
+ * On mobile browsers, the touch event causes both the onClick and onMouseEnter
+ * events to fire, causing the sound to be played twice. There isn't a hover
+ * interaction on mobiles anyways, so we just ignore hover actions when on
+ * mobile (to prevent the double playback).
+ */
+const CanHoverContext = createContext<boolean>(true);
+
 export const RaagColumn: React.FC<React.PropsWithChildren> = ({ children }) => {
+    const canHover = useMediaQuery("(hover: hover)");
+
     return (
-        <RaagColumn_>
-            <Column>
-                {children}
-                <Footer />
-            </Column>
-        </RaagColumn_>
+        <CanHoverContext.Provider value={canHover}>
+            <RaagColumn_>
+                <Column>
+                    {children}
+                    <Footer />
+                </Column>
+            </RaagColumn_>
+        </CanHoverContext.Provider>
     );
 };
 
@@ -134,9 +151,10 @@ interface NoteProps {
 }
 
 const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
+    const canHover = useContext(CanHoverContext);
+
     // `true` if this note is currently being played.
-    const [isPlaying, setIsPlaying] = React.useState(false);
-    const hasHover = useMediaQuery("(hover: hover)");
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const playNote = () => {
         setIsPlaying(true);
@@ -148,14 +166,7 @@ const LadderNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
     };
 
     const handleMouseEnter = () => {
-        // [Note: onMouseEnter on touch devices]
-        //
-        // On mobile browsers, the touch event causes both the onClick and
-        // onMouseEnter events to fire, causing the sound to be played twice.
-        // There isn't a hover interaction on mobiles anyways, so we just ignore
-        // hover actions when on mobile (to prevent the double playback).
-        if (!hasHover) return;
-        if (synth.canAutoplay) playNote();
+        if (canHover && synth.canAutoplay) playNote();
     };
 
     return (
@@ -290,6 +301,8 @@ const FretboardString_ = styled.div`
 
 /** A note on a string ({@link FretboardString}) of the {@link Fretboard} */
 const FretNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
+    const canHover = useContext(CanHoverContext);
+
     // `true` if this note is currently being played.
     const [isPlaying, setIsPlaying] = React.useState(false);
 
@@ -303,9 +316,7 @@ const FretNote: React.FC<NoteProps> = ({ synth, rootNote, noteOffset }) => {
     };
 
     const handleMouseEnter = () => {
-        // See: [Note: onMouseEnter on touch devices]
-        if (isMobile) return;
-        if (synth.canAutoplay) playNote();
+        if (canHover && synth.canAutoplay) playNote();
     };
 
     const isRootNote = noteOffset === 0;
@@ -383,6 +394,7 @@ const Intervals_ = styled.div`
 
 /** An individual interval */
 const Interval: React.FC<NoteProps> = ({ synth, noteOffset }) => {
+    const canHover = useContext(CanHoverContext);
     const [isPlaying, setIsPlaying] = React.useState(false);
 
     const playNote = () => {
@@ -395,8 +407,7 @@ const Interval: React.FC<NoteProps> = ({ synth, noteOffset }) => {
     };
 
     const handleMouseEnter = () => {
-        if (isMobile) return;
-        if (synth.canAutoplay) playNote();
+        if (canHover && synth.canAutoplay) playNote();
     };
 
     return (
@@ -532,6 +543,7 @@ const Piano_ = styled.div`
 const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
     props,
 ) => {
+    const canHover = useContext(CanHoverContext);
     const { synth, rootNote, noteOffset, ...rest } = props;
 
     const playNote = () => {
@@ -543,8 +555,7 @@ const PianoNote: React.FC<NoteProps & React.HTMLAttributes<HTMLDivElement>> = (
     };
 
     const handleMouseEnter = () => {
-        if (isMobile) return;
-        if (synth.canAutoplay) playNote();
+        if (canHover && synth.canAutoplay) playNote();
     };
 
     return (
