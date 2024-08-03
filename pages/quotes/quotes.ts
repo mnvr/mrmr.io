@@ -69,6 +69,7 @@ export const quotes: string[] = [
     "All invitations must proceed from heaven perhaps",
     "It is never too late to be what you might have been",
     "At last, he loses his identity",
+    "Neither revolution nor reformation can change a society, rather you must tell a new powerful tale, one so persuasive that it sweeps away the old myths and becomes the preferred story, one so inclusive that it gathers all bits our past and present into a coherent whole. If you want to change a society, then you have to tell an alternative story.",
     "A momentary stay against confusion",
     "The reward of a thing well done is to have done it",
     "The end of life is not knowledge but action",
