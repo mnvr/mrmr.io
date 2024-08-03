@@ -78,4 +78,5 @@ export const quotes: string[] = [
     "All achievement is a bondage",
     "It is dark because you are trying to hard. Lightly child, lightly. Learn to do everything lightly.",
     "Nothing new will be said here, nor have I any skill in composition. Therefore I do not imagine that I can benefit others. I have done this to perfume my own mind.",
+    "Behind him, across vast distances of space and time, from the place he had left, he thought he heard music too. But perhaps it was only an echo.",
 ];
