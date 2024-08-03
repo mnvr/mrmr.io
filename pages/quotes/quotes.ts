@@ -79,4 +79,5 @@ export const quotes: string[] = [
     "It is dark because you are trying to hard. Lightly child, lightly. Learn to do everything lightly.",
     "Nothing new will be said here, nor have I any skill in composition. Therefore I do not imagine that I can benefit others. I have done this to perfume my own mind.",
     "Behind him, across vast distances of space and time, from the place he had left, he thought he heard music too. But perhaps it was only an echo.",
+    "I always wanted to go to East Cliff, more years than I can remember, until today I just grabbed a vine and started up. Halfway up wind and a heavy mist closed in, and it was hard to get on. The slickery mud under the moss on the rocks gave way, and I couldn't keep going. So here I stay, under this cinnamon tree, white clouds for my pillow, I'll just take a nap.",
 ];
