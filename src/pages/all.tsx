@@ -209,16 +209,6 @@ export const Footer: React.FC = () => {
     return (
         <Footer_>
             <div>
-                <a
-                    rel="alternate"
-                    type="application/rss+xml"
-                    title="All posts on mrmr.io"
-                    href="/rss.xml"
-                >
-                    RSS feed
-                </a>
-            </div>
-            <div>
                 <Link to={"/"}>Home</Link>
             </div>
         </Footer_>
