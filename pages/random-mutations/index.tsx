@@ -31,7 +31,7 @@ export const CodeBlocks: React.FC = () => {
             <div>
                 <pre>
                     <code>
-def dfs(s, adj):<br/>
+def <b>d</b>fs(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
 {"    "}while xs:<br/>
@@ -48,7 +48,7 @@ def dfs(s, adj):<br/>
             <div>
                 <pre>
                     <code>
-def bfs(s, adj):<br/>
+def <b>b</b>fs(s, adj):<br/>
 {"    "}xs = [s]<br/>
 {"    "}visited = set()<br/>
 {"    "}while xs:<br/>
@@ -86,10 +86,10 @@ export const About: React.FC = () => {
     return (
         <About_>
             <p>
-                Tiny, single letter <b>random mutations</b> are enough for
-                evolution to explore vast landscapes. A demonstration using
-                code, but the same principle applies to single letter changes in
-                DNA.
+                Tiny, single letter <b>mutations</b> are enough for evolution to
+                explore vast landscapes. A demonstration using code, but the
+                same mechanism is at play with DNA – a single amino-acid
+                mutation can express an entirely different function.
             </p>
         </About_>
     );
