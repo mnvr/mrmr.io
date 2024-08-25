@@ -9,7 +9,6 @@ import { graphql, type HeadFC, type PageProps } from "gatsby";
 import { getSrc, type ImageDataLike } from "gatsby-plugin-image";
 import CodeLayout from "layouts/code";
 import TextLayout from "layouts/text";
-import TextHindiLayout from "layouts/text-hindi";
 import { parseColorPalette, type ColorPalette } from "parsers/colors";
 import * as React from "react";
 import { allThemes, defaultTheme } from "themes/themes";

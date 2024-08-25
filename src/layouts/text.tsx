@@ -27,9 +27,9 @@ export default TextLayout;
  * - Initially designed to work with the "paper" theme.
  *
  * The rest of this file contains other components that work well with this
- * Container. They all are used by the "text" (and "text-hindi") layout, but
- * they're all individually exported from here too in case some page wants to
- * piecemeal use these components without using the whole layout.
+ * Container. They all are used by the "text" layout, but they're all
+ * individually exported from here too in case some page wants to piecemeal use
+ * these components without using the whole layout.
  */
 export const Container: React.FC<React.PropsWithChildren> = ({ children }) => {
     return (
@@ -316,24 +316,6 @@ export const Signoff: React.FC = () => {
     );
 };
 
-/**
- * Variant of {@link Signoff} for pages with Hindi content.
- */
-export const SignoffHindi: React.FC = () => {
-    const page = ensure(React.useContext(BuildTimePageContext));
-    const { formattedSignoffDate } = page;
-
-    return (
-        <Signoff_>
-            <small>
-                मानव राठी
-                <br />
-                {formattedSignoffDate}
-            </small>
-        </Signoff_>
-    );
-};
-
 const Signoff_ = styled.div`
     margin-block-start: 4.5rem;
     line-height: 27px;
@@ -349,26 +331,7 @@ export const Footer: React.FC = () => {
     return (
         <Footer_>
             <LinkContainer>
-                <Link to={"/all"}>All posts</Link>
-            </LinkContainer>
-            <LinkContainer>
                 <Link to={"/"}>Home</Link>
-            </LinkContainer>
-        </Footer_>
-    );
-};
-
-/**
- * A variant of {@link Footer} for pages with Hindi content.
- */
-export const FooterHindi: React.FC = () => {
-    return (
-        <Footer_>
-            <LinkContainer>
-                <Link to={"/all"}>सारी रचनाएँ</Link>
-            </LinkContainer>
-            <LinkContainer>
-                <Link to={"/"}>प्रारंभ</Link>
             </LinkContainer>
         </Footer_>
     );
