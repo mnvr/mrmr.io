@@ -341,11 +341,7 @@ export const Layout: React.FC<React.PropsWithChildren<LayoutProps>> = ({
 }) => {
     switch (page.layout) {
         case "text":
-            return page.attributes.includes("hindi") ? (
-                <TextHindiLayout>{children}</TextHindiLayout>
-            ) : (
-                <TextLayout>{children}</TextLayout>
-            );
+            return <TextLayout>{children}</TextLayout>;
         case "code":
             return <CodeLayout>{children}</CodeLayout>;
         default:
