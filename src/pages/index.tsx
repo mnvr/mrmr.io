@@ -38,10 +38,10 @@ const Page: React.FC<PageProps<Queries.IndexPageQuery>> = ({ data }) => {
             <BodyBackgroundColorTransitionStyle />
             <RecentPagesTitle />
             <RecentPageListing pages={recentPages} />
-            <FeaturedPagesTitle />
-            <FeaturedPageListing {...{ pages: featuredPages, setHoverPage }} />
+            {/* <FeaturedPagesTitle /> */}
+            {/* <FeaturedPageListing {...{ pages: featuredPages, setHoverPage }} /> */}
             <AboutSectionTitle />
-            <Poem />
+            {/* <Poem /> */}
             <ExternalLinks />
             <InternalLinks />
         </main>
@@ -92,7 +92,7 @@ export const query = graphql`
             }
         }
         recentPages: allMdx(
-            limit: 7
+            limit: 70
             filter: { frontmatter: { unlisted: { ne: true } } }
             sort: [
                 { frontmatter: { date: DESC } }
@@ -221,7 +221,7 @@ const SectionTitle = styled.div<SectionTitleProps>`
 const RecentPagesTitle: React.FC = () => {
     return (
         <SectionTitle $marginBlockEnd="2.5rem">
-            <h2>recent posts</h2>
+            <h2>here</h2>
         </SectionTitle>
     );
 };
@@ -237,7 +237,7 @@ const FeaturedPagesTitle: React.FC = () => {
 const AboutSectionTitle: React.FC = () => {
     return (
         <SectionTitle $marginBlockEnd="2.4rem">
-            <h2>about</h2>
+            <h2>elsewhere</h2>
         </SectionTitle>
     );
 };
@@ -550,20 +550,20 @@ const InternalLinks: React.FC = () => {
     return (
         <InternalLinks_>
             <div>
-                <Link to="/all" title="All posts">
+                <a href="https://poems.mrmr.io">
                     <h2>
-                        all posts
+                        poems
                         <BsArrowRightShort />
                     </h2>
-                </Link>
+                </a>
             </div>
             <div>
-                <Link to="/quotes" title="Quotes">
+                <a href="https://notes.mrmr.io">
                     <h2>
-                        quotes
+                        notes
                         <BsArrowRightShort />
                     </h2>
-                </Link>
+                </a>
             </div>
         </InternalLinks_>
     );
