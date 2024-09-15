@@ -10,14 +10,15 @@ const cellD = 10;
  *
  * oklch(97% 0.242 151.39)
  */
-const aliveColor = "#cbffd8";
+// const aliveColor = "#cbffd8";
+const aliveColor = "#00db5e";
 
 /**
  * The color to use for drawing inactive cells.
  *
  * oklch(77% 0.242 151.39 / 0.75)
  */
-const inactiveColor = "#00db5ebf";
+const inactiveColor = "#cbffd850";
 
 /**
  * Simulate a game of life.
@@ -44,7 +45,7 @@ export const sketch: Sketch = (p5) => {
     p5.setup = () => {
         p5.createCanvas(...sketchSize());
 
-        p5.frameRate(25);
+        p5.frameRate(1);
 
         rows = Math.floor(p5.height / cellD);
         cols = Math.floor(p5.width / cellD);
@@ -141,7 +142,7 @@ export const sketch: Sketch = (p5) => {
                 if (isAlive) {
                     p5.strokeWeight(2 * c);
                 } else {
-                    p5.strokeWeight(4);
+                    p5.strokeWeight(3);
                 }
                 p5.point(x + cellD / 2, y + cellD / 2);
             }

@@ -26,9 +26,9 @@ export const Sketch: React.FC = () => {
 };
 
 const Sketch_ = styled.div`
-    background-color: oklch(77% 0.242 151.39);
-    color: oklch(97% 0 0);
-    --mr-c-c2: oklch(93.58% 0.12 151);
+    // background-color: oklch(77% 0.242 151.39);
+    // color: oklch(97% 0 0);
+    // --mr-c-c2: oklch(93.58% 0.12 151);
 
     /** Provide a minimum height to prevent a layout shift on load */
     min-height: 100vh;
