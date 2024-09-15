@@ -30,7 +30,6 @@
         "gatsby-plugin-styled-components": "^6.13.1",
         "gatsby-source-filesystem": "^5.13.1",
         "gatsby-transformer-sharp": "^5.13.1",
-        "q5": "^2.2.4",
         "react": "^18",
         "react-dom": "^18",
         "react-icons": "^5.2",
