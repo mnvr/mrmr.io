@@ -1,4 +1,4 @@
-import type { Sketch } from "@p5-wrapper/react";
+// import type { Sketch } from "@p5-wrapper/react";
 
 /**
  * Dimensions of the (covering) rectangle used by each cell.
@@ -23,7 +23,7 @@ const inactiveColor = "#cbffd850";
 /**
  * Simulate a game of life.
  */
-export const sketch: Sketch = (p5) => {
+export const sketch = (p5: any) => {
     /** Number of rows ("y" or "j" values)  in `cells` */
     let rows: number;
     /** Number of columns ("x" or "i") in `cells` */
