@@ -1,4 +1,5 @@
-import react from "@vitejs/plugin-react";
+// TODO
+// import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 const mrmr = () => {
@@ -8,7 +9,7 @@ const mrmr = () => {
         resolveId(id) {
             console.log(arguments);
             if (id.startsWith("utils/")) {
-                return (import.meta.dirname + "/src/" + id + ".ts");
+                return import.meta.dirname + "/src/" + id + ".ts";
             }
         },
     };
@@ -16,7 +17,7 @@ const mrmr = () => {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [react(), mrmr()],
+    plugins: [mrmr()],
     // TODO
     publicDir: "static",
 });

@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import styled from "styled-components";
-import { sketch } from "../pages/universe-is-its-own-simulation/sketch";
 import ReactP5Wrapper from "./p5/ReactP5Wrapper";
+import { sketch } from "./univ-sketch.jsx";
 
 const App = () => {
     return (
@@ -26,6 +26,10 @@ export const Sketch: React.FC = () => {
 };
 
 const Sketch_ = styled.div`
+    background-color: oklch(77% 0.242 151.39);
+    color: oklch(97% 0 0);
+    --mr-c-c2: oklch(93.58% 0.12 151);
+
     /** Provide a minimum height to prevent a layout shift on load */
     min-height: 100vh;
     margin-bottom: 4rem;

@@ -10,14 +10,14 @@ const cellD = 10;
  *
  * oklch(97% 0.242 151.39)
  */
-const aliveColorP5 = "#cbffd8";
+const aliveColor = "#cbffd8";
 
 /**
  * The color to use for drawing inactive cells.
  *
  * oklch(77% 0.242 151.39 / 0.75)
  */
-const inactiveColorP5 = "#00db5ebf";
+const inactiveColor = "#00db5ebf";
 
 /**
  * Simulate a game of life.
@@ -137,7 +137,7 @@ export const sketch: Sketch = (p5) => {
                 const x = i * cellD;
                 const y = j * cellD;
 
-                p5.stroke(isAlive ? aliveColorP5 : inactiveColorP5);
+                p5.stroke(isAlive ? aliveColor : inactiveColor);
                 if (isAlive) {
                     p5.strokeWeight(2 * c);
                 } else {
