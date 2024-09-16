@@ -20,4 +20,12 @@ export default defineConfig({
     plugins: [mrmr()],
     // TODO
     publicDir: "static",
+    build: {
+        rollupOptions: {
+            input: {
+                index: import.meta.dirname + "/index.html",
+                a: import.meta.dirname + "/a.html",
+            },
+        },
+    },
 });
