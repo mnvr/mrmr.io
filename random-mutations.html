@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Random mutations</title>
+        <meta name="description" content="Evolution doesn't need much" />
+        <!-- TODO -->
+        <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
+        <style>
+            :root {
+                --mrmr-background-color: hsl(0 0% 100%);
+                --mrmr-text-color: hsl(0 0% 24%);
+                --mrmr-title-color: hsl(0 0% 15%);
+                --mrmr-secondary-color: hsl(0 0% 47%);
+                --mrmr-tertiary-color: hsl(0 0% 47% / 0.7);
+                --mrmr-highlight-color: red;
+                --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
+            }
+            @media (prefers-color-scheme: dark) {
+                :root {
+                    --mr-c-background: #111;
+                    --mr-c-text: #ddd;
+                    --mr-c-text-2: #888;
+                    --mr-c-accent: white;
+                }
+            }
+            :root {
+                font-size: 18px;
+            }
+            body {
+                background-color: var(--mr-c-background);
+                color: var(--mr-c-text);
+                font-family: system-ui, sans-serif;
+                margin: 1rem;
+                @media (min-width: 30rem) {
+                    margin: 2rem;
+                }
+            }
+            div:has(pre) {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1em;
+            }
+
+            code {
+                font-size: 14px;
+                line-height: 1.4;
+            }
+            b {
+                color: var(--mr-c-accent);
+            }
+            pre {
+                overflow-x: auto;
+            }
+            p {
+                margin-block: 2rem;
+                color: var(--mr-c-text-2);
+                font-size: 0.9rem;
+                max-width: 34rem;
+                line-height: 1.4;
+            }
+            #mutation {
+                color: chartreuse;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h3>Random mutations</h3>
+            <div class="code-blocks-container">
+                <pre><code>
+def <b>d</b>fs(s, adj):
+    xs = [s]
+    visited = set()
+    while xs:
+        u = xs.pop()
+        if u not in visited:
+            print(u)
+            visited.add(u)
+            for v in adj.get(u, []):
+                xs.append(v)
+</code></pre>
+
+                <pre><code>
+def <b>b</b>fs(s, adj):
+    xs = [s]
+    visited = set()
+    while xs:
+        u = xs.pop(<b id="mutation">0</b>)
+        if u not in visited:
+            print(u)
+            visited.add(u)
+            for v in adj.get(u, []):
+                xs.append(v)
+</code></pre>
+            </div>
+
+            <p>
+                Tiny, single letter mutations are enough for evolution to
+                explore vast landscapes. A demonstration using code, but the
+                same mechanism is at play with DNA – a single amino-acid
+                mutation can express an entirely different function, and
+                organism.
+            </p>
+        </main>
+        <footer>
+            <a href="/">mrmr.io</a>
+        </footer>
+    </body>
+</html>
