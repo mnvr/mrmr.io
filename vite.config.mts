@@ -15,17 +15,20 @@ const mrmr = () => {
     };
 };
 
+// Relative paths to HTML files (sans .html) to build.
+const entryPoints = ["index", "a"];
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [mrmr()],
     // TODO
     publicDir: "static",
+    appType: "mpa" /* disable the SPA 404 fallback in dev mode. */,
     build: {
         rollupOptions: {
-            input: {
-                index: import.meta.dirname + "/index.html",
-                a: import.meta.dirname + "/a.html",
-            },
+            input: Object.fromEntries(
+                entryPoints.map((h) => [h, `import.meta.dirname/${h}.html`]),
+            ),
         },
     },
 });
