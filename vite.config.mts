@@ -16,7 +16,7 @@ const mrmr = () => {
 };
 
 // Relative paths to HTML files (sans .html) to build.
-const entryPoints = ["index", "a"];
+const entryPoints = ["index", "404", "a"];
 
 // https://vitejs.dev/config/
 export default defineConfig({
