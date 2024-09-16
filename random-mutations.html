@@ -9,28 +9,27 @@
         <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
         <style>
             :root {
-                --mrmr-background-color: hsl(0 0% 100%);
-                --mrmr-text-color: hsl(0 0% 24%);
-                --mrmr-title-color: hsl(0 0% 15%);
-                --mrmr-secondary-color: hsl(0 0% 47%);
-                --mrmr-tertiary-color: hsl(0 0% 47% / 0.7);
-                --mrmr-highlight-color: red;
-                --mrmr-code-background-color: oklch(97.82% 0.005 247.86);
+                --mr-c-bg: hsl(0 0% 100%);
+                --mr-c-text-1: hsl(0 0% 24%);
+                --mr-c-text-2: hsl(0 0% 47%);
+                --mr-c-accent-1: red;
+                --mr-c-accent-2: black;
             }
             @media (prefers-color-scheme: dark) {
                 :root {
-                    --mr-c-background: #111;
-                    --mr-c-text: #ddd;
+                    --mr-c-bg: #111;
+                    --mr-c-text-1: #ddd;
                     --mr-c-text-2: #888;
-                    --mr-c-accent: white;
+                    --mr-c-accent-1: chartreuse;
+                    --mr-c-accent-2: white;
                 }
             }
             :root {
                 font-size: 18px;
             }
             body {
-                background-color: var(--mr-c-background);
-                color: var(--mr-c-text);
+                background-color: var(--mr-c-bg);
+                color: var(--mr-c-text-1);
                 font-family: system-ui, sans-serif;
                 margin: 1rem;
                 @media (min-width: 30rem) {
@@ -42,16 +41,18 @@
                 flex-wrap: wrap;
                 gap: 1em;
             }
-
+            pre {
+                overflow-x: auto;
+            }
             code {
                 font-size: 14px;
                 line-height: 1.4;
             }
             b {
-                color: var(--mr-c-accent);
+                color: var(--mr-c-accent-2);
             }
-            pre {
-                overflow-x: auto;
+            b#mutation {
+                color: var(--mr-c-accent-1);
             }
             p {
                 margin-block: 2rem;
@@ -59,9 +60,6 @@
                 font-size: 0.9rem;
                 max-width: 34rem;
                 line-height: 1.4;
-            }
-            #mutation {
-                color: chartreuse;
             }
         </style>
     </head>
