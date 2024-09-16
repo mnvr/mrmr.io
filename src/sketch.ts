@@ -3,32 +3,10 @@ import type p5 from "p5";
 import { color, p5c, setAlpha } from "utils/colorsjs";
 import { ensure } from "utils/ensure";
 
-export const sketch = (p5) => {
-    // Use a 9:16 aspect ratio. For @3x devices, that's 1920/3 = 640 points, and
-    // we use that as the height. However, if the window is smaller than that,
-    // we limit to the window's height.
-    const defaultHeight = 640;
-    const aspectRatio = 9 / 16;
-
-    const computeSize = (p5: p5): [number, number] => {
-        if (true) {
-            // Let it expand to use the first screenful
-            return [p5.windowWidth, p5.windowHeight];
-        } else {
-            // Compute the sizes based on the aspect ratios
-            const height = Math.min(defaultHeight, p5.windowHeight);
-            const width = height * aspectRatio;
-            return [width, height];
-        }
-    };
-
-    const setup = (p5: p5) => {
-        const [width, height] = computeSize(p5);
-
-        // Create and return a new canvas that'll be used by the ReactP5Wrapper
-        // library that we're using.
-        const canvas = p5.createCanvas(width, height);
-
+/** This sketch is inspired by the cover of a notebook I have (had). */
+export const sketch = (p5: any, parent: HTMLElement) => {
+    p5.setup = () => {
+        const canvas = p5.createCanvas(parent.scrollWidth, parent.scrollHeight);
         // Save a reference to the p5 instance if we were asked to.
         // if (p5Ref) p5Ref.current = p5;
 
@@ -43,37 +21,9 @@ export const sketch = (p5) => {
 
     const audioTime = () => 0; //audioContext?.currentTime ?? 0;
 
-    const windowResized = (p5: any) => {
-        const [width, height] = computeSize(p5);
-
-        p5.resizeCanvas(width, height);
-    };
-
-    // const sketch: Sketch = (p5) => {
-    //     if (isPaused) {
-    //         p5.noLoop();
-    //     } else {
-    //         // Calling p5.loop also calls draw() immediately. So we do an
-    //         // isLooping check beforehand so as to no unnecessarily call draw
-    //         // (since that would cause the frameCount to get out of sync).
-    //         if (!p5.isLooping) p5.loop();
-    //     }
-
-    p5.setup = () => setup(p5);
     p5.draw = () => draw(p5, audioTime);
-    p5.windowResized = () => windowResized(p5);
+}
 
-    // if (isPaused) {
-    // p5.noLoop();
-    // } else {
-    //     // Calling p5.loop also calls draw() immediately. So we do an
-    //     // isLooping check beforehand so as to no unnecessarily call draw
-    //     // (since that would cause the frameCount to get out of sync).
-    //     if (!p5.isLooping) p5.loop();
-    // }
-};
-
-// This sketch is inspired by the cover of a notebook I have.
 export const draw = (p5: p5, audioTime: () => number) => {
     p5.clear();
 

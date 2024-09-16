@@ -1,6 +1,9 @@
-canvas {
-    width: 100%;
-    aspect-ratio: 2/1;
+#root {
+    width: calc(100% - 60px);
+    margin-inline: 30px;
+    /* min-width: 160px; */
+    /* max-height: 50svh; */
+    aspect-ratio: 1 / 1;
 
     border: 1px solid tomato;
 }
