@@ -11,27 +11,63 @@
       :root {
         --mr-c-bg: oklch(49.35% 0.025 53.84);
         --mr-c-text-1: oklch(98% 0 0);
-        --mr-c-text-2: oklch(100% 0 0);
-        --mr-c-accent-1: oklch(84.24% 0.006 43.32);
+        --mr-c-text-2: oklch(84.24% 0.006 43.32);
+        /* TODO */
+        --mr-c-unused-title: oklch(100% 0 0);
       }
       @media (prefers-color-scheme: dark) {
         :root {
           --mr-c-bg: oklch(25% 0.05 83.84);
           --mr-c-text-1: oklch(94% 0 0);
-          --mr-c-text-2: oklch(98% 0 0);
-          --mr-c-accent-1: oklch(75.15% 0.013 86.85);
+          --mr-c-text-2: oklch(75.15% 0.013 86.85);
+          /* --mr-c-text-2: oklch(98% 0 0); */
         }
       }
       body {
         background-color: var(--mr-c-bg);
         color: var(--mr-c-text-1);
         font-family: system-ui, sans-serif;
+        font-size: 22px;
+        display: grid;
+        grid-template-columns: 1fr min(31em, 100%) 5fr;
+      }
+      main,
+      footer {
+        /* A width limited column positioned slightly towards the left */
+        grid-column: 2/3;
+        padding-inline: 1rem;
+      }
+      footer {
+        margin-block: 3rem;
+        a {
+          color: var(--mr-c-text-2);
+          text-decoration: none;
+        }
+      }
+      .name {
+        font-family: serif;
+        font-style: italic;
+
+        h1 {
+          font-size: 2.25em;
+          margin-block-end: 0.1em;
+        }
+
+        big {
+          margin-inline-start: -1px;
+        }
+      }
+      .muted {
+        color: var(--mr-c-text-2);
       }
     </style>
   </head>
   <body>
     <main>
-      <h3>Raag Bhairav</h3>
+      <div class="name">
+        <h1><span class="muted">ra'g</span> bhairav</h1>
+        <big><span class="muted">राग</span> भैरव</big>
+      </div>
     </main>
     <footer>
       <a href="/">/</a>
