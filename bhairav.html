@@ -107,8 +107,8 @@
 
       .fretboard {
         border: 1px solid tomato;
-        /*
         box-sizing: border-box;
+        /*
         min-height: 80svh;
         display: flex;
         flex-direction: column;
@@ -117,8 +117,18 @@
         justify-content: space-evenly;
         */
       }
-
+      .fretboard .string {
+        border: 1px solid tomato;
+        display: flex;
+        gap: 4px;
+      }
       .fretboard .note {
+        width: 30px;
+        height: 10px;
+        flex-shrink: 0;
+        flex-basis: 12px;
+
+        background-color: red;
       }
     </style>
     <script type="module">
@@ -162,15 +172,15 @@
           <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
           <button class="note" data-offset="12" style="--x: 12"></button>
           <button class="note" data-offset="11" style="--x: 11"></button>
-          <div class="note" data-offset="10" style="--x: 10" disabled></div>
-          <div class="note" data-offset="9" style="--x: 9" disabled></div>
+          <div class="note" data-offset="10" style="--x: 10"></div>
+          <div class="note" data-offset="9" style="--x: 9"></div>
           <button class="note" data-offset="8" style="--x: 8"></button>
           <button class="note" data-offset="7" style="--x: 7"></button>
-          <div class="note" data-offset="6" style="--x: 6" disabled></div>
+          <div class="note" data-offset="6" style="--x: 6"></div>
           <button class="note" data-offset="5" style="--x: 5"></button>
           <button class="note" data-offset="4" style="--x: 4"></button>
-          <div class="note" data-offset="3" style="--x: 3" disabled></div>
-          <div class="note" data-offset="2" style="--x: 2" disabled></div>
+          <div class="note" data-offset="3" style="--x: 3"></div>
+          <div class="note" data-offset="2" style="--x: 2"></div>
           <button class="note" data-offset="1" style="--x: 1"></button>
           <button class="note" data-offset="0" style="--x: 0"></button>
         </div>
@@ -187,64 +197,64 @@
         <div class="fretboard">
           <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button data-offset="11"></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <button class="note" data-offset="11"></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button data-offset="5"></button>
-            <button disabled></button>
-            <button data-offset="7"></button>
-            <button data-offset="8"></button>
-            <button disabled></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <button class="note" data-offset="5"></button>
+            <div class="note"></div>
+            <button class="note" data-offset="7"></button>
+            <button class="note" data-offset="8"></button>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
           <div class="string">
-            <button disabled></button>
-            <button disabled></button>
-            <button data-offset="0" data-root></button>
-            <button data-offset="1"></button>
-            <button disabled></button>
-            <button disabled></button>
-            <button data-offset="4"></button>
-            <button disabled></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <button class="note" data-offset="0" data-root></button>
+            <button class="note" data-offset="1"></button>
+            <div class="note"></div>
+            <div class="note"></div>
+            <button class="note" data-offset="4"></button>
+            <div class="note"></div>
           </div>
           <div class="marking">
             <div class="dot"></div>
