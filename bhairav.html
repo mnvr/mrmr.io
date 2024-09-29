@@ -158,6 +158,61 @@
       button.interval:hover {
         color: var(--mr-c-accent-1);
       }
+
+      .piano {
+        padding-inline-start: 20px;
+
+        display: flex;
+        justify-content: center;
+        gap: 2px;
+
+        & > .note {
+          border-radius: 3px;
+
+          width: 46px;
+          height: 190px;
+          margin-left: -16px;
+        }
+
+        & > .note.adj {
+          margin-left: 0px;
+        }
+
+        & > .note {
+          /* background-color: oklch(84.24% 0.006 43.32 / 0.1); */
+        }
+
+        & > .note.on {
+          cursor: pointer;
+        }
+
+        & > .note.minor {
+          z-index: 1;
+          height: 120px;
+
+          background-color: var(--mr-c-text-2);
+        }
+
+        & > button.note.major {
+          background-color: var(--mrmr-secondary-color);
+          opacity: 0.6;
+        }
+
+        & > button.note.minor {
+          background-color: oklch(27% 0 0);
+          @media (prefers-color-scheme: dark) {
+            background-color: oklch(22% 0 0);
+          }
+        }
+
+        & > button.note.major:hover {
+          opacity: 1;
+        }
+
+        & > button.note.minor:hover {
+          background-color: black;
+        }
+      }
     </style>
     <script type="module">
       import { Synth } from "./pages/raag/synth.ts";
@@ -402,6 +457,32 @@
             <div></div>
           </div>
         </div>
+      </section>
+      <section>
+        <p>You can play it on a piano</p>
+        <div class="piano">
+          <button class="note major" data-offset="0"></button>
+          <button class="note minor" data-offset="1"></button>
+          <div class="note major" data-offset="2"></div>
+          <div class="note minor" data-offset="3"></div>
+          <button class="note major" data-offset="4"></button>
+          <button class="note adj" data-offset="5"></button>
+          <div class="note minor" data-offset="6"></div>
+          <button class="note major" data-offset="7"></button>
+          <button class="note minor" data-offset="8"></button>
+          <div class="note major" data-offset="9"></div>
+          <div class="note minor" data-offset="10"></div>
+          <button class="note major" data-offset="11"></button>
+          <!-- <button class="note" data-offset="12" "></button> -->
+        </div>
+        <p>
+          You can play it on any instrument, acoustic or electronic, analog or
+          digital. Or if there are no instrument lying around, you can sing it
+          too
+        </p>
+        <p>
+          Remember, raags are not a recipe but an invitation to create music
+        </p>
       </section>
     </main>
     <footer>
