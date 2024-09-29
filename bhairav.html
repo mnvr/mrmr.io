@@ -174,8 +174,12 @@
 
       const play = (button) => {
         const offset = parseInt(button.getAttribute("data-offset"));
+        const base =
+          parseInt(
+            button.parentElement.parentElement.getAttribute("data-offset-base"),
+          ) || 69;
         button.setAttribute("data-playing", true);
-        synth.play({ note: 69 + offset }, () => {
+        synth.play({ note: base + offset }, () => {
           button.removeAttribute("data-playing");
         });
       };
@@ -296,35 +300,107 @@
             <div><div class="dot"></div></div>
             <div></div>
           </div>
-          <p>
-            The fretboard shows the raag if we begin with the A note
-            (highlighted) on the first string
-          </p>
-          <p>
-            But we can begin with any note we want, all we need to do is
-            maintain the distance between notes
-          </p>
-          <div class="intervals">
-            <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-            <button class="interval" data-offset="0">0</button>
-            <button class="interval" data-offset="1">1</button>
-            <button class="interval" data-offset="4">4</button>
-            <button class="interval" data-offset="5">5</button>
-            <button class="interval" data-offset="7">7</button>
-            <button class="interval" data-offset="8">8</button>
-            <button class="interval" data-offset="11">11</button>
-            <button class="interval" data-offset="12">12</button>
+        </div>
+        <p>
+          The fretboard shows the raag if we begin with the A note (highlighted)
+          on the first string
+        </p>
+        <p>
+          But we can begin with any note we want, all we need to do is maintain
+          the distance between notes
+        </p>
+        <div class="intervals">
+          <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
+          <button class="interval" data-offset="0">0</button>
+          <button class="interval" data-offset="1">1</button>
+          <button class="interval" data-offset="4">4</button>
+          <button class="interval" data-offset="5">5</button>
+          <button class="interval" data-offset="7">7</button>
+          <button class="interval" data-offset="8">8</button>
+          <button class="interval" data-offset="11">11</button>
+          <button class="interval" data-offset="12">12</button>
+        </div>
+        <p>
+          So pick any note. Count as you proceed. If the number you counted is
+          on this list, then that note belongs to the raag
+        </p>
+        <p>
+          For example, here's the raag if we use the D on the second string as
+          our root note. Notice how we can also count backwards, and how we can
+          keep counting even after 11 - the raag repeats
+        </p>
+        <div class="fretboard" data-offset-base="74">
+          <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
           </div>
-
-          <p>
-            So pick any note. Count as you proceed. If the number you counted is
-            on this list, then that note belongs to the raag
-          </p>
-          <p>
-            For example, here's the raag if we use the D on the second string as
-            our root note. Notice how we can also count backwards, and how we
-            can keep counting even after 11 - the raag repeats
-          </p>
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+          </div>
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+          </div>
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+          </div>
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <button class="note" data-offset="0" data-root></button>
+            <div class="note"></div>
+            <div class="note"></div>
+          </div>
+          <div class="string">
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+            <div class="note"></div>
+          </div>
+          <div class="marks">
+            <div><div class="dot"></div></div>
+            <div></div>
+            <div><div class="dot"></div></div>
+            <div></div>
+            <div><div class="dot"></div></div>
+            <div></div>
+            <div><div class="dot"></div></div>
+            <div></div>
+          </div>
         </div>
       </section>
     </main>
