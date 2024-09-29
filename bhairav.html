@@ -76,6 +76,8 @@
           border-radius: 4px;
           cursor: pointer;
           background-color: var(--mr-c-text-2);
+          /* Veer towards the left as we go down the notes */
+          margin-inline-end: calc(10px * var(--x));
         }
 
         & > button:disabled {
@@ -117,6 +119,7 @@
 
       const notes = document.querySelectorAll(".ladder > button");
       for (const note of notes) {
+        note.setAttribute("style", `--x: ${note.getAttribute("data-offset")}`);
         if (!note.disabled) {
           note.addEventListener("click", (e) => play(e.target));
           note.addEventListener("pointerenter", (e) => {
@@ -124,7 +127,6 @@
           });
         }
       }
-      console.log(notes);
     </script>
   </head>
   <body>
