@@ -66,7 +66,8 @@
         gap: 4px;
         justify-content: space-evenly;
 
-        & > div {
+        & > button {
+          border: 0;
           width: 50%;
           /* Don't let anything shrink */
           flex-shrink: 0;
@@ -75,35 +76,49 @@
           border-radius: 4px;
         }
 
-        & > div:not([data-on]) {
+        & > button:not([data-on]) {
           background-color: var(--mr-c-text-2);
           opacity: 0.2;
         }
 
-        & > div[data-on] {
+        & > button[data-on] {
           cursor: pointer;
           background-color: var(--mr-c-text-2);
         }
 
-        & > div[data-on]:hover {
+        & > button[data-on]:hover {
           background-color: var(--mr-c-accent-1);
         }
 
-        & > div[data-playing] {
+        & > button[data-playing] {
           background-color: var(--mr-c-accent-1);
         }
 
-        & > div[data-highlighted] {
+        & > button[data-highlighted] {
           background-color: darkkhaki;
         }
       }
     </style>
-    <script type="module" src="pages/raag/synth.ts"></script>
     <script type="module">
       import { Synth } from "./pages/raag/synth.ts";
 
       const synth = new Synth();
-      window.addEventListener("click", () => synth.init());
+      window.addEventListener("click", () => {
+        console.log("window click");
+        synth.init();
+      });
+
+      const notes = document.querySelectorAll(".ladder > button");
+      for (const note of notes) {
+        note.addEventListener("click", (e) => {
+          const button = e.target;
+          console.log("button click", button);
+          synth.play({ note: 74 }, () => {
+            console.log("done playing");
+          });
+        });
+      }
+      console.log(notes);
     </script>
   </head>
   <body>
@@ -114,19 +129,19 @@
       </div>
       <div class="ladder">
         <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-        <div data-offset="0" data-on></div>
-        <div data-offset="1"></div>
-        <div data-offset="2"></div>
-        <div data-offset="3"></div>
-        <div data-offset="4" data-on></div>
-        <div data-offset="5" data-on></div>
-        <div data-offset="6"></div>
-        <div data-offset="7" data-on></div>
-        <div data-offset="8" data-on></div>
-        <div data-offset="9"></div>
-        <div data-offset="10" data-on></div>
-        <div data-offset="11" data-on></div>
-        <div data-offset="12" data-on></div>
+        <button data-offset="0" data-on></button>
+        <button data-offset="1"></button>
+        <button data-offset="2"></button>
+        <button data-offset="3"></button>
+        <button data-offset="4" data-on></button>
+        <button data-offset="5" data-on></button>
+        <button data-offset="6"></button>
+        <button data-offset="7" data-on></button>
+        <button data-offset="8" data-on></button>
+        <button data-offset="9"></button>
+        <button data-offset="10" data-on></button>
+        <button data-offset="11" data-on></button>
+        <button data-offset="12" data-on></button>
       </div>
     </main>
     <footer>
