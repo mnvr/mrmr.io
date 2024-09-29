@@ -56,9 +56,7 @@
         color: var(--mr-c-text-2);
       }
       .ladder {
-        border: 1px solid tomato;
         box-sizing: border-box;
-        margin-block-start: -1rem;
         min-height: 80svh;
         display: flex;
         flex-direction: column;
@@ -78,7 +76,6 @@
           background-color: var(--mr-c-text-2);
           /* Veer towards the left as we go down the notes */
           margin-inline-end: calc(8px * (13 - var(--x)));
-          /* ${(13 - noteOffset) * 8}px */
         }
 
         & > button:disabled {
@@ -135,22 +132,32 @@
         <h1><span class="muted">ra'g</span> bhairav</h1>
         <span class="muted">राग</span> भैरव
       </div>
-      <div class="ladder">
-        <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-        <button data-offset="12" style="--x: 12"></button>
-        <button data-offset="11" style="--x: 11"></button>
-        <button data-offset="10" style="--x: 10" disabled></button>
-        <button data-offset="9" style="--x: 9" disabled></button>
-        <button data-offset="8" style="--x: 8"></button>
-        <button data-offset="7" style="--x: 7"></button>
-        <button data-offset="6" style="--x: 6" disabled></button>
-        <button data-offset="5" style="--x: 5"></button>
-        <button data-offset="4" style="--x: 4"></button>
-        <button data-offset="3" style="--x: 3" disabled></button>
-        <button data-offset="2" style="--x: 2" disabled></button>
-        <button data-offset="1" style="--x: 1"></button>
-        <button data-offset="0" style="--x: 0"></button>
-      </div>
+      <section>
+        <div class="ladder">
+          <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
+          <button data-offset="12" style="--x: 12"></button>
+          <button data-offset="11" style="--x: 11"></button>
+          <button data-offset="10" style="--x: 10" disabled></button>
+          <button data-offset="9" style="--x: 9" disabled></button>
+          <button data-offset="8" style="--x: 8"></button>
+          <button data-offset="7" style="--x: 7"></button>
+          <button data-offset="6" style="--x: 6" disabled></button>
+          <button data-offset="5" style="--x: 5"></button>
+          <button data-offset="4" style="--x: 4"></button>
+          <button data-offset="3" style="--x: 3" disabled></button>
+          <button data-offset="2" style="--x: 2" disabled></button>
+          <button data-offset="1" style="--x: 1"></button>
+          <button data-offset="0" style="--x: 0"></button>
+        </div>
+        <p>
+          Raags are like scales (<i>not really</i>, but it's a good first
+          approximation)
+        </p>
+        <p>
+          Above you can see the distance between notes on raag Bhairav – Hover
+          on them to hear how they sound (tap once to enable audio)
+        </p>
+      </>
     </main>
     <footer>
       <a href="/">/</a>
