@@ -10,7 +10,7 @@
     <style>
       :root {
         --mr-c-bg: oklch(49.35% 0.025 53.84);
-        --mr-c-text-1: oklch(98% 0 0);
+        --mr-c-text-1: oklch(94% 0 0);
         --mr-c-text-2: oklch(84.24% 0.006 43.32);
         --mr-c-accent-1: oklch(100% 0 0);
       }
@@ -74,16 +74,16 @@
         background-color: var(--mr-c-text-2);
       }
 
-      button.note:hover {
-        background-color: var(--mr-c-accent-1);
+      button.note[data-root] {
+        background-color: darkkhaki;
       }
 
       button.note[data-playing] {
         background-color: var(--mr-c-accent-1);
       }
 
-      button.note[data-root] {
-        background-color: darkkhaki;
+      button.note:hover {
+        background-color: var(--mr-c-accent-1);
       }
 
       .ladder {
@@ -104,6 +104,17 @@
         flex-basis: 12px;
         border-radius: 4px;
         margin-inline-end: calc(8px * (13 - var(--x)));
+      }
+
+      section + section {
+        margin-block-start: 3rem;
+      }
+
+      .fretboard {
+        /* The last row is the mostly visually empty markings, so give it
+           increased margin an the start to visually center the entire fretboard
+           within the flow */
+        margin-block-start: 32px;
       }
 
       .fretboard .string,
@@ -132,6 +143,8 @@
       import { Synth } from "./pages/raag/synth.ts";
 
       const synth = new Synth();
+      // The browser will let us autoplay on hover after the first click
+      // interaction on the page.
       let canAutoPlay = false;
 
       window.addEventListener("click", () => {
@@ -147,7 +160,7 @@
         });
       };
 
-      const notes = document.querySelectorAll(".ladder > button");
+      const notes = document.querySelectorAll("button.note");
       for (const note of notes) {
         if (!note.disabled) {
           note.addEventListener("click", (e) => play(e.target));
@@ -191,6 +204,7 @@
         </p>
       </section>
       <section>
+        <p>You can play it on a guitar</p>
         <div class="fretboard">
           <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
           <div class="string">
@@ -263,6 +277,14 @@
             <div><div class="dot"></div></div>
             <div></div>
           </div>
+          <p>
+            The fretboard shows the raag if we begin with the A note
+            (highlighted) on the first string
+          </p>
+          <p>
+            But we can begin with any note we want, all we need to do is
+            maintain the distance between notes
+          </p>
         </div>
       </section>
     </main>
