@@ -178,12 +178,11 @@
 
       const notes = document.querySelectorAll("button[data-offset]");
       for (const note of notes) {
-        if (!note.disabled) {
-          note.addEventListener("click", (e) => play(e.target));
-          note.addEventListener("pointerenter", (e) => {
-            if (canAutoPlay) play(e.target);
-          });
-        }
+        note.ariaLabel = note.getAttribute("data-offset");
+        note.addEventListener("click", (e) => play(e.target));
+        note.addEventListener("pointerenter", (e) => {
+          if (canAutoPlay) play(e.target);
+        });
       }
     </script>
   </head>
