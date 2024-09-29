@@ -62,7 +62,8 @@
         color: var(--mr-c-text-2);
       }
 
-      div.note {
+      div.note,
+      .dot {
         background-color: var(--mr-c-text-2);
         opacity: 0.2;
       }
@@ -105,31 +106,26 @@
         margin-inline-end: calc(8px * (13 - var(--x)));
       }
 
-      .fretboard {
-        border: 1px solid tomato;
-        /*
-        box-sizing: border-box;
-        min-height: 80svh;
-        display: flex;
-        flex-direction: column;
-        align-items: end;
-        gap: 4px;
-        justify-content: space-evenly;
-        */
-      }
-      .fretboard .string {
-        /* border: 1px solid tomato; */
+      .fretboard .string,
+      .fretboard .marks {
         display: flex;
         justify-content: center;
         margin-block: 12px;
         gap: 12px;
-        /* gap: 4px; */
-        /* margin-block: 4px; */
       }
-      .fretboard .note {
+
+      .fretboard .note,
+      .fretboard .marks > div {
         flex-basis: 50px;
         height: 12px;
         border-radius: 3px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        margin: auto;
+        border-radius: 4px;
       }
     </style>
     <script type="module">
@@ -257,14 +253,14 @@
             <button class="note" data-offset="4"></button>
             <div class="note"></div>
           </div>
-          <div class="marking">
-            <div class="dot"></div>
+          <div class="marks">
+            <div><div class="dot"></div></div>
             <div></div>
-            <div class="dot"></div>
+            <div><div class="dot"></div></div>
             <div></div>
-            <div class="dot"></div>
+            <div><div class="dot"></div></div>
             <div></div>
-            <div class="dot"></div>
+            <div><div class="dot"></div></div>
             <div></div>
           </div>
         </div>
