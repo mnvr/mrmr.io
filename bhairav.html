@@ -14,6 +14,7 @@
         --mr-c-text-2: oklch(84.24% 0.006 43.32);
         --mr-c-accent-1: oklch(100% 0 0);
       }
+
       @media (prefers-color-scheme: dark) {
         :root {
           --mr-c-bg: oklch(25% 0.05 83.84);
@@ -22,6 +23,7 @@
           --mr-c-accent-1: oklch(98% 0 0);
         }
       }
+
       body {
         background-color: var(--mr-c-bg);
         color: var(--mr-c-text-1);
@@ -30,12 +32,14 @@
         display: grid;
         grid-template-columns: 1fr min(31em, 100%) 5fr;
       }
+
       main,
       footer {
         /* A width limited column positioned slightly towards the left */
         grid-column: 2/3;
         padding-inline: 1rem;
       }
+
       footer {
         margin-block: 3rem;
         a {
@@ -43,6 +47,7 @@
           text-decoration: none;
         }
       }
+
       .name {
         font-family: serif;
         font-style: italic;
@@ -52,9 +57,34 @@
           margin-block-end: 0.1em;
         }
       }
+
       .muted {
         color: var(--mr-c-text-2);
       }
+
+      button {
+        border: 0;
+        cursor: pointer;
+        background-color: var(--mr-c-text-2);
+      }
+
+      button:disabled {
+        background-color: var(--mr-c-text-2);
+        opacity: 0.2;
+      }
+
+      button[data-on]:hover {
+        background-color: var(--mr-c-accent-1);
+      }
+
+      button[data-playing] {
+        background-color: var(--mr-c-accent-1);
+      }
+
+      button[data-highlighted] {
+        background-color: darkkhaki;
+      }
+
       .ladder {
         box-sizing: border-box;
         min-height: 80svh;
@@ -63,37 +93,32 @@
         align-items: end;
         gap: 4px;
         justify-content: space-evenly;
+      }
 
-        & > button {
-          border: 0;
-          width: 50%;
-          /* Don't let anything shrink */
-          flex-shrink: 0;
-          /* Give all the items a fixed height */
-          flex-basis: 12px;
-          border-radius: 4px;
-          cursor: pointer;
-          background-color: var(--mr-c-text-2);
-          /* Veer towards the left as we go down the notes */
-          margin-inline-end: calc(8px * (13 - var(--x)));
-        }
+      .ladder button {
+        width: 50%;
+        /* Don't let anything shrink */
+        flex-shrink: 0;
+        /* Give all the items a fixed height */
+        flex-basis: 12px;
+        border-radius: 4px;
+        margin-inline-end: calc(8px * (13 - var(--x)));
+      }
 
-        & > button:disabled {
-          background-color: var(--mr-c-text-2);
-          opacity: 0.2;
-        }
+      .fretboard {
+        border: 1px solid tomato;
+        /*
+        box-sizing: border-box;
+        min-height: 80svh;
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+        gap: 4px;
+        justify-content: space-evenly;
+        */
+      }
 
-        & > button[data-on]:hover {
-          background-color: var(--mr-c-accent-1);
-        }
-
-        & > button[data-playing] {
-          background-color: var(--mr-c-accent-1);
-        }
-
-        & > button[data-highlighted] {
-          background-color: darkkhaki;
-        }
+      .fretboard button {
       }
     </style>
     <script type="module">
@@ -157,7 +182,23 @@
           Above you can see the distance between notes on raag Bhairav – Hover
           on them to hear how they sound (tap once to enable audio)
         </p>
-      </>
+      </section>
+      <section>
+        <div class="fretboard">
+          <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
+          <div class="string">
+            <button data-offset="8"></button>
+            <button data-offset="7"></button>
+            <button data-offset="6" disabled></button>
+            <button data-offset="5"></button>
+            <button data-offset="4"></button>
+            <button data-offset="3" disabled></button>
+            <button data-offset="2" disabled></button>
+            <button data-offset="1"></button>
+            <button data-offset="0"></button>
+          </div>
+        </div>
+      </section>
     </main>
     <footer>
       <a href="/">/</a>
