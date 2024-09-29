@@ -165,53 +165,60 @@
         display: flex;
         justify-content: center;
         gap: 2px;
+      }
 
-        & > .note {
-          border-radius: 3px;
+      .piano > .major {
+        border-radius: 3px;
 
-          width: 46px;
-          height: 190px;
-          margin-left: -16px;
+        width: 46px;
+        height: 190px;
+        margin-inline-start: -16px;
+      }
+
+      .piano > div.major {
+        background-color: oklch(84.24% 0.006 43.32 / 0.1);
+      }
+
+      .piano > .minor {
+        border-radius: 3px;
+
+        width: 46px;
+        height: 120px;
+        margin-inline-start: -16px;
+
+        z-index: 1;
+        background-color: var(--mr-c-bg);
+      }
+
+      .piano > .adj {
+        margin-inline-start: 0;
+      }
+
+      .piano > button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .piano > button.major {
+        background-color: var(--mr-c-text-2);
+        opacity: 0.6;
+      }
+
+      .piano > button.minor {
+        background-color: oklch(27% 0 0);
+        @media (prefers-color-scheme: dark) {
+          background-color: oklch(22% 0 0);
         }
+      }
 
-        & > .note.adj {
-          margin-left: 0px;
-        }
+      .piano > button.major:hover,
+      .piano > button.major[data-playing] {
+        opacity: 1;
+      }
 
-        & > .note {
-          /* background-color: oklch(84.24% 0.006 43.32 / 0.1); */
-        }
-
-        & > .note.on {
-          cursor: pointer;
-        }
-
-        & > .note.minor {
-          z-index: 1;
-          height: 120px;
-
-          background-color: var(--mr-c-text-2);
-        }
-
-        & > button.note.major {
-          background-color: var(--mrmr-secondary-color);
-          opacity: 0.6;
-        }
-
-        & > button.note.minor {
-          background-color: oklch(27% 0 0);
-          @media (prefers-color-scheme: dark) {
-            background-color: oklch(22% 0 0);
-          }
-        }
-
-        & > button.note.major:hover {
-          opacity: 1;
-        }
-
-        & > button.note.minor:hover {
-          background-color: black;
-        }
+      .piano > button.minor:hover,
+      .piano > button.minor[data-playing] {
+        background-color: black;
       }
     </style>
     <script type="module">
@@ -458,19 +465,19 @@
       <section>
         <p>You can play it on a piano</p>
         <div class="piano">
-          <button class="note major" data-offset="0"></button>
-          <button class="note minor" data-offset="1"></button>
-          <div class="note major"></div>
-          <div class="note minor"></div>
-          <button class="note major" data-offset="4"></button>
-          <button class="note adj" data-offset="5"></button>
-          <div class="note minor"></div>
-          <button class="note major" data-offset="7"></button>
-          <button class="note minor" data-offset="8"></button>
-          <div class="note major"></div>
-          <div class="note minor"></div>
-          <button class="note major" data-offset="11"></button>
-          <button class="note minor" data-offset="12"></button>
+          <button class="major" data-offset="0"></button>
+          <button class="minor" data-offset="1"></button>
+          <div class="major"></div>
+          <div class="minor"></div>
+          <button class="major" data-offset="4"></button>
+          <button class="major adj" data-offset="5"></button>
+          <div class="minor"></div>
+          <button class="major" data-offset="7"></button>
+          <button class="minor" data-offset="8"></button>
+          <div class="major"></div>
+          <div class="minor"></div>
+          <button class="major" data-offset="11"></button>
+          <!-- <button class="major" data-offset="12"></button> -->
         </div>
         <p>
           You can play it on any instrument, acoustic or electronic, analog or
