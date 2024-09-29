@@ -120,7 +120,6 @@
 
       const notes = document.querySelectorAll(".ladder > button");
       for (const note of notes) {
-        note.setAttribute("style", `--x: ${note.getAttribute("data-offset")}`);
         if (!note.disabled) {
           note.addEventListener("click", (e) => play(e.target));
           note.addEventListener("pointerenter", (e) => {
@@ -138,19 +137,19 @@
       </div>
       <div class="ladder">
         <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-        <button data-offset="12"></button>
-        <button data-offset="11"></button>
-        <button data-offset="10" disabled></button>
-        <button data-offset="9" disabled></button>
-        <button data-offset="8"></button>
-        <button data-offset="7"></button>
-        <button data-offset="6" disabled></button>
-        <button data-offset="5"></button>
-        <button data-offset="4"></button>
-        <button data-offset="3" disabled></button>
-        <button data-offset="2" disabled></button>
-        <button data-offset="1"></button>
-        <button data-offset="0"></button>
+        <button data-offset="12" style="--x: 12"></button>
+        <button data-offset="11" style="--x: 11"></button>
+        <button data-offset="10" style="--x: 10" disabled></button>
+        <button data-offset="9" style="--x: 9" disabled></button>
+        <button data-offset="8" style="--x: 8"></button>
+        <button data-offset="7" style="--x: 7"></button>
+        <button data-offset="6" style="--x: 6" disabled></button>
+        <button data-offset="5" style="--x: 5"></button>
+        <button data-offset="4" style="--x: 4"></button>
+        <button data-offset="3" style="--x: 3" disabled></button>
+        <button data-offset="2" style="--x: 2" disabled></button>
+        <button data-offset="1" style="--x: 1"></button>
+        <button data-offset="0" style="--x: 0"></button>
       </div>
     </main>
     <footer>
