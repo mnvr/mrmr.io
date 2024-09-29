@@ -38,15 +38,6 @@
         padding-inline: 1rem;
       }
 
-      a {
-        text-underline-offset: 5px;
-        color: var(--mr-c-text-2);
-      }
-
-      a:hover {
-        color: var(--mr-c-text-1);
-      }
-
       header {
         font-family: serif;
         font-style: italic;
@@ -76,8 +67,8 @@
 
         li {
           margin: 1em;
-          /* Remove the margin on small screens (we already have a margin from the
-           page edge because of the WideColumn above) */
+          /* Remove the margin on small screens (we already have a margin from
+             the page edge on the main element) */
           @media (max-width: 600px) {
             margin-inline: 0;
           }
@@ -103,20 +94,13 @@
         align-items: center;
         justify-content: space-between;
         gap: 12px;
-
-        .muted {
-          background-color: var(--mrmr-raag-card-muted-color);
-        }
-
-        .highlighted {
-          background-color: var(--mrmr-raag-card-highlighted-color);
-        }
       }
 
       .raag-name {
         font-variant: small-caps;
-        /* Shift up a bit from the centerline to account for the small-caps having
-    empty space at the top (as compared to if they were full caps). */
+        text-transform: lowercase;
+        /* Shift up a bit to account for the empty space at the top of
+           small-caps (compared to if they were normal caps).  */
         margin-block-end: 4px;
         width: 150px;
       }
@@ -132,21 +116,25 @@
           height: 42px;
           border-radius: 3px;
 
-          background-color: var(--mrmr-raag-card-highlighted-color);
+          background-color: var(--mr-c-raag-note-on);
+        }
+
+        & > div.muted {
+          background-color: var(--mr-c-raag-note-off);
         }
       }
 
-      .raag-bhairav {
+      #bhairav {
         background-color: oklch(49.35% 0.025 53.84);
         color: oklch(84.24% 0.006 43.32);
-        --mrmr-raag-card-muted-color: oklch(84.24% 0.006 43.32 / 0.3);
-        --mrmr-raag-card-highlighted-color: oklch(98% 0 0);
+        --mr-c-raag-note-on: oklch(98% 0 0);
+        --mr-c-raag-note-off: oklch(84.24% 0.006 43.32 / 0.3);
 
         @media (prefers-color-scheme: dark) {
           background-color: oklch(25% 0.05 83.84);
           color: oklch(75.15% 0.013 86.85);
-          --mrmr-raag-card-muted-color: oklch(75.15% 0.013 86.85 / 0.3);
-          --mrmr-raag-card-highlighted-color: oklch(94% 0 0);
+          --mr-c-raag-note-on: oklch(94% 0 0);
+          --mr-c-raag-note-off: oklch(75.15% 0.013 86.85 / 0.3);
         }
       }
     </style>
@@ -160,7 +148,7 @@
       <ul>
         <li>
           <a href="raag/bhairav"
-            ><div class="raag-card raag-bhairav">
+            ><div id="bhairav" class="raag-card">
               <div class="raag-name">Bhairav</div>
               <div class="raag-notes">
                 <div></div>
