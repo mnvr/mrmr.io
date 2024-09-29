@@ -62,26 +62,26 @@
         color: var(--mr-c-text-2);
       }
 
-      button {
+      div.note {
+        background-color: var(--mr-c-text-2);
+        opacity: 0.2;
+      }
+
+      button.note {
         border: 0;
         cursor: pointer;
         background-color: var(--mr-c-text-2);
       }
 
-      button:disabled {
-        background-color: var(--mr-c-text-2);
-        opacity: 0.2;
-      }
-
-      button[data-on]:hover {
+      button.note:hover {
         background-color: var(--mr-c-accent-1);
       }
 
-      button[data-playing] {
+      button.note[data-playing] {
         background-color: var(--mr-c-accent-1);
       }
 
-      button[data-root] {
+      button.note[data-root] {
         background-color: darkkhaki;
       }
 
@@ -95,7 +95,7 @@
         justify-content: space-evenly;
       }
 
-      .ladder button {
+      .ladder .note {
         width: 50%;
         /* Don't let anything shrink */
         flex-shrink: 0;
@@ -118,7 +118,7 @@
         */
       }
 
-      .fretboard button {
+      .fretboard .note {
       }
     </style>
     <script type="module">
@@ -160,19 +160,19 @@
       <section>
         <div class="ladder">
           <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-          <button data-offset="12" style="--x: 12"></button>
-          <button data-offset="11" style="--x: 11"></button>
-          <button data-offset="10" style="--x: 10" disabled></button>
-          <button data-offset="9" style="--x: 9" disabled></button>
-          <button data-offset="8" style="--x: 8"></button>
-          <button data-offset="7" style="--x: 7"></button>
-          <button data-offset="6" style="--x: 6" disabled></button>
-          <button data-offset="5" style="--x: 5"></button>
-          <button data-offset="4" style="--x: 4"></button>
-          <button data-offset="3" style="--x: 3" disabled></button>
-          <button data-offset="2" style="--x: 2" disabled></button>
-          <button data-offset="1" style="--x: 1"></button>
-          <button data-offset="0" style="--x: 0"></button>
+          <button class="note" data-offset="12" style="--x: 12"></button>
+          <button class="note" data-offset="11" style="--x: 11"></button>
+          <div class="note" data-offset="10" style="--x: 10" disabled></div>
+          <div class="note" data-offset="9" style="--x: 9" disabled></div>
+          <button class="note" data-offset="8" style="--x: 8"></button>
+          <button class="note" data-offset="7" style="--x: 7"></button>
+          <div class="note" data-offset="6" style="--x: 6" disabled></div>
+          <button class="note" data-offset="5" style="--x: 5"></button>
+          <button class="note" data-offset="4" style="--x: 4"></button>
+          <div class="note" data-offset="3" style="--x: 3" disabled></div>
+          <div class="note" data-offset="2" style="--x: 2" disabled></div>
+          <button class="note" data-offset="1" style="--x: 1"></button>
+          <button class="note" data-offset="0" style="--x: 0"></button>
         </div>
         <p>
           Raags are like scales (<i>not really</i>, but it's a good first
