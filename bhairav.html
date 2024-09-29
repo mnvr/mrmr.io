@@ -236,12 +236,17 @@
 
       const play = (button) => {
         const offset = parseInt(button.getAttribute("data-offset"));
+        const parent = button.parentElement;
         const base =
           parseInt(
-            button.parentElement.parentElement.getAttribute("data-offset-base"),
+            parent.getAttribute("data-offset-base") ||
+              parent.parentElement.getAttribute("data-offset-base"),
           ) || 69;
+        const env = parent.classList.contains("piano")
+          ? { release: 3 }
+          : undefined;
         button.setAttribute("data-playing", true);
-        synth.play({ note: base + offset }, () => {
+        synth.play({ note: base + offset, env }, () => {
           button.removeAttribute("data-playing");
         });
       };
@@ -464,7 +469,7 @@
       </section>
       <section>
         <p>You can play it on a piano</p>
-        <div class="piano">
+        <div class="piano" data-offset-base="60">
           <button class="major" data-offset="0"></button>
           <button class="minor" data-offset="1"></button>
           <div class="major"></div>
