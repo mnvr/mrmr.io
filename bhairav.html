@@ -103,19 +103,26 @@
       import { Synth } from "./pages/raag/synth.ts";
 
       const synth = new Synth();
-      window.addEventListener("click", () => {
-        console.log("window click");
-        synth.init();
-      });
+
+      window.addEventListener("click", () => synth.init() /* if needed */);
+
+      const play = (button) => {
+        const offset = button.getAttribute("data-offset");
+        button.setAttribute("data-playing");
+        synth.play({ note: 69 + offset }, () => {
+          button.removeAttribute("data-playing");
+        });
+      };
 
       const notes = document.querySelectorAll(".ladder > button");
       for (const note of notes) {
         note.addEventListener("click", (e) => {
           const button = e.target;
           console.log("button click", button);
-          synth.play({ note: 74 }, () => {
-            console.log("done playing");
-          });
+        });
+        note.addEventListener("pointerenter", (e) => {
+          const button = e.target;
+          console.log("button hover", button);
         });
       }
       console.log(notes);
@@ -129,19 +136,19 @@
       </div>
       <div class="ladder">
         <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-        <button data-offset="0" data-on></button>
-        <button data-offset="1"></button>
-        <button data-offset="2"></button>
-        <button data-offset="3"></button>
-        <button data-offset="4" data-on></button>
-        <button data-offset="5" data-on></button>
-        <button data-offset="6"></button>
-        <button data-offset="7" data-on></button>
-        <button data-offset="8" data-on></button>
-        <button data-offset="9"></button>
-        <button data-offset="10" data-on></button>
-        <button data-offset="11" data-on></button>
-        <button data-offset="12" data-on></button>
+        <button data-offset="0"></button>
+        <button data-offset="1" disabled></button>
+        <button data-offset="2" disabled></button>
+        <button data-offset="3" disabled></button>
+        <button data-offset="4"></button>
+        <button data-offset="5"></button>
+        <button data-offset="6" disabled></button>
+        <button data-offset="7"></button>
+        <button data-offset="8"></button>
+        <button data-offset="9" disabled></button>
+        <button data-offset="10"></button>
+        <button data-offset="11"></button>
+        <button data-offset="12"></button>
       </div>
     </main>
     <footer>
