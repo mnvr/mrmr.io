@@ -77,7 +77,8 @@
           cursor: pointer;
           background-color: var(--mr-c-text-2);
           /* Veer towards the left as we go down the notes */
-          margin-inline-end: calc(10px * var(--x));
+          margin-inline-end: calc(8px * (13 - var(--x)));
+          /* ${(13 - noteOffset) * 8}px */
         }
 
         & > button:disabled {
@@ -137,19 +138,19 @@
       </div>
       <div class="ladder">
         <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
-        <button data-offset="0"></button>
-        <button data-offset="1"></button>
-        <button data-offset="2" disabled></button>
-        <button data-offset="3" disabled></button>
-        <button data-offset="4"></button>
-        <button data-offset="5"></button>
-        <button data-offset="6" disabled></button>
-        <button data-offset="7"></button>
-        <button data-offset="8"></button>
-        <button data-offset="9" disabled></button>
-        <button data-offset="10" disabled></button>
-        <button data-offset="11"></button>
         <button data-offset="12"></button>
+        <button data-offset="11"></button>
+        <button data-offset="10" disabled></button>
+        <button data-offset="9" disabled></button>
+        <button data-offset="8"></button>
+        <button data-offset="7"></button>
+        <button data-offset="6" disabled></button>
+        <button data-offset="5"></button>
+        <button data-offset="4"></button>
+        <button data-offset="3" disabled></button>
+        <button data-offset="2" disabled></button>
+        <button data-offset="1"></button>
+        <button data-offset="0"></button>
       </div>
     </main>
     <footer>
