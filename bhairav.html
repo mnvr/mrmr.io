@@ -107,8 +107,8 @@
 
       .fretboard {
         border: 1px solid tomato;
-        box-sizing: border-box;
         /*
+        box-sizing: border-box;
         min-height: 80svh;
         display: flex;
         flex-direction: column;
@@ -118,17 +118,18 @@
         */
       }
       .fretboard .string {
-        border: 1px solid tomato;
+        /* border: 1px solid tomato; */
         display: flex;
-        gap: 4px;
+        justify-content: center;
+        margin-block: 12px;
+        gap: 12px;
+        /* gap: 4px; */
+        /* margin-block: 4px; */
       }
       .fretboard .note {
-        width: 30px;
-        height: 10px;
-        flex-shrink: 0;
-        flex-basis: 12px;
-
-        background-color: red;
+        flex-basis: 50px;
+        height: 12px;
+        border-radius: 3px;
       }
     </style>
     <script type="module">
