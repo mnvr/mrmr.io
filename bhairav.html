@@ -138,6 +138,22 @@
         margin: auto;
         border-radius: 4px;
       }
+
+      button.interval {
+        border: 0;
+        cursor: pointer;
+        background: transparent;
+        color: var(--mr-c-text-2);
+        font-size: 2rem;
+      }
+
+      button.interval[data-playing] {
+        color: var(--mr-c-accent-1);
+      }
+
+      button.interval:hover {
+        color: var(--mr-c-accent-1);
+      }
     </style>
     <script type="module">
       import { Synth } from "./pages/raag/synth.ts";
@@ -160,7 +176,7 @@
         });
       };
 
-      const notes = document.querySelectorAll("button.note");
+      const notes = document.querySelectorAll("button[data-offset]");
       for (const note of notes) {
         if (!note.disabled) {
           note.addEventListener("click", (e) => play(e.target));
@@ -242,7 +258,7 @@
             <div class="note"></div>
             <div class="note"></div>
             <button class="note" data-offset="11"></button>
-            <div class="note"></div>
+            <button class="note" data-offset="12"></button>
             <div class="note"></div>
             <div class="note"></div>
             <div class="note"></div>
@@ -284,6 +300,27 @@
           <p>
             But we can begin with any note we want, all we need to do is
             maintain the distance between notes
+          </p>
+          <div class="intervals">
+            <!-- bhairav notes: [0, 1, 4, 5, 7, 8, 11] -->
+            <button class="interval" data-offset="0">0</button>
+            <button class="interval" data-offset="1">1</button>
+            <button class="interval" data-offset="4">4</button>
+            <button class="interval" data-offset="5">5</button>
+            <button class="interval" data-offset="7">7</button>
+            <button class="interval" data-offset="8">8</button>
+            <button class="interval" data-offset="11">11</button>
+            <button class="interval" data-offset="12">12</button>
+          </div>
+
+          <p>
+            So pick any note. Count as you proceed. If the number you counted is
+            on this list, then that note belongs to the raag
+          </p>
+          <p>
+            For example, here's the raag if we use the D on the second string as
+            our root note. Notice how we can also count backwards, and how we
+            can keep counting even after 11 - the raag repeats
           </p>
         </div>
       </section>
