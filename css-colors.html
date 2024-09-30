@@ -23,8 +23,10 @@
       }
     </style>
     <script type="module">
-      for (const d of document.getElementsByTagName("div")) {
+      const divs = [...document.getElementsByTagName("div")];
+      for (const [i, d] of divs.entries()) {
         d.style.backgroundColor = d.innerText;
+        if (i < 98) d.style.color = "black";
       }
     </script>
   </head>
