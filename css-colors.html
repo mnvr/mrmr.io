@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CSS colors</title>
+    <meta
+      name="description"
+      content="All named CSS colors, sorted by their lightness"
+    />
+    <!-- TODO -->
+    <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      main {
+        display: grid;
+      }
+      div {
+        width: 100px;
+        height: 30px;
+      }
+    </style>
+    <script type="module">
+      for (const d of document.getElementsByTagName("div")) {
+        d.style.backgroundColor = d.innerText;
+      }
+    </script>
+  </head>
+  <body>
+    <main>
+      <div>red</div>
+    </main>
+  </body>
+</html>
