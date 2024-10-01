@@ -15,7 +15,6 @@ const parsedQuotes = parseQuotes(quotes);
 let _quoteIndex: number | undefined;
 
 const init = () => {
-  console.log("init");
   window.addEventListener("popstate", handlePopState);
   loadInitialQuote();
 };
@@ -38,7 +37,6 @@ const loadInitialQuote = () => {
 const showQuoteAtIndex = (i: number) => {
   _quoteIndex = i;
   const quote = parsedQuotes.quotes[i];
-  console.log("showQuoteAtIndex", { i, quote });
   const output = document.getElementsByTagName("output")[0];
   output.replaceChildren(createDOMElement(quote));
 };
