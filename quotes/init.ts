@@ -23,18 +23,10 @@ const init = () => {
 
 const handlePopState = (event: PopStateEvent) => {
     const { state } = event;
-    console.log("handlePopState", state, event);
 
-    // When the user presses back from this page itself the
-    // `removeEventListener` below runs after the page is destroyed. But
-    // before that can happen, we end up here because of a spurious (not
-    // meant for us) "popstate".
-    //
-    // Such a spurious event might not have any state, or might not have
-    // state of the form that we expect. So only proceed if we recognize the
-    // shape of the state.
+    // popstate is also fired when the user clicks one of the <a href>s that we
+    // added. In such cases, state is null. Ignore these.
     if (!state) return;
-    if (typeof state.quoteIndex !== "number") return;
 
     showQuoteAtIndex(ensureNumber(state.quoteIndex));
 };

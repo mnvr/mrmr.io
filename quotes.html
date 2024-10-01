@@ -11,6 +11,29 @@
     <!-- TODO -->
     <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
     <style>
+      @media (hover: none) and (pointer: coarse) {
+        body {
+          font-size: 22px;
+          line-height: 1.6;
+        }
+      }
+
+      a {
+        color: blue;
+        text-decoration: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #222;
+          color: snow;
+        }
+
+        a {
+          color: peachpuff;
+        }
+      }
+
       main {
         margin: 1rem;
         display: flex;
@@ -18,10 +41,14 @@
         align-items: center;
         min-height: 60svh;
       }
+
+      output {
+        max-width: 30rem;
+      }
     </style>
     <script type="module" src="./quotes/init.ts"></script>
   </head>
   <body>
-    <main><output></output></main>
+    <main><output>...</output></main>
   </body>
 </html>

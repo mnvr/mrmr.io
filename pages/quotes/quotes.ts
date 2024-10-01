@@ -84,6 +84,6 @@ export const quotes: string[] = [
     "Behind him, across vast distances of space and time, from the place he had left, he thought he heard music too. But perhaps it was only an echo.",
     "I always wanted to go to East Cliff, more years than I can remember, until today I just grabbed a vine and started up. Halfway up wind and a heavy mist closed in, and it was hard to get on. The slickery mud under the moss on the rocks gave way, and I couldn't keep going. So here I stay, under this cinnamon tree, white clouds for my pillow, I'll just take a nap.",
     "I was conscious only of my happiness as a butterfly, but then I woke, veritably myself again. Now I don't know whether I was then a man dreaming I was a butterfly, or whether I am not a butterfly dreaming I am a man.",
-    "Passion is not friendly. It is arrogant, contemptuous of all that is not itself, and, as they very definition of passion implies the impulse to freedom, it has a mighty intimidating power. It contains a challeng. It contains an unspeakable hope.",
+    "Passion is not friendly. It is arrogant, contemptuous of all that is not itself, and, as they very definition of passion implies the impulse to freedom, it has a mighty intimidating power. It contains a challenge. It contains an unspeakable hope.",
     "Silence does not translate to words",
 ];
