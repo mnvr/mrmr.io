@@ -1,1 +1,46 @@
-<h1>404</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 | Page not found</title>
+    <style>
+      body {
+        font-size: 20px;
+        min-height: 84svh;
+        display: grid;
+        place-content: center;
+      }
+      ul {
+        line-height: 1.6;
+        padding-left: 0;
+        list-style-position: inside;
+      }
+      a {
+        color: blue;
+        text-decoration: none;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: #222;
+          color: snow;
+        }
+
+        a {
+          color: lightcyan;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>4 oh! 4</h1>
+      <p>This page was not found</p>
+      <ul>
+        <li><a href="/">Go to the site index</a></li>
+        <li><a href="https://github.com/mnvr/mrmr.io">Report an issue</a></li>
+      </ul>
+    </main>
+  </body>
+</html>
