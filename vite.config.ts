@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
-import glob from "fast-glob";
+import { globSync } from "tinyglobby";
 
-const entryPoints = glob.sync(["**/*.html", "!dist", "!node_modules"]);
+const entryPoints = globSync(["**/*.html", "!dist", "!node_modules"]);
 
 // https://vitejs.dev/config/
 export default defineConfig({
