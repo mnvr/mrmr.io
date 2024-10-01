@@ -3,8 +3,7 @@ import { quotes } from "../pages/quotes/quotes";
 import { ensure, ensureNumber } from "../src/utils/ensure";
 import { randomInt, randomItem } from "../src/utils/random";
 
-export const parsedQuotes = parseQuotes(quotes);
-console.log({ parsedQuotes });
+const parsedQuotes = parseQuotes(quotes);
 
 /**
  * The index of the quote that we are currently showing. It indexes into
@@ -23,10 +22,6 @@ const init = () => {
 
 const handlePopState = (event: PopStateEvent) => {
     const { state } = event;
-
-    // popstate is also fired when the user clicks one of the <a href>s that we
-    // added. In such cases, state is null. Ignore these.
-    if (!state) return;
 
     showQuoteAtIndex(ensureNumber(state.quoteIndex));
 };
@@ -53,7 +48,7 @@ const showQuoteAtIndex = (i: number) => {
  * (randomly selected) quote. Update the display by using
  * {@link showQuoteAtIndex} to update the current quote.
  */
-export const traverse = (word: string) => {
+const traverse = (word: string) => {
     const { quoteIndicesForWord } = parsedQuotes;
     const key = word.toLowerCase();
     const linkedQuoteIndices = ensure(quoteIndicesForWord.get(key)).filter(
@@ -73,7 +68,10 @@ const createDOMElement = (quote: ParsedQuote) => {
             const word = ensure(segment[0]);
             const a = document.createElement("a");
             a.href = "#";
-            a.addEventListener("click", () => traverse(word));
+            a.addEventListener(
+                "click",
+                (e) => (traverse(word), e.preventDefault()),
+            );
             a.textContent = word;
             p.appendChild(a);
         } else {
