@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "tsc && prettier --check ."
+    "lint-fix": "tsc && prettier --write ."
   },
   "devDependencies": {
     "fast-glob": "^3.3.2",

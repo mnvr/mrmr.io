@@ -294,7 +294,7 @@ export const defaultPlayParams: PlayParamsOrDefault = {
  * This more elaborate version is needed to handle nested objects.
  */
 const mergeIntoDefaultPlayParams = (
-  params?: PlayParams
+  params?: PlayParams,
 ): PlayParamsOrDefault => {
   if (!params) return defaultPlayParams;
   return {
@@ -329,7 +329,7 @@ const validateParams = (params: PlayParamsOrDefault) => {
 const validateMIDINote = (v: MIDINote) => {
   if (v < 21 || v > 108)
     throw new Error(
-      `Invalid MIDI note ${v}. MIDI note values are expected to be in the range 21 and 108 (inclusive).`
+      `Invalid MIDI note ${v}. MIDI note values are expected to be in the range 21 and 108 (inclusive).`,
     );
 };
 
@@ -337,7 +337,7 @@ const validateMIDINote = (v: MIDINote) => {
 const validateLevel = (v: Level) => {
   if (v < 0 || v > 1)
     throw new Error(
-      `Invalid level ${v}. Level values are expected to be in the range 0 and 1 (inclusive).`
+      `Invalid level ${v}. Level values are expected to be in the range 0 and 1 (inclusive).`,
     );
 };
 
@@ -345,7 +345,7 @@ const validateLevel = (v: Level) => {
 const validateTSecond = (v: TSecond) => {
   if (v < 0)
     throw new Error(
-      `Invalid time (in second) ${v}. Second values are expected to be positive.`
+      `Invalid time (in second) ${v}. Second values are expected to be positive.`,
     );
 };
 
@@ -542,7 +542,7 @@ export class Synth {
     amp.gain.setTargetAtTime(
       env.sustain * level,
       t + env.attack,
-      env.decay / 3
+      env.decay / 3,
     );
 
     // Exponential ramp from `sustainLevel * level` to `0` over `release`
@@ -555,7 +555,7 @@ export class Synth {
     amp.gain.setTargetAtTime(
       0,
       t + env.attack + env.decay + duration,
-      env.release / 5
+      env.release / 5,
     );
 
     // Apply a relatively strong attentuation to the output always, to avoid

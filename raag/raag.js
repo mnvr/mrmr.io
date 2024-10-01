@@ -17,7 +17,7 @@ const play = (button) => {
   const base =
     parseInt(
       parent.getAttribute("data-offset-base") ||
-        parent.parentElement.getAttribute("data-offset-base")
+        parent.parentElement.getAttribute("data-offset-base"),
     ) || 69;
   const env = parent?.classList.contains("piano") ? { release: 3 } : undefined;
   button.setAttribute("data-playing", true);
