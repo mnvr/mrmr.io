@@ -5,8 +5,6 @@
 /come https://poems.mrmr.io/stargazers 301
 /become https://poems.mrmr.io/become 301
 /evoke https://notes.mrmr.io/evoke 301
-/gen24 https://mnvr.github.io/gen24 301
-/gen24/* https://mnvr.github.io/gen24/:splat 301
 /honey-and-cashews https://poems.mrmr.io/honey-and-cashews 301
 /housefly https://poems.mrmr.io/housefly 301
 /memoization-in-haskell https://notes.mrmr.io/memoization-in-haskell 301
@@ -26,3 +24,5 @@
 /trust-your-intuition https://notes.mrmr.io/trust-your-intuition 301
 /typescript-vs-haskell https://notes.mrmr.io/typescript-vs-haskell 301
 /universe-is-its-own-simulation https://notes.mrmr.io/the-universe-is-its-own-simulation 301
+/gen24 https://mnvr.github.io/gen24 301
+/gen24/* https://mnvr.github.io/gen24/:splat 301
