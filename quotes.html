@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quotes</title>
+    <meta
+      name="description"
+      content="Quotes linked by the words they contain"
+    />
+    <!-- TODO -->
+    <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
+    <style>
+      main {
+        margin: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60svh;
+      }
+    </style>
+    <script type="module">
+      import { init } from "./quotes";
+      init();
+    </script>
+  </head>
+  <body>
+    <main><output></output></main>
+  </body>
+</html>
