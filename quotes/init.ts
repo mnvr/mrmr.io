@@ -1,9 +1,10 @@
 import { parseQuotes, type ParsedQuote } from "./parse.ts";
-import { quotes } from "./quotes.ts";
 import { ensure, ensureNumber } from "./ensure.ts";
 import { randomInt, randomItem } from "./random.ts";
 
-const parsedQuotes = parseQuotes(quotes);
+import quotes from "./quotes.json";
+
+const parsedQuotes = parseQuotes(quotes as string[]);
 
 /**
  * The index of the quote that we are currently showing. It indexes into
@@ -50,7 +51,7 @@ const traverse = (word: string) => {
   const { quoteIndicesForWord } = parsedQuotes;
   const key = word.toLowerCase();
   const linkedQuoteIndices = ensure(quoteIndicesForWord.get(key)).filter(
-    (qi) => qi !== _quoteIndex
+    (qi) => qi !== _quoteIndex,
   );
 
   const quoteIndex = ensure(randomItem(linkedQuoteIndices));

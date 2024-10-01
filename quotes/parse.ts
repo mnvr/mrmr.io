@@ -1,5 +1,6 @@
 import { ensure } from "./ensure.ts";
-import { ignoredWords } from "./quotes.ts";
+
+const ignoredWords: string[] = ["the", "it", "a", "an", "this", "that", "and"];
 
 export interface ParsedQuotes {
   /** An array of {@link ParsedQuote}s. */
@@ -47,7 +48,7 @@ export const parseQuotes = (quotes: string[]): ParsedQuotes => {
      */
   const quoteIndicesForWord = parseQuoteIndicesForWord(quotes);
   const parsedQuotes = quotes.map((quote) =>
-    parseQuote(quote, quoteIndicesForWord)
+    parseQuote(quote, quoteIndicesForWord),
   );
   const quoteLengths = quotes.map((quote) => quote.length);
   ensureNoDeadEnds(parsedQuotes);
@@ -74,7 +75,7 @@ const parseQuoteIndicesForWord = (quotes: string[]) => {
     potentialWords(quote).forEach((word) => {
       quoteIndicesForWord.set(
         word,
-        (quoteIndicesForWord.get(word) ?? []).concat([i])
+        (quoteIndicesForWord.get(word) ?? []).concat([i]),
       );
     });
   });
@@ -168,7 +169,7 @@ const potentialWords = (s: string): string[] =>
     ...new Set(
       potentialSegments(s)
         .flatMap((sg) => (typeof sg === "string" ? [] : sg))
-        .map((w) => w.toLowerCase())
+        .map((w) => w.toLowerCase()),
     ),
   ].filter((w) => !ignoredWordSet.has(w));
 
@@ -189,7 +190,7 @@ const ignoredWordSet = new Set<string>(ignoredWords);
  */
 const parseQuote = (
   quote: string,
-  quoteIndicesForWord: Map<string, number[]>
+  quoteIndicesForWord: Map<string, number[]>,
 ): ParsedQuote => {
   const hasBeenLinked = new Set<string>();
   return consolidateSegments(
@@ -209,7 +210,7 @@ const parseQuote = (
           return word;
         }
       }
-    })
+    }),
   );
 };
 
@@ -219,14 +220,17 @@ const parseQuote = (
  * This reduces the number of `<span/>`s that are created in the DOM.
  */
 const consolidateSegments = (segments: ParsedQuote): ParsedQuote =>
-  segments.reduce((res, sg) => {
-    const n = res.length;
-    if (typeof sg === "string" && n && typeof res[n - 1] === "string") {
-      const combined = [res[n - 1], sg].join("");
-      return res.slice(0, n - 1).concat([combined]);
-    }
-    return res.concat([sg]);
-  }, [] as typeof segments);
+  segments.reduce(
+    (res, sg) => {
+      const n = res.length;
+      if (typeof sg === "string" && n && typeof res[n - 1] === "string") {
+        const combined = [res[n - 1], sg].join("");
+        return res.slice(0, n - 1).concat([combined]);
+      }
+      return res.concat([sg]);
+    },
+    [] as typeof segments,
+  );
 
 /**
  * Throw an exception if any of the quotes are dead ends (i.e. there is even
@@ -239,7 +243,7 @@ const ensureNoDeadEnds = (quotes: ParsedQuote[]) =>
   quotes.forEach((q, i) => {
     if (!hasAtLeastOneLink(q))
       throw new Error(
-        `A quote should have at least one outgoing link from it. But the quote at index ${i} doesn't; the quote is: ${q}`
+        `A quote should have at least one outgoing link from it. But the quote at index ${i} doesn't; the quote is: ${q}`,
       );
   });
 
