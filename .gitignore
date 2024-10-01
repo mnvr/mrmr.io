@@ -1,14 +1,9 @@
-# yarn
+# npm
 node_modules/
+package-lock.json
 
 # macOS
 .DS_Store
 
-# Gatsby
-.cache/
-public
-src/gatsby-types.d.ts
-
 # Vite
 dist
-*.local

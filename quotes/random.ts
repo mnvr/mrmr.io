@@ -10,9 +10,9 @@
  * Not cryptographically secure.
  */
 export const randomInt = (n: number) => {
-    if (n === 0)
-        throw new Error("Cannot generate a random number between [0, 0)");
-    return Math.floor(Math.random() * n);
+  if (n === 0)
+    throw new Error("Cannot generate a random number between [0, 0)");
+  return Math.floor(Math.random() * n);
 };
 
 /**
@@ -23,6 +23,6 @@ export const randomInt = (n: number) => {
  * Not cryptographically secure.
  */
 export const randomItem = <T>(xs: readonly T[]) => {
-    const n = xs.length;
-    return n == 0 ? undefined : xs[randomInt(n)];
+  const n = xs.length;
+  return n == 0 ? undefined : xs[randomInt(n)];
 };
