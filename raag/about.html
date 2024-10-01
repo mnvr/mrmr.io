@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Raag FAQ</title>
+    <meta name="description" content="Interactive scales of Indian music" />
+    <!-- TODO -->
+    <!-- <link rel="icon" href="/icon.png" type="image/png"> -->
+    <style>
+      :root {
+        --mr-c-bg: oklch(49.35% 0.025 53.84);
+        --mr-c-text-1: oklch(98% 0 0);
+        --mr-c-text-2: (84.24% 0.006 43.32);
+        --mr-c-accent-1: oklch(100% 0 0);
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --mr-c-bg: oklch(25% 0.05 83.84);
+          --mr-c-text-1: oklch(94% 0 0);
+          --mr-c-text-2: oklch(75.15% 0.013 86.85);
+          --mr-c-accent-1: oklch(98% 0 0);
+        }
+      }
+
+      body {
+        background-color: var(--mr-c-bg);
+        color: var(--mr-c-text-1);
+        font-family: system-ui, sans-serif;
+        font-size: 22px;
+        display: grid;
+        grid-template-columns: 1fr min(31em, 100%) 5fr;
+      }
+
+      main,
+      footer {
+        grid-column: 2/3;
+        padding-inline: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main></main>
+    <footer>
+      <a href="raag/">/</a>
+    </footer>
+  </body>
+</html>
