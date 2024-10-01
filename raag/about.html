@@ -51,12 +51,29 @@
       }
 
       .notes {
-        margin-left: 1em;
+        margin-inline: 1em;
         font-style: italic;
+      }
 
-        .muted {
-          color: var(--mrmr-secondary-color);
-          opacity: 0.5;
+      .muted {
+        color: var(--mr-c-text-2);
+        opacity: 0.5;
+      }
+
+      .mapping span {
+        width: 1.5rem;
+        display: inline-block;
+      }
+
+      @media (width < 480px) {
+        .mapping span {
+          width: 1.2rem;
+        }
+      }
+
+      @media (width < 400px) {
+        .mapping {
+          margin-inline: 0;
         }
       }
 
@@ -212,9 +229,21 @@
         a one-to-one mapping:
       </p>
 
-      <!-- <C.Mapping1 /> -->
+      <div class="notes mapping">
+        <div>
+          <span>S</span> <span>r</span> <span>R</span> <span>g</span>
+          <span>G</span> <span>m</span> <span>M</span> <span>P</span>
+          <span>d</span> <span>D</span> <span>n</span> <span>N</span>
+        </div>
+        <div>
+          <span>A</span> <span>A<sup>#</sup></span> <span>B</span>
+          <span>C</span> <span>C<sup>#</sup></span> <span>D</span>
+          <span>D<sup>#</sup></span> <span>E</span> <span>F</span>
+          <span>F<sup>#</sup></span> <span>G</span> <span>G<sup>#</sup></span>
+        </div>
+      </div>
 
-      That's it.
+      <p>That's it.</p>
 
       <h3>You didn't convert the raag?!</h3>
 
@@ -233,14 +262,41 @@
         ones that form the thaat.
       </p>
 
-      <!-- <C.BhairavNotes /> -->
+      <div class="notes">
+        S r <span class="muted">R</span> <span class="muted">g</span> G m
+        <span class="muted">M</span> P d <span class="muted">D</span>
+        <span class="muted">n</span> N
+      </div>
 
       <p>
         Then let's include the mapping table from above. I've also included the
         distance from the root note.
       </p>
 
-      <!-- <C.Mapping2 /> -->
+      <div class="notes mapping">
+        <div>
+          <span>S</span> <span>r</span> <span class="muted">R</span>
+          <span class="muted">g</span> <span>G</span> <span>m</span>
+          <span class="muted">M</span> <span>P</span> <span>d</span>
+          <span class="muted">D</span> <span class="muted">n</span>
+          <span>N</span>
+        </div>
+        <div>
+          <span>A</span> <span>A<sup>#</sup></span>
+          <span class="muted">B</span> <span class="muted">C</span>
+          <span>C<sup>#</sup></span> <span>D</span>
+          <span class="muted">D<sup>#</sup></span> <span>E</span>
+          <span>F</span> <span class="muted">F<sup>#</sup></span>
+          <span class="muted">G</span> <span>G<sup>#</sup></span>
+        </div>
+        <div>
+          <span>0</span> <span>1</span> <span class="muted">2</span>
+          <span class="muted">3</span> <span>4</span> <span>5</span>
+          <span class="muted">6</span> <span>7</span> <span>8</span>
+          <span class="muted">9</span> <span class="muted">10</span>
+          <span>11</span>
+        </div>
+      </div>
 
       <p>Finally, we can read off corresponding western notes.</p>
 
