@@ -28,7 +28,8 @@
         background-color: var(--mr-c-bg);
         color: var(--mr-c-text-1);
         font-family: system-ui, sans-serif;
-        font-size: 22px;
+        font-size: 18px;
+        line-height: 1.3;
         display: grid;
         grid-template-columns: 1fr min(31em, 100%) 5fr;
       }
@@ -41,7 +42,187 @@
     </style>
   </head>
   <body>
-    <main></main>
+    <main>
+      <h2>Raag FAQ</h2>
+
+      <h3>What is a raag?</h3>
+
+      <p>A raag in Indian music is similar to a scale in Western music.</p>
+
+      <p>I think of raags as lying between two extremes:</p>
+
+      <ol>
+        <li>A bag of notes that go well together.</li>
+        <li>A well-known melody.</li>
+      </ol>
+
+      <p>
+        The first one is known as a <em>thaat</em> in Indian music, and a
+        <em>mode</em> in Western music.
+      </p>
+
+      <blockquote>
+        I'm simplifying a bit, as I am in the rest of the explanation.
+      </blockquote>
+
+      <p>
+        The second one you understand - it like some well-known strand of music,
+        a common motif / refrain / riff that people then start creating
+        variations of.
+      </p>
+
+      <p>
+        Both raags and scales lie somewhere between these two extremes, but
+        raags veer more towards the second extreme. At the same time, they're
+        not just fixed riffs. Instead, they are more like, say, Markov chains
+        that describe how a piece of music in that raag will grow, possibly
+        indefinitely.
+      </p>
+
+      <p>
+        Each rendition of a raag, at the hands or the voice of a capable
+        musician, is a unique instantiation of this pattern.
+      </p>
+
+      <p>
+        They're still formal, except this formal structure is not written down,
+        it is passed in an oral tradition from teachers to students.
+      </p>
+
+      <p>
+        People try to categorize them, give them names etc so that they're
+        easier to talk about. This is very useful, but it is akin to the
+        relationship of grammar with language - language does not arise from the
+        grammar written down in textbooks, it is the other way around, grammars
+        try to capture the gist of living languages.
+      </p>
+
+      <h3>What is a thaat?</h3>
+
+      <p>
+        The raags that I'm illustrating are actually <em>thaats</em>. That is,
+        there is a <em>Bhairav thaat</em> (a <em>thaat</em> being a set of 7 out
+        of the 12 notes). From this same set of 7 notes can be formed many
+        raags, one of which incidentally in this case is the
+        <em>Bhairav raag</em>.
+      </p>
+
+      <p>
+        The ladder representation of the intervals between the notes is
+        visualizing the
+        <em>Bhairav thaat</em>, not the <em>Bhairav raag</em>. The raga has more
+        structure and rules as compared to the thaat, but I haven't yet found a
+        good way to visualize the raag itself.
+      </p>
+
+      <p>
+        As another example, the illustration of <em>raag Yaman</em> is actually
+        illustrating the <em>Kalyan thaat</em>.
+      </p>
+
+      <p>
+        Since these illustrations are aimed to encourage people to make music,
+        not to be an authoritative source, I have traded inaccuracy (by not
+        mentioning the thaats) for a more beginner friendly presentation.
+      </p>
+
+      <h3>How do I convert a raag to Western notes?</h3>
+
+      <p>
+        This is perhaps the only useful question on this page. Most instruments
+        that amateurs have access to today are based on Western notes, so being
+        able to convert raags to Western notes enables more people to play them.
+      </p>
+
+      <blockquote>
+        This is not an exact mapping. Raags are usually rendered on fretless
+        instruments (the voice being one), and quarter notes feature often in
+        the rendition. The mapping given here does not capture these microtones.
+      </blockquote>
+
+      <p>
+        The Indian music tradition employs a movable set of notes. These notes
+        are uttered aloud as:
+      </p>
+
+      <div class="notes">Sa Re Ga Ma Pa Dha Ni</div>
+
+      <p>
+        But they don't map to a fixed frequency. Nor is there any correspondence
+        to a western note like C or A.
+      </p>
+
+      <p>
+        Instead, what these notes describe is distances, or intervals. We can
+        then pick any frequency, or any western note, as our starting note (the
+        <em>Sa</em>), and then the rest of the sequence can be one-to-one mapped
+        to the corresponding western notes starting from that point.
+      </p>
+
+      <p>
+        Above we listed the 7 major notes. There are also 5 minor ones, for a
+        total of 12. All 12 in sequence are sometimes notated as:
+      </p>
+
+      <div class="notes">S r R g G m M P d D n N</div>
+
+      <p>
+        So suppose we want to start with the note A on the guitar (say, A2, the
+        open second string). We will <em>move</em> our sequence of 12 notes so
+        that our starting (root) note, <em>S</em>, corresponds to A. Then, it is
+        a one-to-one mapping:
+      </p>
+
+      <!-- <C.Mapping1 /> -->
+
+      That's it.
+
+      <h3>You didn't convert the raag?!</h3>
+
+      <p>That was left as an exercise for the reader :)</p>
+
+      <p>
+        But let's do one example. Let's take the <em>Bhairav thaat</em>. If you
+        look around on the internet, you'll find that it consists of the
+        following notes:
+      </p>
+
+      <div class="notes">S r G m P d N</div>
+
+      <p>
+        Let's put these within the sequence of all 12 notes, focusing on the
+        ones that form the thaat.
+      </p>
+
+      <!-- <C.BhairavNotes /> -->
+
+      <p>
+        Then let's include the mapping table from above. I've also included the
+        distance from the root note.
+      </p>
+
+      <!-- <C.Mapping2 /> -->
+
+      <p>Finally, we can read off corresponding western notes.</p>
+
+      <div class="notes">A A<sup>#</sup> C<sup>#</sup> D E F G<sup>#</sup></div>
+
+      <p>
+        Since our mapping table used A as the root note, so these are the
+        western notes corresponding to Bhairav thaat played with A as the root
+        note. We can repeat the same exercise to get the raag from any other
+        starting note too.
+      </p>
+
+      <h3>Have I heard the Bhairav raag already?</h3>
+
+      <p>
+        You likely have. Raag Bhairav (or more accurately, the Bhairav thaat) is
+        also known as the Double Harmonic major scale, Byzantine scale, Hijaz
+        Kar, or Gypsy major. A famous example of a song that uses this scale is
+        <em>Misirlou</em>, the theme song for the movie Pulp Fiction.
+      </p>
+    </main>
     <footer>
       <a href="raag/">/</a>
     </footer>
