@@ -20,14 +20,13 @@
         font-size: 14px;
       }
       main {
-        display: grid;
-        grid-template-columns: repeat(4, min-content);
+        display: flex;
+        flex-wrap: wrap;
       }
       div {
         display: flex;
         justify-content: end;
         align-items: end;
-        vertical-align: bottom;
         padding: 1em;
         width: 8rem;
         height: 36px;
@@ -37,7 +36,7 @@
       const divs = [...document.getElementsByTagName("div")];
       for (const [i, d] of divs.entries()) {
         d.style.backgroundColor = d.innerText;
-        if (i < 98) d.style.color = "black";
+        d.style.color = i < 98 ? "black" : "white";
       }
     </script>
   </head>
