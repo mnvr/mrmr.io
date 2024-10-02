@@ -1,86 +1,103 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Random mutations</title>
-    <meta name="description" content="Evolution doesn't need much" />
-    <meta name="og:image" content="/preview.png" />
-    <link rel="icon" href="/icon.png" type="image/png" />
-    <style>
-      :root {
-        --mr-c-bg: white;
-        --mr-c-text-1: rgba(61, 61, 61);
-        --mr-c-text-2: rgba(61, 61, 61, 0.7);
-        --mr-c-accent-1: crimson;
-        --mr-c-accent-2: black;
-      }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --mr-c-bg: #111;
-          --mr-c-text-1: #ddd;
-          --mr-c-text-2: #888;
-          --mr-c-accent-1: chartreuse;
-          --mr-c-accent-2: white;
-        }
-      }
-      :root {
-        font-size: 18px;
-      }
-      body {
-        background-color: var(--mr-c-bg);
-        color: var(--mr-c-text-1);
-        font-family: system-ui, sans-serif;
-        margin-inline: 1rem;
-        margin-block: 2rem;
-        @media (min-width: 30rem) {
-          margin-inline: 2rem;
-          margin-block: 3rem;
-        }
-      }
-      div:has(pre) {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1em;
-      }
-      pre {
-        overflow-x: auto;
-      }
-      code {
-        font-size: 14px;
-        line-height: 1.4;
-      }
-      b {
-        color: var(--mr-c-accent-2);
-      }
-      b#mutation {
-        color: var(--mr-c-accent-1);
-      }
-      p {
-        margin-block: 2rem;
-        color: var(--mr-c-text-2);
-        font-size: 0.9rem;
-        max-width: 34rem;
-        line-height: 1.4;
-      }
-      footer {
-        margin-block: 3em;
-        font-size: 0.9rem;
-        a {
-          text-decoration: none;
-          color: var(--mr-c-text-2);
-        }
-        a:hover {
-          color: var(--mr-c-text-1);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h3>Random mutations</h3>
-      <div class="code-blocks-container">
-        <pre><code>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="og:image" content="/preview.png" />
+<link rel="icon" href="/icon.png" type="image/png" />
+
+<title>Random mutations</title>
+<meta name="description" content="Evolution doesn't need much" />
+
+<style>
+
+:root {
+  --mr-c-bg: white;
+  --mr-c-text-1: rgba(61, 61, 61);
+  --mr-c-text-2: rgba(61, 61, 61, 0.7);
+  --mr-c-accent-1: crimson;
+  --mr-c-accent-2: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mr-c-bg: #111;
+    --mr-c-text-1: #ddd;
+    --mr-c-text-2: #888;
+    --mr-c-accent-1: chartreuse;
+    --mr-c-accent-2: white;
+  }
+}
+
+:root {
+  font-size: 18px;
+}
+
+body {
+  background-color: var(--mr-c-bg);
+  color: var(--mr-c-text-1);
+  font-family: system-ui, sans-serif;
+  margin-inline: 1rem;
+  margin-block: 2rem;
+  @media (min-width: 30rem) {
+    margin-inline: 2rem;
+    margin-block: 3rem;
+  }
+}
+
+div:has(pre) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+pre {
+  overflow-x: auto;
+}
+
+code {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+b {
+  color: var(--mr-c-accent-2);
+}
+
+b#mutation {
+  color: var(--mr-c-accent-1);
+}
+
+p {
+  margin-block: 2rem;
+  color: var(--mr-c-text-2);
+  font-size: 0.9rem;
+  max-width: 34rem;
+  line-height: 1.4;
+}
+
+footer {
+  margin-block: 3em;
+  font-size: 0.9rem;
+  a {
+    text-decoration: none;
+    color: var(--mr-c-text-2);
+  }
+  a:hover {
+    color: var(--mr-c-text-1);
+  }
+}
+
+</style>
+
+</head><body>
+
+<main>
+
+<h3>Random mutations</h3>
+
+<div class="code-blocks-container">
+<pre><code>
 def <b>d</b>fs(s, adj):
     xs = [s]
     visited = set()
@@ -93,7 +110,7 @@ def <b>d</b>fs(s, adj):
                 xs.append(v)
 </code></pre>
 
-        <pre><code>
+<pre><code>
 def <b>b</b>fs(s, adj):
     xs = [s]
     visited = set()
@@ -105,17 +122,20 @@ def <b>b</b>fs(s, adj):
             for v in adj.get(u, []):
                 xs.append(v)
 </code></pre>
-      </div>
+</div>
 
-      <p>
-        Tiny, single letter mutations are enough for evolution to explore vast
-        landscapes. A demonstration using code, but the same mechanism is at
-        play with DNA – a single amino-acid mutation can express an entirely
-        different function, and organism.
-      </p>
-    </main>
-    <footer>
-      <a href="/">/</a>
-    </footer>
-  </body>
+<p>
+Tiny, single letter mutations are enough for evolution to explore vast
+landscapes. A demonstration using code, but the same mechanism is at play with
+DNA – a single amino-acid mutation can express an entirely different function,
+and organism.
+</p>
+
+</main>
+
+<footer>
+<a href="/">/</a>
+</footer>
+
+</body>
 </html>
