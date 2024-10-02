@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Random mutations</title>
+
+<style>
+body {
+    color: #222;
+}
+
+@media (min-width: 40em) {
+    body {
+        margin: 4em;
+    }
+}
+
+header p {
+    margin-top: -0.5rem;
+    opacity: 0.8;
+    font-style: italic;
+    margin-bottom: 2rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+<h2>Random mutations</h2>
+<p>
+<small>
+    Manav Rathi<br/>
+    Summer, 2019
+</small>
+</p>
+</header>
+
+<div class="container">
+
+<div>
+<pre>
+def <b>dfs</b>(s, adj):
+    xs = [s]
+    visited = set()
+    while xs:
+        u = xs.pop()
+        if u not in visited:
+            print(u)
+            visited.add(u)
+            for v in adj.get(u, []):
+                xs.append(v)
+</pre>
+</div>
+
+<div>
+<pre>
+def <b>bfs</b>(s, adj):
+    xs = [s]
+    visited = set()
+    while xs:
+        u = xs.pop(<b>0</b>)
+        if u not in visited:
+            print(u)
+            visited.add(u)
+            for v in adj.get(u, []):
+                xs.append(v)
+</pre>
+</div>
+
+</div>
+
+</body>
+
+</html>
