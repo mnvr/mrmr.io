@@ -16,7 +16,7 @@ export default defineConfig({
       input: Object.fromEntries(
         entryPoints
           .map((h) => [h, h])
-          .concat(mdEntryPoints.map((m) => [m, m.replace(".md", ".md")])),
+          .concat(mdEntryPoints.map((m) => [m, m.replace(".md", ".html")])),
       ),
     },
   },
