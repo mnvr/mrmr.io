@@ -9,6 +9,22 @@
 <title>Random mutations</title>
 
 <style>
+:root {
+    --mr-c-background: white;
+    --mr-c-text:       oklch(25% 0 0);
+    --mr-c-text-soft:  oklch(42% 0 0);
+    --mr-c-text-hard:  black;
+}
+
+@media (prefers-color-scheme: dark) {
+:root {
+    --mr-c-background: oklch(31.14% 0.021 285.75);
+    --mr-c-text:       oklch(90%    0.008 286.75);
+    --mr-c-text-soft:  oklch(78.61% 0.021 285.75);
+    --mr-c-text-hard:  white;
+}
+}
+
 body {
     color: #222;
 }
