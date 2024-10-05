@@ -29,8 +29,16 @@ const play = (button) => {
 const notes = document.querySelectorAll("button[data-offset]");
 for (const note of notes) {
   note.ariaLabel = note.getAttribute("data-offset");
+  // Always play when the button is activated.
   note.addEventListener("click", (e) => play(e.target));
+  // Play on hover, but only on mouse hovers, because otherwise on touch devices
+  // we end up with duplicate playback because of back to back pointerenter and
+  // click events.
   note.addEventListener("pointerenter", (e) => {
+    if (e.pointerType != "mouse" && canAutoPlay) play(e.target);
+  })
+  // Play when the user tabs through the buttons.
+  note.addEventListener("focus", (e) => {
     if (canAutoPlay) play(e.target);
   });
 }
