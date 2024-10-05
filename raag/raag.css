@@ -89,9 +89,9 @@ section + section {
 }
 
 .fretboard {
-    /* The last row is the mostly visually empty markings, so give it increased
-       margin an the start to visually center the entire fretboard within the
-       flow */
+    /* The last row is the mostly visually empty markings, so increase their
+       margin at the start so as to visually center the entire fretboard within
+       the flow. */
     margin-block-start: 32px;
 }
 
@@ -121,8 +121,16 @@ section + section {
     border-radius: 4px;
 }
 
+.intervals {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 320px;
+    justify-content: space-between;
+}
+
 button.interval {
     border: 0;
+    padding: 0;
     cursor: pointer;
     background: transparent;
     color: var(--mr-c-text-2);
