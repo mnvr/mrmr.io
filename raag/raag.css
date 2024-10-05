@@ -113,6 +113,11 @@ section + section {
     height: 12px;
     border-radius: 3px;
 }
+.fretboard button.note {
+    /* The default padding for the button makes it flex (shrink) differently
+       from the other .note divs, which is not what we want. */
+    padding: 0;
+}
 
 .dot {
     width: 8px;
