@@ -1,6 +1,6 @@
 body {
-    background-color: var(--mr-c-bg);
-    color: var(--mr-c-text-1);
+    background-color: var(--mr-c-bg--);
+    color: var(--mr-c-text);
     font-family: system-ui, sans-serif;
     font-size: 22px;
     display: grid;
@@ -19,10 +19,10 @@ footer {
     margin-block: 3rem;
     a {
         text-underline-offset: 5px;
-        color: var(--mr-c-text-2);
+        color: var(--mr-c-soft);
     }
     a:hover {
-        color: var(--mr-c-text-1);
+        color: var(--mr-c-text);
     }
 }
 
@@ -37,19 +37,19 @@ header {
 }
 
 .muted {
-    color: var(--mr-c-text-2);
+    color: var(--mr-c-soft);
 }
 
 div.note,
 .dot {
-    background-color: var(--mr-c-text-2);
+    background-color: var(--mr-c-soft);
     opacity: 0.2;
 }
 
 button.note {
     border: 0;
     cursor: pointer;
-    background-color: var(--mr-c-text-2);
+    background-color: var(--mr-c-soft);
 }
 
 button.note[data-root] {
@@ -57,11 +57,11 @@ button.note[data-root] {
 }
 
 button.note[data-playing] {
-    background-color: var(--mr-c-accent-1);
+    background-color: var(--mr-c-hard);
 }
 
 button.note:hover {
-    background-color: var(--mr-c-accent-1);
+    background-color: var(--mr-c-hard);
 }
 
 .ladder {
@@ -89,9 +89,8 @@ section + section {
 }
 
 .fretboard {
-    /* The last row is the mostly visually empty markings, so increase their
-       margin at the start so as to visually center the entire fretboard within
-       the flow. */
+    /* The last row is the mostly visually empty markings, so increase its top
+       margin so as to visually center the entire fretboard within the flow. */
     margin-block-start: 32px;
 }
 
@@ -113,6 +112,7 @@ section + section {
     height: 12px;
     border-radius: 3px;
 }
+
 .fretboard button.note {
     /* The default padding for the button makes it flex (shrink) differently
        from the other .note divs, which is not what we want. */
@@ -138,16 +138,16 @@ button.interval {
     padding: 0;
     cursor: pointer;
     background: transparent;
-    color: var(--mr-c-text-2);
+    color: var(--mr-c-soft);
     font-size: 2rem;
 }
 
 button.interval[data-playing] {
-    color: var(--mr-c-accent-1);
+    color: var(--mr-c-hard);
 }
 
 button.interval:hover {
-    color: var(--mr-c-accent-1);
+    color: var(--mr-c-hard);
 }
 
 .piano {
@@ -178,7 +178,7 @@ button.interval:hover {
     margin-inline-start: -16px;
 
     z-index: 1;
-    background-color: var(--mr-c-bg);
+    background-color: var(--mr-c-bg--);
 }
 
 .piano > .adj {
@@ -191,7 +191,7 @@ button.interval:hover {
 }
 
 .piano > button.major {
-    background-color: var(--mr-c-text-2);
+    background-color: var(--mr-c-soft);
     opacity: 0.6;
 }
 
