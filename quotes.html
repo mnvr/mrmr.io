@@ -10,14 +10,10 @@
 <meta name="description" content="Quotes linked by the words they contain">
 
 <style>
-@media (pointer: coarse) and (hover: none) {
-  html {
-    font-size: large;
-  }
-}
-
 body {
+  font-family: system-ui, sans-serif;
   line-height: 1.4;
+  margin-block: 0;
 }
 
 a {
@@ -40,10 +36,6 @@ a {
     background-color: oklch(21.14% 0.021 285.75);
     color: oklch(90% 0.008 286.75);
   }
-}
-
-body {
-  margin-block: 0;
 }
 
 main {
@@ -69,8 +61,7 @@ footer {
 footer a {
   width: 44px;
   height: 44px;
-  /* nicer outline */
-  border-radius: 2px;
+  border-radius: 2px /* nicer outline */;
   text-align: center;
   vertical-align: center;
 }
