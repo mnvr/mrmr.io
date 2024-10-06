@@ -1,19 +1,17 @@
-@media (pointer: coarse) and (hover: none) {
-  html {
-    font-size: large;
-  }
-  ul {
-    padding-inline-start: 1rem;
-  }
-}
-
 body {
   margin: 1rem;
-  line-height: 1.6;
+  font-family: system-ui, sans-serif;
+  line-height: 1.75;
 }
 
 a {
   text-decoration: inherit;
+}
+
+@media (width <= 490px) {
+  ul {
+    padding-inline-start: 1rem;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
