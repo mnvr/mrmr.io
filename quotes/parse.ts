@@ -217,7 +217,7 @@ const parseQuote = (
 /**
  * Combine consecutive non-word segments into a single one.
  *
- * This reduces the number of `<span/>`s that are created in the DOM.
+ * This reduces the number of `<span>`s that are created in the DOM.
  */
 const consolidateSegments = (segments: ParsedQuote): ParsedQuote =>
   segments.reduce(
