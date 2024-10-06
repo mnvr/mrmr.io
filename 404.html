@@ -1,47 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>404 | Page not found</title>
-    <style>
-      body {
-        font-size: 20px;
-        min-height: 84svh;
-        display: grid;
-        place-content: center;
-      }
-      ul {
-        line-height: 1.6;
-        padding-left: 0;
-        list-style-position: inside;
-      }
-      a {
-        text-decoration: none;
-      }
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #222;
-          color: snow;
-        }
-        a {
-          color: pink;
-        }
-        a:visited {
-          color: rgb(208, 163, 163);
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>4 oh! 4</h1>
-      <p>This page was not found</p>
-      <ul>
-        <li><a href="/">Go to the site index</a></li>
-        <li><a href="https://github.com/mnvr/mrmr.io">Report an issue</a></li>
-      </ul>
-    </main>
-  </body>
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/icon.png" type="image/png">
+
+<title>404 | Page not found</title>
+
+<style>
+html {
+  font-size: large;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  line-height: 1.5;
+  min-height: 84svh;
+  display: grid;
+  place-content: center;
+}
+
+h1, p, ul {
+  margin-block: 0.5rem;
+}
+
+ul {
+  line-height: 2;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+a {
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: oklch(31.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
+  }
+  a {
+    color: oklch(87.14% 0.071 7.09);
+  }
+  a:visited {
+    color: oklch(87.14% 0.031 7.09);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main>
+<h1>404</h1>
+<p>This page was not found</p>
+<ul>
+<li><a href="/">Go to the site index</a></li>
+<li><a href="https://github.com/mnvr/mrmr.io">Report an issue</a></li>
+</ul>
+</main>
+
+</body>
 </html>
