@@ -1,223 +1,246 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Raags</title>
-    <meta name="description" content="Interactive scales of Indian music" />
-    <meta name="og:image" content="/preview.png" />
-    <link rel="icon" href="/icon.png" type="image/png" />
-    <style>
-      :root {
-        --mr-c-bg: hsl(0, 0%, 100%);
-        --mr-c-text-1: hsl(0, 0%, 24%);
-        --mr-c-text-2: hsl(0, 0%, 47%);
-        --mr-c-accent-1: hsl(0, 0%, 15%);
-      }
 
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --mr-c-bg: hsl(0, 0%, 4%);
-          --mr-c-text-1: hsl(0, 0%, 90%);
-          --mr-c-text-2: hsl(0, 0%, 73%);
-          --mr-c-accent-1: hsl(0, 0%, 100%);
-        }
-      }
+<head>
 
-      body {
-        background-color: var(--mr-c-bg);
-        color: var(--mr-c-text-1);
-        font-family: system-ui, sans-serif;
-        font-size: 20px;
-        display: grid;
-        grid-template-columns: 1fr min(31em, 100%) 1fr;
-      }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="og:image" content="/preview.png">
+<link rel="icon" href="/icon.png" type="image/png">
 
-      main,
-      footer {
-        grid-column: 2/3;
-        padding-inline: 1rem;
-      }
+<title>Raags</title>
+<meta name="description" content="Interactive scales of Indian music" />
 
-      header {
-        font-family: serif;
-        font-style: italic;
+<style>
+:root {
+  --mr-c-bg--: hsl(0, 0%, 100%);
+  --mr-c-text: hsl(0, 0%, 24%);
+  --mr-c-soft: hsl(0, 0%, 47%);
+  --mr-c-hard: hsl(0, 0%, 15%);
+}
 
-        text-align: center;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mr-c-bg--: hsl(0, 0%, 4%);
+    --mr-c-text: hsl(0, 0%, 90%);
+    --mr-c-soft: hsl(0, 0%, 73%);
+    --mr-c-hard: hsl(0, 0%, 100%);
+  }
+}
 
-        h1 {
-          font-size: 3em;
-          margin-block-end: 7px;
+html {
+  font-size: large;
+}
 
-          word-spacing: -5px;
-        }
+body {
+  margin: 18px;
+  background-color: var(--mr-c-bg--);
+  color: var(--mr-c-text);
+  font-family: system-ui, sans-serif;
+  display: grid;
+  grid-template-columns: 1fr min(31em, 100%) 1fr;
+}
 
-        p {
-          margin-block-start: 0;
-          font-size: 1.6em;
-        }
-      }
+main,
+footer {
+  grid-column: 2/3;
+}
 
-      .muted {
-        color: var(--mr-c-text-2);
-      }
+header {
+  font-family: serif;
+  font-style: italic;
 
-      footer {
-        font-size: 16px;
-        margin-block-start: 1em;
-        margin-block-end: 3em;
-        text-align: center;
+  text-align: center;
 
-        a {
-          text-underline-offset: 5px;
-          font-weight: 500;
-        }
+  h1 {
+    font-size: 3rem;
+    margin-block-end: 1rem;
 
-        a {
-          color: var(--mr-c-text-2);
-        }
+    word-spacing: -5px;
+  }
 
-        a:hover {
-          color: var(--mr-c-text-1);
-        }
-      }
+  p {
+    margin-block-start: 0;
+    font-size: 1.6rem;
+  }
+}
 
-      ul {
-        margin-block-start: 36px;
-        list-style: none;
-        padding-inline-start: 0;
+.muted {
+  color: var(--mr-c-soft);
+}
 
-        li {
-          margin: 1em;
-          /* Remove the margin on small screens (we already have a margin from
-             the page edge on the main element) */
-          @media (max-width: 600px) {
-            margin-inline: 0;
-          }
+footer {
+  font-size: smaller;
 
-          a {
-            text-decoration: none;
-            opacity: 0.87;
-          }
+  margin-block-start: 1em;
+  margin-block-end: 3em;
+  text-align: center;
 
-          a:hover {
-            opacity: 1;
-          }
-        }
-      }
+  a {
+    text-underline-offset: 5px;
+    font-weight: 500;
+  }
 
-      .raag-card {
-        padding-inline: 1.25em;
-        padding-block: 0.75em;
-        border-radius: 3px;
+  a {
+    color: var(--mr-c-soft);
+  }
 
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
+  a:hover {
+    color: var(--mr-c-text);
+  }
+}
 
-      .raag-name {
-        font-variant: small-caps;
-        text-transform: lowercase;
-        /* Shift up a bit to account for the empty space at the top of
-           small-caps (compared to if they were normal caps).  */
-        margin-block-end: 4px;
-        width: 150px;
-      }
+ul {
+  margin-block-start: 2.5rem;
+  margin-block-end: 2rem;
+  list-style: none;
+  padding-inline-start: 0;
 
-      .raag-notes {
-        flex-grow: 1;
-        flex-basis: calc(12px * (12 + 11));
-        display: flex;
-        justify-content: space-between;
+  li {
+    margin: 1rem;
+    /* Remove the margin on small screens (we already have a margin from the
+     * page edge on the main element). */
+    @media (max-width: 600px) {
+      margin-inline: 0;
+    }
 
-        & > div {
-          width: 12px;
-          height: 42px;
-          border-radius: 3px;
+    a {
+      text-decoration: none;
+      opacity: 0.87;
+    }
 
-          background-color: var(--mr-c-raag-note-on);
-        }
+    a:hover {
+      opacity: 1;
+    }
+  }
+}
 
-        & > div.muted {
-          background-color: var(--mr-c-raag-note-off);
-        }
-      }
+.raag-card {
+  padding-inline: 1.25em;
+  padding-block: 0.75em;
+  border-radius: 3px;
 
-      #bhairav {
-        background-color: oklch(49.35% 0.025 53.84);
-        color: oklch(84.24% 0.006 43.32);
-        --mr-c-raag-note-on: oklch(98% 0 0);
-        --mr-c-raag-note-off: oklch(84.24% 0.006 43.32 / 0.3);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
 
-        @media (prefers-color-scheme: dark) {
-          background-color: oklch(25% 0.05 83.84);
-          color: oklch(75.15% 0.013 86.85);
-          --mr-c-raag-note-on: oklch(94% 0 0);
-          --mr-c-raag-note-off: oklch(75.15% 0.013 86.85 / 0.3);
-        }
-      }
-      #yaman {
-        background-color: oklch(52% 0.166 267);
-        color: oklch(94% 0 0);
-        --mr-c-raag-note-on: oklch(94% 0 0);
-        --mr-c-raag-note-off: oklch(80% 0.065 265 / 0.5);
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <header>
-        <h1>raag <span class="muted">city</span></h1>
-        <p>रागों <span class="muted">की नगरी</span></p>
-      </header>
-      <ul>
-        <li>
-          <a href="raag/bhairav"
-            ><div id="bhairav" class="raag-card">
-              <div class="raag-name">Bhairav</div>
-              <div class="raag-notes">
-                <div></div>
-                <div></div>
-                <div class="muted"></div>
-                <div class="muted"></div>
-                <div></div>
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-                <div></div>
-                <div class="muted"></div>
-                <div class="muted"></div>
-                <div></div>
-              </div></div
-          ></a>
-        </li>
-        <li>
-          <a href="raag/yaman"
-            ><div id="yaman" class="raag-card">
-              <div class="raag-name">Yaman</div>
-              <div class="raag-notes">
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-                <div class="muted"></div>
-                <div></div>
-              </div></div
-          ></a>
-        </li>
-      </ul>
-    </main>
-    <footer>
-      <a href="raag/about">FAQ</a>
-    </footer>
-  </body>
+.raag-name {
+  font-variant: small-caps;
+  text-transform: lowercase;
+  /* Shift up a bit to account for the empty space at the top of small-caps
+   * (compared to if they were normal caps).  */
+  margin-block-end: 4px;
+  width: 150px;
+}
+
+.raag-notes {
+  flex-grow: 1;
+  flex-basis: calc(12px * (12 + 11));
+  display: flex;
+  justify-content: space-between;
+
+  & > div {
+    width: 12px;
+    height: 42px;
+    border-radius: 3px;
+
+    background-color: var(--mr-c-raag-note-on);
+  }
+
+  & > div.muted {
+    background-color: var(--mr-c-raag-note-off);
+  }
+}
+
+#bhairav {
+  background-color: oklch(49.35% 0.025 53.84);
+  color: oklch(84.24% 0.006 43.32);
+  --mr-c-raag-note-on: oklch(98% 0 0);
+  --mr-c-raag-note-off: oklch(84.24% 0.006 43.32 / 0.3);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: oklch(25% 0.05 83.84);
+    color: oklch(75.15% 0.013 86.85);
+    --mr-c-raag-note-on: oklch(94% 0 0);
+    --mr-c-raag-note-off: oklch(75.15% 0.013 86.85 / 0.3);
+  }
+}
+
+#yaman {
+  background-color: oklch(52% 0.166 267);
+  color: oklch(94% 0 0);
+  --mr-c-raag-note-on: oklch(94% 0 0);
+  --mr-c-raag-note-off: oklch(80% 0.065 265 / 0.5);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<main>
+
+<header>
+<h1>raag <span class="muted">city</span></h1>
+<p>रागों <span class="muted">की नगरी</span></p>
+</header>
+
+<ul>
+
+<li>
+<a href="raag/bhairav">
+<div id="bhairav" class="raag-card">
+<div class="raag-name">Bhairav</div>
+<div class="raag-notes">
+  <div></div>
+  <div></div>
+  <div class="muted"></div>
+  <div class="muted"></div>
+  <div></div>
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+  <div></div>
+  <div class="muted"></div>
+  <div class="muted"></div>
+  <div></div>
+</div></div>
+</a>
+</li>
+
+<li>
+<a href="raag/yaman">
+<div id="yaman" class="raag-card">
+<div class="raag-name">Yaman</div>
+<div class="raag-notes">
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+  <div class="muted"></div>
+  <div></div>
+</div></div>
+</a>
+</li>
+</ul>
+
+</main>
+
+<footer>
+<a href="raag/about">FAQ</a>
+</footer>
+
+</body>
+
 </html>
