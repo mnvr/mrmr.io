@@ -1,8 +1,13 @@
+html {
+  font-size: larger;
+}
+
 body {
+  margin-inline: 18px;
   background-color: var(--mr-c-bg--);
   color: var(--mr-c-text);
   font-family: system-ui, sans-serif;
-  font-size: 22px;
+  line-height: 1.5;
   display: grid;
   grid-template-columns: 1fr min(31em, 100%) 5fr;
 }
@@ -11,7 +16,6 @@ main,
 footer {
   /* A width limited column positioned slightly towards the left */
   grid-column: 2/3;
-  padding-inline: 1rem;
 }
 
 footer {
