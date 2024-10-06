@@ -5,16 +5,16 @@ import { readFile } from "node:fs/promises";
 const entryPoints = globSync(["**/*.html", "!dist", "!node_modules"]);
 
 const head = async (): Promise<Plugin> => {
-  const paperCss = `<style>${await readFile("paper.css", "utf-8")}</style>`;
   return {
     name: "vite-plugin-head",
     transformIndexHtml: {
       order: "pre",
-      handler(html, ctx) {
-        html = html.replace(
-          `<link rel="stylesheet" href="./paper.css">`,
-          paperCss,
-        );
+      async handler(html, ctx) {
+        const paperCss = `<link rel="stylesheet" href="./paper.css">`;
+        if (html.includes(paperCss)) {
+          const css = await readFile("paper.css", "utf-8");
+          html = html.replace(paperCss, `<style>${css}</style>`);
+        }
         const preview =
           ctx.originalUrl == "/" ? "/preview/blue.png" : "/preview.png";
         const tags: HtmlTagDescriptor[] = [
