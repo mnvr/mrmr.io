@@ -10,11 +10,7 @@ const head = async (): Promise<Plugin> => {
     transformIndexHtml: {
       order: "pre",
       async handler(html, ctx) {
-        const paperCss = `<link rel="stylesheet" href="./paper.css">`;
-        if (html.includes(paperCss)) {
-          const css = await readFile("paper.css", "utf-8");
-          html = html.replace(paperCss, `<style>${css}</style>`);
-        }
+        html = await inlineCSS("paper", html);
         const preview =
           ctx.originalUrl == "/" ? "/preview/blue.png" : "/preview.png";
         const tags: HtmlTagDescriptor[] = [
@@ -35,6 +31,18 @@ const head = async (): Promise<Plugin> => {
       },
     },
   };
+};
+
+// This is likely too slow, but I haven't found a simpler way. Not inlining the
+// CSS effectively doubles our page load time, since that's the only blocking
+// load these pages usually make.
+const inlineCSS = async (name: string, html: string) => {
+  const link = `<link rel="stylesheet" href="./${name}.css">`;
+  if (html.includes(link)) {
+    const css = await readFile(`${name}.css`, "utf-8");
+    html = html.replace(link, `<style>${css}</style>`);
+  }
+  return html;
 };
 
 // https://vitejs.dev/config/
