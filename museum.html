@@ -11,8 +11,28 @@
 
 
 <style>
+:root {
+  --mr-c-bg: white;
+  --mr-c-text: oklch(25% 0 0);
+  --mr-c-soft: oklch(42% 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mr-c-bg: oklch(31.14% 0.021 285.75);
+    --mr-c-text: oklch(90% 0.008 286.75);
+    --mr-c-soft: oklch(78.61% 0.021 285.75);
+  }
+}
+
 body {
-  color: #222;
+  background-color: var(--mr-c-bg);
+  color: var(--mr-c-text);
+  margin: 1em;
+}
+
+small {
+  color: var(--mr-c-soft);
 }
 
 @media (min-width: 40em) {
@@ -23,7 +43,6 @@ body {
 
 footer p {
   margin-top: 2.5rem;
-  opacity: 0.8;
   font-style: italic;
   margin-bottom: 2rem;
 }

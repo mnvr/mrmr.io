@@ -10,9 +10,33 @@
 <meta name="description" content="A movie review">
 
 <style>
+:root {
+  --mr-c-bg: white;
+  --mr-c-text: oklch(25% 0 0);
+  --mr-c-soft: oklch(42% 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mr-c-bg: oklch(31.14% 0.021 285.75);
+    --mr-c-text: oklch(90% 0.008 286.75);
+    --mr-c-soft: oklch(78.61% 0.021 285.75);
+  }
+}
+
+body {
+  background-color: var(--mr-c-bg);
+  color: var(--mr-c-text);
+}
+
+small {
+  color: var(--mr-c-soft);
+}
+
 body {
   max-width: 25em;
   text-align: justify;
+  margin: 1em;
 }
 
 @media (min-width: 40em) {
@@ -25,7 +49,6 @@ body {
 
 header p {
   margin-top: -0.5rem;
-  opacity: 0.8;
   font-style: italic;
   margin-bottom: 2rem;
 }
@@ -36,9 +59,9 @@ header p {
 <body>
 
 <header>
-<h1>
+<h2>
 Mistakes were Made
-</h1>
+</h2>
 <p>
 <small>
     Manav Rathi<br/>
