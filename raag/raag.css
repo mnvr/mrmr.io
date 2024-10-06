@@ -4,7 +4,7 @@ html {
 
 body {
   margin-inline: 18px;
-  background-color: var(--mr-c-bg--);
+  background-color: var(--mr-c-bg);
   color: var(--mr-c-text);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
@@ -182,7 +182,7 @@ button.interval:hover {
   margin-inline-start: -16px;
 
   z-index: 1;
-  background-color: var(--mr-c-bg--);
+  background-color: var(--mr-c-bg);
 }
 
 .piano > .adj {

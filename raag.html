@@ -14,7 +14,7 @@
 
 <style>
 :root {
-  --mr-c-bg--: hsl(0, 0%, 100%);
+  --mr-c-bg: hsl(0, 0%, 100%);
   --mr-c-text: hsl(0, 0%, 24%);
   --mr-c-soft: hsl(0, 0%, 47%);
   --mr-c-hard: hsl(0, 0%, 15%);
@@ -22,7 +22,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg--: hsl(0, 0%, 4%);
+    --mr-c-bg: hsl(0, 0%, 4%);
     --mr-c-text: hsl(0, 0%, 90%);
     --mr-c-soft: hsl(0, 0%, 73%);
     --mr-c-hard: hsl(0, 0%, 100%);
@@ -34,7 +34,7 @@ html {
 }
 
 body {
-  background-color: var(--mr-c-bg--);
+  background-color: var(--mr-c-bg);
   color: var(--mr-c-text);
   font-family: system-ui, sans-serif;
   display: grid;

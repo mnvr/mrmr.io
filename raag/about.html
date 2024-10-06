@@ -13,7 +13,7 @@
 
 <style>
 :root {
-  --mr-c-bg--: oklch(49.35% 0.025 53.84);
+  --mr-c-bg: oklch(49.35% 0.025 53.84);
   --mr-c-text: oklch(98% 0 0);
   --mr-c-soft: oklch(84.24% 0.006 43.32);
   --mr-c-hard: oklch(100% 0 0);
@@ -21,7 +21,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg--: oklch(25% 0.05 83.84);
+    --mr-c-bg: oklch(25% 0.05 83.84);
     --mr-c-text: oklch(94% 0 0);
     --mr-c-soft: oklch(75.15% 0.013 86.85);
     --mr-c-hard: oklch(98% 0 0);
@@ -33,7 +33,7 @@ html {
 }
 
 body {
-  background-color: var(--mr-c-bg--);
+  background-color: var(--mr-c-bg);
   color: var(--mr-c-text);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
