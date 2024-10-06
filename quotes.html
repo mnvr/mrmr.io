@@ -44,8 +44,13 @@ a {
   }
 }
 
+body {
+  margin-block: 0;
+}
+
 main {
-  margin: 1rem;
+  margin-block: 0;
+  margin-inline: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,6 +60,22 @@ main {
 output {
   max-width: 30rem;
 }
+
+footer {
+  min-height: 35svh;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+}
+
+footer a {
+  width: 44px;
+  height: 44px;
+  /* nicer outline */
+  border-radius: 2px;
+  text-align: center;
+  vertical-align: center;
+}
 </style>
 
 <script type="module" src="./quotes/init.ts"></script>
@@ -63,6 +84,7 @@ output {
 
 <body>
 <main><output>...</output></main>
+<footer><a href="/">.</a></footer>
 </body>
 
 </html>
