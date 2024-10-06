@@ -1,0 +1,37 @@
+@media (pointer: coarse) and (hover: none) {
+  html {
+    font-size: large;
+  }
+  ul {
+    padding-inline-start: 1rem;
+  }
+}
+
+body {
+  margin: 1rem;
+  line-height: 1.6;
+}
+
+a {
+  text-decoration: inherit;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: oklch(31.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
+  }
+  a {
+    color: oklch(87.14% 0.071 7.09);
+  }
+  a:visited {
+    color: oklch(87.14% 0.031 7.09);
+  }
+}
+
+@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
+  body {
+    background-color: oklch(21.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
+  }
+}
