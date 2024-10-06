@@ -13,91 +13,91 @@
 
 <style>
 :root {
-    --mr-c-bg: oklch(49.35% 0.025 53.84);
-    --mr-c-text-1: oklch(98% 0 0);
-    --mr-c-text-2: oklch(84.24% 0.006 43.32);
-    --mr-c-accent-1: oklch(100% 0 0);
+  --mr-c-bg: oklch(49.35% 0.025 53.84);
+  --mr-c-text-1: oklch(98% 0 0);
+  --mr-c-text-2: oklch(84.24% 0.006 43.32);
+  --mr-c-accent-1: oklch(100% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
-:root {
+  :root {
     --mr-c-bg: oklch(25% 0.05 83.84);
     --mr-c-text-1: oklch(94% 0 0);
     --mr-c-text-2: oklch(75.15% 0.013 86.85);
     --mr-c-accent-1: oklch(98% 0 0);
-}
+  }
 }
 
 body {
-    background-color: var(--mr-c-bg);
-    color: var(--mr-c-text-1);
-    font-family: system-ui, sans-serif;
-    font-size: 18px;
-    line-height: 1.5;
-    display: grid;
-    grid-template-columns: 1fr min(31em, 100%) 5fr;
+  background-color: var(--mr-c-bg);
+  color: var(--mr-c-text-1);
+  font-family: system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  display: grid;
+  grid-template-columns: 1fr min(31em, 100%) 5fr;
 }
 
 main,
 footer {
-    grid-column: 2/3;
-    padding-inline: 1rem;
+  grid-column: 2/3;
+  padding-inline: 1rem;
 }
 
 blockquote {
-    color: var(--mr-c-text-2);
-    /* Reset the margin. We'll instead use the padding, so that our border
-       appears flush to the left, and the padding in between before the
-       blockquote's content starts. */
-    margin-inline: 0em;
-    padding-inline: 1.3em;
-    border-inline-start: 1px solid currentColor;
+  color: var(--mr-c-text-2);
+  /* Reset the margin. We'll instead use the padding, so that our border appears
+   * flush to the left, and the padding in between before the blockquote's
+   * content starts. */
+  margin-inline: 0em;
+  padding-inline: 1.3em;
+  border-inline-start: 1px solid currentColor;
 }
 
 .notes {
-    margin-inline: 1em;
-    font-style: italic;
+  margin-inline: 1em;
+  font-style: italic;
 }
 
 .muted {
-    color: var(--mr-c-text-2);
-    opacity: 0.5;
+  color: var(--mr-c-text-2);
+  opacity: 0.5;
 }
 
 .mapping span {
-    width: 1.5rem;
-    display: inline-block;
+  width: 1.5rem;
+  display: inline-block;
 }
 
 @media (width < 480px) {
-    .mapping span {
-        width: 1.2rem;
-    }
+  .mapping span {
+    width: 1.2rem;
+  }
 }
 
 @media (width < 400px) {
-    .mapping {
-        margin-inline: 0;
-    }
+  .mapping {
+    margin-inline: 0;
+  }
 }
 
 footer {
-    font-size: smaller;
-    margin-block: 3rem;
-    a {
-        color: inherit;
-        text-decoration: none;
-        padding-block-end: 1px;
-        border-block-end: 2px solid burlywood;
-    }
-    a:hover {
-        color: white;
-        border-block-end: 3px solid burlywood;
-    }
-    span {
-        color: var(--mr-c-text-2);
-        margin-inline: 1ex;
-    }
+  font-size: smaller;
+  margin-block: 3rem;
+  a {
+    color: inherit;
+    text-decoration: none;
+    padding-block-end: 1px;
+    border-block-end: 2px solid burlywood;
+  }
+  a:hover {
+    color: white;
+    border-block-end: 3px solid burlywood;
+  }
+  span {
+    color: var(--mr-c-text-2);
+    margin-inline: 1ex;
+  }
 }
 </style>
 

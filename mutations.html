@@ -12,54 +12,54 @@
 
 <style>
 :root {
-    --mr-c-bg--: white;
-    --mr-c-text: oklch(25% 0 0);
-    --mr-c-soft: oklch(42% 0 0);
-    --mr-c-hard: black;
+  --mr-c-bg--: white;
+  --mr-c-text: oklch(25% 0 0);
+  --mr-c-soft: oklch(42% 0 0);
+  --mr-c-hard: black;
 }
 
 @media (prefers-color-scheme: dark) {
-:root {
+  :root {
     --mr-c-bg--: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90%    0.008 286.75);
+    --mr-c-text: oklch(90% 0.008 286.75);
     --mr-c-soft: oklch(78.61% 0.021 285.75);
     --mr-c-hard: white;
-}
+  }
 }
 
 body {
-    background-color: var(--mr-c-bg--);
-    color: var(--mr-c-text);
+  background-color: var(--mr-c-bg--);
+  color: var(--mr-c-text);
 }
 
 small {
-    color: var(--mr-c-soft);
+  color: var(--mr-c-soft);
 }
 
 b {
-   color: var(--mr-c-hard);
+  color: var(--mr-c-hard);
 }
 
 body {
-    margin: 4rem;
+  margin: 4rem;
 }
 
 @media (width < 44rem) {
-    body {
-        margin: 1rem;
-    }
+  body {
+    margin: 1rem;
+  }
 }
 
 header p {
-    margin-top: -0.5rem;
-    font-style: italic;
-    margin-bottom: 2rem;
+  margin-top: -0.5rem;
+  font-style: italic;
+  margin-bottom: 2rem;
 }
 
 main {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 </style>
 
