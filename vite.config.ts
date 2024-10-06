@@ -1,15 +1,21 @@
-import { type Plugin, defineConfig } from "vite";
+import { type HtmlTagDescriptor, type Plugin, defineConfig } from "vite";
 import { globSync } from "tinyglobby";
+import { readFile } from "node:fs/promises";
 
 const entryPoints = globSync(["**/*.html", "!dist", "!node_modules"]);
 
-const head = (): Plugin => {
+const head = async (): Promise<Plugin> => {
+  const paperCss = `<style>${await readFile("paper.css", "utf-8")}</style>`;
   return {
     name: "vite-plugin-head",
-    transformIndexHtml(_, ctx) {
+    transformIndexHtml(html, ctx) {
       const preview =
         ctx.originalUrl == "/" ? "/preview/blue.png" : "/preview.png";
-      return [
+      html = html.replace(
+        `<link rel="stylesheet" href="./paper.css">`,
+        paperCss,
+      );
+      const tags: HtmlTagDescriptor[] = [
         // <meta name="og:image" content="/preview/blue.png">
         {
           tag: "meta",
@@ -23,6 +29,7 @@ const head = (): Plugin => {
           injectTo: "head",
         },
       ];
+      return { html, tags };
     },
   };
 };
