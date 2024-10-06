@@ -13,24 +13,24 @@
 
 <style>
 :root {
-  --mr-c-bg: oklch(49.35% 0.025 53.84);
-  --mr-c-text-1: oklch(98% 0 0);
-  --mr-c-text-2: oklch(84.24% 0.006 43.32);
-  --mr-c-accent-1: oklch(100% 0 0);
+  --mr-c-bg--: oklch(49.35% 0.025 53.84);
+  --mr-c-text: oklch(98% 0 0);
+  --mr-c-soft: oklch(84.24% 0.006 43.32);
+  --mr-c-hard: oklch(100% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(25% 0.05 83.84);
-    --mr-c-text-1: oklch(94% 0 0);
-    --mr-c-text-2: oklch(75.15% 0.013 86.85);
-    --mr-c-accent-1: oklch(98% 0 0);
+    --mr-c-bg--: oklch(25% 0.05 83.84);
+    --mr-c-text: oklch(94% 0 0);
+    --mr-c-soft: oklch(75.15% 0.013 86.85);
+    --mr-c-hard: oklch(98% 0 0);
   }
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text-1);
+  background-color: var(--mr-c-bg--);
+  color: var(--mr-c-text);
   font-family: system-ui, sans-serif;
   font-size: 18px;
   line-height: 1.5;
@@ -45,7 +45,7 @@ footer {
 }
 
 blockquote {
-  color: var(--mr-c-text-2);
+  color: var(--mr-c-soft);
   /* Reset the margin. We'll instead use the padding, so that our border appears
    * flush to the left, and the padding in between before the blockquote's
    * content starts. */
@@ -60,7 +60,7 @@ blockquote {
 }
 
 .muted {
-  color: var(--mr-c-text-2);
+  color: var(--mr-c-soft);
   opacity: 0.5;
 }
 
@@ -95,7 +95,7 @@ footer {
     border-block-end: 3px solid burlywood;
   }
   span {
-    color: var(--mr-c-text-2);
+    color: var(--mr-c-soft);
     margin-inline: 1ex;
   }
 }
