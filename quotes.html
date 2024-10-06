@@ -1,54 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Quotes</title>
-    <meta
-      name="description"
-      content="Quotes linked by the words they contain"
-    />
-    <meta name="og:image" content="/preview.png" />
-    <link rel="icon" href="/icon.png" type="image/png" />
-    <style>
-      @media (pointer: coarse) and (hover: none) {
-        body {
-          font-size: 22px;
-          line-height: 1.6;
-        }
-      }
 
-      a {
-        color: rebeccapurple;
-        text-decoration: none;
-      }
+<head>
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          background-color: #222;
-          color: snow;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="og:image" content="/preview.png">
+<link rel="icon" href="/icon.png" type="image/png">
 
-        a {
-          color: peachpuff;
-        }
-      }
+<title>Quotes</title>
+<meta name="description" content="Quotes linked by the words they contain">
 
-      main {
-        margin: 1rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 60svh;
-      }
+<style>
+@media (pointer: coarse) and (hover: none) {
+  html {
+    font-size: large;
+  }
+}
 
-      output {
-        max-width: 30rem;
-      }
-    </style>
-    <script type="module" src="./quotes/init.ts"></script>
-  </head>
-  <body>
-    <main><output>...</output></main>
-  </body>
+body {
+  line-height: 1.4;
+}
+
+a {
+  text-decoration: inherit;
+  color: rebeccapurple;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: oklch(31.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
+  }
+  a {
+    color: oklch(87.14% 0.031 7.09);
+  }
+}
+
+@media (prefers-color-scheme: dark) and (prefers-contrast: more) {
+  body {
+    background-color: oklch(21.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
+  }
+}
+
+main {
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60svh;
+}
+
+output {
+  max-width: 30rem;
+}
+</style>
+
+<script type="module" src="./quotes/init.ts"></script>
+
+</head>
+
+<body>
+<main><output>...</output></main>
+</body>
+
 </html>
