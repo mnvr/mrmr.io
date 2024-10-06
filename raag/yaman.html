@@ -1,12 +1,17 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Raag Yaman</title>
-    <meta name="description" content="Interactive scales of Indian music" />
-    <meta name="og:image" content="/preview.png" />
-    <link rel="icon" href="/icon.png" type="image/png" />
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="og:image" content="/preview.png">
+<link rel="icon" href="/icon.png" type="image/png">
+
+<title>Raag Yaman</title>
+<meta name="description" content="Interactive scales of Indian music">
+
+<link rel="stylesheet" href="./raag.css">
 <style>
 :root {
     --mr-c-bg--: oklch(52%  0.166 267);
@@ -15,245 +20,268 @@
     --mr-c-hard: oklch(100% 0     0);
 }
 </style>
-<link rel="stylesheet" href="./raag.css" />
-    <script type="module" src="./raag.js"></script>
-  </head>
-  <body>
-    <main>
-      <header>
-        <h1><span class="muted">ra'g</span> yaman</h1>
-        <div><span class="muted">राग</span> यमन</div>
-      </header>
-      <section>
-        <div class="ladder">
-          <!-- bhairav notes: [0, 2, 4, 6, 7, 9, 11] -->
-          <button class="note" data-offset="12" style="--x: 12"></button>
-          <button class="note" data-offset="11" style="--x: 11"></button>
-          <div class="note" style="--x: 10"></div>
-          <button class="note" data-offset="9" style="--x: 9"></button>
-          <div class="note" style="--x: 8"></div>
-          <button class="note" data-offset="7" style="--x: 7"></button>
-          <button class="note" data-offset="6" style="--x: 6"></button>
-          <div class="note" style="--x: 5"></div>
-          <button class="note" data-offset="4" style="--x: 4"></button>
-          <div class="note" style="--x: 3"></div>
-          <button class="note" data-offset="2" style="--x: 2"></button>
-          <div class="note" style="--x: 1"></div>
-          <button class="note" data-offset="0" style="--x: 0"></button>
-        </div>
-        <p>
-          The ladder above shows the distance between notes that form raag Yaman
-          – Hover on them to hear how they sound (you'll need to tap once to
-          enable audio)
-        </p>
-        <p>
-          Compared to the Bhairav raag that we looked at earlier, raag Yaman is
-          simpler. Both to play, and how it sounds. It has a more pleasant vibe,
-          while Bhairav had a sharp breathtaking jump in the middle
-        </p>
-      </section>
-      <section>
-        <p>
-          Raags can be played on any instrument. For example, here it is on a
-          guitar, starting with the highlighted note (the A on the first string)
-        </p>
-        <div class="fretboard">
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="12"></button>
-            <button class="note" data-offset="11"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="9"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="7"></button>
-            <button class="note" data-offset="6"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="4"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="2"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="0" data-root></button>
-            <div class="note"></div>
-            <div class="note"></div>
-          </div>
-          <div class="marks">
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-          </div>
-        </div>
-        <p>
-          We can begin with any note we want, all we need to do is ensure
-          successive notes have the following distance between them
-        </p>
-        <div class="intervals">
-          <button class="interval" data-offset="0">0</button>
-          <button class="interval" data-offset="2">2</button>
-          <button class="interval" data-offset="4">4</button>
-          <button class="interval" data-offset="6">6</button>
-          <button class="interval" data-offset="7">7</button>
-          <button class="interval" data-offset="9">9</button>
-          <button class="interval" data-offset="11">11</button>
-          <button class="interval" data-offset="12">12</button>
-        </div>
-        <p>
-          You can see this, and two more things, in the fretboard below: (a)
-          picking a different root note, the D on the second string, (b)
-          counting beyond 11 (the raag repeats), and (c) counting backwards from
-          the root note
-        </p>
-        <div class="fretboard" data-offset-base="74">
-          <div class="string">
-            <button class="note" data-offset="24"></button>
-            <button class="note" data-offset="23"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="21"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="19"></button>
-            <button class="note" data-offset="18"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="16"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="14"></button>
-            <div class="note"></div>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="12"></button>
-            <button class="note" data-offset="11"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="9"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="7"></button>
-            <button class="note" data-offset="6"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="4"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="2"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="0" data-root></button>
-            <button class="note" data-offset="-1"></button>
-            <div class="note"></div>
-          </div>
-          <div class="string">
-            <div class="note"></div>
-            <div class="note"></div>
-            <div class="note"></div>
-            <button class="note" data-offset="-3"></button>
-            <div class="note"></div>
-            <button class="note" data-offset="-5"></button>
-            <button class="note" data-offset="-6"></button>
-            <div class="note"></div>
-          </div>
-          <div class="marks">
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-            <div><div class="dot"></div></div>
-            <div></div>
-          </div>
-        </div>
-      </section>
-      <section>
-        <p>
-          Raag Yaman is just one note away from the Bilawal thaat (the major
-          scale, all white keys on the piano), but just that one displaced note
-          makes a difference to the vibe.
-        </p>
-        <div class="piano" data-offset-base="60">
-          <button class="major" data-offset="0"></button>
-          <div class="minor"></div>
-          <button class="major" data-offset="2"></button>
-          <div class="minor"></div>
-          <button class="major" data-offset="4"></button>
-          <div class="major adj"></div>
-          <button class="minor" data-offset="6"></button>
-          <button class="major" data-offset="7"></button>
-          <div class="minor"></div>
-          <button class="major" data-offset="9"></button>
-          <div class="minor"></div>
-          <button class="major" data-offset="11"></button>
-        </div>
-        <p>
-          Sometimes folks think of raags as restrictive, rote. But that's if you
-          grind them.
-        </p>
-        <p>
-          Instead, take raags as creative strategies to provide you with
-          inspiration when you feel in a musical rut.
-        </p>
-      </section>
-    </main>
-    <footer>
-      <a href="/raag">More about raags</a>
-    </footer>
-  </body>
+
+<script type="module" src="./raag.js"></script>
+
+</head><body>
+
+<main>
+
+<header>
+<h1><span class="muted">ra'g</span> yaman</h1>
+<div><span class="muted">राग</span> यमन</div>
+</header>
+
+<section>
+
+<div class="ladder">
+<!-- bhairav notes: [0, 2, 4, 6, 7, 9, 11] -->
+<button class="note" data-offset="12" style="--x: 12"></button>
+<button class="note" data-offset="11" style="--x: 11"></button>
+<div    class="note" style="--x: 10"></div>
+<button class="note" data-offset="9" style="--x: 9"></button>
+<div    class="note" style="--x: 8"></div>
+<button class="note" data-offset="7" style="--x: 7"></button>
+<button class="note" data-offset="6" style="--x: 6"></button>
+<div    class="note" style="--x: 5"></div>
+<button class="note" data-offset="4" style="--x: 4"></button>
+<div    class="note" style="--x: 3"></div>
+<button class="note" data-offset="2" style="--x: 2"></button>
+<div    class="note" style="--x: 1"></div>
+<button class="note" data-offset="0" style="--x: 0"></button>
+</div>
+
+<p>
+The ladder above shows the distance between notes that form raag Yaman – Hover
+on them to hear how they sound (you'll need to tap once to enable audio)
+</p>
+
+<p>
+Compared to the Bhairav raag that we looked at earlier, raag Yaman is simpler.
+Both to play, and how it sounds. It has a more pleasant vibe, while Bhairav had
+a sharp breathtaking jump in the middle
+</p>
+
+</section>
+
+<section>
+
+<p>
+Raags can be played on any instrument. For example, here it is on a guitar,
+starting with the highlighted note (the A on the first string)
+</p>
+
+<div class="fretboard">
+<div class="string">
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+</div>
+<div class="string">
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+</div>
+<div class="string">
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+<div class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="12"></button>
+<button class="note" data-offset="11"></button>
+<div    class="note"></div>
+<button class="note" data-offset="9"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="7"></button>
+<button class="note" data-offset="6"></button>
+<div    class="note"></div>
+<button class="note" data-offset="4"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="2"></button>
+<div    class="note"></div>
+<button class="note" data-offset="0" data-root></button>
+<div    class="note"></div>
+<div    class="note"></div>
+</div>
+<div class="marks">
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+</div>
+</div>
+
+<p>
+We can begin with any note we want, all we need to do is ensure successive notes
+have the following distance between them
+</p>
+
+<div class="intervals">
+<button class="interval" data-offset="0">0</button>
+<button class="interval" data-offset="2">2</button>
+<button class="interval" data-offset="4">4</button>
+<button class="interval" data-offset="6">6</button>
+<button class="interval" data-offset="7">7</button>
+<button class="interval" data-offset="9">9</button>
+<button class="interval" data-offset="11">11</button>
+<button class="interval" data-offset="12">12</button>
+</div>
+
+<p>
+You can see this, and two more things, in the fretboard below: (a) picking a
+different root note, the D on the second string, (b) counting beyond 11 (the
+raag repeats), and (c) counting backwards from the root note
+</p>
+
+<div class="fretboard" data-offset-base="74">
+<div class="string">
+<button class="note" data-offset="24"></button>
+<button class="note" data-offset="23"></button>
+<div    class="note"></div>
+<button class="note" data-offset="21"></button>
+<div    class="note"></div>
+<button class="note" data-offset="19"></button>
+<button class="note" data-offset="18"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="16"></button>
+<div    class="note"></div>
+<button class="note" data-offset="14"></button>
+<div    class="note"></div>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="12"></button>
+<button class="note" data-offset="11"></button>
+<div    class="note"></div>
+<button class="note" data-offset="9"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="7"></button>
+<button class="note" data-offset="6"></button>
+<div    class="note"></div>
+<button class="note" data-offset="4"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="2"></button>
+<div    class="note"></div>
+<button class="note" data-offset="0" data-root></button>
+<button class="note" data-offset="-1"></button>
+<div    class="note"></div>
+</div>
+<div class="string">
+<div    class="note"></div>
+<div    class="note"></div>
+<div    class="note"></div>
+<button class="note" data-offset="-3"></button>
+<div    class="note"></div>
+<button class="note" data-offset="-5"></button>
+<button class="note" data-offset="-6"></button>
+<div    class="note"></div>
+</div>
+<div class="marks">
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+<div><div class="dot"></div></div>
+<div></div>
+</div>
+</div>
+
+</section>
+
+<section>
+
+<p>
+Raag Yaman is just one note away from the Bilawal thaat (the major scale, all
+white keys on the piano), but just that one displaced note makes a difference to
+the vibe.
+</p>
+
+<div class="piano" data-offset-base="60">
+<button class="major" data-offset="0"></button>
+<div    class="minor"></div>
+<button class="major" data-offset="2"></button>
+<div    class="minor"></div>
+<button class="major" data-offset="4"></button>
+<div    class="major adj"></div>
+<button class="minor" data-offset="6"></button>
+<button class="major" data-offset="7"></button>
+<div    class="minor"></div>
+<button class="major" data-offset="9"></button>
+<div    class="minor"></div>
+<button class="major" data-offset="11"></button>
+</div>
+
+<p>
+Sometimes folks think of raags as restrictive, rote. But that's if you grind
+them.
+</p>
+
+<p>
+Instead, take raags as creative strategies to provide you with inspiration when
+you feel in a musical rut.
+</p>
+
+</section>
+
+</main>
+
+<footer>
+<a href="/raag">More about raags</a>
+</footer>
+
+</body>
+
 </html>
