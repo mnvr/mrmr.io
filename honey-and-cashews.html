@@ -11,22 +11,14 @@
 
 <style>
 :root {
-  --mr-c-bg: white;
-  --mr-c-text: oklch(25% 0 0);
-  --mr-c-soft: oklch(42% 0 0);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --mr-c-bg: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90% 0.008 286.75);
-    --mr-c-soft: oklch(78.61% 0.021 285.75);
-  }
+  font-size: larger;
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: hsl(42, 87%, 89%);
+  color: black;
+
+  font-family: system-ui, sans-serif;
   line-height: 1.5;
   margin: 1em;
 }
@@ -37,18 +29,26 @@ body {
   }
 }
 
-p {
-  margin-block: 1.5rem;
+main {
+  min-height: 50svh;
 }
 
-header h2 {
+main p {
+  margin-block: 1.5rem;
+  margin-inline: 0.1rem;
+}
+
+header h1 {
   margin-block-end: 0;
 }
+
 header p {
-  margin-block-start: 0.5rem;
+  margin-block-start: 0;
   margin-block-end: 2.25rem;
-  color: var(--mr-c-soft);
+  margin-inline: 0.1rem;
+  opacity: 0.7;
   font-style: italic;
+  font-family: serif;
 }
 </style>
 
@@ -56,29 +56,29 @@ header p {
 
 <body>
 
-<header>
-<h2>Honey and cashews</h2>
-<p>
-<small>
-  <!-- Oct 23<br> -->
-
-</small>
-</p>
-</header>
+<main>
 
 <p>
 He is very beautiful<br>
 Your dog is<br>
-<br>
+</p>
+
+<p>
 Does he eat<br>
 Honey and cashews?<br>
 </p>
 
-<footer>
+</main>
 
-
-
-</footer>
+<header>
+<h1>Honey and cashews</h1>
+<p>
+<small>
+  Manav Rathi<br>
+  Oct 23<br>
+</small>
+</p>
+</header>
 
 </body>
 
