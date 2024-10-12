@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>All | mrmr.io</title>
+<meta name="description" content="Listing of all pages on mrmr.io">
+
+<style>
+:root {
+  --mr-c-bg: white;
+  --mr-c-text: oklch(25% 0 0);
+  --mr-c-soft: oklch(42% 0 0);
+  --mr-c-hard: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mr-c-bg: oklch(31.14% 0.021 285.75);
+    --mr-c-text: oklch(90% 0.008 286.75);
+    --mr-c-soft: oklch(78.61% 0.021 285.75);
+    --mr-c-hard: white;
+  }
+}
+
+body {
+  background-color: var(--mr-c-bg);
+  color: var(--mr-c-text);
+
+  margin: 1rem;
+  line-height: 1.5;
+  max-width: 40rem;
+}
+
+@media (width > 40em) {
+  body {
+    margin: 4em;
+  }
+}
+
+h1 {
+  font-style: italic;
+  opacity: 0.5;
+}
+
+li {
+    padding-inline: 0.5em;
+    margin-block: 0.5em;
+}
+
+a {
+  text-decoration: inherit;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: oklch(87.14% 0.071 7.09);
+  }
+  a:visited {
+    color: oklch(87.14% 0.031 7.09);
+  }
+}
+
+@media (width < 40em) {
+  ul {
+    padding-inline-start: 1em;
+  }
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>all</h1>
+
+<p>
+Sorted by time, though some of these pages are hard to date, having swirled
+around in my consciousness for undeterminable amounts of time, and in my
+subconsciousness for who knows how much longer.
+</p>
+
+<!-- <p>This is the human readable version.</p> -->
+
+<ul>
+<li>A page to visualize <a href="/raag">raags</a> (Indian music scales)</li>
+<li>A page of <a href="/quotes">quotes</a></li>
+<li>A <a href="/mistakes-were-made">review</a> of the movie that popularized <em>enough nines</em></li>
+<li>A <a href="/museum">poem</a></li>
+<li>All <a href="/css-colors">CSS colors</a>, sorted by their lightness</li>
+</ul>
+<p>
+
+<footer>
+<a href="/"><i>
+home
+</i></a>
+</footer>
+
+</body>
+
+</html>
