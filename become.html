@@ -11,22 +11,27 @@
 
 <style>
 body {
-  background-color: hsl(248.2, 99.1%, 55.5%);
-  color: snow;
+  background-color: #ff7729;
+  color: white;
   font-family: system-ui, sans-serif;
   line-height: 1.6;
-  margin: 1em;
-
+  margin-block: 1em;
+  margin-inline: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: calc(99svh - 2em);
 }
 
-h1 {
-  font-style: italic;
-  color: white;
-  padding-block-end: 0.15em;
+@media (width < 30em) {
+  body {
+    margin-inline: 1em;
+  }
 }
 
-p {
-  padding-inline-start: 0.2em;
+div:nth-child(2) {
+  display: flex;
+  align-items: center;
 }
 </style>
 
@@ -34,16 +39,18 @@ p {
 
 <body>
 
-<p>
+<div>&nbsp;</div>
+
+<div>
+<div>
 To all of you stuck<br>
 In the words of dead poets<br>
 Go find the living ones<br>
-</p>
-
-<p>
+<br>
 And if you can’t find them<br>
-<b>Become</b>
-</p>
+Become
+</div>
+</div>
 
 </body>
 </html>
