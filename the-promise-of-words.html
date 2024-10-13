@@ -13,6 +13,7 @@
 body {
   margin: 4em;
   line-height: 1.5;
+  font-family: sans-serif;
 }
 
 p {
@@ -31,25 +32,30 @@ h4 {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: #222;
-    color: #f0f0e7;
+    background-color: oklch(54% 0.22 29);
+    color: oklch(97% 0.09 105);
+
+    background-color: #841b2d;
+    color: #ceb588;
+
   }
 }
 
-.prose {
-    margin-block: 2rem;
-}
-
-.prose hr {
-    opacity: 0.1;
+hr {
+    opacity: 0.05;
+    border-color: red;
     margin: 2rem;
 }
 
 .prose p {
     border-radius: 2px;
-    border: 1px solid oklch(54% 0.22 29);
-    background-color: oklch(97% 0.09 105 / 3%);
+    /* border: 1px solid oklch(54% 0.22 29); */
+    background-color: oklch(97% 0.09 105);
+    color: oklch(54% 0.22 29);
     padding: 1rem;
+
+        color: #841b2d;
+    background-color: #ceb588;
 }
 
 .poem {
