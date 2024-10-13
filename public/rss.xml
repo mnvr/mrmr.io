@@ -10,7 +10,6 @@
       <url>https://mrmr.io/preview.png</url>
       <link>https://mrmr.io</link>
    </image>
-
    <item>
       <title>Raags</title>
       <description>Indian music scales</description>
@@ -18,7 +17,6 @@
       <guid>https://mrmr.io/raag</guid>
       <pubDate>Thu, 18 Jan 2024 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>Quotes</title>
       <description></description>
@@ -26,7 +24,6 @@
       <guid>https://mrmr.io/quotes</guid>
       <pubDate>Thu, 23 Nov 2023 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>CSS colors</title>
       <description>All named CSS colors, sorted by their lightness</description>
@@ -34,7 +31,13 @@
       <guid>https://mrmr.io/css-colors</guid>
       <pubDate>Wed, 05 Jul 2023 00:00:00 GMT</pubDate>
    </item>
-
+   <item>
+      <title>Stargazers</title>
+      <description>A poem</description>
+      <link>https://mrmr.io/come</link>
+      <guid>https://mrmr.io/come</guid>
+      <pubDate>Sun, 26 Feb 2023 00:00:00 GMT</pubDate>
+   </item>
    <item>
       <title>Murmur</title>
       <description>A poem</description>
@@ -42,7 +45,6 @@
       <guid>https://mrmr.io/mrmr</guid>
       <pubDate>Thu, 23 Feb 2023 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>Honey and cashews</title>
       <description>A poem</description>
@@ -50,7 +52,6 @@
       <guid>https://mrmr.io/honey-and-cashews</guid>
       <pubDate>Wed, 19 Oct 2022 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>Mistakes were Made</title>
       <description>A movie review</description>
@@ -58,7 +59,6 @@
       <guid>https://mrmr.io/mistakes-were-made</guid>
       <pubDate>Thu, 01 Aug 2019 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>Night</title>
       <description>A poem</description>
@@ -66,7 +66,6 @@
       <guid>https://mrmr.io/museum</guid>
       <pubDate>Mon, 01 Jul 2019 00:00:00 GMT</pubDate>
    </item>
-
    <item>
       <title>Random mutations</title>
       <description></description>
