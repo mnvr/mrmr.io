@@ -11,13 +11,19 @@
 
 <style>
 body {
-  margin: 1em;
+  margin: 4em;
   line-height: 1.4em;
 }
-
-@media (width > 40em) {
+@media (width < 18em) {
   body {
-    margin: 4em;
+    margin: 2em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: hsl(240, 64%, 7%);
+    color: ghostwhite;
   }
 }
 </style>
