@@ -37,7 +37,7 @@ body {
 }
 
 main {
-  min-height: 95svh;
+  min-height: calc(99svh - 2em);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -53,6 +53,9 @@ p {
 
 header h2 {
   margin-block-end: 0.2em;
+  span {
+    background-color: #ffede5;
+  }
 }
 
 header p {
@@ -83,11 +86,10 @@ Honey and cashews?<br>
 </div>
 
 <header>
-<h2>Honey and cashews</h2>
+<h2>Honey and <span>cashews</span></h2>
 <p>
 <small>
-  Manav Rathi<br>
-  Oct 22<br>
+  October 2022<br>
 </small>
 </p>
 </header>
