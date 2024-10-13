@@ -18,13 +18,6 @@
       <pubDate>Thu, 18 Jan 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
-      <title>Quotes</title>
-      <description></description>
-      <link>https://mrmr.io/quotes</link>
-      <guid>https://mrmr.io/quotes</guid>
-      <pubDate>Thu, 23 Nov 2023 00:00:00 GMT</pubDate>
-   </item>
-   <item>
       <title>Mirror</title>
       <description>A short story</description>
       <link>https://mrmr.io/mirror</link>
@@ -37,6 +30,20 @@
       <link>https://mrmr.io/housefly</link>
       <guid>https://mrmr.io/housefly</guid>
       <pubDate>Sun, 03 Dec 2023 00:00:00 GMT</pubDate>
+   </item>
+   <item>
+      <title>Quotes</title>
+      <description></description>
+      <link>https://mrmr.io/quotes</link>
+      <guid>https://mrmr.io/quotes</guid>
+      <pubDate>Thu, 23 Nov 2023 00:00:00 GMT</pubDate>
+   </item>
+   <item>
+      <title>The promise of words</title>
+      <description>Beautiful, and binding, but are they any good?</description>
+      <link>https://mrmr.io/the-promise-of-words</link>
+      <guid>https://mrmr.io/the-promise-of-words</guid>
+      <pubDate>Fri, 29 Sep 2023 00:00:00 GMT</pubDate>
    </item>
    <item>
       <title>Choice</title>
