@@ -10,67 +10,60 @@
 <meta name="description" content="A poem">
 
 <style>
+:root {
+  --saffron: #ff7729;
+}
+
 body {
-  background-color: #ff7729;
+  background-color: var(--saffron);
   color: white;
   font-family: system-ui, sans-serif;
   line-height: 1.6;
-  margin-block: 1em;
-  margin-inline: 2em;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(99svh - 2em);
-}
-
-body > div {
-flex: 1;
-}
-
-@media (width < 30em) {
-  body {
-    margin-inline: 1em;
-  }
-}
-
-#canvas-container {
-padding: 1rem;
-    /* aspect-ratio: 2/1; */
-    /* min-height: 160px; */
-}
-
-canvas {
-    border-radius: 8px;
+  margin: 0;
 }
 
 #poem-container {
-  display: flex;
-  align-items: center;
+  margin: 1em;
+  background-color: var(--saffron);
+  @media (height > 500px) {
+    margin-block: 3em;
+  }
+}
+
+canvas {
+  z-index: -1;
+
+  border-radius: 8px;
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
 }
 </style>
 
+<!-- <script src="https://q5js.org/q5.js"></script> -->
+<script src="https://q5js.org/q5.min.js"></script>
 <script type="module">
-import { loadQ5 } from "./js/q5.ts";
-import { sketch } from "./js/become/sketch.ts";
+import { draw } from "./js/become/sketch.ts";
 
-loadQ5(sketch, "canvas-container");
+// Q5 is supposed to allow us to pass a parent, but I couldn't get it to work
+// (as of 2.6.1), so instead we lay things out differently.
+const q5 = new Q5();
+const d = window.innerHeight < 580 ? 200 : 300;
+createCanvas(d, d);
+q5.draw = () => draw(q5);
 </script>
 </head>
 
 <body>
 
-<div id="canvas-container"></div>
-
 <div id="poem-container">
 
-<div>
 To all of you stuck<br>
 In the words of dead poets<br>
 Go find the living ones<br>
 <br>
 And if you can’t find them<br>
-Become
-</div>
+<b>Become</b>
 
 </div>
 

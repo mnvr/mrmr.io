@@ -1,21 +1,13 @@
 /** This sketch is inspired by the cover of a notebook I once had. */
-export const sketch = (p5: any, parent: HTMLElement) => {
-  p5.setup = () => {
-    p5.createCanvas(parent.scrollWidth, parent.scrollHeight);
-  };
-
-  p5.draw = () => draw(p5);
-};
-
 export const draw = (p5: any) => {
   p5.clear();
-  p5.background("#ff7729"); /* deep orange */
+  p5.background("#ff7729"); /* saffron-ish */
 
   const gap = 50;
 
   const strokeDots = 235;
-  const strokeStar = 240 + Math.sin(Date.now() / 5000) * 16;
-  const strokeCircle = 237 + Math.cos(Date.now() / 8000) * 16;
+  const strokeStar = 240 + Math.sin(Date.now() / 2000) * 16;
+  const strokeCircle = 237 + Math.cos(Date.now() / 5000) * 16;
 
   // Offset the grid by a bit so that the initial row and column of dots is
   // not cut in half; just make things look a bit more pleasing to start with.
