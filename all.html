@@ -11,10 +11,10 @@
 
 <style>
 :root {
-  --mr-c-bg: white;
-  --mr-c-text: oklch(25% 0 0);
-  --mr-c-soft: oklch(42% 0 0);
-  --mr-c-hard: black;
+  --bg: oklch(99.24% 0 0);
+  --text: oklch(8% 0 0);
+  --hard: black;
+  --soft: oklch(60% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,12 +23,16 @@
     --mr-c-text: oklch(90% 0.008 286.75);
     --mr-c-soft: oklch(78.61% 0.021 285.75);
     --mr-c-hard: white;
+    --bg: oklch(18.67% 0.02 251);
+    --text: oklch(86.89% 0 0);
+    --hard: oklch(95.42% 0 0);
+    --soft: oklch(75.94% 0 0);
   }
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
 
   margin: 1rem;
   line-height: 1.5;
@@ -43,17 +47,17 @@ body {
 
 h1, h3 {
   font-style: italic;
-  opacity: 0.5;
+  color: var(--soft);
+}
+
+h3 {
+  opacity: 0.9;
 }
 
 li {
-    padding-inline: 0.5em;
-    margin-block: 0.5em;
-}
-
-li {
-  font-family: sans-serif;
-  color: var(--mr-c-soft);
+  padding-inline: 0.5em;
+  margin-block: 0.5em;
+  font-family: system-ui, sans-serif;
 }
 
 a {
