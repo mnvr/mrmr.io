@@ -15,7 +15,7 @@
   --text: oklch(8% 0 0);
   --soft: oklch(60% 0 0);
 
-  --baby-blue: #a2cffe;
+  --baby-blue: oklch(85.46% 0.0815 249.92);
   --baby-purple: #ca9bf7;
 }
 
@@ -59,13 +59,13 @@ li {
 }
 
 a {
-  text-decoration: inherit;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 0.1em;
 }
 
 a:hover {
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 0.2em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -74,7 +74,7 @@ a:hover {
     /* color: oklch(87.14% 0.071 7.09); */
   }
   a:visited {
-  color: var(--baby-purple);
+    /* color: var(--baby-purple); */
     /* color: oklch(87.14% 0.031 7.09); */
   }
 }
@@ -87,6 +87,11 @@ a:hover {
 
 footer {
   margin-block: 3rem;
+  border-block-start: 1px solid oklch(75.94% 0 0 / 0.16);
+  padding-block: 0.5rem;
+  a {
+    /* text-decoration: none; */
+  }
 }
 </style>
 
