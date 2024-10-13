@@ -10,12 +10,37 @@
       <url>https://mrmr.io/preview.png</url>
       <link>https://mrmr.io</link>
    </image>
+
    <item>
       <title>Raags</title>
       <description>Indian music scales</description>
       <link>https://mrmr.io/raag</link>
       <guid>https://mrmr.io/raag</guid>
       <pubDate>Thu, 01 Aug 2019 00:00:00 GMT</pubDate>
+   </item>
+
+   <item>
+      <title>Mistakes were Made</title>
+      <description>A movie review</description>
+      <link>https://mrmr.io/mistakes-were-made</link>
+      <guid>https://mrmr.io/mistakes-were-made</guid>
+      <pubDate>Thu, 01 Aug 2019 00:00:00 GMT</pubDate>
+   </item>
+
+   <item>
+      <title>Night</title>
+      <description>A poem</description>
+      <link>https://mrmr.io/museum</link>
+      <guid>https://mrmr.io/museum</guid>
+      <pubDate>Mon, 01 Jul 2019 00:00:00 GMT</pubDate>
+   </item>
+
+   <item>
+      <title>Random mutations</title>
+      <description></description>
+      <link>https://mrmr.io/mutations</link>
+      <guid>https://mrmr.io/mutations</guid>
+      <pubDate>Sat, 01 Jun 2019 00:00:00 GMT</pubDate>
    </item>
 </channel>
 </rss>
