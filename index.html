@@ -12,52 +12,76 @@
 
 <style>
 :root {
-  --mr-c-bg: white;
-  --mr-c-text: oklch(25% 0 0);
-  --mr-c-soft: oklch(42% 0 0);
-  --mr-c-hard: black;
+  --bg: oklch(99.24% 0 0);
+  --text: oklch(8% 0 0);
+  --soft: oklch(60% 0 0);
+
+  --baby-blue: #a2cffe;
+  --baby-purple: #ca9bf7;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90% 0.008 286.75);
-    --mr-c-soft: oklch(78.61% 0.021 285.75);
-    --mr-c-hard: white;
+    /* --bg: oklch(27.45% 0.011 285.75); */
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(75.94% 0 0);
   }
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
-}
+  background-color: var(--bg);
+  color: var(--text);
 
-body {
   margin: 1rem;
   line-height: 1.5;
+  max-width: 40rem;
+}
+
+@media (width > 40em) {
+  body {
+    margin: 4em;
+  }
+}
+
+h3 {
+  font-style: italic;
+  color: var(--soft);
+  opacity: 0.9;
+}
+
+h3:not(:first-of-type) {
+  padding-block-start: 0.4rem
 }
 
 li {
-    padding-inline: 0.5em;
-    margin-block: 0.5em;
+  padding-inline: 0.5em;
+  margin-block: 0.5em;
+  font-family: system-ui, sans-serif;
 }
 
 a {
-  text-decoration: inherit;
+  text-underline-offset: 0.4em;
+  text-decoration-thickness: 0.1em;
 }
 
 a:hover {
   text-decoration: underline;
-  text-underline-offset: 2px;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 0.2em;
 }
 
 @media (prefers-color-scheme: dark) {
-  a {
-    color: oklch(87.14% 0.071 7.09);
+  li {
+    color: var(--soft);
   }
+
+  a {
+    color: var(--text);
+    text-decoration-color: var(--baby-blue);
+  }
+
   a:visited {
-    color: oklch(87.14% 0.031 7.09);
+    text-decoration-color: var(--baby-purple);
   }
 }
 
@@ -66,43 +90,56 @@ a:hover {
     padding-inline-start: 1em;
   }
 }
+
+footer {
+  margin-block: 3rem 2rem;
+  border-block-start: 1px solid oklch(75.94% 0 0 / 0.16);
+  padding-block-start: 1.5rem;
+}
+
+@media (width < 40em) {
+  footer {
+    padding-block-end: 0.5rem;
+  }
+}
 </style>
 
 </head>
 
 <body>
 
-<p>
-I like to write. Some of the stuff I've recently written is at
-<a href="https://notes.mrmr.io">notes.mrmr.io</a>.
-</p>
-
-<section>
-<p>Rest of this site is just, well, random accretions.</p>
+<h3>2024</h3>
 <ul>
-<li>A page to visualize <a href="/raag">raags</a> (Indian music scales)</li>
-<li>A page of <a href="/quotes">quotes</a></li>
-<li>A <a href="/mistakes-were-made">review</a> of the movie that popularized <em>enough nines</em></li>
-<li>A <a href="/museum">poem</a></li>
-<li>All <a href="/css-colors">CSS colors</a>, sorted by their lightness</li>
+<li><a href="/raag">Raags</a> – Indian music scales</li>
 </ul>
-<p>
-Talking of random accretions, here is a page that shows that
-<a href="/mutations">evolution doesn't need much</a>.
-</p>
-</section>
 
-<p>
-The <a href="https://github.com/mnvr/mrmr.io">source code</a> for this site is
-open.
-</p>
+<h3>2023</h3>
+<ul>
+<li><a href="/quotes">Quotes</a></li>
+<li><a href="/css-colors">CSS colors</a> – Sorted by their lightness</li>
+<li><a href="/come">Stargazers</a> – Morning 4 AM, before first light</li>
+<li><a href="/mrmr">Murmur</a> – A poem</li>
+</ul>
+
+<h3>2022</h3>
+<ul>
+<li><a href="/honey-and-cashews">Honey and cashews</a> – Dogs, walking by</li>
+</ul>
+
+<h3>2019</h3>
+<ul>
+<li><a href="/mistakes-were-made">Mistakes were Made</a> – A movie review</li>
+<li><a href="/museum">Night</a> – A poem</li>
+<li><a href="/mutations">Random mutations</a></li>
+</ul>
 
 <footer>
-<a href="https://mastodon.social/@mnvr" target="_blank" rel="noopener"><i>
-@mnvr@mastodon.social
-</i></a>
+<p><i>
+<a href="https://github.com/mnvr/mrmr.io" target="_blank" rel="noopener">github</a> |
+<a href="https://mastodon.social/@mnvr" target="_blank" rel="noopener">mastodon</a> |
+<a href="/rss.xml">rss</a>
+</i></p>
 </footer>
 
 </body>
-
 </html>
