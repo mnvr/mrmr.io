@@ -6,8 +6,8 @@ export const draw = (p5: any) => {
   const gap = 50;
 
   const strokeDots = 235;
-  const strokeStar = 240 + Math.sin(Date.now() / 2000) * 16;
-  const strokeCircle = 237 + Math.cos(Date.now() / 5000) * 16;
+  const strokeStar = 240 + Math.sin(Date.now() / 1400) * 16;
+  const strokeCircle = 232 + Math.cos(Date.now() / 3000) * 18;
 
   // Offset the grid by a bit so that the initial row and column of dots is
   // not cut in half; just make things look a bit more pleasing to start with.

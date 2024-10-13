@@ -20,14 +20,25 @@ p {
   margin-block: 2.25em;
 }
 
-h4 {
+h2 {
   font-family: sans-serif;
+}
+
+hr {
+  margin-block: 3.375em;
+  border-color: oklch(77% 0 0 / 0.1);
+  margin-inline: auto;
+  max-width: 50%;
 }
 
 @media (width < 30em) {
   body {
     margin: 2em;
   }
+}
+
+body {
+  margin-block-end: 50svh;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,7 +52,7 @@ h4 {
 
 <body>
 
-<h4>Mirror</h4>
+<h2>Mirror</h2>
 
 <p>“Mir is his name”, she said.</p>
 

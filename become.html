@@ -23,20 +23,28 @@ body {
 }
 
 #poem-container {
-  margin: 1em;
-  background-color: var(--saffron);
-  @media (height > 500px) {
-    margin-block: 3em;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: end;
+  background-image:
+    linear-gradient(to top right, var(--saffron) 20%, transparent);
+
+  div {
+    margin-inline: 2em;
+    margin-block: 2em;
   }
 }
 
 canvas {
   z-index: -1;
 
-  border-radius: 8px;
   position: absolute;
-  left: 1em;
-  bottom: 1em;
+  left: 0;
+  bottom: 0;
 }
 </style>
 
@@ -45,11 +53,8 @@ canvas {
 <script type="module">
 import { draw } from "./js/become/sketch.ts";
 
-// Q5 is supposed to allow us to pass a parent, but I couldn't get it to work
-// (as of 2.6.1), so instead we lay things out differently.
 const q5 = new Q5();
-const d = window.innerHeight < 580 ? 200 : 300;
-createCanvas(d, d);
+createCanvas(window.innerWidth, window.innerHeight);
 q5.draw = () => draw(q5);
 </script>
 </head>
@@ -58,12 +63,18 @@ q5.draw = () => draw(q5);
 
 <div id="poem-container">
 
+<div>
+<p>
 To all of you stuck<br>
 In the words of dead poets<br>
 Go find the living ones<br>
-<br>
+</p>
+
+<p>
 And if you can’t find them<br>
 <b>Become</b>
+</p>
+</div>
 
 </div>
 
