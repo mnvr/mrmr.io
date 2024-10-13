@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+   <title>mrmr.io</title>
+   <description>Manav's website</description>
+   <link>https://mrmr.io</link>
+   <language>en</language>
+   <image>
+      <title>mrmr.io</title>
+      <url>https://mrmr.io/preview.png</url>
+      <link>https://mrmr.io</link>
+   </image>
+   <item>
+      <title>Raags</title>
+      <description>Indian music scales</description>
+      <link>https://mrmr.io/raag</link>
+      <guid>https://mrmr.io/raag</guid>
+      <pubDate>Thu, 01 Aug 2019 00:00:00 GMT</pubDate>
+   </item>
+</channel>
+</rss>
