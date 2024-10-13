@@ -19,8 +19,12 @@ body {
   margin-inline: 2em;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   min-height: calc(99svh - 2em);
+}
+
+body > div {
+flex: 1;
 }
 
 @media (width < 30em) {
@@ -29,19 +33,36 @@ body {
   }
 }
 
-div:nth-child(2) {
+#canvas-container {
+padding: 1rem;
+    /* aspect-ratio: 2/1; */
+    /* min-height: 160px; */
+}
+
+canvas {
+    border-radius: 8px;
+}
+
+#poem-container {
   display: flex;
   align-items: center;
 }
 </style>
 
+<script type="module">
+import { loadQ5 } from "./js/q5.ts";
+import { sketch } from "./js/become/sketch.ts";
+
+loadQ5(sketch, "canvas-container");
+</script>
 </head>
 
 <body>
 
-<div>&nbsp;</div>
+<div id="canvas-container"></div>
 
-<div>
+<div id="poem-container">
+
 <div>
 To all of you stuck<br>
 In the words of dead poets<br>
@@ -50,6 +71,7 @@ Go find the living ones<br>
 And if you can’t find them<br>
 Become
 </div>
+
 </div>
 
 </body>
