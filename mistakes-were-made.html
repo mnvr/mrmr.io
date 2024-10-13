@@ -11,26 +11,26 @@
 
 <style>
 :root {
-  --mr-c-bg: white;
-  --mr-c-text: oklch(25% 0 0);
-  --mr-c-soft: oklch(42% 0 0);
+  --bg: white;
+  --text: oklch(25% 0 0);
+  --soft: oklch(42% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90% 0.008 286.75);
-    --mr-c-soft: oklch(78.61% 0.021 285.75);
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
   }
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 small {
-  color: var(--mr-c-soft);
+  color: var(--soft);
 }
 
 body {
@@ -49,13 +49,13 @@ body {
 }
 
 header p {
-  margin-top: -0.5rem;
+  margin-top: -0.5em;
   font-style: italic;
-  margin-bottom: calc(1rem * 1.5 * 1.5 * 1.2);
+  margin-bottom: calc(1em * 1.5 * 1.5 * 1.2);
 }
 
 p, blockquote {
-  margin-block: calc(1rem * 1.5 * 1.5);
+  margin-block: calc(1em * 1.5 * 1.5);
 }
 </style>
 

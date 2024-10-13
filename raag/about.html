@@ -11,18 +11,18 @@
 
 <style>
 :root {
-  --mr-c-bg: oklch(49.35% 0.025 53.84);
-  --mr-c-text: oklch(98% 0 0);
-  --mr-c-soft: oklch(84.24% 0.006 43.32);
-  --mr-c-hard: oklch(100% 0 0);
+  --bg: oklch(49.35% 0.025 53.84);
+  --text: oklch(98% 0 0);
+  --soft: oklch(84.24% 0.006 43.32);
+  --hard: oklch(100% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(25% 0.05 83.84);
-    --mr-c-text: oklch(94% 0 0);
-    --mr-c-soft: oklch(75.15% 0.013 86.85);
-    --mr-c-hard: oklch(98% 0 0);
+    --bg: oklch(25% 0.05 83.84);
+    --text: oklch(94% 0 0);
+    --soft: oklch(75.15% 0.013 86.85);
+    --hard: oklch(98% 0 0);
   }
 }
 
@@ -31,8 +31,8 @@ html {
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   display: grid;
@@ -46,7 +46,7 @@ footer {
 }
 
 blockquote {
-  color: var(--mr-c-soft);
+  color: var(--soft);
   /* Reset the margin. We'll instead use the padding, so that our border appears
    * flush to the left, and the padding in between before the blockquote's
    * content starts. */
@@ -61,7 +61,7 @@ blockquote {
 }
 
 .muted {
-  color: var(--mr-c-soft);
+  color: var(--soft);
   opacity: 0.5;
 }
 
@@ -96,7 +96,7 @@ footer {
     border-block-end: 3px solid burlywood;
   }
   span {
-    color: var(--mr-c-soft);
+    color: var(--soft);
     margin-inline: 1ex;
   }
 }

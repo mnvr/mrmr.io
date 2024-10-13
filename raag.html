@@ -12,18 +12,18 @@
 
 <style>
 :root {
-  --mr-c-bg: hsl(0, 0%, 100%);
-  --mr-c-text: hsl(0, 0%, 24%);
-  --mr-c-soft: hsl(0, 0%, 47%);
-  --mr-c-hard: hsl(0, 0%, 15%);
+  --bg: hsl(0, 0%, 100%);
+  --text: hsl(0, 0%, 24%);
+  --soft: hsl(0, 0%, 47%);
+  --hard: hsl(0, 0%, 15%);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: hsl(0, 0%, 4%);
-    --mr-c-text: hsl(0, 0%, 90%);
-    --mr-c-soft: hsl(0, 0%, 73%);
-    --mr-c-hard: hsl(0, 0%, 100%);
+    --bg: hsl(0, 0%, 4%);
+    --text: hsl(0, 0%, 90%);
+    --soft: hsl(0, 0%, 73%);
+    --hard: hsl(0, 0%, 100%);
   }
 }
 
@@ -32,8 +32,8 @@ html {
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: system-ui, sans-serif;
   display: grid;
   grid-template-columns: 1fr min(31em, 100%) 1fr;
@@ -64,7 +64,7 @@ header {
 }
 
 .muted {
-  color: var(--mr-c-soft);
+  color: var(--soft);
 }
 
 footer {
@@ -80,11 +80,11 @@ footer {
   }
 
   a {
-    color: var(--mr-c-soft);
+    color: var(--soft);
   }
 
   a:hover {
-    color: var(--mr-c-text);
+    color: var(--text);
   }
 }
 

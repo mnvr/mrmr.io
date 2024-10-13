@@ -4,8 +4,8 @@ html {
 
 body {
   margin-inline: 18px;
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: system-ui, sans-serif;
   line-height: 1.5;
   display: grid;
@@ -23,10 +23,10 @@ footer {
   margin-block: 3rem;
   a {
     text-underline-offset: 5px;
-    color: var(--mr-c-soft);
+    color: var(--soft);
   }
   a:hover {
-    color: var(--mr-c-text);
+    color: var(--text);
   }
 }
 
@@ -41,19 +41,19 @@ header {
 }
 
 .muted {
-  color: var(--mr-c-soft);
+  color: var(--soft);
 }
 
 div.note,
 .dot {
-  background-color: var(--mr-c-soft);
+  background-color: var(--soft);
   opacity: 0.2;
 }
 
 button.note {
   border: 0;
   cursor: pointer;
-  background-color: var(--mr-c-soft);
+  background-color: var(--soft);
 }
 
 button.note[data-root] {
@@ -61,11 +61,11 @@ button.note[data-root] {
 }
 
 button.note[data-playing] {
-  background-color: var(--mr-c-hard);
+  background-color: var(--hard);
 }
 
 button.note:hover {
-  background-color: var(--mr-c-hard);
+  background-color: var(--hard);
 }
 
 .ladder {
@@ -142,16 +142,16 @@ button.interval {
   padding: 0;
   cursor: pointer;
   background: transparent;
-  color: var(--mr-c-soft);
+  color: var(--soft);
   font-size: 2rem;
 }
 
 button.interval[data-playing] {
-  color: var(--mr-c-hard);
+  color: var(--hard);
 }
 
 button.interval:hover {
-  color: var(--mr-c-hard);
+  color: var(--hard);
 }
 
 .piano {
@@ -182,7 +182,7 @@ button.interval:hover {
   margin-inline-start: -16px;
 
   z-index: 1;
-  background-color: var(--mr-c-bg);
+  background-color: var(--bg);
 }
 
 .piano > .adj {
@@ -195,7 +195,7 @@ button.interval:hover {
 }
 
 .piano > button.major {
-  background-color: var(--mr-c-soft);
+  background-color: var(--soft);
   opacity: 0.6;
 }
 

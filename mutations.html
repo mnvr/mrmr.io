@@ -10,32 +10,32 @@
 
 <style>
 :root {
-  --mr-c-bg: white;
-  --mr-c-text: oklch(25% 0 0);
-  --mr-c-soft: oklch(42% 0 0);
-  --mr-c-hard: black;
+  --bg: white;
+  --text: oklch(25% 0 0);
+  --soft: oklch(42% 0 0);
+  --hard: black;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90% 0.008 286.75);
-    --mr-c-soft: oklch(78.61% 0.021 285.75);
-    --mr-c-hard: white;
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
+    --hard: white;
   }
 }
 
 body {
-  background-color: var(--mr-c-bg);
-  color: var(--mr-c-text);
+  background-color: var(--bg);
+  color: var(--text);
 }
 
 small {
-  color: var(--mr-c-soft);
+  color: var(--soft);
 }
 
 b {
-  color: var(--mr-c-hard);
+  color: var(--hard);
 }
 
 body {
