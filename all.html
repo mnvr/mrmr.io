@@ -15,18 +15,21 @@
   --text: oklch(8% 0 0);
   --hard: black;
   --soft: oklch(60% 0 0);
+
+  --baby-blue: #a2cffe;
+  --baby-purple: #ca9bf7;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --mr-c-bg: oklch(31.14% 0.021 285.75);
-    --mr-c-text: oklch(90% 0.008 286.75);
-    --mr-c-soft: oklch(78.61% 0.021 285.75);
-    --mr-c-hard: white;
-    --bg: oklch(18.67% 0.02 251);
+    --bg: oklch(21.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
+    --hard: white;
+    /* --bg: oklch(18.67% 0.02 251);
     --text: oklch(86.89% 0 0);
     --hard: oklch(95.42% 0 0);
-    --soft: oklch(75.94% 0 0);
+    --soft: oklch(75.94% 0 0); */
   }
 }
 
@@ -72,10 +75,12 @@ a:hover {
 
 @media (prefers-color-scheme: dark) {
   a {
-    color: oklch(87.14% 0.071 7.09);
+    color: var(--baby-blue);
+    /* color: oklch(87.14% 0.071 7.09); */
   }
   a:visited {
-    color: oklch(87.14% 0.031 7.09);
+  color: var(--baby-purple);
+    /* color: oklch(87.14% 0.031 7.09); */
   }
 }
 
