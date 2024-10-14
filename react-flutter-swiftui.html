@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>React, Flutter and SwiftUI</title>
+<meta name="description" content="3 hello worlds">
+
+<style>
+:root {
+  font-size: 95%;
+
+  --soft: rgb(204, 204, 214);
+  --bg-pre: beige;
+  --accent: rgb(147, 108, 24);
+}
+
+pre {
+  background-color: azure;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --soft: rgb(204, 204, 214);
+    --bg-pre: hsl(213, 31%, 11%);
+    --accent: gold;
+  }
+
+  body {
+    background-color: rgb(12, 17, 23);
+    color: rgb(224, 224, 234);
+  }
+}
+
+pre {
+  background-color: var(--bg-pre);
+}
+
+body {
+  margin-block: 4em;
+  margin-inline: 0;
+  --margin-inline: 4rem;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
+}
+
+
+@media (width < 40em) {
+  body {
+    margin-block: 1em;
+    --margin-inline: 1rem;
+  }
+}
+
+p, blockquote {
+  margin-block: 2.25em;
+  max-width: 34rem;
+}
+
+h2 {
+  color: var(--accent);
+}
+
+h2, p {
+  margin-inline: var(--margin-inline);
+}
+
+pre {
+  padding-block: 2.25em;
+  padding-inline: var(--margin-inline);
+
+}
+
+blockquote {
+  margin-block: 2.25em;
+  margin-inline: var(--margin-inline);
+  padding-inline: 1em;
+  border-inline-start: 2px solid var(--accent);
+  /* background-color: var(--bg-pre); */
+  color: var(--accent);
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>React, Flutter and SwiftUI</h2>
+
+<p>
+React has become pervasive. React, the library, may flourish or not, but React,
+the idea, has had an big impact.
+</p>
+
+<p>Here is hello world in React:</p>
+
+<pre><code>function Counter() {
+  const [c, setC] = useState(0);
+  const handleClick = () => setC(c + 1);
+  return &lt;button onClick={handleClick}&gt;{c}&lt;/button&gt;;
+}
+</code></pre>
+
+<p>In SwiftUI:</p>
+
+<pre><code>struct Counter: View {
+  @State var c = 0
+  var body: some View {
+    Button("\(c)") { c = c + 1 }
+  }
+}
+</code></pre>
+
+<p>And in Flutter:</p>
+
+<pre><code>class Counter extends StatefulWidget {
+  @override
+  State<Counter> createState() =&gt; _CounterState();
+}
+
+class _CounterState extends State<Counter> {
+  int _c = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+        onPressed: () { setState(() { _c++; }); },
+        child: Text('$_c'));
+  }
+}
+</code></pre>
+
+<p>
+React started with classes, then evolved to its current function components.
+While hooks and function components are an evolution of the same concept, there
+was something smothering about the class based approach for me. I feel it is
+only with function components that React, the idea, finally come to its full
+fruition.
+</p>
+
+<p>
+There are traces of this evolution are in React's copies too. Flutter forked
+React before function components were the vibe, and so it still lives on in the
+class based (and in my opinion, inferior) approach. SwiftUI forked after
+function components, and that’s the DNA it reflects.
+</p>
+
+<p>
+At the surface level, SwiftUI might look like it uses the class based approach,
+but that’s not the case - those SwiftUI structs are actually stateless, and what
+looks like an inheritance from "View" is protocol conformance. So the
+<code>struct Counter: View</code> in the SwiftUI example above can be thought of as
+equivalent to the stateless JavaScript functions that form React components.
+</p>
+
+<p>
+A part of the practical popularity of React comes because of JSX, which is an
+elaborate macro system built on top of JavaScript. The "React-y code" we write,
+JSX, is transformed by bundlers into the actual JavaScript that gets sent to the
+browser.
+</p>
+
+<p>
+This same pattern also happened in SwiftUI, where the powers to be changed the
+language itself to add “ViewBuilders”, Swift's JSX-y macro analogue.
+</p>
+
+<blockquote>
+React itself is similar to how Haskell deals with the problem of doing I/O in a
+purely functional language. What seems like a logical impossibility can be
+solved with the clever mathematics of category theory, giving us the IO monad.
+</blockquote>
+
+</body>
+</html>
