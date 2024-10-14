@@ -10,6 +10,11 @@
 <meta name="description" content="Beautiful, and binding, but are they any good?">
 
 <style>
+:root {
+  --bg: #841b2d;
+  --fg: #ceb588;
+}
+
 body {
   margin: 4em;
   line-height: 1.5;
@@ -20,8 +25,11 @@ p {
   margin-block: 2.25em;
 }
 
-h4 {
-  font-family: sans-serif;
+h1 {
+  font-family: serif;
+  font-style: italic;
+
+  padding: 1rem;
 }
 
 @media (width < 30em) {
@@ -30,32 +38,19 @@ h4 {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: oklch(54% 0.22 29);
-    color: oklch(97% 0.09 105);
-
-    background-color: #841b2d;
-    color: #ceb588;
-
-  }
-}
-
 hr {
     opacity: 0.05;
-    border-color: red;
-    margin: 2rem;
+    border-color: var(--bg);
+    margin: 2.25rem;
 }
 
 .prose p {
     border-radius: 2px;
-    /* border: 1px solid oklch(54% 0.22 29); */
-    background-color: oklch(97% 0.09 105);
-    color: oklch(54% 0.22 29);
     padding: 1rem;
 
-        color: #841b2d;
-    background-color: #ceb588;
+    background-color: var(--fg);
+    color: var(--bg);
+    max-width: 34em;
 }
 
 .poem {
@@ -63,7 +58,7 @@ hr {
 }
 
 .blink {
-    animation: blink 1100ms infinite;
+    animation: blink 1600ms infinite;
 }
 
 @keyframes blink {
@@ -80,16 +75,14 @@ hr {
         opacity: 0;
     }
 }
-
 </style>
 </head>
 
 <body>
 
-<h4>The promise of words</h4>
+<h1>the promise of words</h1>
 
-
-<div class="prose">
+<section class="prose">
 
 <p>
 Writing words, logical arguments. It is fun when I am constructing these
@@ -159,32 +152,32 @@ in, and with, them regardless of the shadows they may cast to the people looking
 on?
 </p>
 
-</div>
+</section>
 
-<div class="poem">
+<section class="poem">
 
-<!-- prettier-ignore -->
 <p>
-  Every word is a promise<br>
-  That binds me down<br>
-  Ever so little<br>
-  Until I can't move under<br>
-  The weight of all the tales<br>
-  I've told
+Every word is a promise<br>
+That binds me down<br>
+Ever so little<br>
+Until I can't move under<br>
+The weight of all the tales<br>
+I've told
 </p>
 
-<!-- prettier-ignore -->
 <p>
-  Every word<br>
-  A promise<br>
-  That holds me down<br>
-  In a cage of my own making<br>
-  Until I can't fly anymore
+Every word<br>
+A promise<br>
+That holds me down<br>
+In a cage of my own making<br>
+Until I can't fly anymore
 </p>
 
-Yet I write <span class="blink">|</span>
+<p>
+Yet, I write <span class="blink">|</span>
+</p>
 
-</div>
+</section>
 
 </body>
 </html>
