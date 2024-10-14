@@ -21,19 +21,42 @@ body {
   }
 }
 
-p {
-  margin-block: 2.25em;
-  font-family: system-ui, sans-serif;
-  max-width: 34em;
-}
-
 @media (prefers-color-scheme: dark) {
   body {
     background-color: hsl(240, 64%, 7%);
     color: ghostwhite;
   }
 }
+
+p {
+  margin-block: 2.25em;
+  font-family: system-ui, sans-serif;
+  max-width: 34em;
+}
+
+canvas {
+    width: min(100%, 34em);
+    aspect-ratio: 2/1;
+}
 </style>
+
+<script type="module">
+import { renderFragment } from "./js/shader.ts";
+
+renderFragment(document.getElementById("c"), `
+    vec2 uv = (2. * gl_FragCoord.xy - size) / min(size.x, size.y);
+    // A circle of some radius
+    float sdf = length(uv) - 0.8;
+    float d = abs(sdf);
+    // Use the reciprocal to give a neon vibe.
+    float r = 0.02 + sin(t / 2.5) * 0.007;
+    float c = r / (d + 0.001);
+
+    c = smoothstep(0.01, 0.1 - sin(t / 2.7) * 0.01, c);
+
+    gl_FragColor = vec4(c, c, c, 1.0);
+`);
+</script>
 
 </head>
 
