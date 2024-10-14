@@ -19,6 +19,9 @@ body {
   margin: 4em;
   line-height: 1.5;
   font-family: sans-serif;
+
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 p {
@@ -28,8 +31,10 @@ p {
 h1 {
   font-family: serif;
   font-style: italic;
+  text-transform: lowercase;
 
-  padding: 1rem;
+  padding-inline: 1rem;
+  margin-block-end: 3rem;
 }
 
 @media (width < 30em) {
@@ -38,49 +43,60 @@ h1 {
   }
 }
 
+.prose {
+  max-width: 34em;
+}
+
 hr {
-    opacity: 0.05;
-    border-color: var(--bg);
-    margin: 2.25rem;
+  opacity: 0;
+}
+
+.prose hr {
+  opacity: 0.15;
+  border: 0;
+  border-bottom: 1px inset var(--fg);
+  margin: 2.25rem;
+  width: 30%;
+  margin-inline: auto;
 }
 
 .prose p {
-    border-radius: 2px;
-    padding: 1rem;
+  border-radius: 2px;
+  padding: 1rem;
 
-    background-color: var(--fg);
-    color: var(--bg);
-    max-width: 34em;
+  background-color: var(--fg);
+  color: var(--bg);
 }
 
 .poem {
-    padding: 1rem;
+  padding-inline: 1rem;
 }
 
 .blink {
-    animation: blink 1600ms infinite;
+  animation: blink 1600ms infinite;
+  border-inline-start: 1px solid var(--fg);
 }
 
 @keyframes blink {
-    0% {
-        opacity: 0;
-    }
-    40% {
-        opacity: 0;
-    }
-    80% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<h1>the promise of words</h1>
+<h1>The promise of words</h1>
 
 <section class="prose">
 
@@ -152,7 +168,10 @@ in, and with, them regardless of the shadows they may cast to the people looking
 on?
 </p>
 
+
 </section>
+
+<hr>
 
 <section class="poem">
 
@@ -174,7 +193,7 @@ Until I can't fly anymore
 </p>
 
 <p>
-Yet, I write <span class="blink">|</span>
+Yet, I write <span class="blink">&nbsp;</span>
 </p>
 
 </section>
