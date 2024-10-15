@@ -32,6 +32,13 @@
       <pubDate>Fri, 22 Dec 2023 00:00:00 GMT</pubDate>
    </item>
    <item>
+      <title>Memoization in Haskell</title>
+      <description>A State monad tutorial</description>
+      <link>https://mrmr.io/memoization-in-haskell</link>
+      <guid>https://mrmr.io/memoization-in-haskell</guid>
+      <pubDate>Mon, 04 Dec 2023 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>Housefly</title>
       <description>A poem</description>
       <link>https://mrmr.io/housefly</link>

@@ -18,6 +18,7 @@
 
   --baby-blue: #a2cffe;
   --baby-purple: #ca9bf7;
+  --divider: oklch(75.94% 0 0 / 0.16);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -91,9 +92,15 @@ a:hover {
   }
 }
 
+hr {
+  margin-block: 4rem 2rem;
+  border: 0;
+  border-block-start: 1px solid var(--divider);
+}
+
 footer {
-  margin-block: 3rem 2rem;
-  border-block-start: 1px solid oklch(75.94% 0 0 / 0.16);
+  margin-block: 4rem 2rem;
+  border-block-start: 1px solid var(--divider);
   padding-block-start: 1.5rem;
 }
 
@@ -118,6 +125,7 @@ footer {
 <ul>
 <li><a href="/mirror">Mirror</a> – A short story</li>
 <li><a href="/housefly">Housefly</a> – A poem</li>
+<li><a href="/memoization-in-haskell">Memoization in Haskell</a> – A State monad tutorial</li>
 <li><a href="/trust-your-intuition">Trust your intuition</a> – The bias fallacy</li>
 <li><a href="/quotes">Quotes</a></li>
 <li><a href="/the-hundred-thousand-songs-of-milarepa">The Hundred Thousand Songs
@@ -144,6 +152,13 @@ of Milarepa</a> – A thought</li>
 <li><a href="/mistakes-were-made">Mistakes were Made</a> – A movie review</li>
 <li><a href="/museum">Night</a> – A poem</li>
 <li><a href="/mutations">Random mutations</a></li>
+</ul>
+
+<hr>
+
+<h3>Notes</h3>
+<ul>
+<li><a href="/memoization-in-haskell">Memoization in Haskell</a> – A State monad tutorial</li>
 </ul>
 
 <footer>
