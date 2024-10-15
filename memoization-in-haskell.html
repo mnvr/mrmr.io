@@ -15,7 +15,7 @@
 
   --soft: rgb(204, 204, 214);
   --bg-pre: beige;
-  --accent: rgb(147, 108, 24);
+  --accent: rgb(147, 63, 24);
 }
 
 pre {
@@ -35,12 +35,21 @@ pre {
   }
 }
 
-pre {
+pre, code {
   background-color: var(--bg-pre);
 }
 
+:not(pre) > code {
+  padding-block: 0.4em;
+  padding-inline: 0.5em;
+  border: 1px solid var(--accent);
+
+  white-space: pre;
+}
+
 body {
-  margin-block: 4em;
+  margin-block-start: 4em;
+  margin-block-end: 20svh;
   margin-inline: 0;
   --margin-inline: 4rem;
   line-height: 1.5;
@@ -50,12 +59,12 @@ body {
 
 @media (width < 40em) {
   body {
-    margin-block: 1em;
+    margin-block-start: 1em;
     --margin-inline: 1rem;
   }
 }
 
-p, blockquote {
+p, blockquote, ul, ol {
   margin-block: 2.25em;
   max-width: 34rem;
 }
@@ -64,14 +73,20 @@ h2, h3 {
   color: var(--accent);
 }
 
-h2, h3, p {
+h2, h3, p, ul, ol {
   margin-inline: var(--margin-inline);
+}
+
+@media (width < 40em) {
+  ul, ol {
+    padding-inline-start: 1em;
+  }
 }
 
 pre {
   padding-block: 2.25em;
   padding-inline: var(--margin-inline);
-
+  overflow-x: scroll;
 }
 
 blockquote {
@@ -80,6 +95,10 @@ blockquote {
   padding-inline: 1em;
   border-inline-start: 2px solid var(--accent);
   color: var(--accent);
+}
+
+blockquote > p {
+  margin-inline: 0;
 }
 </style>
 
@@ -123,8 +142,8 @@ fib n = fib (n - 1) + fib (n - 2)
 </code></pre>
 
 <p>
-If you want to follow along hands on, copy paste this into a file, say fib.hs,
-and run it:
+If you want to follow along hands on, copy paste this into a file, say
+<code>fib.hs</code>, and run it:
 </p>
 
 <pre><code>$ runghc fib.hs
@@ -287,8 +306,8 @@ Written as types, we have:
 <p>
 But the beauty of Haskell is that this same function signature can be
 interpreted in another way – <code>fib</code> is a function that takes an
-<code>Int</code>, and it returns a new function <code>Cache -> (Int,
-Cache)</code>.
+<code>Int</code>, and it returns a new function
+<code>Cache -> (Int, Cache)</code>.
 </p>
 
 <p>
@@ -404,11 +423,11 @@ fib n = \s ->
 
 <p>
 Remember, <code>State s a</code> (essentially) means <code>s -> (a, s)</code>.
-So we've changed the type of <code>fib</code> from <code>Int -> Cache -> (Int,
-Cache)</code> to <code>Int -> State Cache Int</code>. And it's implementation is
-changed from, say, <code>fib 0 s = (0, s)</code> to
-<code>fib 0 = \s -> (0, s)</code> to highlight that it is actually returning a
-function.
+So we've changed the type of <code>fib</code> from
+<code>Int -> Cache -> (Int, Cache)</code> to
+<code>Int -> State Cache Int</code>. And it's implementation is changed from,
+say, <code>fib 0 s = (0, s)</code> to <code>fib 0 = \s -> (0, s)</code> to
+highlight that it is actually returning a function.
 </p>
 
 <p>
@@ -474,7 +493,7 @@ fib n = StateT $ \s ->
 
 <p>Alright, let us start simplifying this!</p>
 
-<h3>Monads !</h3>
+<h3>Monads!</h3>
 
 <p>
 Remember, "State" is a "monad". You don't need to really understand monads to
@@ -824,7 +843,7 @@ case, the thing I want you to be aware of is that this code:
     let r = r1 + r2
 </code></pre>
 
-is the same as this code:
+<p>is the same as this code:</p>
 
 <pre><code>liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
 </code></pre>
@@ -968,7 +987,7 @@ fib 1 = 1
 fib n = fib (n - 1) + fib (n - 2)
 </code></pre>
 
-and have ended up with:
+<p>and have ended up with:</p>
 
 <pre><code>fib :: Int -> State Cache Int
 fib n = memo n (f n) where
@@ -982,9 +1001,9 @@ Not great, but not too bad. The second version implicitly memoizes all function
 calls under the hood, and for problems where memoization is of essence, this is
 an okay price to pay for the functionality we get. Indeed, even for the simple
 case of our <code>fib</code> function, and for (relatively) small values of n -
-the difference in time is functionally (pun!) important (try running <code>fib
-700</code> in both cases - the first one goes nowhere while the second is
-instant).
+the difference in time is functionally (pun!) important (try running
+<code>fib 700</code> in both cases - the first one goes nowhere while the second
+is instant).
 </p>
 
 <p>Hope you found this useful.</p>
