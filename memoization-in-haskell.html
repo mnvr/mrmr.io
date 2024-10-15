@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Memoization in Haskell</title>
+<meta name="description" content="A State monad tutorial">
+
+<style>
+:root {
+  font-size: 95%;
+
+  --soft: rgb(204, 204, 214);
+  --bg-pre: beige;
+  --accent: rgb(147, 108, 24);
+}
+
+pre {
+  background-color: azure;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --soft: rgb(204, 204, 214);
+    --bg-pre: hsl(213, 31%, 11%);
+    --accent: rgb(226, 117, 132);
+  }
+
+  body {
+    background-color: rgb(12, 17, 23);
+    color: rgb(224, 224, 234);
+  }
+}
+
+pre {
+  background-color: var(--bg-pre);
+}
+
+body {
+  margin-block: 4em;
+  margin-inline: 0;
+  --margin-inline: 4rem;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
+}
+
+
+@media (width < 40em) {
+  body {
+    margin-block: 1em;
+    --margin-inline: 1rem;
+  }
+}
+
+p, blockquote {
+  margin-block: 2.25em;
+  max-width: 34rem;
+}
+
+h2, h3 {
+  color: var(--accent);
+}
+
+h2, h3, p {
+  margin-inline: var(--margin-inline);
+}
+
+pre {
+  padding-block: 2.25em;
+  padding-inline: var(--margin-inline);
+
+}
+
+blockquote {
+  margin-block: 2.25em;
+  margin-inline: var(--margin-inline);
+  padding-inline: 1em;
+  border-inline-start: 2px solid var(--accent);
+  color: var(--accent);
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Memoization in Haskell</h2>
+
+<p>
+Haskell provides a State monad, but it seems a bit too magical at times. There
+are many good introductions out there that try to derive the State monad from
+first principles, but they tend to focus on the "monad" part of it. Here I
+approach things from a different direction: as a solution to a practical
+problem.
+</p>
+
+<p>
+i.e. this is the tutorial I wish I'd seen when I wanted to quickly learn how to
+use state monads.
+</p>
+
+<h3>The problem</h3>
+
+<p>
+We want to compute Fibonacci numbers. Before you start groaning, consider that
+this is a great example. We already know what the function should do, so we can
+focus on how to non-invasively memoizing functions that recursively call
+themselves. The approach we figure out will work for many recursive functions.
+</p>
+
+<p>Let's start with a plain version</p>
+
+<pre><code>main :: IO ()
+main = print $ fib 7
+
+fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n - 1) + fib (n - 2)
+</code></pre>
+
+<p>
+If you want to follow along hands on, copy paste this into a file, say fib.hs,
+and run it:
+</p>
+
+<pre><code>$ runghc fib.hs
+13
+</code></pre>
+
+<p>
+From now I'll only mention the parts of the file that change, so you can keep
+modifying the same file and re-running the <code>runghc fib.hs</code> command to
+see everything play out in action.
+</p>
+
+<p>
+Let us memoize this. We want to create a table where we'll store the results of
+computing <code>fib</code> for a particular number, so that when we're asked to
+compute the same <code>fib</code> again, we don't do all that work again.
+</p>
+
+<p>
+A more realistic way of doing this would use an array or a map to store the
+previous results, but I didn't want to distract from the essence of what we're
+discussing here, so let us just use a normal list. Each entry in the list will
+be a pair <code>(n, fib n)</code>.
+</p>
+
+<p>
+Such lists are quite common indeed, they turn out to be useful in all sorts of
+places, so much so that there is a name for them - they are called
+<i>associative lists</i> – and Haskell provides a function to quickly lookup a
+value in an associative list. That function is already part of prelude, and
+guess what, it's called <code>lookup</code>. Here is an example of it in action
+(this is a <code>ghci</code> prompt):
+</p>
+
+<pre><code>> lookup 7 [(1, "One"), (7, "Seven")]
+Just "Seven"
+</code></pre>
+
+<p>Using this, we can create our memoized Fibonacci function:</p>
+
+<pre><code>fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = let (r, _) = fibmemo n [] in r
+
+type Cache = [(Int, Int)]
+
+fibmemo :: Int -> Cache -> (Int, Cache)
+fibmemo n s = case lookup n s of
+  Just v -> (v, s)
+  Nothing -> let r = fib (n - 1) + fib (n - 2)
+             in (r, (n, r) : s)
+</code></pre>
+
+<p>
+If you compile and run this, it'll still produce the correct result, but this
+version is completely buggy - there is no memoization happening!
+</p>
+
+<p>
+Let's take a step back at this point. In almost all other languages, adding
+memoization is easy, we just plonk a global state somewhere, and we keep
+updating it as our function is called. This doesn't fly in Haskell, for very
+good reasons, but still it makes one wistful.
+</p>
+
+<p>
+Already the memoized version in Haskell is starting to look messy, and it
+doesn't even work yet! But don't despair, we'll complicate this before we're
+able to make it simple again. Before enlightenment, carry wood chop water, after
+enlightenment, carry wood chop water.
+</p>
+
+<p>
+So we'll just (for now) get rid of our concept of a separate "pure" fibonacci
+and a "memoized" layer on top - our implementation will have to mix these two
+concerns together. Here is a version that works:
+</p>
+
+<pre><code>main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = fib n []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> Cache -> (Int, Cache)
+fib 0 s = (0, s)
+fib 1 s = (1, s)
+fib n s = case lookup n s of
+  Just v -> (v, s)
+  Nothing -> let (r1, s1) = fib (n - 1) s
+                 (r2, s2) = fib (n - 2) s1
+                 r = r1 + r2
+             in (r, (n, r) : s)
+</code></pre>
+
+<p>
+Notice that we also return the Cache (which is our memo / lookup table) from the
+<code>runFib</code> function. We'll eventually stop doing that and only return
+the result, but it is instructive to do that for now so that we can see both the
+result and the memoized values printed as we go about developing our solution.
+</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13)])
+</code></pre>
+
+<p>
+Oh no! Our memo table is empty - it should have all the intermediate values, but
+it only has the last value – <code>(7,13)</code>. Is our memoization still not
+working?
+</p>
+
+<p>
+Turns out there is a small typo in the last line. <code>(r, (n, r) : s)</code> should be
+<code>(r, (n, r) : s2)</code>. Here is the fixed version of <code>fib</code>:
+</p>
+
+<pre><code>fib :: Int -> Cache -> (Int, Cache)
+fib 0 s = (0, s)
+fib 1 s = (1, s)
+fib n s = case lookup n s of
+  Just v -> (v, s)
+  Nothing -> let (r1, s1) = fib (n - 1) s
+                 (r2, s2) = fib (n - 2) s1
+                 r = r1 + r2
+             in (r, (n, r) : s2)
+</code></pre>
+
+<p>
+And if we run this again, we'll see that all intermediate entries are also
+present in our memoized table:
+</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+</code></pre>
+
+<p>
+This typo demonstrates how finicky and error prone it is to manually pass this
+state around. It gets worse with recursive functions, because we might not
+thread the state along one of the code paths accidentally, and everything will
+still work, just be dog slow.
+</p>
+
+<p>
+Back to work. So what we've done here that instead of letting <code>fib</code>
+be a function that takes an <code>Int</code> and returns an <code>Int</code>, we
+have made it into a function that takes an <code>Int</code> and a
+<code>Cache</code>, and returns an both the result <code>Int</code>
+and (possibly) modified <code>Cache</code> so that we can pass that along.
+Written as types, we have:
+</p>
+
+<pre><code>fib :: Int -> Cache -> (Int, Cache)
+</code></pre>
+
+<p>
+But the beauty of Haskell is that this same function signature can be
+interpreted in another way – <code>fib</code> is a function that takes an
+<code>Int</code>, and it returns a new function <code>Cache -> (Int,
+Cache)</code>.
+</p>
+
+<p>
+One thing that you might think here is that - shouldn't the arguments be the
+other way around? As in, how about if we'd written <code>fib</code> this way:
+</p>
+
+<pre><code>fib :: Cache -> Int -> (Int, Cache)
+</code></pre>
+
+<p>
+We can even argue that this would make more logical sense. However, notice what
+happens if we want to memoize some two argument function, say <code>plus</code>,
+in the future. If we'd done it in that hypothetically flipped way, it's type
+would look like:
+</p>
+
+<pre><code>plus :: Cache -> Int -> Int -> (Int, Cache)
+</code></pre>
+
+<p>In the way we're following, it's type would be</p>
+
+<pre><code>plus :: Int -> Int -> Cache -> (Int, Cache)
+</code></pre>
+
+<p>
+Notice how the trailing part of the type is the same! As in, keeping the state
+last means that we always return a <code>Cache -> (Int, Cache)</code>, no matter
+how many arguments the original function that we're memoizing takes.
+</p>
+
+<p>
+You might say that what if we want to memoize a function that returns something
+other than a <code>Int</code>, or whose memo table has a different type like a
+<code>Map</code>? Easy peasy, we can just parameterize these two types:
+</p>
+
+<ul>
+<li>Let us call the type of the state as <code>s</code>.</li>
+<li>Let us call the result type as <code>a</code>.</li>
+</ul>
+
+<p>
+So we end up with this pattern - any function that we want to memoize will take
+as many arguments, and of varying types, as it needs. The only requirement we
+place is that it should return a function of type <code>s -> (a, s)</code>.
+</p>
+
+<p>
+Such functions <code>s -> (a, s)</code> are called the <b>State monad</b>. But
+we're getting ahead of ourselves with the "monad" part, forget that I said the
+m-word.
+</p>
+
+<p>
+Let us just talk about values of type <code>s -> (a, s)</code>. Trust me with
+this, and you'll see soon, that if we follow this convention – that any function
+that we want to memoize should return another function <code>s -> (a, s)</code>
+– then it will become easy to compose them.
+</p>
+
+<p>
+So that everyone doesn't go around defining their own typedefs and helper
+functions around this, the Haskell standard installation ships with this
+predefined. It is called a <code>State</code> and is defined in the
+<code>Control.Monad.State</code> module.
+</p>
+
+<blockquote>
+<p>
+Note that the word "state" here refers to two different things. In general,
+state refers to anything that we want to automatically thread along our normal
+functions. The type <code>State</code> (capitalized one) is a shorthand for the
+"State monad".
+</p>
+
+<p>
+That is, the type <code>s -> (a, s)</code> is the "State monad" (and the Haskell
+type that refers to a "State monad" is called <code>State</code>). This type
+itself has two parameters - <code>s</code> and <code>a</code>. It is this
+lowercase <code>s</code> which is the actual state.
+</p>
+
+<p>
+Don't worry if this is confusing, that's why I kept this difference as an aside.
+It'll become clear once we complete our example.
+</p>
+</blockquote>
+
+<p>So let us modify our code to use the standard library types:</p>
+
+<pre><code>import Control.Monad.State
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = \s -> (0, s)
+fib 1 = \s -> (1, s)
+fib n = \s ->
+  case lookup n s of
+    Just v -> (v, s)
+    Nothing -> let (r1, s1) = (fib (n - 1)) s
+                   (r2, s2) = (fib (n - 2)) s1
+                   r = r1 + r2
+               in (r, (n, r) : s2)
+</code></pre>
+
+<p>
+Remember, <code>State s a</code> (essentially) means <code>s -> (a, s)</code>.
+So we've changed the type of <code>fib</code> from <code>Int -> Cache -> (Int,
+Cache)</code> to <code>Int -> State Cache Int</code>. And it's implementation is
+changed from, say, <code>fib 0 s = (0, s)</code> to
+<code>fib 0 = \s -> (0, s)</code> to highlight that it is actually returning a
+function.
+</p>
+
+<p>
+This doesn't actually compile though. When I said that <code>State s a</code>
+essentially means <code>s -> (a, s)</code>, I didn't lie, but there is a stress
+on <i>essentially</i>. Because the actual type of <code>State</code> is a bit
+more complicated (for reasons that have nothing to do with what we're discussing
+here). To get this to compile, we have to make a few changes:
+</p>
+
+<ol>
+<li>
+Wrap the returned functions in a <code>StateT</code>.
+</li>
+<li>
+Wrap the returned values from these functions in an <code>Identity</code>
+(this'll also require adding an `import Control.Monad.Identity` at the
+top).
+</li>
+<li>
+Wrap all calls to these functions in <code>runState</code>.
+</li>
+</ol>
+
+<blockquote>
+Don't despair if this is not making sense. It won't necessarily. Remember, it'll
+get complicated before it gets simple again. The reason it is getting so
+complicated in the middle is that this is not the way the state monad is used in
+practice, but to get to the simple way we'll need to wait till the end of this
+post.
+</blockquote>
+
+<p>Here is the fixed up code:</p>
+
+<pre><code>import Control.Monad.State
+import Control.Monad.Identity
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = runState (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib 0 = StateT $ \s -> Identity (0, s)
+fib 1 = StateT $ \s -> Identity (1, s)
+fib n = StateT $ \s ->
+  case lookup n s of
+    Just v -> Identity (v, s)
+    Nothing -> let (r1, s1) = runState (fib (n - 1)) s
+                   (r2, s2) = runState (fib (n - 2)) s1
+                   r = r1 + r2
+               in Identity (r, (n, r) : s2)
+</code></pre>
+
+<p>We can now run this, and it'll give the result we expect.</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+</code></pre>
+
+<p>Alright, let us start simplifying this!</p>
+
+<h3>Monads !</h3>
+
+<p>
+Remember, "State" is a "monad". You don't need to really understand monads to
+follow along what's going to happen next - the tl;dr; you can keep in mind is
+that if something is a monad, then there are special functions that we can use
+to compose values of such types.
+</p>
+
+<p>
+The first such function is <code>pure</code>. It represents the "simplest"
+version of a particular value. In our case, what is the simplest value of type
+<code>s -> (a, s)</code>. Well, it just needs to return the <code>a</code> and
+not twiddle with the state. But how do we get an <code>a</code>? We pass it to
+<code>pure</code>!
+</p>
+
+<pre><code>-- Snipped for illustrative purposes
+pure x = \s -> (x, s)
+</code></pre>
+
+<p>
+We can use <code>pure</code> to simplify the first two clauses of our
+function definition.
+</p>
+
+<pre><code>fib 0 = pure 0
+fib 1 = pure 1
+</code></pre>
+
+<p>
+  If we run the code again after making that change, it'll still give the same
+  result. That's weird, where did all the surrounding junk go!
+</p>
+
+<p>
+  It might seem like magic, or something that has a special case in the compiler,
+  but no, this is all a library level abstraction. Haskell is a gift that'll keep
+  giving.
+</p>
+
+<p>Let's continue.</p>
+
+<p>
+The other pattern that monads support is combining two values. Do something,
+take its output, and then something 2 with it. Like a factory line:
+<em>something → something 2</em>. Cheeky as Haskellers are, they even created an
+arrow like symbol for this: <code>>>=</code>. It is called "bind". What it does
+is, take the output of the first monad, and feeds it to a function that then
+something else with this value to modify it.
+</p>
+
+<blockquote>
+<p>
+Again, my purpose here is not to explain monads. The monad tutorial fallacy is
+real. You might already have a basic understanding of monads, in which case this
+post should help you understand and use the state monad. The above explanations
+are for people who don't have the basic understanding of monads.
+</p>
+
+<p>
+To such people, I'd say - just keep using them. It'll click. Reading about them
+doesn't help beyond a certain point.
+</p>
+</blockquote>
+
+<p>
+So let use this bind <code>>>=</code> operator to chain together our
+steps:
+</p>
+
+<pre><code>fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = StateT $ \s ->
+  case lookup n s of
+    Just v -> Identity (v, s)
+    Nothing -> runStateT (fib (n - 1)) s >>= \(r1, s1) ->
+                 runStateT (fib (n - 2)) s1 >>= \(r2, s2) ->
+                   let r = r1 + r2
+                   in Identity (r, (n, r) : s2)
+</code></pre>
+
+<p>
+I also had to replace <code>runState</code> with <code>runStateT</code> (Don't
+fixate too much on the meaning behind these details and infelicities – in our
+final version we'll not be using any of them).
+</p>
+
+<p>
+We can run our code again, and see that it still works the same way. To simplify
+further, we'll need to start getting into the specific tools provided by the
+state monad itself (above and beyond generic monads).
+</p>
+
+<h3>The State monad</h3>
+
+<p>The first thing to notice is at the top of <code>fib</code></p>
+
+<pre><code>fib n = StateT $ \s ->
+  case lookup n s of
+  ...
+</code></pre>
+
+<p>
+As you can imagine, this'll be a common requirement for functions that deal with
+state – read the current value of the state. Of course, the value of the state
+is getting passed to us right there, as an input to our function. But we want to
+"hide" it away so that it is not always in our face, and somehow access that
+value when we need it.
+</p>
+
+<p>
+The State monad library provides a function for this task. It is called
+<code>get</code>. When we call <code>get</code>, we don't actually get back a
+value, we get back a state monad. However, we already know how to extract values
+from a monad – by using the bind operator <code>>>=</code>. Let's change our
+function to use <code>get</code>.
+</p>
+
+<pre><code>fib n = get >>= \s ->
+  case lookup n s of
+</code></pre>
+
+<p>
+If we make this change, I'll code will stop compiling though. This is because we
+no longer have a regular function that was wrapped in a <code>StateT</code>,
+instead the code we're writing (<code>case lookup ...</code>) now has to return
+another state monad to satisfy the type of <code>>>=</code>.
+</p>
+
+<p>To get the compiler to be happy, the code needs to be changed to:</p>
+
+<ol>
+<li>
+Remove <code>Identity</code>, and also the tuples with s, and just return the
+value directly wrapped in a <code>pure</code>.
+</li>
+
+<li>
+Remove the <code>runStateT</code> and stop passing the state to fib, instead
+just return the fib values themselves (Reminder that <code>fib x</code> is a
+value of type <code>State Cache Int</code>, which is a state monad, which is
+what we should be passing into and returning from <code>>>=</code>).
+</li>
+</ol>
+
+<blockquote>
+I'm not sure how helpful this is being – for people who don't have the necessary
+background these might be arbitrary changes. I'll think of better ways of
+conveying this in the future, but hopefully some of this is sticking.
+</blockquote>
+
+<p>With these changes, our code becomes:</p>
+
+<pre><code>fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = get >>= \s ->
+  case lookup n s of
+    Just v -> pure v
+    Nothing -> fib (n - 1) >>= \r1 ->
+                 fib (n - 2) >>= \r2 ->
+                   let r = r1 + r2
+                   in pure r
+</code></pre>
+
+<p>
+This runs, and produces the correct answer, but our memoization is gone. Of
+course. We're only reading the state s, but we're never updating it. The code
+looks cleaner, there is no s moving around, but how do we update it now if we
+don't have access to it as the input and are not returning it as the output.
+</p>
+
+<p>
+For this purpose, <code>Control.Monad.State</code> provides another function
+that returns a new state monad, but with an updated state. This function is
+called <code>put</code>. Let us use it to update our state before we return the
+final result r of our expression.
+</p>
+
+
+<blockquote>
+I think keeping in mind that these are just ordinary expressions, and the result
+of an of the expression is result of the branch that we ended up on, helps
+demystify Haskell in general, and monads in particular.
+</blockquote>
+
+<pre><code>fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = get >>= \s ->
+  case lookup n s of
+    Just v -> pure v
+    Nothing -> fib (n - 1) >>= \r1 ->
+                 fib (n - 2) >>= \r2 ->
+                   let r = r1 + r2
+                   in put ((n, r) : s) >>= \_ ->
+                        pure r
+</code></pre>
+
+<p>
+In the final result, we're not actually using the value chained from the put,
+which is why we ignore it using the underscore wildcard. This is a common thing
+- sometimes we just want two things to happen one after the other, but the
+second thing doesn't use the result of the first. It is so common, that the
+Haskell standard library provides a sequence operator <code>>></code> to shorten
+this<code>>>= \_ -></code> pattern.
+</p>
+
+<p>So after changing the last two lines to</p>
+
+<pre><code>in put ((n, r) : s) >>
+   pure r
+</code></pre>
+
+<p>if we run the code again,</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13)])
+</code></pre>
+
+<p>
+this time we see that while the state was used, it only contains the table of
+the last value, not the intermediate ones.
+</p>
+
+<p>
+Perhaps you've already guessed the issue. When we're updating the state using
+<code>put</code>, we're using the value <code>s</code> that we got from the
+initial <code>get</code>. But remember, Haskell is a pure functional language.
+There is no mutation, in fact, there are no variables - the only things we have
+are bindings. These are not variables, because they never change, they are just
+names for things that were on the call stack.
+</p>
+
+<p>
+In our case, when we recursively call <code>fib</code>, the recursive calls will
+update the state using <code>put</code>. They'll use the correct state to
+<code>put</code> into, because we've been chaining these state monads together
+using <code>>>=</code> and the library is taking care that state that was set by
+the latest <code>put</code> is the one that is carried along the chain.
+</p>
+
+<p>
+However, when we get back to the original function (that called the recursive
+invocations), we overwrite the state using an old <code>s</code> value that
+doesn't include the latest changes made by the <code>put</code>s in the
+recursive calls.
+</p>
+
+<p>
+The fix is simple. We need to <code>get</code> again when <code>put</code>ting,
+so that we update the latest value.
+</p>
+
+<pre><code>fib n = get >>= \s ->
+  case lookup n s of
+    Just v -> pure v
+    Nothing -> fib (n - 1) >>= \r1 ->
+                 fib (n - 2) >>= \r2 ->
+                   let r = r1 + r2
+                   in get >>= \s2 ->
+                     put ((n, r) : s) >>
+                       pure r
+</code></pre>
+
+<p>
+After this change, if we run again, we'll notice all the intermediate values
+showing up in our cache (memo) table.
+</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+</code></pre>
+
+<p>
+As you might imagine, this is a very common requirement - <code>get</code>ting
+the latest state and modifying it in some way and then <code>put</code>ting it
+back - so <code>Control.Monad.State</code> provides a convenience function for
+this combination. It is called, hold your breath, <code>modify</code>. Using it,
+our code becomes:
+</p>
+
+<pre><code>fib n = get >>= \s ->
+  case lookup n s of
+    Just v -> pure v
+    Nothing -> fib (n - 1) >>= \r1 ->
+                 fib (n - 2) >>= \r2 ->
+                   let r = r1 + r2
+                   in modify ((n, r) :) >>
+                        pure r
+</code></pre>
+
+<p>
+Similarly, but in the other direction, at the start of our function we got the
+state, but we weren't really interested in the full state, we wanted some
+particular part of it. So there is a function called <code>gets</code> to query
+the state using the provided query function, and only give us the result. We can
+use it to directly perform our lookup this way:
+</p>
+
+<pre><code>fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = gets (lookup n) >>= \s -> case s of
+  Just v -> pure v
+  Nothing -> fib (n - 1) >>= \r1 ->
+               fib (n - 2) >>= \r2 ->
+                 let r = r1 + r2
+                 in modify ((n, r) :) >>
+                      pure r
+</code></pre>
+
+<p>Alright! Let's move on to the next stage of our simplification.</p>
+
+<h3>Abstracting memoize</h3>
+
+<p>
+At this point (or even before this), the other tutorials I've seen move on to
+using the <code>do</code> notation to further simplify things. I feel that is a
+misstep, because the <code>do</code> notation obscures the fact that everything
+in Haskell is just an expression. If we stay in expression-land, things might
+get nested and hairy, but it also becomes easier to visually see and then
+extract common patterns into reusable abstractions.
+</p>
+
+<blockquote>
+This is not to say one should never use <code>do</code>. Sometimes it is fine,
+and it is perhaps even a personal preference.
+</blockquote>
+
+<p>
+Instead of <code>do</code>, I'm going to go off in the weeds in the other
+direction, and start lifting stuff. The word "lift" in Haskell comes from
+category theory, specifically functors, and it means that a normal function
+<code>a -> b</code> is "lifted" into another universe <code>f a -> f b</code>.
+</p>
+
+<p>
+Apologies for the hand wavey explanation here, but trying to explain lifting in
+more detail would sidetrack too much from the focus here. For our specific use
+case, the thing I want you to be aware of is that this code:
+</p>
+
+<pre><code>fib (n - 1) >>= \r1 ->
+  fib (n - 2) >>= \r2 ->
+    let r = r1 + r2
+</code></pre>
+
+is the same as this code:
+
+<pre><code>liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
+</code></pre>
+
+<p>
+That is, we're "lifting" the normal plus operator (+) from acting on <code>Int</code>
+values, to get them to act on <code>State Cache Int</code> values. How Haskell
+does that is not essential to know for our purposes here, just that Haskell can
+automatically do it for us.
+</p>
+
+<p>So using <code>liftM2</code>, our code becomes:</p>
+
+<pre><code>fib n = gets (lookup n) >>= \s -> case s of
+  Just v -> pure v
+  Nothing -> liftM2 (+) (fib (n - 1)) (fib (n - 2)) >>= \r ->
+               modify ((n, r) :) >> pure r
+</code></pre>
+
+<p>It still runs, and produces the same output as before.</p>
+
+<p>
+Now comes the great jump. We notice that only some part of our <code>fib</code>
+function deals with the actual computation, while the rest of it is checking to
+see if we already have that cached result. We can make this distinction more
+apparent by rewriting the fib function this way:
+</p>
+
+<pre><code>fib n = gets (lookup n) >>= \s -> case s of
+    Just v -> pure v
+    Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+  where compute = liftM2 (+) (fib (n - 1)) (fib (n - 2))
+</code></pre>
+
+<p>In fact, we can just pass <code>compute</code> as a parameter!</p>
+
+<pre><code>fib :: Int -> State Cache Int
+fib 0 = pure 0
+fib 1 = pure 1
+fib n = memo n compute
+  where compute = liftM2 (+) (fib (n - 1)) (fib (n - 2))
+
+memo :: Int -> State Cache Int -> State Cache Int
+memo n compute = gets (lookup n) >>= \s -> case s of
+  Just v -> pure v
+  Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+</code></pre>
+
+<p>
+In fact, this same memo will work with all other types of state monads, not just
+the <code>State Cache Int</code>. The requirement is that the state should be
+such that we can <code>lookup n</code> and <code>(n, r) :</code> on it, but
+otherwise we can generalize the type signature.
+</p>
+
+<p>
+We can replace the <code>liftM2</code> by the more standard, so called,
+applicative style
+<code>(+) &lt;$&gt; fib (n - 1) &lt;*&gt; fib (n - 2)</code>. We can also move the memo
+upwards so that it also covers the base cases:
+</p>
+
+<pre><code>fib :: Int -> State Cache Int
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) &lt;$&gt; fib (n - 1) &lt;*&gt; fib (n - 2)
+</code></pre>
+
+<p>
+We can also use the <code>LambdaCase</code> language extension to remove the
+noise in the implementation of memo. With all these changes, our code looks like
+this:
+</p>
+
+<pre><code>{-# LANGUAGE LambdaCase #-}
+
+import Control.Monad.State
+
+main :: IO ()
+main = print $ runFib 7
+
+runFib :: Int -> (Int, Cache)
+runFib n = runState (fib n) []
+
+type Cache = [(Int, Int)]
+
+fib :: Int -> State Cache Int
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) &lt;$&gt; fib (n - 1) &lt;*&gt; fib (n - 2)
+
+memo :: (MonadState [(a, b)] m, Eq a) => a -> m b -> m b
+memo n compute = gets (lookup n) >>= \case
+  Just v -> pure v
+  Nothing -> compute >>= \r -> modify ((n, r) :) >> pure r
+</code></pre>
+
+<p>We can run it again to ensure that everything looks good:</p>
+
+<pre><code>$ runghc fib.hs
+(13,[(7,13),(6,8),(5,5),(4,3),(3,2),(2,1)])
+</code></pre>
+
+<p>
+Finally, since now that we know that the memoization is working, we don't need
+to see those intermediate values. We can modify our <code>runFib</code> method
+to return only the first element of the tuple, say:
+</p>
+
+<pre><code>runFib n = fst $ runState (fib n) []
+</code></pre>
+
+<p>
+But there is a helper function for doing this too - <code>evalState</code>. It
+is like
+<code>runState</code>, except it throws away the state and only returns the
+final result.
+</p>
+
+<pre><code>runFib :: Int -> Int
+runFib n = evalState (fib n) []
+</code></pre>
+
+<p>Let's see it in action.</p>
+
+<pre><code>$ runghc fib.hs
+13
+</code></pre>
+
+<p>Nice.</p>
+
+<h3>More to memoization</h3>
+
+<p>We've reached quite an okay point. We started with this beauty:</p>
+
+<pre><code>fib :: Int -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n - 1) + fib (n - 2)
+</code></pre>
+
+and have ended up with:
+
+<pre><code>fib :: Int -> State Cache Int
+fib n = memo n (f n) where
+  f 0 = pure 0
+  f 1 = pure 1
+  f n = (+) &lt;$&gt; fib (n - 1) &lt;*&gt; fib (n - 2)
+</code></pre>
+
+<p>
+Not great, but not too bad. The second version implicitly memoizes all function
+calls under the hood, and for problems where memoization is of essence, this is
+an okay price to pay for the functionality we get. Indeed, even for the simple
+case of our <code>fib</code> function, and for (relatively) small values of n -
+the difference in time is functionally (pun!) important (try running <code>fib
+700</code> in both cases - the first one goes nowhere while the second is
+instant).
+</p>
+
+<p>Hope you found this useful.</p>
+
+</body>
+</html>
