@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Softmax</title>
+<meta name="description" content="Converting numbers to probability distributions">
+
+<style>
+:root {
+  font-size: 95%;
+
+  --soft: rgb(204, 204, 214);
+  --bg-pre: beige;
+  --accent: rgb(147, 63, 24);
+}
+
+pre {
+  background-color: azure;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --soft: rgb(204, 204, 214);
+    --bg-pre: hsl(213, 31%, 11%);
+    --accent: rgb(226, 117, 132);
+  }
+
+  body {
+    background-color: rgb(12, 17, 23);
+    color: rgb(224, 224, 234);
+  }
+}
+
+pre, code {
+  background-color: var(--bg-pre);
+}
+
+:not(pre) > code {
+  padding-block: 0.4em;
+  padding-inline: 0.5em;
+  border: 1px solid var(--accent);
+
+  white-space: pre;
+}
+
+body {
+  margin-block-start: 4em;
+  margin-block-end: 20svh;
+  margin-inline: 0;
+  --margin-inline: 4rem;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
+}
+
+
+@media (width < 40em) {
+  body {
+    margin-block-start: 1em;
+    --margin-inline: 1rem;
+  }
+}
+
+p, blockquote, ul, ol {
+  margin-block: 2.25em;
+  max-width: 34rem;
+}
+
+h2, h3 {
+  color: var(--accent);
+}
+
+h2, h3, p, ul, ol {
+  margin-inline: var(--margin-inline);
+}
+
+@media (width < 40em) {
+  ul, ol {
+    padding-inline-start: 1em;
+  }
+}
+
+pre {
+  padding-block: 2.25em;
+  padding-inline: var(--margin-inline);
+  overflow-x: scroll;
+}
+
+blockquote {
+  margin-block: 2.25em;
+  margin-inline: var(--margin-inline);
+  padding-inline: 1em;
+  border-inline-start: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+blockquote > p {
+  margin-inline: 0;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Softmax</h2>
+
+
+<p>
+Softmax converts an arbitrary set of numbers into a probability distribution.
+That is, the numbers will all be between 0 and 1, and will sum together to 1.
+</p>
+
+<pre><code>const sm = (xs) => {
+  const s = xs.map(Math.exp).reduce((a, x) => a + x, 0);
+  return xs.map((x) => Math.exp(x) / s);
+};
+</code></pre>
+
+<p>
+It has some nice characteristics. E.g. compared to other methods of
+normalization, this handles negatives, small, large, zero, anything you can
+throw at it usually.
+</p>
+
+<pre><code>// helper method to print as percentages
+const per = (xs) => xs.map((x) => Math.round(x * 100));
+
+> per(sm([1, 0, 3, -10, 0.07]))
+[ 11, 4, 81, 0, 4 ]
+</code></pre>
+
+<p>It has some not so nice ones too. E.g. it is not scale invariant.</p>
+
+<pre><code>> per(sm([1, 2]))
+[ 27, 73 ]
+> per(sm([2, 4]))
+[ 12, 88 ]
+> per(sm([4, 8]))
+[ 2, 98 ]
+</code></pre>
+
+<p>
+Intuitively, I would think the presence of the exponent will amplify
+differences. This happens indeed
+</p>
+
+<pre><code>> per(sm([1, 2, 4, 8]))
+[ 0, 0, 2, 98 ]
+</code></pre>
+
+<p>
+But not to an extent that I expected on first contact. On the contrary, it seems
+to further "compress" the numbers together if they're close together
+</p>
+
+<pre><code>> per(sm([0.1, 0.2, 0.3, 0.4]))
+[ 21, 24, 26, 29 ]
+</code></pre>
+
+<p>
+Again, depending on the task at hand, this might or might not be the behaviour I
+might want.
+</p>
+
+<p>
+It seems to work great in ML settings, in particular for converting the output
+of the last layer into probability distributions, for reasons that seem to be
+tied to how the backpropogation works.
+</p>
+
+</body>
+</html>
