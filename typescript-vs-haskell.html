@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>TypeScript vs Haskell</title>
+<meta name="description" content="Structural vs nominal type systems">
+
+<style>
+:root {
+  font-size: 95%;
+
+  --soft: rgb(204, 204, 214);
+  --bg-pre: beige;
+  --accent: rgb(147, 63, 24);
+}
+
+pre {
+  background-color: azure;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --soft: rgb(204, 204, 214);
+    --bg-pre: hsl(213, 31%, 11%);
+    --accent: rgb(226, 117, 132);
+  }
+
+  body {
+    background-color: rgb(12, 17, 23);
+    color: rgb(224, 224, 234);
+  }
+}
+
+pre, code {
+  background-color: var(--bg-pre);
+}
+
+:not(pre) > code {
+  padding-block: 0.4em;
+  padding-inline: 0.5em;
+  border: 1px solid var(--accent);
+
+  white-space: pre;
+}
+
+body {
+  margin-block-start: 4em;
+  margin-block-end: 20svh;
+  margin-inline: 0;
+  --margin-inline: 4rem;
+  line-height: 1.5;
+  font-family: system-ui, sans-serif;
+}
+
+
+@media (width < 40em) {
+  body {
+    margin-block-start: 1em;
+    --margin-inline: 1rem;
+  }
+}
+
+p, blockquote, ul, ol {
+  margin-block: 2.25em;
+  max-width: 34rem;
+}
+
+h2, h3 {
+  color: var(--accent);
+}
+
+h2, h3, p, ul, ol {
+  margin-inline: var(--margin-inline);
+}
+
+@media (width < 40em) {
+  ul, ol {
+    padding-inline-start: 1em;
+  }
+}
+
+pre {
+  padding-block: 2.25em;
+  padding-inline: var(--margin-inline);
+  overflow-x: scroll;
+}
+
+blockquote {
+  margin-block: 2.25em;
+  margin-inline: var(--margin-inline);
+  padding-inline: 1em;
+  border-inline-start: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+blockquote > p {
+  margin-inline: 0;
+}
+</style>
+
+</head>
+
+<em>
+
+<header>
+<h2>TypeScript vs Haskell</h2>
+<em>When a rose by any other name would do</em>
+</header>
+
+<p>
+TypeScript provides <b>structural typing</b>. If it walks like a duck, and
+quacks like a duck, for TypeScript, it is a duck. TypeScript does not care at
+all what name you give to the type.
+</p>
+
+<p>
+Haskell provides <b>nominal typing</b>. It must be called a duck for it to be
+considered a duck. A rose by any other name won’t do.
+</p>
+
+<p>
+Both TypeScript and Haskell are based on solid, grounded, mathematics that goes
+back a century at least. It is not programmers hacking these languages together
+on whim and fashion (though that plays a part) - it is more of people trying to
+transmute the hard nuggets of type theory into practical programming languages.
+</p>
+
+<p>
+Both TypeScript and Haskell provide type inference. Which means that you won’t
+<em>need to</em> tell the compiler the type of a duck or a rose, it’ll just know.
+</p>
+
+<p>
+But the surprising thing is, after a while you’ll <em>want to</em> write the
+types. Programming in these languages then becomes the game of describing the
+types and how they transform into each other (as opposed to more direct approach
+of describing values and how they transform into each other).
+</p>
+
+</body>
+</html>

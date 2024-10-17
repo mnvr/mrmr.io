@@ -46,6 +46,13 @@
       <pubDate>Sun, 03 Dec 2023 00:00:00 GMT</pubDate>
    </item>
    <item>
+      <title>TypeScript vs Haskell</title>
+      <description>Structural vs nominal type systems</description>
+      <link>https://mrmr.io/typescript-vs-haskell</link>
+      <guid>https://mrmr.io/typescript-vs-haskell</guid>
+      <pubDate>Thu, 30 Nov 2023 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>Trust your intuition</title>
       <description>The bias fallacy</description>
       <link>https://mrmr.io/trust-your-intuition</link>
