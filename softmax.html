@@ -10,95 +10,51 @@
 <meta name="description" content="Converting numbers to probability distributions">
 
 <style>
-:root {
-  font-size: 95%;
-
-  --soft: rgb(204, 204, 214);
-  --bg-pre: beige;
-  --accent: rgb(147, 63, 24);
-}
-
-pre {
-  background-color: azure;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --soft: rgb(204, 204, 214);
-    --bg-pre: hsl(213, 31%, 11%);
-    --accent: rgb(226, 117, 132);
-  }
-
-  body {
-    background-color: rgb(12, 17, 23);
-    color: rgb(224, 224, 234);
-  }
-}
-
-pre, code {
-  background-color: var(--bg-pre);
-}
-
-:not(pre) > code {
-  padding-block: 0.4em;
-  padding-inline: 0.5em;
-  border: 1px solid var(--accent);
-
-  white-space: pre;
-}
-
 body {
-  margin-block-start: 4em;
-  margin-block-end: 20svh;
+  background-color: rgb(34, 25, 112);
+  color: rgb(169, 158, 99);
+
+  line-height: 1.4;
   margin-inline: 0;
-  --margin-inline: 4rem;
-  line-height: 1.5;
-  font-family: system-ui, sans-serif;
-}
-
-
-@media (width < 40em) {
-  body {
-    margin-block-start: 1em;
-    --margin-inline: 1rem;
-  }
-}
-
-p, blockquote, ul, ol {
-  margin-block: 2.25em;
-  max-width: 34rem;
-}
-
-h2, h3 {
-  color: var(--accent);
-}
-
-h2, h3, p, ul, ol {
-  margin-inline: var(--margin-inline);
-}
-
-@media (width < 40em) {
-  ul, ol {
-    padding-inline-start: 1em;
-  }
 }
 
 pre {
-  padding-block: 2.25em;
-  padding-inline: var(--margin-inline);
-  overflow-x: scroll;
+  background-color: rgb(149, 137, 81);
+  color: rgb(25, 22, 52);
 }
 
-blockquote {
-  margin-block: 2.25em;
-  margin-inline: var(--margin-inline);
-  padding-inline: 1em;
-  border-inline-start: 2px solid var(--accent);
-  color: var(--accent);
+p, pre {
+  margin-block: 1.5em;
+  margin-inline: 2em;
 }
 
-blockquote > p {
-  margin-inline: 0;
+p {
+ padding-inline: 1ch;
+ max-width: 32rem;
+}
+
+pre {
+  padding-block: 1em;
+  padding-inline: 1ch;
+}
+
+@media (width > 35em) {
+  pre {
+    max-width: 32rem;
+  }
+}
+
+b {
+  color: rgb(238, 204, 11);
+}
+
+@media (width < 35em) {
+  p, pre {
+    margin-inline: 0;
+  }
+  pre {
+    overflow-y: auto;
+  }
 }
 </style>
 
@@ -106,11 +62,8 @@ blockquote > p {
 
 <body>
 
-<h2>Softmax</h2>
-
-
 <p>
-Softmax converts an arbitrary set of numbers into a probability distribution.
+<b>Softmax</b> converts an arbitrary set of numbers into a probability distribution.
 That is, the numbers will all be between 0 and 1, and will sum together to 1.
 </p>
 
