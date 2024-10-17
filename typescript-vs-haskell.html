@@ -13,13 +13,11 @@
 :root {
   font-size: 95%;
 
-  --soft: lightslategray;
   --accent: rgb(147, 63, 24);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --soft: lightslategray;
     --accent: rgb(226, 117, 132);
   }
 
@@ -31,7 +29,8 @@
 
 body {
   margin-block-start: 4em;
-  margin-block-end: 20svh;
+  margin-block-end: 0;
+  padding-block-end: 20svh;
   margin-inline: 0;
   --margin-inline: 4rem;
   line-height: 1.5;
@@ -50,7 +49,7 @@ p {
   max-width: 34rem;
 }
 
-h2, b  {
+h2, b, em  {
   color: var(--accent);
 }
 
@@ -61,16 +60,28 @@ header {
 
   p {
     margin-block-start: 0.5em;
-    color: var(--soft);
+    opacity: 0.6;
     font-size: 0.93rem;
     font-style: italic;
   }
 
-  margin-block-end: 4rem;
+  margin-block-end: 3.325rem;
 }
 
 h2, p {
   margin-inline: var(--margin-inline);
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid var(--accent);
+  padding-block-start: 20svh;
+
+  margin-block: 4rem;
+}
+
+body {
+  border-bottom: 1px solid var(--accent);
 }
 </style>
 
@@ -94,6 +105,8 @@ Haskell provides <b>nominal typing</b>. It must be called a duck for it to be
 considered a duck. A rose by any other name won’t do.
 </p>
 
+<hr>
+
 <p>
 Both TypeScript and Haskell are based on solid, grounded, mathematics that goes
 back a century at least. It is not programmers hacking these languages together
@@ -102,12 +115,13 @@ transmute the hard nuggets of type theory into practical programming languages.
 </p>
 
 <p>
-Both TypeScript and Haskell provide type inference. Which means that you won’t
-<em>need to</em> tell the compiler the type of a duck or a rose, it’ll just know.
+Both TypeScript and Haskell provide type inference. Which means that <em>you
+won’t need to</em> tell the compiler the type of a duck or a rose, it’ll just
+know.
 </p>
 
 <p>
-But the surprising thing is, after a while you’ll <em>want to</em> write the
+But the surprising thing is, after a while <em>you’ll want to</em> write the
 types. Programming in these languages then becomes the game of describing the
 types and how they transform into each other (as opposed to more direct approach
 of describing values and how they transform into each other).
