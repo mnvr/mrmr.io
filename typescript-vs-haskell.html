@@ -13,19 +13,13 @@
 :root {
   font-size: 95%;
 
-  --soft: rgb(204, 204, 214);
-  --bg-pre: beige;
+  --soft: lightslategray;
   --accent: rgb(147, 63, 24);
-}
-
-pre {
-  background-color: azure;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --soft: rgb(204, 204, 214);
-    --bg-pre: hsl(213, 31%, 11%);
+    --soft: lightslategray;
     --accent: rgb(226, 117, 132);
   }
 
@@ -33,18 +27,6 @@ pre {
     background-color: rgb(12, 17, 23);
     color: rgb(224, 224, 234);
   }
-}
-
-pre, code {
-  background-color: var(--bg-pre);
-}
-
-:not(pre) > code {
-  padding-block: 0.4em;
-  padding-inline: 0.5em;
-  border: 1px solid var(--accent);
-
-  white-space: pre;
 }
 
 body {
@@ -56,7 +38,6 @@ body {
   font-family: system-ui, sans-serif;
 }
 
-
 @media (width < 40em) {
   body {
     margin-block-start: 1em;
@@ -64,51 +45,42 @@ body {
   }
 }
 
-p, blockquote, ul, ol {
+p {
   margin-block: 2.25em;
   max-width: 34rem;
 }
 
-h2, h3 {
+h2, b  {
   color: var(--accent);
 }
 
-h2, h3, p, ul, ol {
-  margin-inline: var(--margin-inline);
-}
-
-@media (width < 40em) {
-  ul, ol {
-    padding-inline-start: 1em;
+header {
+  h2 {
+    margin-block-end: 0
   }
+
+  p {
+    margin-block-start: 0.5em;
+    color: var(--soft);
+    font-size: 0.93rem;
+    font-style: italic;
+  }
+
+  margin-block-end: 4rem;
 }
 
-pre {
-  padding-block: 2.25em;
-  padding-inline: var(--margin-inline);
-  overflow-x: scroll;
-}
-
-blockquote {
-  margin-block: 2.25em;
+h2, p {
   margin-inline: var(--margin-inline);
-  padding-inline: 1em;
-  border-inline-start: 2px solid var(--accent);
-  color: var(--accent);
-}
-
-blockquote > p {
-  margin-inline: 0;
 }
 </style>
 
 </head>
 
-<em>
+<body>
 
 <header>
 <h2>TypeScript vs Haskell</h2>
-<em>When a rose by any other name would do</em>
+<p>When a rose by any other name would do</p>
 </header>
 
 <p>
