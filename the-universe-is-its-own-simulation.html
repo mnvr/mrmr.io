@@ -27,13 +27,23 @@ body {
     color: ghostwhite;
   }
 }
+
+canvas {
+  border: 1px solid green;
+}
 </style>
+
+<script type="module">
+import { sketch } from "./js/univ-sketch.ts"
+
+sketch(document.getElementById("c"));
+</script>
 
 </head>
 
 <body>
 
-Test
+<canvas id="c"></canvas>
 
 </body>
 </html>
