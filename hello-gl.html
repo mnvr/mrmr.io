@@ -28,11 +28,26 @@ body {
     background-color: #222;
     color: ghostwhite;
   }
+
+  b {
+  color: powderblue;
+  }
 }
 
 .muted {
-  opacity: 0.7;
+  opacity: 0.8;
 }
+
+blockquote {
+  opacity: 0.8;
+  font-style: italic;
+  border-inline-start: 2px solid #888;
+  margin-inline: 2px;
+}
+/*
+blockquote > p {
+  margin-inline: calc(1rem - 4px);
+} */
 
 canvas {
   display: block;
@@ -190,7 +205,6 @@ canvas.width = canvas.clientWidth * devicePixelRatio;
 canvas.height = canvas.clientHeight * devicePixelRatio;
 </code></pre>
 
-
 <p>So far, we've not done anything WebGL specific.</p>
 
 <p>Now let's get hands our on the WebGL context, and paint it blue-ish.</p>
@@ -201,35 +215,32 @@ gl.clear(gl.COLOR_BUFFER_BIT);
 </code></pre>
 
 <p>
-  Now onto the shaders. We need two, a vertex shader, which defines the area we're
-  going to draw in, and a fragment shader, which defines the color each pixel in
-  this area will have.
+Now onto the shaders. We need two, a vertex shader, which defines the area we're
+going to draw in, and a fragment shader, which defines the color each pixel in
+this area will have.
 </p>
 
-For now, let's create shaders that draw a point, and color it white.
+<p>For now, let's create shaders that draw a point, and color it white.</p>
 
-<!-- prettier-ignore -->
-```js
-const vs = gl.createShader(gl.VERTEX_SHADER);
-gl.shaderSource(vs, `
+<pre><code>const vs = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vs, <b>`
 void main() {
     gl_Position = vec4(0., 0., 0., 1.);
     gl_PointSize = 100.;
-}`);
+}`</b>);
 gl.compileShader(vs);
 
 const fs = gl.createShader(gl.FRAGMENT_SHADER);
-gl.shaderSource(fs, `
+gl.shaderSource(fs, <b>`
 void main() {
     gl_FragColor = vec4(1., 1., 1., 1.);
-}`);
+}`</b>);
 gl.compileShader(fs);
-```
+</code></pre>
 
-And tell the WebGL context of our canvas to use them.
+<p>And tell the WebGL context of our canvas to use them.</p>
 
-```js
-const p = gl.createProgram();
+<pre><code>const p = gl.createProgram();
 gl.attachShader(p, vs);
 gl.attachShader(p, fs);
 gl.linkProgram(p);
@@ -237,38 +248,44 @@ gl.detachShader(p, vs);
 gl.detachShader(p, fs);
 gl.deleteShader(vs);
 gl.deleteShader(fs);
-```
+</code></pre>
 
-Let us give WebGL a chance to speak, if it has something to say.
+<p>Let us give WebGL a chance to speak, if it has something to say.</p>
 
-```js
-const log = gl.getProgramInfoLog(p);
+<pre><code>const log = gl.getProgramInfoLog(p);
 if (log) console.error(log);
-```
+</code></pre>
 
-> [!TIP]
->
-> A common mistake is to omit the dots when specifying numbers in GLSL. GLSL is
-> not JavaScript, and those dots are mandatory – for GLSL `1` and `1.0` (or its
-> shorthand `1.`) mean different things.
+<blockquote>
+<p>
+A common mistake is to omit the dots when specifying numbers in GLSL. GLSL is
+not JavaScript, and those dots are mandatory – for GLSL <code>1</code> and
+<code>1.0</code> mean different things.
+</p>
 
-Everything's in place, let us ask GLSL to draw.
+<p style="color: greenyellow">Tip:<code>1.</code> is a shorthand for
+<code>1.0</code></p>
+</blockquote>
 
-```js
-gl.useProgram(p);
+<p>Everything's in place, let us ask GLSL to draw.</p>
+
+<pre><code>gl.useProgram(p);
 gl.drawArrays(gl.POINTS, 0, 1);
-```
+</code></pre>
 
+<p>
 Since we are not animating, we won't need our program subsequently, so we can
 also clean it up.
+</p>
 
-```js
-gl.useProgram(null);
+<pre><code>gl.useProgram(null);
 gl.deleteProgram(p);
-```
+</code></pre>
 
-That's it. That's our lovely white dot on a blue ocean of nothingness.
-
+<p>
+That's it. That's our lovely white dot on a blue ocean of nothingness that
+you saw at the top of this page.
+</p>
 
 </body>
 </html>
