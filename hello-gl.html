@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Hello WebGL</title>
+<meta name="description" content="A minimal-ish example GLSL shader">
+
+<style>
+body {
+  margin-block: 4rem;
+  margin-inline: 3rem;
+  line-height: 1.5;
+}
+
+@media (width < 40em) {
+  body {
+    margin-block: 1rem;
+    margin-inline: 0rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #222;
+    color: ghostwhite;
+  }
+}
+
+.muted {
+  opacity: 0.7;
+}
+
+canvas {
+  display: block;
+  margin-inline: 1rem;
+  width: calc(min(36rem, 100%) - 2rem);
+  aspect-ratio: 2/1;
+}
+
+header, p {
+  max-width: 34rem;
+  margin-inline: 1rem;
+}
+
+pre {
+  max-width: 36rem;
+  overflow-x: auto;
+}
+
+p, pre, canvas {
+  margin-block: 2.4rem;
+}
+
+pre {
+  padding: 1.5rem;
+  background-color: #333;
+}
+
+@media (width < 40em) {
+  pre {
+    padding-inline: 1rem;
+  }
+}
+
+:not(pre) > code {
+  padding: 1ch;
+  background-color: #333;
+}
+</style>
+
+<script type="module">
+const canvas = document.getElementById("c");
+canvas.width = canvas.clientWidth * devicePixelRatio;
+canvas.height = canvas.clientHeight * devicePixelRatio;
+
+const gl = canvas.getContext("webgl");
+gl.clearColor(0, 0.5, 1, 1);
+gl.clear(gl.COLOR_BUFFER_BIT);
+
+const vs = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vs, `
+void main() {
+    gl_Position = vec4(0., 0., 0., 1.);
+    gl_PointSize = 100.;
+}`);
+gl.compileShader(vs);
+
+const fs = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fs, `
+void main() {
+    gl_FragColor = vec4(1., 1., 1., 1.);
+}`);
+gl.compileShader(fs);
+
+const p = gl.createProgram();
+gl.attachShader(p, vs);
+gl.attachShader(p, fs);
+gl.linkProgram(p);
+gl.detachShader(p, vs);
+gl.detachShader(p, fs);
+gl.deleteShader(vs);
+gl.deleteShader(fs);
+
+const log = gl.getProgramInfoLog(p);
+if (log) console.error(log);
+
+gl.useProgram(p);
+gl.drawArrays(gl.POINTS, 0, 1);
+
+gl.useProgram(null);
+gl.deleteProgram(p);
+
+// Show the dynamic DPR
+document.getElementById("dpr").innerText = `${devicePixelRatio}`;
+</script>
+
+</head>
+
+<body>
+
+<header>
+<h2>Hello WebGL</h2>
+<em>Look Ma, no libraries.</em>
+</header>
+
+<canvas id="c"></canvas>
+
+<p>Create a canvas.</p>
+
+<pre><code>&lt;canvas id="c"></canvas>
+</code></pre>
+
+<p>
+By default, a canvas has a width of 300px and a height of 150px. That is tiny,
+you might want to increase it a bit.
+</p>
+
+<p>
+For example, this page asks the canvas HTML element to fill its container, and
+also automatically compute the corresponding height so as to maintain a 2:1
+aspect ratio (that is, be twice as wide as it is high).
+</p>
+
+<pre><code>canvas {
+  width: 100%;
+  aspect-ratio: 2/1;
+}
+</code></pre>
+
+<p>
+Setup things so that the following JavaScript code runs after your document has
+loaded. For example, this page uses a <code>&lt;script type="module></code>
+block. Simply doing that guarantees that our code will run after the DOM has
+loaded.
+</p>
+
+<pre><code>&lt;script type="module">
+<span class="muted">
+// Rest of our code will go here...
+</span>
+&lt;/script>
+</code></pre>
+
+<p>
+Get hold of the canvas, and ask for it for its DOM width and height. The canvas
+is still living in delusion that its width and height are at their default value
+(300, 150), so we also need to tell the canvas, hey buddy, wake up, this is the
+space you're occupying on the page (DOM).
+</p>
+
+<p>
+But that's not all. If you're viewing the page on a high density display, your
+screen will be showing multiple pixels for each CSS pixel. For example, I'm
+currently writing this on a device that has a <code>devicePixelRatio</code> of
+2. You're currently reading this on device that has a DPR of <span
+id="dpr"></span>.
+</p>
+
+<p>
+There are many ways of, and caveats to, using the DPR. To keep things minimal,
+let’s just multiply by it so that our example does not look blurry.
+</p>
+
+<pre><code>const canvas = document.getElementById("c");
+canvas.width = canvas.clientWidth * devicePixelRatio;
+canvas.height = canvas.clientHeight * devicePixelRatio;
+</code></pre>
+
+
+<p>So far, we've not done anything WebGL specific.</p>
+
+<p>Now let's get hands our on the WebGL context, and paint it blue-ish.</p>
+
+<pre><code>const gl = canvas.getContext("webgl");
+gl.clearColor(<span style="color: rgb(0 50% 100%)">0, 0.5, 1, 1</span>);
+gl.clear(gl.COLOR_BUFFER_BIT);
+</code></pre>
+
+<p>
+  Now onto the shaders. We need two, a vertex shader, which defines the area we're
+  going to draw in, and a fragment shader, which defines the color each pixel in
+  this area will have.
+</p>
+
+For now, let's create shaders that draw a point, and color it white.
+
+<!-- prettier-ignore -->
+```js
+const vs = gl.createShader(gl.VERTEX_SHADER);
+gl.shaderSource(vs, `
+void main() {
+    gl_Position = vec4(0., 0., 0., 1.);
+    gl_PointSize = 100.;
+}`);
+gl.compileShader(vs);
+
+const fs = gl.createShader(gl.FRAGMENT_SHADER);
+gl.shaderSource(fs, `
+void main() {
+    gl_FragColor = vec4(1., 1., 1., 1.);
+}`);
+gl.compileShader(fs);
+```
+
+And tell the WebGL context of our canvas to use them.
+
+```js
+const p = gl.createProgram();
+gl.attachShader(p, vs);
+gl.attachShader(p, fs);
+gl.linkProgram(p);
+gl.detachShader(p, vs);
+gl.detachShader(p, fs);
+gl.deleteShader(vs);
+gl.deleteShader(fs);
+```
+
+Let us give WebGL a chance to speak, if it has something to say.
+
+```js
+const log = gl.getProgramInfoLog(p);
+if (log) console.error(log);
+```
+
+> [!TIP]
+>
+> A common mistake is to omit the dots when specifying numbers in GLSL. GLSL is
+> not JavaScript, and those dots are mandatory – for GLSL `1` and `1.0` (or its
+> shorthand `1.`) mean different things.
+
+Everything's in place, let us ask GLSL to draw.
+
+```js
+gl.useProgram(p);
+gl.drawArrays(gl.POINTS, 0, 1);
+```
+
+Since we are not animating, we won't need our program subsequently, so we can
+also clean it up.
+
+```js
+gl.useProgram(null);
+gl.deleteProgram(p);
+```
+
+That's it. That's our lovely white dot on a blue ocean of nothingness.
+
+
+</body>
+</html>
