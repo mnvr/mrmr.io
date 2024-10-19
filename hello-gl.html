@@ -10,6 +10,16 @@
 <meta name="description" content="A minimal-ish example GLSL shader">
 
 <style>
+:root {
+ --code-bg: ghostwhite;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+  --code-bg: #333;
+  }
+}
+
 body {
   margin-block: 4rem;
   margin-inline: 3rem;
@@ -44,12 +54,28 @@ pre {
   }
 
   span.vs {
-    color: rgb(220, 230, 92);
+    color: black;
   }
 
   span.fs {
-    color: rgb(30, 222, 22);
+    color: blue;
   }
+}
+
+@media (prefers-color-scheme: dark) {
+  pre span.fs {
+    color: rgb(57, 228, 51);
+  }
+
+  pre span.vs {
+    color: rgb(255, 154, 38)
+  }
+}
+
+.dot {
+  background-color: rgb(0 50% 100%);
+  color: white;
+  padding: 0.5ch;
 }
 
 canvas {
@@ -75,7 +101,7 @@ p, pre, canvas {
 
 pre {
   padding: 1.5rem;
-  background-color: #333;
+  background-color: var(--code-bg);
 }
 
 @media (width < 40em) {
@@ -84,15 +110,20 @@ pre {
   }
 }
 
+@media (width > 40em) {
+  pre {
+    border-radius: 8px;
+  }
+}
+
 :not(pre) > code {
   padding: 1ch;
-  background-color: #333;
+  background-color: var(--code-bg);
 }
 
 
 blockquote {
   opacity: 0.5;
-  /* font-style: italic; */
   border-inline-start: 2px solid #888;
   margin-inline: 2px;
 }
@@ -295,7 +326,8 @@ gl.deleteProgram(p);
 
 <p>
 That's it, that's all it took to create that WebGL canvas you saw at the top of
-this page.  Our lovely white dot on a blue ocean of nothingness.
+this page. <span class="dot">Our lovely white dot on a blue ocean of
+nothingness.</span>
 </p>
 
 </body>
