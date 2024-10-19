@@ -10,21 +10,19 @@
       <url>https://mrmr.io/preview.png</url>
       <link>https://mrmr.io</link>
    </image>
-   <!--
-   <item>
-      <title>Softmax</title>
-      <description>Converting numbers to probability distributions</description>
-      <link>https://mrmr.io/softmax</link>
-      <guid>https://mrmr.io/softmax</guid>
-      <pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate>
-   </item>
-   -->
    <item>
       <title>Hello WebGL</title>
       <description>An example zero-dependency GLSL shader</description>
       <link>https://mrmr.io/hello-gl</link>
       <guid>https://mrmr.io/hello-gl</guid>
       <pubDate>Sun, 08 Sep 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
+      <title>Softmax</title>
+      <description>Converting numbers to probability distributions</description>
+      <link>https://mrmr.io/softmax</link>
+      <guid>https://mrmr.io/softmax</guid>
+      <pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
       <title>Raags</title>

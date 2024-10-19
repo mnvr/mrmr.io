@@ -11,31 +11,43 @@
 
 <style>
 body {
-  background-color: rgb(34, 25, 112);
+  background-color: rgb(43, 37, 96);
   color: rgb(169, 158, 99);
 
   line-height: 1.4;
   margin-inline: 0;
+  margin-block-end: 3rem;
+}
+
+p::selection, code::selection, b::selection {
+  background-color: black;
 }
 
 pre {
   background-color: rgb(149, 137, 81);
+  background-color: rgb(233 183 91 / 0.1);
   color: rgb(25, 22, 52);
+  color: rgb(34, 21, 21);
+  color: rgb(180, 164, 76);
 }
 
 p, pre {
   margin-block: 1.5em;
   margin-inline: 2em;
+  border-radius: 1px;
 }
 
 p {
- padding-inline: 1ch;
- max-width: 32rem;
+  padding: 1ch 2ch;
+  max-width: 32rem;
+}
+
+p + p {
+  padding-block-start: 0;
 }
 
 pre {
-  padding-block: 1em;
-  padding-inline: 1ch;
+  padding: 2ch;
 }
 
 @media (width > 35em) {
