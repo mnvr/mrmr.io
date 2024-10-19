@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Taste</title>
+<meta name="description" content="The tastiest taste, ever">
+
+<style>
+body {
+  margin: 4em;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(99svh - 8em);
+}
+
+footer {
+  opacity: 0.7;
+}
+
+@media (width < 18em) {
+  body {
+    margin: 2em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: hsl(240, 44%, 8%);
+    color: rgb(156, 228, 33);
+    color: rgb(183, 247, 162);
+  }
+
+  h2 {
+    color: rgb(183, 247, 162);
+    color: rgb(156, 228, 33);
+  }
+  code, kbd {
+    color: rgb(183, 247, 162);
+    color: rgb(156, 228, 33);
+    background-color: black;
+    padding: 0.6ch;
+    border: 1px solid currentColor
+  }
+  kbd {
+    white-space: pre;
+  }
+}
+
+hr {
+border-bottom: 1px solid currentColor;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>On the useful use of cat</h2>
+
+<p>
+Some people insist that we should never use a
+<code>cat</code>.
+</p>
+
+<p>
+This is at best a subjective opinion, and at worst harmful bullying.
+</p>
+
+<p>
+Shell pipelines are not things of static beauty, they are interactive dialogs
+with the UNIX shell, chatting with it to come up ad-hoc ways of gluing together
+tools to the get the at the bespoke outcomes we want.
+</p>
+
+<p>
+Beginning a shell pipe with a `cat` provides us maximal flexibility during the
+exploratory phase. Here is a common pattern I follow:
+</p>
+
+<pre><code>cat some-huge-file | head | ...
+</code></pre>
+
+<p>
+I can fill in the `...` part through trial and error, without running it on the
+entire input. <i>A la</i> test driven development.
+</p>
+
+<p>
+Then, when the rest of the command feels complete, I can to splice out the
+<code>head</code> from the pipeline using the key combinations
+<kbd>Ctrl - P</kbd> (prev command), <kbd>Ctrl - A</kbd>
+(beginning of line), <kbd>Alt/Opt - F</kbd> twice (to skip over the cat) and
+<kbd>Alt/Opt - D</kbd> twice. Seems a lot when I spell it out, but my hands do
+it instantly without me thinking.
+</p>
+
+<p>
+The exact key combinations are not important, and it is perhaps confusing to
+bring them into the discussion. But I wanted to show how I think of the shell
+pipe concretely - as a series of steps, with the first step being an input and
+the last step being an output - and in such a formulation, placing the <code>head</code>
+after the <code>cat</code> comes totally naturally.
+</p>
+
+<hr>
+
+<p>
+The <code>cat | head</code> is redundant, and the following would seem equivalent:
+</p>
+
+<pre><code>head some-huge-file | ...
+</code></pre>
+
+<p>which later on, once the pipe has been constructed, can be modified to</p>
+
+<pre><code>cat some-huge-file | ...
+</code></pre>
+
+<p>
+leaving the rest unchanged. This is fine really, achieves conceptual
+equivalence with the "first step as the command-agnostic input" way of thinking
+I'm describing, and is shorter to boot.
+</p>
+
+<p>
+Why don't I do it that way (`head` instead of `cat`)? Because for me it be
+only a local maxima.
+</p>
+
+<p>
+  For some commands, it would indeed be the best. But I don't always construct
+  commands using `cat | head`. Sometimes I subconsciously know how things are
+  going to go, by virtue of having done similar things previously, and while I
+  might not necessarily construct the correct shell pipe incantation in the first
+  go, I might too, and usually if there is any mistake it'll take me one or two
+  minor tweaks to get it right.
+</p>
+
+<p>
+  In such cases, my hands don't bother with the `head`. So always beginning the
+  pipeline with a `cat` is a global maxima. I don't need to put any conscious
+  thought into deciding if the shell pipeline is going to be complicated, which
+  not, and if I can easily transition between the two modes.
+</p>
+
+<hr>
+
+<p>
+  If you decide not to use cat _ever_, it's fine really, it's your personal
+  preference. But if you go around giving the "useless use of cat award", you're
+  either misguided, or foul.
+</p>
+
+</body>
+</html>
