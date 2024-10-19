@@ -28,26 +28,29 @@ body {
     background-color: #222;
     color: ghostwhite;
   }
+}
 
-  b {
-  color: powderblue;
+pre {
+  span {
+    font-weight: bold;
+  }
+
+  span.muted {
+    opacity: 0.7;
+  }
+
+  span.blue {
+    color: rgb(0 50% 100%);
+  }
+
+  span.vs {
+    color: rgb(220, 230, 92);
+  }
+
+  span.fs {
+    color: rgb(30, 222, 22);
   }
 }
-
-.muted {
-  opacity: 0.8;
-}
-
-blockquote {
-  opacity: 0.8;
-  font-style: italic;
-  border-inline-start: 2px solid #888;
-  margin-inline: 2px;
-}
-/*
-blockquote > p {
-  margin-inline: calc(1rem - 4px);
-} */
 
 canvas {
   display: block;
@@ -56,13 +59,13 @@ canvas {
   aspect-ratio: 2/1;
 }
 
-header, p {
+header, p, blockquote {
   max-width: 34rem;
   margin-inline: 1rem;
 }
 
 pre {
-  max-width: 36rem;
+  max-width: 33rem;
   overflow-x: auto;
 }
 
@@ -85,6 +88,15 @@ pre {
   padding: 1ch;
   background-color: #333;
 }
+
+
+blockquote {
+  opacity: 0.5;
+  /* font-style: italic; */
+  border-inline-start: 2px solid #888;
+  margin-inline: 2px;
+}
+
 </style>
 
 <script type="module">
@@ -210,7 +222,7 @@ canvas.height = canvas.clientHeight * devicePixelRatio;
 <p>Now let's get hands our on the WebGL context, and paint it blue-ish.</p>
 
 <pre><code>const gl = canvas.getContext("webgl");
-gl.clearColor(<span style="color: rgb(0 50% 100%)">0, 0.5, 1, 1</span>);
+gl.clearColor(<span class="blue">0, 0.5, 1, 1</span>);
 gl.clear(gl.COLOR_BUFFER_BIT);
 </code></pre>
 
@@ -222,19 +234,19 @@ this area will have.
 
 <p>For now, let's create shaders that draw a point, and color it white.</p>
 
-<pre><code>const vs = gl.createShader(gl.VERTEX_SHADER);
-gl.shaderSource(vs, <b>`
+<pre><code>const vs = gl.createShader(gl.<span class="vs">VERTEX_SHADER</span>);
+gl.shaderSource(vs, <span class="vs">`
 void main() {
     gl_Position = vec4(0., 0., 0., 1.);
     gl_PointSize = 100.;
-}`</b>);
+}`</span>);
 gl.compileShader(vs);
 
-const fs = gl.createShader(gl.FRAGMENT_SHADER);
-gl.shaderSource(fs, <b>`
+const fs = gl.createShader(gl.<span class="fs">FRAGMENT_SHADER</span>);
+gl.shaderSource(fs, <span class="fs">`
 void main() {
     gl_FragColor = vec4(1., 1., 1., 1.);
-}`</b>);
+}`</span>);
 gl.compileShader(fs);
 </code></pre>
 
@@ -263,8 +275,7 @@ not JavaScript, and those dots are mandatory – for GLSL <code>1</code> and
 <code>1.0</code> mean different things.
 </p>
 
-<p style="color: greenyellow">Tip:<code>1.</code> is a shorthand for
-<code>1.0</code></p>
+<p><i>Tip:<code>1.</code> is a shorthand for <code>1.0</code></i></p>
 </blockquote>
 
 <p>Everything's in place, let us ask GLSL to draw.</p>
@@ -283,8 +294,8 @@ gl.deleteProgram(p);
 </code></pre>
 
 <p>
-That's it. That's our lovely white dot on a blue ocean of nothingness that
-you saw at the top of this page.
+That's it, that's all it took to create that WebGL canvas you saw at the top of
+this page.  Our lovely white dot on a blue ocean of nothingness.
 </p>
 
 </body>
