@@ -20,6 +20,13 @@
    </item>
    -->
    <item>
+      <title>Hello WebGL</title>
+      <description>An example zero-dependency GLSL shader</description>
+      <link>https://mrmr.io/hello-gl</link>
+      <guid>https://mrmr.io/hello-gl</guid>
+      <pubDate>Sun, 08 Sep 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>Raags</title>
       <description>Indian music scales</description>
       <link>https://mrmr.io/raag</link>
