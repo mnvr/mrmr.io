@@ -6,54 +6,58 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Taste</title>
-<meta name="description" content="The tastiest taste, ever">
+<title>Useful use of cat</title>
+<meta name="description" content="It is fine to begin your shell commands with cat">
 
 <style>
 body {
   margin: 4em;
   line-height: 1.4;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: calc(99svh - 8em);
+  max-width: 34rem;
 }
 
-footer {
-  opacity: 0.7;
-}
 
-@media (width < 18em) {
+@media (width < 40rem) {
   body {
-    margin: 2em;
+    margin-block: 2em;
+    margin-inline: 1em;
   }
+}
+
+body {
+  margin-block-end: 10rem;
 }
 
 @media (prefers-color-scheme: dark) {
   body {
     background-color: hsl(240, 44%, 8%);
-    color: rgb(156, 228, 33);
     color: rgb(183, 247, 162);
   }
 
   h2 {
-    color: rgb(183, 247, 162);
     color: rgb(156, 228, 33);
   }
+
   code, kbd {
-    color: rgb(183, 247, 162);
     color: rgb(156, 228, 33);
     background-color: black;
     padding: 0.6ch;
     border: 1px solid currentColor
   }
+
   kbd {
     white-space: pre;
   }
 }
 
+p, hr {
+  margin-block: 2.25rem;
+}
+
 hr {
-border-bottom: 1px solid currentColor;
+  border: 0;
+  border-block-end: 1px solid black;
+  margin-block: 5rem;
 }
 </style>
 
@@ -92,7 +96,7 @@ entire input. <i>A la</i> test driven development.
 </p>
 
 <p>
-Then, when the rest of the command feels complete, I can to splice out the
+Then, when the rest of the command feels complete, I splice out the
 <code>head</code> from the pipeline using the key combinations
 <kbd>Ctrl - P</kbd> (prev command), <kbd>Ctrl - A</kbd>
 (beginning of line), <kbd>Alt/Opt - F</kbd> twice (to skip over the cat) and
@@ -123,38 +127,39 @@ The <code>cat | head</code> is redundant, and the following would seem equivalen
 </code></pre>
 
 <p>
-leaving the rest unchanged. This is fine really, achieves conceptual
-equivalence with the "first step as the command-agnostic input" way of thinking
-I'm describing, and is shorter to boot.
+leaving the rest unchanged. This is fine really, achieves conceptual equivalence
+with the “<i>first step as the command-agnostic input</i>” way of thinking I'm
+describing, and is shorter to boot.
 </p>
 
 <p>
-Why don't I do it that way (`head` instead of `cat`)? Because for me it be
-only a local maxima.
+Why don't I do it that way (`head` instead of `cat`)? Because for me it'd only
+be a local maxima.
 </p>
 
 <p>
-  For some commands, it would indeed be the best. But I don't always construct
-  commands using `cat | head`. Sometimes I subconsciously know how things are
-  going to go, by virtue of having done similar things previously, and while I
-  might not necessarily construct the correct shell pipe incantation in the first
-  go, I might too, and usually if there is any mistake it'll take me one or two
-  minor tweaks to get it right.
+For some commands, it would indeed be the best. But I don't always construct
+commands using <code>cat | head</code>. Sometimes I subconsciously know how
+things are going to go, by virtue of having done similar things previously, and
+while I might not necessarily construct the correct shell incantation in the
+first go, I might too, and usually if there is any mistake it'll take me one or
+two minor tweaks to get it right.
 </p>
 
 <p>
-  In such cases, my hands don't bother with the `head`. So always beginning the
-  pipeline with a `cat` is a global maxima. I don't need to put any conscious
-  thought into deciding if the shell pipeline is going to be complicated, which
-  not, and if I can easily transition between the two modes.
+In such cases, my hands don't bother with the `head`. So for me, always
+beginning the pipeline with a <code>cat</code> is a global maxima. I don't need
+to put any conscious thought into deciding if the shell pipeline is going to be
+complicated or not, and if I choose incorrectly I can still easily transition
+between the two modes.
 </p>
 
 <hr>
 
 <p>
-  If you decide not to use cat _ever_, it's fine really, it's your personal
-  preference. But if you go around giving the "useless use of cat award", you're
-  either misguided, or foul.
+If you decide not to use cat <i>ever</i>, it's fine really, it's your personal
+preference. But if you go around giving the “useless use of cat award”, stop.
+You're either misguided, or being unkind.
 </p>
 
 </body>
