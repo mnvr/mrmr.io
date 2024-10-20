@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Making sounds in Javascript</title>
+<title>Making sounds in JavaScript</title>
 <meta name="description" content="An elementary introduction to JavaScript audio">
 
 <style>
@@ -24,6 +24,10 @@ body {
   body {
     margin: 1em 0em;
   }
+}
+
+body {
+  margin-block-end: 5em;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -53,7 +57,7 @@ h2 + h3 {
   margin-block-start: 2.25rem;
 }
 
-p + h3 {
+blockquote + h3, p + h3 {
   margin-block-start: 5rem;
 }
 
@@ -66,7 +70,7 @@ li {
 }
 
 pre {
-  margin-inline: 0.5rem;
+  margin-inline: 1rem;
   padding: 2.5rem;
   border: 1px solid var(--border-code);
   overflow-x: auto;
@@ -78,6 +82,7 @@ pre {
   }
 
   pre {
+    margin-inline: 0;
     padding-inline: 1rem;
     border-inline: 0;
   }
@@ -89,11 +94,21 @@ pre {
 }
 
 blockquote {
-  margin: 0;
+  border-inline-start: 2px solid #bbb;
+  margin-inline-start: 1rem;
+  margin-block: 3rem;
+  opacity: 0.8;
 }
 
 blockquote p {
-  margin-block: 1ch;
+  margin-block: 1.5rem;
+  margin-inline-start: 2rem;
+}
+
+@media (width < 40em) {
+  blockquote p {
+    margin-inline-start: 1rem;
+  }
 }
 </style>
 
@@ -101,7 +116,7 @@ blockquote p {
 
 <body>
 
-<h2>Making sounds in Javascript</h2>
+<h2>Making sounds in JavaScript</h2>
 
 <h3>First sound</h3>
 
@@ -179,92 +194,113 @@ of suddenly stopping.
 
 <p><button @click="on2" :class="classB2">Beep</button></p>
 
-<h3>Beeps</code>
+<h3>Beeps</h3>
 
+<p>
 Instead of clicking the button ourselves, let us ask the computer to click it
 for us, 7 times every second.
+</p>
+
+<pre><code>setInterval(() => {
+  beep(0.01);
+}, 1000 / 7);
+</code></pre>
+
+<p><button @click="on3" :class="classB3">Beeps</button></p>
 
 <blockquote>
-<small>
+<p><em>Why 7?</em></p>
 
-Why 7?
-
+<p>
 In music, a second is like an eternity. Events in music happen at the time scale
 of milliseconds, and there are a <em>thousand</em> milliseconds in a second.
+</p>
 
-However, something interesting happens at around 20 - 50 milliseconds, give or
+<p>
+However, something interesting happens at around 20 to 50 milliseconds, give or
 take. You might recall that movies have 24 frames per second (i.e. 40 ms for
 each frame). So if we take a still picture, and move it 24 times per second, it
 starts to look animated to us.
+</p>
 
+<p>
 The same happens with sound! If there is some movement of air more than around
 24 times per second, we start perceiving it as sound. Less than that, we hear
 them as individual musical notes.
+</p>
 
+<p>
 So the number of beeps have to be less than 24 for us to hear them as individual
 beeps and not as a single sound. In practice, this threshold varies depending on
 the exact sound being played and a lot of other factors. 7 per second is a
 conservative value that we'll always hear as events and not as a single sound.
+</p>
 
+<p>
 7 is also interesting for other reasons (e.g.
-[musical scales usually max out at 7 notes](https://mrmr.io/raag) even though
-there are 12 available to us). This might be related to <i>The Magical Number
-Seven, Plus or Minus Two</i>, but this aside is already too long and I'm now
-ranting.
+<a href="/raag/bhairav">musical scales usually max out at 7 notes</a>, even
+though there are 12 available to us). This might be related to <i>The Magical
+Number Seven, Plus or Minus Two</i>, but this aside is already too long and I'm
+now ranting.
+</p>
 
 </small>
 </blockquote>
 
-```js
-setInterval(() => {
-  beep(0.01);
-}, 1000 / 7);
-```
+<h3>Rest of the owl</h3>
 
-<button @click="on3" :class="classB3">Beeps</button>
+<p>
+  Those of you in the know might've winced at my using <code>setInterval</code> above to set
+  the time between individual notes.
+</p>
 
-<h3>Rest of the owl</code>
-
-Those of you in the know might've winced at my using <code>setInterval</code> above to set
-the time between individual notes.
-
+<p>
 Even though we can't hear individual notes smaller than say 40 milliseconds, we
 are still surprisingly sensitive to other aspects of sound at smaller
 timescales. We can perceive music as being "out of beat" even if notes are off
-by say 10 ms. For some aspects like the attack time, we're sensitive to
+by, say, 10 ms. For some aspects like the attack time, we're sensitive to
 millisecond level differences.
+</p>
 
-The <code>setInterval</code> function in Javascript has too much jitter for it to be useful
-for triggering musical events.
+<p>
+The <code>setInterval</code> function in Javascript has too much jitter for it
+to be useful for triggering musical events.
+</p>
 
+<p>
 Fortunately, there is an alternative. The time kept by WebAudio itself is
-precise (we used it above as <code>ctx.currentTime</code>). We can tell WebAudio to do
-something at a particular time, and it'll do it exactly then.
+precise (we used it above as <code>ctx.currentTime</code>). We can tell WebAudio
+to do something at a particular time, and it'll do it exactly then.
+</p>
 
-Unfortunately, Safari spoils the party here. Safari throttles both <code>setInterval</code>
-(and its better alternative, <code>requestAnimationFrame</code>) when the user switches
-tabs. While WebAudio time is precise, we still need to <em>generate</em> and schedule
-the next batch of events if we're trying to play a generative piece of music,
-where it is expected that the user will keep our tab running in the background
-instead of staring at it.
+<p>
+Unfortunately, Safari spoils the party here. Safari throttles both
+<code>setInterval</code> (and its better alternative,
+<code>requestAnimationFrame</code>) when the user switches tabs. While WebAudio
+time is precise, we still need to <em>generate</em> and schedule the next batch
+of events if we're trying to play a generative piece of music, where it is
+expected that the user will keep our tab running in the background instead of
+staring at it.
+</p>
 
+<p>
 So WebAudio's standard APIs are not helpful for playing long generative pieces
-of music. For that, we'll need to use the "advanced" AudioWorklets instead which
-run unthrottled in the background.
+of music. For that, we'll need to use the more advanced option of AudioWorklets
+instead which run unthrottled in the background.
+</p>
 
+<p>
 That's for a future post. But keep in mind that if you're not looking for
-background music, the standard APIs might be enough. [Here is a small
-synth](https://github.com/mnvr/mrmr.io/blob/main/raag/synth.ts) with a lot of
-source code comments explaining the aspects we covered here in more depth.
+background music, the standard APIs might be enough. <a
+href="https://github.com/mnvr/mrmr.io/blob/main/raag/synth.ts">Here is a small
+synth</a> with a lot of source code comments explaining the aspects we covered
+here in more depth.
+</p>
 
-<small>
-
-> [!TIP]
->
-> I also wrote a tutorial on
-> [making sounds using Euclidean rhythms](/euclidean-rhythms).
-
-</small>
+<p>
+I also wrote a tutorial on
+<a href="/euclidean-rhythms">making music using Euclidean rhythms</a>.
+</p>
 
 </body>
 </html>
