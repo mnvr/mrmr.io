@@ -250,33 +250,38 @@ const update1 = () => {
 
 update1();
 
-// watch(ticker1, ({ intervalId, i }) => intervalId && e38[i] && beep(0.01));
+// Demo 2 --- Cycle
 
-// const class1 = computed(() => [demo, ticker1.intervalId && playing]);
+const b2 = document.querySelector("button.demo-2");
+const ticker2 = { state: initialCycleState, intervalId: undefined };
 
-// // Demo 2 --- Cycle
+b2.addEventListener("click", () => {
+  if (ticker2.intervalId) {
+    ticker2.intervalId = (clearInterval(ticker2.intervalId), undefined);
+  } else {
+    ticker2.intervalId = setInterval(() => {
+      ticker2.state = cycleTick(ticker2.state);
+      update2();
+    }, 1000 / 7);
+  }
+  update2();
+});
 
-// const ticker2 = reactive({ state: initialCycleState, intervalId: undefined });
-// const cycle = () => {
-//   if (ticker2.intervalId) {
-//     ticker2.intervalId = (clearInterval(ticker2.intervalId), undefined);
-//   } else {
-//     ticker2.intervalId = setInterval(() => {
-//       ticker2.state = cycleTick(ticker2.state);
-//     }, 1000 / 7);
-//   }
-// };
+const update2 = () => {
+  const { intervalId, state } = ticker2;
+  const divs = document.querySelectorAll(".demo-2 > div")
+  const { k, n, p } = state;
+  for (const div of divs) div.removeAttribute("data-state");
+  for (const [j, v] of E(k, n).entries()) {
+    const on = intervalId && v && p == j;
+    if (on) beep(0.01);
+    const div = divs[j];
+    div.setAttribute("data-state", on ? "on" : "off");
+  }
+  intervalId ? b2.classList.add("playing") : b2.classList.remove("playing");
+}
 
-// const seq2 = computed(() => {
-//   const { k, n, p } = ticker2.state;
-//   return E(k, n).map((v, i) => ticker2.intervalId && v && p == i);
-// });
-
-// watchEffect(
-//   () => ticker2.intervalId && seq2.value[ticker2.state.p] && beep(0.01)
-// );
-
-// const class2 = computed(() => [demo, ticker2.intervalId && playing]);
+update2();
 
 // // Demo 3 --- Modulate
 
@@ -393,16 +398,7 @@ both <code>n</code> and <code>m</code>. But really it is unravelling a number pa
 
 <p>
 In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many drum
-beats. For example, here is <code>E(3, 8)</code>.
-</p>
-
-<pre><code>> E(3, 8)
-[1, 0, 0, 1, 0, 0, 1, 0]
-</pre></code>
-
-<p>
-Surprisingly, this function is all we need to replicate many real world rhythms.
-Here is how it sounds.
+beats. For example, here is how <code>E(3, 8)</code> sounds.
 </p>
 
 <div class="beats demo-1">
@@ -462,17 +458,11 @@ developer tools, and then call <code>E(3, 8)</code>, you'll get
 </pre></code>
 
 <p>
-  Surprisingly, this function is all we need to replicate many real world rhythms.
-  Here is how it sounds.
+Surprisingly, this function is all we need to replicate many real world rhythms.
+All we need is a way to convert the <em>ones</em> into sound, like how we did
+with the player above, which produced a beep each time it found a one in the
+<code>E(3, 8)</code> sequence.
 </p>
-
-<div class="$style.beats">
-  <div v-for="s in seq1" data-on="s"></div>
-</div>
-
-<p><button @click="toggleTicker" class="class1">Play / Pause</button></p>
-
-<p>This player is producing a beep at each <code>E(3, 8)</code> beat.</p>
 
 <blockquote>
 <p>
@@ -487,11 +477,22 @@ of this site</a> for a version of this function with comments and more examples.
 
 <p>I have listened to this for hours.</p>
 
-<div class="[$style.beats, $style.cycle]">
-  <div v-for="s in seq2" data-on="s"></div>
+<div class="beats demo-2">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
 </div>
 
-<p><button @click="cycle" class="class2">Cycle</button></p>
+<p><button class="demo-2">Cycle</button></p>
 
 <h3>Not just beats</h3>
 
