@@ -168,7 +168,7 @@ button {
   background-color: lawngreen;
 }
 
-.beats.cycle {
+.beats.demo-2 {
   height: 40px;
 
   justify-content: space-between;
@@ -178,7 +178,7 @@ button {
   }
 }
 
-.beats.modulate {
+.beats.demo-3 {
   height: 10px;
 
   justify-content: space-between;
@@ -283,48 +283,50 @@ const update2 = () => {
 
 update2();
 
-// // Demo 3 --- Modulate
+// Demo 3 --- Modulate
 
-// const onset = E(9, 15);
-// const accent = E(4, 15);
+const onset = E(9, 15);
+const accent = E(4, 15);
 
-// const ticker3 = reactive({
-//   /* phase, indexes into both onset and accent rhythms */
-//   p: 0,
-//   intervalId: undefined,
-// });
+const b3 = document.querySelector("button.demo-3");
+const ticker3 = {
+  /* phase (indexes into both onset and accent rhythms) */
+  p: 0,
+  intervalId: undefined,
+};
 
-// const modulate = () => {
-//   if (ticker3.intervalId) {
-//     ticker3.intervalId = (clearInterval(ticker3.intervalId), undefined);
-//   } else {
-//     ticker3.intervalId = setInterval(() => {
-//       ticker3.p = (ticker3.p + 1) % onset.length;
-//     }, 1000 / 7);
-//   }
-// };
+b3.addEventListener("click", () => {
+  if (ticker3.intervalId) {
+    ticker3.intervalId = (clearInterval(ticker3.intervalId), undefined);
+  } else {
+    ticker3.intervalId = setInterval(() => {
+      ticker3.p = (ticker3.p + 1) % onset.length;
+      update3();
+    }, 1000 / 7);
+  }
+  update3();
+});
 
-// const seq3 = computed(() =>
-//   onset.map(
-//     (v, i) =>
-//       ticker3.intervalId &&
-//       v &&
-//       ticker3.p == i &&
-//       (accent[i] ? "accent" : "true")
-//   )
-// );
+const update3 = () => {
+  const { intervalId, p } = ticker3;
+  const divs = document.querySelectorAll(".demo-3 > div")
+  for (const [j, v] of onset.entries()) {
+    const on = intervalId && v && p == j;
+    const an = on && accent[j];
+    if (on) {
+      if (an) {
+        beep(0.02, 0.01, 0.1);
+      } else {
+        beep(0.08, 0.001, 0.1);
+      }
+    }
+    const div = divs[j];
+    div.setAttribute("data-state", on ? (an ? "accent" : "on") : "off");
+  }
+  intervalId ? b3.classList.add("playing") : b3.classList.remove("playing");
+}
 
-// watch(ticker3, ({ intervalId, p }) => {
-//   if (intervalId && onset[p]) {
-//     if (accent[p]) {
-//       beep(0.02, 0.01, 0.1);
-//     } else {
-//       beep(0.08, 0.001, 0.1);
-//     }
-//   }
-// });
-
-// const class3 = computed(() => [demo, ticker3.intervalId && playing]);
+update3();
 
 // // Demo 4 --- Everything
 
@@ -504,11 +506,25 @@ pattern.
 
 <p>Here we use it to accent certain notes by using a different attack and release.</p>
 
-<div class="[$style.beats, $style.modulate]">
-  <div v-for="s in seq3" :data-on="s"></div>
+<div class="beats demo-3">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
 </div>
 
-<p><button @click="modulate" class="class3">Modulate</button></p>
+<p><button class="demo-3">Modulate</button></p>
 
 <h3>Everything at once</h3>
 
