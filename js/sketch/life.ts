@@ -3,9 +3,9 @@ import { mod } from "../mod.ts";
 /** Dimensions of the (covering) rectangle used by each cell. */
 const cellD = 10;
 /** The color to use for drawing alive cells. */
-const aliveColor = "#00db5e";
+const aliveColor = "black";
 /** The color to use for drawing inactive cells. */
-const inactiveColor = "#cbffd820";
+const inactiveColor = "black";
 
 const dpr = () => Math.floor(Math.max(devicePixelRatio, 2));
 
