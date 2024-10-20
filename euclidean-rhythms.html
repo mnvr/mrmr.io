@@ -350,10 +350,11 @@ b4.addEventListener("click", () => {
 const update4 = () => {
   const { intervalId, state } = ticker4;
   const { k, n, p } = state;
+  const p8 = p % 8;
 
   const divsA = document.querySelectorAll(".demo-4a > div")
   for (const [j, v] of e38.entries()) {
-    const on = intervalId && v && (p % 8) == j;
+    const on = intervalId && v && p8 == j;
     if (on) beep(0.01, 0.001, 0.1, 660);
     divsA[j].setAttribute("data-state", on ? "on" : "off");
   }
@@ -371,8 +372,8 @@ const update4 = () => {
 
   const divsC = document.querySelectorAll(".demo-4c > div")
   for (const [j, v] of e78.entries()) {
-    const on = intervalId && v && (p % 8) == j;
-    if (on) beep(0.1, 0.001, 0.1, 110);
+    const on = intervalId && v && p8 == j;
+    if (on) beep(0.1, 0.001, 0.1, 110, 0.05);
     divsC[j].setAttribute("data-state", on ? "on" : "off");
   }
 

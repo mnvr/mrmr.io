@@ -50,6 +50,7 @@ export const beep = (
   attack = 0.001,
   release = 0.1,
   frequency = 440,
+  gain = 0.1
 ) => {
   const ctx = getAudioContext();
   const osc = new OscillatorNode(ctx, { frequency });
@@ -60,7 +61,7 @@ export const beep = (
   env.gain.setValueCurveAtTime([0, 1], t, attack);
   env.gain.setTargetAtTime(0, t + attack + duration, release / 5);
 
-  const mix = new GainNode(ctx, { gain: 0.1 });
+  const mix = new GainNode(ctx, { gain });
 
   osc.connect(env).connect(mix).connect(ctx.destination);
   osc.start();
