@@ -126,21 +126,29 @@ import { toggleFirstTone, beep } from "./js/javascript-audio.ts";
 
 const togglePlaying = (cls, cond) =>
   Array.from(document.getElementsByClassName(cls)).forEach((e) =>
-    cond ? e.classList.remove("playing") : e.classList.add("playing"),
+    cond ? e.classList.add("playing") : e.classList.remove("playing"),
   );
 
 let osc1;
 document.querySelector("button.demo-1").addEventListener("click", () => {
-  togglePlaying("demo-1", osc1);
   osc1 = toggleFirstTone(osc1);
+  togglePlaying("demo-1", osc1);
 })
 
 const toggleBeeps = (id) =>
   id ? (clearInterval(id), undefined) : setInterval(() => beep(0.01), 1000 / 7);
 
-// const osc1 = ref();
-// const on1 = () => (osc1.value = toggleFirstTone(osc1.value));
-// const classB1 = computed(() => [demo, osc1.value && playing]);
+let osc2s = new Set();
+document.querySelector("button.demo-2").addEventListener("click", () => {
+  togglePlaying("demo-2", true);
+  const osc = beep(0.2);
+  osc2s.add(osc);
+  osc.onended = () => {
+    osc2s.delete(osc);
+    togglePlaying("demo-2", osc2s.size > 0);
+  };
+})
+
 
 // const osc2 = ref();
 // const on2 = () => {
@@ -223,7 +231,7 @@ of suddenly stopping.
 
 <p>Let's add them to our sound. And also move it to a function.</p>
 
-<pre><code>const beep = (duration) => {
+<pre class="demo-2"><code>const beep = (duration) => {
   const attack = 0.001; // Attack of 1 ms
   const release = 0.1; // Release of 100 ms
   const t = ctx.currentTime;
@@ -239,7 +247,7 @@ of suddenly stopping.
 };
 </code></pre>
 
-<p><button @click="on2" :class="classB2">Beep</button></p>
+<p><button class="demo-2">Beep</button></p>
 
 <h3>Beeps</h3>
 
@@ -248,12 +256,12 @@ Instead of clicking the button ourselves, let us ask the computer to click it
 for us, 7 times every second.
 </p>
 
-<pre><code>setInterval(() => {
+<pre class="demo-3"><code>setInterval(() => {
   beep(0.01);
 }, 1000 / 7);
 </code></pre>
 
-<p><button @click="on3" :class="classB3">Beeps</button></p>
+<p><button class="demo-3">Beeps</button></p>
 
 <blockquote>
 <p><em>Why 7?</em></p>
