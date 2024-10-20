@@ -34,16 +34,16 @@
    <item>
       <title>On the useful use of cat</title>
       <description>It is fine to begin your shell commands with cat</description>
-      <link>https://mrmr.io/raag</link>
-      <guid>https://mrmr.io/raag</guid>
+      <link>https://mrmr.io/cat</link>
+      <guid>https://mrmr.io/cat</guid>
       <pubDate>Sun, 18 Feb 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
       <title>Cherry pick a pull request</title>
       <description>Creating another pull request from an already merged one, but
       this time against a different branch</description>
-      <link>https://mrmr.io/raag</link>
-      <guid>https://mrmr.io/raag</guid>
+      <link>https://mrmr.io/cherry-pick-pr</link>
+      <guid>https://mrmr.io/cherry-pick-pr</guid>
       <pubDate>Thu, 08 Feb 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
