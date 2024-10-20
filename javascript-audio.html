@@ -110,7 +110,55 @@ blockquote p {
     margin-inline-start: 1rem;
   }
 }
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 1ch 2ch;
+  font-size: 1rem;
+  min-width: 5rem;
+  border: 1px solid var(--border-code);
+  background-color: var(--border-code);
+  border-radius: 3px;
+
+}
+
+button.playing {
+  border-color: tomato;
+}
 </style>
+
+<script type="module">
+import { toggleFirstTone, beep } from "./js/javascript-audio.ts";
+
+let osc1;
+document.getElementById("tone").addEventListener("click", () => {
+  osc1 = toggleFirstTone(osc1);
+})
+
+const toggleBeeps = (id) =>
+  id ? (clearInterval(id), undefined) : setInterval(() => beep(0.01), 1000 / 7);
+
+// const osc1 = ref();
+// const on1 = () => (osc1.value = toggleFirstTone(osc1.value));
+// const classB1 = computed(() => [demo, osc1.value && playing]);
+
+// const osc2 = ref();
+// const on2 = () => {
+//   osc2.value = beep(0.2);
+//   osc2.value.onended = () => (osc2.value = undefined);
+// };
+// const classB2 = computed(() => [demo, osc2.value && playing]);
+
+// const intervalId = ref();
+// const on3 = () => (intervalId.value = toggleBeeps(intervalId.value));
+// const classB3 = computed(() => [demo, intervalId.value && playing]);
+
+// onUnmounted(() => {
+//   osc1.value && toggleFirstTone(osc1.value);
+//   intervalId.value && toggleBeeps(intervalId.value);
+// });
+</script>
 
 </head>
 
@@ -150,7 +198,7 @@ osc.start();
 </code></pre>
 
 <p>
-<button @click="on1" :class="classB1">Play / Pause</button>
+<button id="tone">Play / Pause</button>
 <br><br>That is what the button above does.
 </p>
 
