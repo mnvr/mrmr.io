@@ -11,7 +11,7 @@
 
 <style>
 :root {
-  --border-code: #7df9ff;
+  --border-code: #764b3b;
 }
 
 body {
@@ -122,7 +122,245 @@ button {
 }
 </style>
 
+<style>
+.beats {
+  margin-inline: 3em;
+}
+
+@media (width < 40em) {
+  .beats {
+    margin-inline: 1rem;
+  }
+}
+
+.beats {
+  height: 100px;
+  margin-block-start: 2rem;
+  margin-block-end: 1.5rem;
+
+  display: flex;
+  gap: 18px;
+
+  @media (width < 400px) {
+    gap: min((100% - 12 * 10px) / 11, 18px);
+  }
+
+  & > div {
+    width: 10px;
+    border: 1px solid tomato;
+    box-sizing: border-box;
+  }
+}
+
+.beats > div {
+  visibility: hidden;
+}
+
+.beats > div[data-state] {
+  visibility: visible;
+}
+
+.beats > div[data-state="on"] {
+  background-color: tomato;
+}
+
+.beats > div[data-state="accent"] {
+  background-color: lawngreen;
+}
+
+.beats.cycle {
+  height: 40px;
+
+  justify-content: space-between;
+
+  & > div {
+    width: 20px;
+  }
+}
+
+.beats.modulate {
+  height: 10px;
+
+  justify-content: space-between;
+
+  & > div {
+    width: 10px;
+    border-radius: 5px;
+  }
+}
+</style>
+
 <script type="module">
+import { beep } from "./js/javascript-audio.ts";
+import { E } from "./js/euclid.ts";
+
+const e38 = E(3, 8);
+const e78 = E(7, 8);
+
+const initialCycleState = {
+  k: 3 /* The `k` in `E(k, n)` */,
+  n: 4 /* The `n` in `E(k, n)` */,
+  p: 0 /** The phase of (i.e. the offset into) the current E(k, n) */,
+};
+
+const cycleTick = ({ k, n, p }) => {
+  p = p + 1;
+  if (p === n) {
+    p = 0;
+    k = k + 1;
+    if (k === n) {
+      k = n < 5 ? 1 : 3;
+      n = n + 1;
+      if (n === 13) {
+        n = 4;
+      }
+    }
+  }
+  return { k, n, p };
+};
+
+// Demo 1 --- E(3, 8)
+
+const b1 = document.querySelector("button.demo-1");
+const ticker1 = { i: 0, intervalId: undefined };
+
+b1.addEventListener("click", () => {
+  if (ticker1.intervalId) {
+    ticker1.intervalId = (clearInterval(ticker1.intervalId), undefined);
+  } else {
+    ticker1.intervalId = setInterval(() => {
+      ticker1.i = (ticker1.i + 1) % e38.length;
+      update1();
+    }, 1000 / 7);
+  }
+  update1();
+});
+
+const update1 = () => {
+  const { intervalId, i } = ticker1;
+  const divs = document.querySelectorAll(".demo-1 > div")
+  for (const [j, v] of e38.entries()) {
+    const on = intervalId && v && i == j;
+    if (on) beep(0.01);
+    const div = divs[j];
+    div.setAttribute("data-state", on ? "on" : "off");
+  }
+  intervalId ? b1.classList.add("playing") : b1.classList.remove("playing");
+}
+
+update1();
+
+// watch(ticker1, ({ intervalId, i }) => intervalId && e38[i] && beep(0.01));
+
+// const class1 = computed(() => [demo, ticker1.intervalId && playing]);
+
+// // Demo 2 --- Cycle
+
+// const ticker2 = reactive({ state: initialCycleState, intervalId: undefined });
+// const cycle = () => {
+//   if (ticker2.intervalId) {
+//     ticker2.intervalId = (clearInterval(ticker2.intervalId), undefined);
+//   } else {
+//     ticker2.intervalId = setInterval(() => {
+//       ticker2.state = cycleTick(ticker2.state);
+//     }, 1000 / 7);
+//   }
+// };
+
+// const seq2 = computed(() => {
+//   const { k, n, p } = ticker2.state;
+//   return E(k, n).map((v, i) => ticker2.intervalId && v && p == i);
+// });
+
+// watchEffect(
+//   () => ticker2.intervalId && seq2.value[ticker2.state.p] && beep(0.01)
+// );
+
+// const class2 = computed(() => [demo, ticker2.intervalId && playing]);
+
+// // Demo 3 --- Modulate
+
+// const onset = E(9, 15);
+// const accent = E(4, 15);
+
+// const ticker3 = reactive({
+//   /* phase, indexes into both onset and accent rhythms */
+//   p: 0,
+//   intervalId: undefined,
+// });
+
+// const modulate = () => {
+//   if (ticker3.intervalId) {
+//     ticker3.intervalId = (clearInterval(ticker3.intervalId), undefined);
+//   } else {
+//     ticker3.intervalId = setInterval(() => {
+//       ticker3.p = (ticker3.p + 1) % onset.length;
+//     }, 1000 / 7);
+//   }
+// };
+
+// const seq3 = computed(() =>
+//   onset.map(
+//     (v, i) =>
+//       ticker3.intervalId &&
+//       v &&
+//       ticker3.p == i &&
+//       (accent[i] ? "accent" : "true")
+//   )
+// );
+
+// watch(ticker3, ({ intervalId, p }) => {
+//   if (intervalId && onset[p]) {
+//     if (accent[p]) {
+//       beep(0.02, 0.01, 0.1);
+//     } else {
+//       beep(0.08, 0.001, 0.1);
+//     }
+//   }
+// });
+
+// const class3 = computed(() => [demo, ticker3.intervalId && playing]);
+
+// // Demo 4 --- Everything
+
+// const ticker4 = reactive({ state: initialCycleState, intervalId: undefined });
+// const everything = () => {
+//   if (ticker4.intervalId) {
+//     ticker4.intervalId = (clearInterval(ticker4.intervalId), undefined);
+//   } else {
+//     ticker4.intervalId = setInterval(() => {
+//       ticker4.state = cycleTick(ticker4.state);
+//     }, 1000 / 7);
+//   }
+// };
+
+// const seq4 = computed(() => {
+//   const { k, n, p } = ticker4.state;
+//   const intervalId = ticker4.intervalId;
+//   const eKN = E(k, n);
+//   const seq38 = e38.map((v, i) => intervalId && v && p == i);
+//   const seqKN = eKN.map((v, i) => intervalId && v && p == i);
+//   const seq78 = e78.map((v, i) => intervalId && v && p == i);
+//   return { a: seq38, b: seqKN, c: seq78 };
+// });
+
+// watchEffect(() => {
+//   const { k, n, p } = ticker4.state;
+//   if (ticker4.intervalId) {
+//     if (seq4.value.a[p % 8]) {
+//       beep(0.01, 0.001, 0.1, 660);
+//     }
+//     if (seq4.value.b[p]) {
+//       beep(0.01);
+//       beep(0.005, 0.001, 0.02, 660);
+//     }
+//     if (seq4.value.c[p % 8]) {
+//       beep(0.1, 0.001, 0.1, 110);
+//     }
+//   }
+// });
+
+// const class4 = computed(() => [demo, ticker4.intervalId && playing]);
 </script>
 
 </head>
@@ -157,6 +395,28 @@ both <code>n</code> and <code>m</code>. But really it is unravelling a number pa
 In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many drum
 beats. For example, here is <code>E(3, 8)</code>.
 </p>
+
+<pre><code>> E(3, 8)
+[1, 0, 0, 1, 0, 0, 1, 0]
+</pre></code>
+
+<p>
+Surprisingly, this function is all we need to replicate many real world rhythms.
+Here is how it sounds.
+</p>
+
+<div class="beats demo-1">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</div>
+
+<p><button class="demo-1">Play / Pause</button></p>
 
 <h3>Code</h3>
 
@@ -206,11 +466,11 @@ developer tools, and then call <code>E(3, 8)</code>, you'll get
   Here is how it sounds.
 </p>
 
-<div :class="$style.beats">
-  <div v-for="s in seq1" :data-on="s"></div>
+<div class="$style.beats">
+  <div v-for="s in seq1" data-on="s"></div>
 </div>
 
-<p><button @click="toggleTicker" :class="class1">Play / Pause</button></p>
+<p><button @click="toggleTicker" class="class1">Play / Pause</button></p>
 
 <p>This player is producing a beep at each <code>E(3, 8)</code> beat.</p>
 
@@ -227,11 +487,11 @@ of this site</a> for a version of this function with comments and more examples.
 
 <p>I have listened to this for hours.</p>
 
-<div :class="[$style.beats, $style.cycle]">
-  <div v-for="s in seq2" :data-on="s"></div>
+<div class="[$style.beats, $style.cycle]">
+  <div v-for="s in seq2" data-on="s"></div>
 </div>
 
-<p><button @click="cycle" :class="class2">Cycle</button></p>
+<p><button @click="cycle" class="class2">Cycle</button></p>
 
 <h3>Not just beats</h3>
 
@@ -243,11 +503,11 @@ pattern.
 
 <p>Here we use it to accent certain notes by using a different attack and release.</p>
 
-<div :class="[$style.beats, $style.modulate]">
+<div class="[$style.beats, $style.modulate]">
   <div v-for="s in seq3" :data-on="s"></div>
 </div>
 
-<p><button @click="modulate" :class="class3">Modulate</button></p>
+<p><button @click="modulate" class="class3">Modulate</button></p>
 
 <h3>Everything at once</h3>
 
@@ -258,18 +518,18 @@ patterns would've. It might even sound nice to some.
 </p>
 
 <div>
-  <div :class="$style.beats">
-    <div v-for="s in seq4.a" :data-on="s"></div>
+  <div class="$style.beats">
+    <div v-for="s in seq4.a" data-on="s"></div>
   </div>
-  <div :class="$style.beats">
-    <div v-for="s in seq4.b" :data-on="s"></div>
+  <div class="$style.beats">
+    <div v-for="s in seq4.b" data-on="s"></div>
   </div>
-  <div :class="$style.beats">
-    <div v-for="s in seq4.c" :data-on="s"></div>
+  <div class="$style.beats">
+    <div v-for="s in seq4.c" data-on="s"></div>
   </div>
 </div>
 
-<p><button @click="everything" :class="demo-4">Everthing at once</button></p>
+<p><button @click="everything" class="demo-4">Everthing at once</button></p>
 
 <hr>
 
