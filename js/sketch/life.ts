@@ -67,8 +67,11 @@ export const sketch = (canvas: HTMLCanvasElement) => {
    * It will be added centered on the cell that is nearest to the location of
    * the click.
    */
-  // TODO
-  // p5.mouseClicked = () => addRPentomino(...nearestCell(p5.mouseX, p5.mouseY));
+  window.addEventListener("mousedown", (ev) => {
+    const mx = Math.floor((ev.offsetX * canvas.width) / canvas.offsetWidth);
+    const my = Math.floor((ev.offsetY * canvas.height) / canvas.offsetHeight);
+    addRPentomino(...nearestCell(mx, my));
+  });
 
   let skip = 0;
 
@@ -169,21 +172,19 @@ export const sketch = (canvas: HTMLCanvasElement) => {
    * Find the indices ([j, i] values) for the cell that is nearest to the
    * given coordinate (x, y value) on the canvas.
    */
-  /*
   const nearestCell = (x: number, y: number): [j: number, i: number] => {
     // Subtract the coordinate of cell [0, 0] (see translateOrigin above).
-    x -= offset(p5.width, cols);
-    y -= offset(p5.height, rows);
+    x -= offset(canvas.width, cols);
+    y -= offset(canvas.height, rows);
     // Clamp the values to the area occupied by the cells (the canvas can be
     // bigger, e.g. if it gets resized).
-    x = p5.constrain(x, 0, cols * cellD);
-    y = p5.constrain(y, 0, rows * cellD);
+    x = Math.min(Math.max(x, 0), cols * cellD);
+    y = Math.min(Math.max(y, 0), rows * cellD);
     // Divide by cellD to get the cell index
     x = Math.floor(x / cellD);
     y = Math.floor(y / cellD);
     return [y, x];
   };
-  */
 
   /**
    * Return a count of the number of neighbours of the cell at row j and col i
