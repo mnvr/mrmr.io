@@ -49,8 +49,16 @@ p, li {
   margin-block: 2.25em;
 }
 
+h2 + h3 {
+  margin-block-start: 2.25rem;
+}
+
+p + h3 {
+  margin-block-start: 5rem;
+}
+
 ol {
-  padding-inline-start: 2em;
+  padding-inline-start: 1em;
 }
 
 li {
@@ -58,7 +66,8 @@ li {
 }
 
 pre {
-  padding: 2rem 3rem;
+  margin-inline: 0.5rem;
+  padding: 2.5rem;
   border: 1px solid var(--border-code);
   overflow-x: auto;
 }
@@ -73,8 +82,6 @@ pre {
     border-inline: 0;
   }
 }
-
-
 
 :not(pre) > code {
   padding: 0.5ch;
@@ -127,29 +134,34 @@ osc.connect(mix).connect(ctx.destination);
 osc.start();
 </code></pre>
 
-
-That is what this button does.
-
+<p>
 <button @click="on1" :class="classB1">Play / Pause</button>
+<br><br>That is what the button above does.
+</p>
 
-<h3>Beep</code>
+<h3>Beep</h3>
 
+<p>
 When you toggle the button above, you'd notice a glitch when the sound starts
 and stops.
+</p>
 
+<p>
 Our ears are more sensitive than you might consciously imagine. When we start
 the sound above, it immediately starts playing, and this sudden movement is
 heard as a rather ugly pop. Ditto when the sound immediately stops.
+</p>
 
-Real life sounds don't behave like that. They have an _attack_ phase, when the
-sound slowly rises from nothing (say if you hit a drum with a stick). And there
-is a _release_ phase where the sound slowly dies away instead of suddenly
-stopping.
+<p>
+Real life sounds don't behave like that. They have an <em>attack</em> phase,
+when the sound slowly rises from nothing (say if you hit a drum with a stick).
+And there is a <em>release</em> phase where the sound slowly dies away instead
+of suddenly stopping.
+</p>
 
-Let's add them to our sound. And also move it to a function.
+<p>Let's add them to our sound. And also move it to a function.</p>
 
-```js
-const beep = (duration) => {
+<pre><code>const beep = (duration) => {
   const attack = 0.001; // Attack of 1 ms
   const release = 0.1; // Release of 100 ms
   const t = ctx.currentTime;
@@ -163,9 +175,9 @@ const beep = (duration) => {
   osc.start();
   osc.stop(t + attack + duration + release);
 };
-```
+</code></pre>
 
-<button @click="on2" :class="classB2">Beep</button>
+<p><button @click="on2" :class="classB2">Beep</button></p>
 
 <h3>Beeps</code>
 
@@ -178,7 +190,7 @@ for us, 7 times every second.
 Why 7?
 
 In music, a second is like an eternity. Events in music happen at the time scale
-of milliseconds, and there are a _thousand_ milliseconds in a second.
+of milliseconds, and there are a <em>thousand</em> milliseconds in a second.
 
 However, something interesting happens at around 20 - 50 milliseconds, give or
 take. You might recall that movies have 24 frames per second (i.e. 40 ms for
@@ -213,7 +225,7 @@ setInterval(() => {
 
 <h3>Rest of the owl</code>
 
-Those of you in the know might've winced at my using `setInterval` above to set
+Those of you in the know might've winced at my using <code>setInterval</code> above to set
 the time between individual notes.
 
 Even though we can't hear individual notes smaller than say 40 milliseconds, we
@@ -222,16 +234,16 @@ timescales. We can perceive music as being "out of beat" even if notes are off
 by say 10 ms. For some aspects like the attack time, we're sensitive to
 millisecond level differences.
 
-The `setInterval` function in Javascript has too much jitter for it to be useful
+The <code>setInterval</code> function in Javascript has too much jitter for it to be useful
 for triggering musical events.
 
 Fortunately, there is an alternative. The time kept by WebAudio itself is
-precise (we used it above as `ctx.currentTime`). We can tell WebAudio to do
+precise (we used it above as <code>ctx.currentTime</code>). We can tell WebAudio to do
 something at a particular time, and it'll do it exactly then.
 
-Unfortunately, Safari spoils the party here. Safari throttles both `setInterval`
-(and its better alternative, `requestAnimationFrame`) when the user switches
-tabs. While WebAudio time is precise, we still need to _generate_ and schedule
+Unfortunately, Safari spoils the party here. Safari throttles both <code>setInterval</code>
+(and its better alternative, <code>requestAnimationFrame</code>) when the user switches
+tabs. While WebAudio time is precise, we still need to <em>generate</em> and schedule
 the next batch of events if we're trying to play a generative piece of music,
 where it is expected that the user will keep our tab running in the background
 instead of staring at it.
