@@ -47,6 +47,13 @@
       <pubDate>Thu, 08 Feb 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
+      <title>Making sounds in JavaScript</title>
+      <description>An elementary introduction to JavaScript audio</description>
+      <link>https://mrmr.io/javascript-audio</link>
+      <guid>https://mrmr.io/javascript-audio</guid>
+      <pubDate>Thu, 25 Jan 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>Raags</title>
       <description>Indian music scales</description>
       <link>https://mrmr.io/raag</link>
