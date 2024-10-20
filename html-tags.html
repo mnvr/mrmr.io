@@ -57,12 +57,31 @@ pre {
   padding-inline: 2.5ch;
   border: 1px solid var(--border-code);
   overflow-x: auto;
+}
+
+li > pre {
   margin-inline-start: -2.5ch;
 }
 
 :not(pre) > code {
   padding: 0.5ch;
   border: 1px solid var(--border-code);
+}
+
+blockquote {
+  margin: 0;
+}
+
+blockquote p {
+  margin-block: 1ch;
+}
+
+div.listing > p {
+  margin-block-end: 1.5rem;
+}
+
+div.listing > pre {
+  white-space: wrap;
 }
 </style>
 
@@ -86,13 +105,14 @@ clear.
 <li>
 Normal elements. These must have a closing tag, even if they have no child
 content.
-<pre><code>&lt;div></div>
-&lt;button></button>
+<pre><code>&lt;div>&lt;/div>
+&lt;button>&lt;/button>
 </code></pre>
 </li>
 
 <li>
-Void elements. This do not have a closing tag.
+Void elements. This should not have a closing tag, since they can not have any
+content.
 <pre><code>&lt;img>
 &lt;br>
 </code></pre>
@@ -119,17 +139,17 @@ The self closing shortcut for elements without child content, e.g.
 <code>&lt;div /></code> is not valid even if it may work.
 </p>
 
-<p>Void elements do not have any content, thus don't need to be closed.</p>
-
 <p>
-<em>tldr</em><b>If you're writing HTML, close your tags, even if there is no
-content, unless it is a void element.</b>
+<em><b>tldr</b></em> If you're writing HTML, close your tags (explicitly, not
+self-closingly), even if there is no content, unless it is a void element.
 </p>
 
-<p>These are the void elements</p>
+<div class="listing">
+<p>These are the void elements:</p>
 
 <pre><code>area, base, br, col, embed, hr, img, input, link, meta, source, track, wbr
 </code></pre>
+</div>
 
 </body>
 </html>
