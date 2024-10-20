@@ -73,13 +73,15 @@ export const sketch = (canvas: HTMLCanvasElement) => {
     addRPentomino(...nearestCell(mx, my));
   });
 
-  let skip = 0;
 
-  const draw = () => {
-    requestAnimationFrame(draw);
+  const tick = () => requestAnimationFrame(draw);
+  let tnext = 0;
 
-    if (skip++ != 7) return;
-    skip = 0;
+  const draw = (t: number) => {
+    tick();
+
+    if (t < tnext) return;
+    tnext = t + 80;
 
     const ctx = canvas.getContext("2d")!;
 
@@ -220,5 +222,5 @@ export const sketch = (canvas: HTMLCanvasElement) => {
   const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
   addRPentomino(cj, ci);
 
-  draw();
+  tick();
 };
