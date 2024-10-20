@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Cherry pick a pull request</title>
+<meta name="description" content="Creating another pull request from an already
+merged one, but this time against a different branch">
+
+<style>
+body {
+  margin: 4em;
+  line-height: 1.5;
+}
+
+@media (width < 18em) {
+  body {
+    margin: 1em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: hsl(240, 64%, 7%);
+    color: ghostwhite;
+  }
+}
+
+p, li {
+  margin-block: 2.25em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+<h3>Cherry pick a pull request</h3>
+
+<p>
+I don't know if this is the best way to do this, but here goes. Suppose we have
+a pull request that has already been merged into <code>main</code>, and now we
+want to open another pull request with the same set of commits, but this time we
+want to open it against the <code>release</code> branch.
+</p>
+
+<ol>
+
+<li>Find the sha of the merge commit.</li>
+
+<li>
+Switch to <code>release</code>, and create a new branch.
+<pre><code>git checkout release
+git checkout -b backport-foo
+</code></pre>
+</li>
+
+<li>
+Cherry pick using <code>-m 1</code>. Note that this'll create a single commit that
+references the merge, this'll not cherry pick the individual commits. This
+might not be what you want, but that was enough for my purpose.
+<pre><code>git cherry-pick -m 1 <merge-commit-id>
+</code></pre>
+</li>
+
+<li>
+Open a pull request against release. You can do it from the GitHub's web UI,
+or via their CLI.
+<pre><code>git push -u origin HEAD
+gh pr create --base release --fill --web
+</code></pre>
+</li>
+
+</ol>
+
+</body>
+</html>
