@@ -10,31 +10,83 @@
 <meta name="description" content="The universe is perfect (in a way)">
 
 <style>
-body {
-  margin: 4em;
-  line-height: 1.4;
-}
-
-@media (width < 18em) {
-  body {
-    margin: 2em;
-  }
+:root {
+  --bg: white;
+  --text: oklch(25% 0 0);
+  --soft: oklch(42% 0 0);
 }
 
 @media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
+  }
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+small {
+  color: var(--soft);
+}
+
+body {
+  margin-inline: 0;
+  line-height: 1.5;
+}
+
+@media (width > 40em) {
   body {
-    background-color: hsl(240, 64%, 7%);
-    color: ghostwhite;
+    margin-block: 2em;
   }
 }
 
 canvas {
-  border: 1px solid green;
+  display: block;
+  margin-inline: 0;
+  width: min(48rem, 100%);
+  max-height: 70svh;
+  aspect-ratio: 7/5;
+}
+
+@media (width > 54rem) {
+  canvas {
+    margin-inline: 4rem;
+  }
+}
+
+p, blockquote {
+  margin-block: calc(1em * 1.5 * 1.5);
+  max-width: 40em;
+  margin-inline: 1rem;
+}
+
+h1 {
+  font-style: italic;
+  text-transform: lowercase;
+}
+
+h1 {
+  max-width: 40em;
+  margin-inline: 1rem;
+}
+
+@media (width > 40rem) {
+  h1, p, blockquote {
+    margin-inline: 4rem;
+  }
 }
 </style>
 
 <script type="module">
 import { sketch } from "./js/univ-sketch.ts"
+
+const canvas = document.getElementById("c");
+canvas.width = canvas.clientWidth * devicePixelRatio;
+canvas.height = canvas.clientHeight * devicePixelRatio;
 
 sketch(document.getElementById("c"));
 </script>
@@ -44,6 +96,8 @@ sketch(document.getElementById("c"));
 <body>
 
 <canvas id="c"></canvas>
+
+<h1>The universe is its own simulation</h1>
 
 </body>
 </html>
