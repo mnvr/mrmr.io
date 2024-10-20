@@ -1,21 +1,13 @@
-/**
- * Dimensions of the (covering) rectangle used by each cell.
- */
+import { mod } from "../mod.ts";
+
+/** Dimensions of the (covering) rectangle used by each cell. */
 const cellD = 10;
-
-/**
- * The color to use for drawing alive cells.
- *
- * oklch(97% 0.242 151.39)
- */
+/** The color to use for drawing alive cells. */
 const aliveColor = "#00db5e";
-
-/**
- * The color to use for drawing inactive cells.
- *
- * oklch(77% 0.242 151.39 / 0.75)
- */
+/** The color to use for drawing inactive cells. */
 const inactiveColor = "#cbffd820";
+
+const dpr = () => Math.floor(Math.max(devicePixelRatio, 2));
 
 /**
  * Simulate a game of life.
@@ -25,6 +17,7 @@ export const sketch = (canvas: HTMLCanvasElement) => {
   let rows: number;
   /** Number of columns ("x" or "i") in `cells` */
   let cols: number;
+
   /**
    * Each cell tracks whether or not a particular location is "alive"
    *
@@ -38,35 +31,6 @@ export const sketch = (canvas: HTMLCanvasElement) => {
    * Thus, the cell at row j and col i is at `j * cols + i`.
    */
   let cells: boolean[];
-
-  // TODO
-  //   /**
-  //  * Create a sketch that fills the entire container.
-  //  */
-  //   const sketchSize = (): [number, number] => {
-  //     return [parent.scrollWidth, parent.scrollHeight];
-  //   };
-
-  const sketchSize = () => [canvas.scrollWidth, canvas.scrollHeight];
-
-  const setup = () => {
-    // p5.createCanvas(...sketchSize(), undefined, { alpha: true });
-
-    // p5.frameRate(1);
-
-    rows = Math.floor(canvas.height / cellD);
-    cols = Math.floor(canvas.width / cellD);
-
-    cells = makeCells();
-
-    // Start with a R-pentomino at the center of the board.
-    const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
-    addRPentomino(cj, ci);
-  };
-
-  // NOTE: The resizing is not currently (q5.js 2.3.1) working, not sure if I
-  // need to do something differently than how it was with p5.
-  // p5.windowResized = () => p5.resizeCanvas(...sketchSize());
 
   /** Return a cells array initialized to all false values */
   const makeCells = (): boolean[] => Array(rows * cols).fill(false);
@@ -106,9 +70,26 @@ export const sketch = (canvas: HTMLCanvasElement) => {
   // TODO
   // p5.mouseClicked = () => addRPentomino(...nearestCell(p5.mouseX, p5.mouseY));
 
+  let skip = 0;
+
   const draw = () => {
-    // TODO
-    // p5.clear();
+    requestAnimationFrame(draw);
+
+    if (skip++ != 7) return;
+    skip = 0;
+
+    const ctx = canvas.getContext("2d")!;
+
+    const expectedWidth = canvas.clientWidth * dpr();
+    const expectedHeight = canvas.clientHeight * dpr();
+
+    // Handle window resizes.
+    if (canvas.width != expectedWidth || canvas.height != expectedHeight) {
+      canvas.width = expectedWidth;
+      canvas.height = expectedHeight;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const [ox, oy] = translatedOrigin();
 
@@ -142,18 +123,8 @@ export const sketch = (canvas: HTMLCanvasElement) => {
         const x = ox + i * cellD;
         const y = oy + j * cellD;
 
-        const ctx = canvas.getContext("2d")!;
-
-        //p5.stroke(isAlive ? aliveColor : inactiveColor);
         ctx.fillStyle = isAlive ? aliveColor : inactiveColor;
         const d = isAlive ? 2 * c : 3;
-        // if (isAlive) {
-          // p5.strokeWeight(2 * c);
-        // } else {
-          // p5.strokeWeight(3);
-        // }
-        // p5.point(x + cellD / 2, y + cellD / 2);
-        //.point(x + cellD / 2, y + cellD / 2);
         ctx.beginPath();
         ctx.arc(x, y, d, 0, 2 * Math.PI, false);
         ctx.fill();
@@ -184,7 +155,8 @@ export const sketch = (canvas: HTMLCanvasElement) => {
    * This translation takes care of both these scenarios.
    */
   const translatedOrigin = () => [
-    offset(canvas.width, cols), offset(canvas.height, rows)
+    offset(canvas.width, cols),
+    offset(canvas.height, rows),
   ];
 
   const offset = (availableSpace: number, count: number) => {
@@ -235,32 +207,17 @@ export const sketch = (canvas: HTMLCanvasElement) => {
       .length;
   };
 
-  setup();
+  canvas.width = canvas.clientWidth * dpr();
+  canvas.height = canvas.clientHeight * dpr();
+
+  rows = Math.floor(canvas.height / cellD);
+  cols = Math.floor(canvas.width / cellD);
+
+  cells = makeCells();
+
+  // Start with a R-pentomino at the center of the board.
+  const [cj, ci] = [Math.floor(rows / 2), Math.floor(cols / 2)];
+  addRPentomino(cj, ci);
+
   draw();
 };
-
-/**
- * Modulo
- *
- * @return the arithmetic modulo
- *
- * JavaScript has a `%` operator, but that computes the remainder, not the
- * modulo. The difference between the two is that:
- *
- * - The remainder has the same sign as the dividend.
- *
- * - The modulo has the same sign as the divisor.
- *
- * This makes a difference when, for example, we're trying to wrap around an
- * array's bounds. If i can be negative, `i % n` would return a negative number,
- * whilst `mod(i, n)` would return the wrapped index.
- *
- * Technically, the modulo is defined `k = n - d * q` where q is the integer
- * closest to zero such that k has the same sign as the divisor d.
- *
- * Examples:
- *
- * - `mod(-1, 3) === 2`
- * - `mod(-1, -3) === -1`
- */
-const mod = (n: number, d: number) => ((n % d) + d) % d;

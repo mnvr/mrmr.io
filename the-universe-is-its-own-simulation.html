@@ -82,11 +82,7 @@ h1 {
 </style>
 
 <script type="module">
-import { sketch } from "./js/univ-sketch.ts"
-
-const canvas = document.getElementById("c");
-canvas.width = canvas.clientWidth * devicePixelRatio;
-canvas.height = canvas.clientHeight * devicePixelRatio;
+import { sketch } from "./js/sketch/life.ts"
 
 sketch(document.getElementById("c"));
 </script>
