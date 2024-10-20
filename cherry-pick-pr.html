@@ -11,6 +11,9 @@
 merged one, but this time against a different branch">
 
 <style>
+:root {
+  --border-code: aliceblue;
+}
 body {
   margin: 4em;
   line-height: 1.5;
@@ -24,9 +27,13 @@ body {
 }
 
 @media (prefers-color-scheme: dark) {
+  :root {
+    --border-code: #343739;
+  }
+
   body {
-    background-color: hsl(240, 64%, 7%);
-    color: ghostwhite;
+    background-color: hsl(240, 12%, 16%);
+    color: hsl(200, 10%, 94%);
   }
 }
 
@@ -49,7 +56,7 @@ li {
 pre {
   padding: 2ch;
   padding-inline: 2.5ch;
-  border: 1px solid aliceblue;
+  border: 1px solid var(--border-code);
   /* background-color: azure; */
   overflow-x: auto;
   margin-inline-start: -2.5ch;
@@ -57,7 +64,7 @@ pre {
 
 :not(pre) > code {
   padding: 0.5ch;
-  border: 1px solid aliceblue;
+  border: 1px solid var(--border-code);
 }
 </style>
 
