@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Euclidean rhythms</title>
+<meta name="description" content="Using Euclidean rhythms to make music">
+
+<style>
+:root {
+  --border-code: #7df9ff;
+}
+
+body {
+  margin: 4em 2em;
+  line-height: 1.5;
+  max-width: 40em;
+}
+
+@media (width < 40em) {
+  body {
+    margin: 1em 0em;
+  }
+}
+
+body {
+  margin-block-end: 5em;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: hsl(240, 12%, 16%);
+    color: hsl(200, 10%, 94%);
+  }
+
+  a {
+    color: #a2cffe;
+  }
+
+  a:visited {
+    color: #ca9bf7;
+  }
+}
+
+h2, h3, p, ol {
+  margin-inline: 3rem;
+}
+
+p, li {
+  margin-block: 2.25em;
+}
+
+h2 + h3 {
+  margin-block-start: 2.25rem;
+}
+
+blockquote + h3, p + h3 {
+  margin-block-start: 5rem;
+}
+
+ol {
+  padding-inline-start: 1em;
+}
+
+li {
+  padding-inline-start: 1ch;
+}
+
+pre {
+  margin-inline: 1rem;
+  padding: 2.5rem;
+  border: 1px solid var(--border-code);
+  overflow-x: auto;
+}
+
+@media (width < 40em) {
+  h2, h3, p, ol {
+    margin-inline: 1rem;
+  }
+
+  pre {
+    margin-inline: 0;
+    padding-inline: 1rem;
+    border-inline: 0;
+  }
+}
+
+blockquote {
+  border-inline-start: 2px solid #bbb;
+  margin-inline-start: 1rem;
+  margin-block: 3rem;
+  opacity: 0.8;
+}
+
+blockquote p {
+  margin-block: 1.5rem;
+  margin-inline-start: 2rem;
+}
+
+@media (width < 40em) {
+  blockquote p {
+    margin-inline-start: 1rem;
+  }
+}
+
+button {
+  cursor: pointer;
+  background-color: transparent;
+  padding: 1ch 2ch;
+  font-size: 1rem;
+  min-width: 5rem;
+  border: 1px solid var(--border-code);
+  color: inherit;
+  border-radius: 3px;
+}
+
+.playing {
+  border-color: tomato;
+}
+</style>
+
+<script type="module">
+</script>
+
+</head>
+
+<body>
+
+<h2>Using Euclidean rhythms to make music</h2>
+
+<h3>Euclid's algorithm</h3>
+
+<p>
+Sometimes proclaimed as the oldest algorithm put down on paper, Euclid's
+algorithm is enthralling in its recursive simplicity.
+</p>
+
+<p>
+Euclid's version used a minus instead of a modulo (<code>%</code>), but
+otherwise here it is in its full glory.
+</p>
+
+<pre><code>gcd = (n, m) => m ? gcd(m, n % m) : n
+</pre></code>
+
+<h3>Euclidean rhythms</h3>
+
+<p>
+At the surface level it is calculating the GCD, the largest number that divides
+both <code>n</code> and <code>m</code>. But really it is unravelling a number pair.
+</p>
+
+<p>
+In 2005, Godfried Toussaint realized that Euclid's algorithm encodes many drum
+beats. For example, here is <code>E(3, 8)</code>.
+</p>
+
+<h3>Code</h3>
+
+<p>Here is an implementation of the algorithm described by Toussaint.</p>
+
+<pre><code>const E = (k, n) => {
+  let s = Array(n).fill()
+            .map((_, i) => (i < k ? [1] : [0]))
+
+  let d = n - k
+  n = Math.max(k, d)
+  k = Math.min(k, d)
+  let z = d
+
+  while (z > 0 || k > 1) {
+    for (let i = 0; i < k; i++)
+      s[i].push(...s[s.length - 1 - i])
+    s.splice(-k)
+    z = z - k
+    d = n - k
+    n = Math.max(k, d)
+    k = Math.min(k, d)
+  }
+
+  return s.flat()
+};
+</pre></code>
+
+<p>
+At each step, we "fold" the end of the sequence into the beginning. How much to
+fold is given by the value of <code>gcd(n, m)</code> at that step.
+</p>
+
+<p>
+When we call this function with two numbers (<em>the number of 1's</em>, and
+<em>the length of the sequence</em>), it returns a sequence where the 1's are
+maximally displaced. e.g. if you copy paste this code to your browser's
+developer tools, and then call <code>E(3, 8)</code>, you'll get
+</p>
+
+<pre><code>> E(3, 8)
+[1, 0, 0, 1, 0, 0, 1, 0]
+</pre></code>
+
+Surprisingly, this function is all we need to replicate many real world rhythms.
+Here is how it sounds.
+
+<div :class="$style.beats">
+  <div v-for="s in seq1" :data-on="s"></div>
+</div>
+
+<button @click="toggleTicker" :class="class1">Play / Pause</button>
+
+<p>This player is producing a beep at each <code>E(3, 8)</code> beat.</p>
+
+<blockquote>
+See <a href="https://github.com/mnvr/mrmr.io/blob/main/js/er.js">the source code
+of this site</a> for a version of this function with comments and more examples.
+</blockquote>
+
+<h3>Cycling with Euclid</h3>
+
+<p>Here is a player that cycles through various Euclidean rhythms.</p>
+
+<p>I have listened to this for hours.</p>
+
+<div :class="[$style.beats, $style.cycle]">
+  <div v-for="s in seq2" :data-on="s"></div>
+</div>
+
+<button @click="cycle" :class="class2">Cycle</button>
+
+<h3>Not just beats</h3>
+
+<p>
+It is customary to use Euclidean rhythms to trigger onsets of beats, but there
+is nothing stopping us from using it for other purposes, as a generic organic
+pattern.
+</p>
+
+<p>Here we use it to accent certain notes by using a different attack and release.</p>
+
+<div :class="[$style.beats, $style.modulate]">
+  <div v-for="s in seq3" :data-on="s"></div>
+</div>
+
+<button @click="modulate" :class="class3">Modulate</button>
+
+<h3>Everything at once</h3>
+
+<p>
+And we can do all these at once. The integral framework provided by Euclidean
+rhythms ensures that the mismash doesn't sound as chaotic as mixing arbitrary
+patterns would've. It might even sound nice to some.
+</p>
+
+<div>
+  <div :class="$style.beats">
+    <div v-for="s in seq4.a" :data-on="s"></div>
+  </div>
+  <div :class="$style.beats">
+    <div v-for="s in seq4.b" :data-on="s"></div>
+  </div>
+  <div :class="$style.beats">
+    <div v-for="s in seq4.c" :data-on="s"></div>
+  </div>
+</div>
+
+<button @click="everything" :class="class4">Everthing at once</button>
+
+<hr style="margin-block: 2rem">
+
+<footer>
+<small>
+<p>
+There is also a <a href="https://mnvr.github.io/gm1k/e/">standalone single HTML
+file</a> version of this song with no dependencies.
+</p>
+
+<p>
+I also wrote a small tutorial on how to make <a href="/javascript-audio">sounds
+using Javascript</a> that might help with understanding the JS mechanics used to
+convert the output of Euclid's algorithm into sound in your browser.
+</p>
+</small>
+</footer>
+
+</body>
+</html>

@@ -113,6 +113,7 @@ button {
   font-size: 1rem;
   min-width: 5rem;
   border: 1px solid var(--border-code);
+  color: inherit;
   border-radius: 3px;
 }
 
@@ -154,16 +155,6 @@ document.querySelector("button.demo-3").addEventListener("click", () => {
   intervalId = toggleBeeps(intervalId);
   togglePlaying("demo-3", intervalId);
 })
-
-
-// const intervalId = ref();
-// const on3 = () => (intervalId.value = toggleBeeps(intervalId.value));
-// const classB3 = computed(() => [demo, intervalId.value && playing]);
-
-// onUnmounted(() => {
-//   osc1.value && toggleFirstTone(osc1.value);
-//   intervalId.value && toggleBeeps(intervalId.value);
-// });
 </script>
 
 </head>
