@@ -11,6 +11,13 @@
       <link>https://mrmr.io</link>
    </image>
    <item>
+      <title>HTML tags and trailing slashes</title>
+      <description></description>
+      <link>https://mrmr.io/html-tags</link>
+      <guid>https://mrmr.io/html-tags</guid>
+      <pubDate>Sun, 29 Sep 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>Hello WebGL</title>
       <description>An example zero-dependency GLSL shader</description>
       <link>https://mrmr.io/hello-gl</link>

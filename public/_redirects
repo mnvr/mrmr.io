@@ -4,7 +4,7 @@
 /evoke https://notes.mrmr.io/evoke 301
 /mj/euclid https://notes.mrmr.io/euclidean-rhythms 301
 /mj https://notes.mrmr.io/javascript-audio 301
-/n/cherry-pick-pr https://notes.mrmr.io/cherry-pick-pr 301
+/n/cherry-pick-pr /cherry-pick-pr 301
 /random-mutations /mutations 301
 /paani /पानी 301
 /promise-of-words /the-promise-of-words 301
@@ -12,6 +12,5 @@
 /til/critical-periods https://notes.mrmr.io/acid-doctor 301
 /til/prettier https://notes.mrmr.io/prettier 301
 /titliyaan /तितलियाँ 301
-/universe-is-its-own-simulation https://notes.mrmr.io/the-universe-is-its-own-simulation 301
 /gen24 https://mnvr.github.io/gen24 301
 /gen24/* https://mnvr.github.io/gen24/:splat 301

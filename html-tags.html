@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>HTML tags and trailing slashes</title>
+
+<style>
+:root {
+  --border-code: aliceblue;
+}
+
+body {
+  margin: 4em;
+  line-height: 1.5;
+  max-width: 40em;
+}
+
+@media (width < 34em) {
+  body {
+    margin: 1em;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --border-code: #484c4e;
+  }
+
+  body {
+    background-color: hsl(240, 12%, 16%);
+    color: hsl(200, 10%, 94%);
+  }
+}
+
+p, li {
+  margin-block: 2.25em;
+}
+
+h3 + p {
+  margin-block-start: 2.75em;
+}
+
+ol {
+  padding-inline-start: 2ch;
+}
+
+li {
+  padding-inline-start: 0.5ch;
+}
+
+pre {
+  padding: 2ch;
+  padding-inline: 2.5ch;
+  border: 1px solid var(--border-code);
+  overflow-x: auto;
+  margin-inline-start: -2.5ch;
+}
+
+:not(pre) > code {
+  padding: 0.5ch;
+  border: 1px solid var(--border-code);
+}
+</style>
+
+</head>
+
+<body>
+
+<h3>HTML tags and trailing slashes</h3>
+
+<p>
+XML's foray into HTML, XHTML, has long ended but left a confusing detritus of
+trailing slashes and their legality behind. The smog of JSX compounds
+visibility. But once we leave behind the rubble and the haze, the situation is
+clear.
+</p>
+
+<p>HTML has only two† kinds of elements††:</p>
+
+<ol>
+
+<li>
+Normal elements. These must have a closing tag, even if they have no child
+content.
+<pre><code>&lt;div></div>
+&lt;button></button>
+</code></pre>
+</li>
+
+<li>
+Void elements. This do not have a closing tag.
+<pre><code>&lt;img>
+&lt;br>
+</code></pre>
+</li>
+</ol>
+
+<blockquote>
+<small>
+<p>
+† to first approximation. The <a
+href="https://html.spec.whatwg.org/multipage/syntax.html#void-elements"
+target="_blank" rel="noopener">spec</a> lists 6.
+</p>
+
+<p>
+†† <em>elements</em> are the things themselves, while <em>tags</em> delimit
+their start and end.
+</p>
+</small>
+</blockquote>
+
+<p>
+The self closing shortcut for elements without child content, e.g.
+<code>&lt;div /></code> is not valid even if it may work.
+</p>
+
+<p>Void elements do not have any content, thus don't need to be closed.</p>
+
+<p>
+<em>tldr</em><b>If you're writing HTML, close your tags, even if there is no
+content, unless it is a void element.</b>
+</p>
+
+<p>These are the void elements</p>
+
+<pre><code>area, base, br, col, embed, hr, img, input, link, meta, source, track, wbr
+</code></pre>
+
+</body>
+</html>
