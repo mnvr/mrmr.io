@@ -32,8 +32,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: hsl(240, 12%, 16%);
-    color: hsl(200, 10%, 94%);
+    background-color: oklch(31.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
   }
 
   a {
@@ -53,12 +53,12 @@ p, li {
   margin-block: 2.25em;
 }
 
-h2 + h3 {
-  margin-block-start: 2.25rem;
+h3 {
+  margin-block-start: 5rem;
 }
 
-blockquote + h3, p + h3 {
-  margin-block-start: 5rem;
+h2 + h3 {
+  margin-block-start: 2.25rem;
 }
 
 ol {
@@ -308,7 +308,7 @@ millisecond level differences.
 </p>
 
 <p>
-The <code>setInterval</code> function in Javascript has too much jitter for it
+The <code>setInterval</code> function in JavaScript has too much jitter for it
 to be useful for triggering musical events.
 </p>
 

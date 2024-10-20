@@ -32,8 +32,8 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body {
-    background-color: hsl(240, 12%, 16%);
-    color: hsl(200, 10%, 94%);
+    background-color: oklch(31.14% 0.021 285.75);
+    color: oklch(90% 0.008 286.75);
   }
 
   a {
@@ -53,12 +53,12 @@ p, li {
   margin-block: 2.25em;
 }
 
-h2 + h3 {
-  margin-block-start: 2.25rem;
+h3 {
+  margin-block-start: 5rem;
 }
 
-blockquote + h3, p + h3 {
-  margin-block-start: 5rem;
+h2 + h3 {
+  margin-block-start: 2.25rem;
 }
 
 ol {
@@ -164,7 +164,7 @@ beats. For example, here is <code>E(3, 8)</code>.
 
 <pre><code>const E = (k, n) => {
   let s = Array(n).fill()
-            .map((_, i) => (i < k ? [1] : [0]))
+            .map((_, i) => (i &lt; k ? [1] : [0]))
 
   let d = n - k
   n = Math.max(k, d)
@@ -172,7 +172,7 @@ beats. For example, here is <code>E(3, 8)</code>.
   let z = d
 
   while (z > 0 || k > 1) {
-    for (let i = 0; i < k; i++)
+    for (let i = 0; i &lt; k; i++)
       s[i].push(...s[s.length - 1 - i])
     s.splice(-k)
     z = z - k
@@ -201,20 +201,24 @@ developer tools, and then call <code>E(3, 8)</code>, you'll get
 [1, 0, 0, 1, 0, 0, 1, 0]
 </pre></code>
 
-Surprisingly, this function is all we need to replicate many real world rhythms.
-Here is how it sounds.
+<p>
+  Surprisingly, this function is all we need to replicate many real world rhythms.
+  Here is how it sounds.
+</p>
 
 <div :class="$style.beats">
   <div v-for="s in seq1" :data-on="s"></div>
 </div>
 
-<button @click="toggleTicker" :class="class1">Play / Pause</button>
+<p><button @click="toggleTicker" :class="class1">Play / Pause</button></p>
 
 <p>This player is producing a beep at each <code>E(3, 8)</code> beat.</p>
 
 <blockquote>
+<p>
 See <a href="https://github.com/mnvr/mrmr.io/blob/main/js/er.js">the source code
 of this site</a> for a version of this function with comments and more examples.
+</p>
 </blockquote>
 
 <h3>Cycling with Euclid</h3>
@@ -227,7 +231,7 @@ of this site</a> for a version of this function with comments and more examples.
   <div v-for="s in seq2" :data-on="s"></div>
 </div>
 
-<button @click="cycle" :class="class2">Cycle</button>
+<p><button @click="cycle" :class="class2">Cycle</button></p>
 
 <h3>Not just beats</h3>
 
@@ -243,7 +247,7 @@ pattern.
   <div v-for="s in seq3" :data-on="s"></div>
 </div>
 
-<button @click="modulate" :class="class3">Modulate</button>
+<p><button @click="modulate" :class="class3">Modulate</button></p>
 
 <h3>Everything at once</h3>
 
@@ -265,9 +269,9 @@ patterns would've. It might even sound nice to some.
   </div>
 </div>
 
-<button @click="everything" :class="class4">Everthing at once</button>
+<p><button @click="everything" :class="demo-4">Everthing at once</button></p>
 
-<hr style="margin-block: 2rem">
+<hr>
 
 <footer>
 <small>
@@ -278,8 +282,8 @@ file</a> version of this song with no dependencies.
 
 <p>
 I also wrote a small tutorial on how to make <a href="/javascript-audio">sounds
-using Javascript</a> that might help with understanding the JS mechanics used to
-convert the output of Euclid's algorithm into sound in your browser.
+using JavaScript</a> that might help with understanding the code used to convert
+the output of Euclid's algorithm into sound in your browser.
 </p>
 </small>
 </footer>
