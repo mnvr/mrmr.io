@@ -14,9 +14,10 @@ merged one, but this time against a different branch">
 body {
   margin: 4em;
   line-height: 1.5;
+  max-width: 40em;
 }
 
-@media (width < 18em) {
+@media (width < 34em) {
   body {
     margin: 1em;
   }
@@ -31,6 +32,32 @@ body {
 
 p, li {
   margin-block: 2.25em;
+}
+
+h3 + p {
+  margin-block-start: 2.75em;
+}
+
+ol {
+  padding-inline-start: 2ch;
+}
+
+li {
+  padding-inline-start: 0.5ch;
+}
+
+pre {
+  padding: 2ch;
+  padding-inline: 2.5ch;
+  border: 1px solid aliceblue;
+  /* background-color: azure; */
+  overflow-x: auto;
+  margin-inline-start: -2.5ch;
+}
+
+:not(pre) > code {
+  padding: 0.5ch;
+  border: 1px solid aliceblue;
 }
 </style>
 
@@ -63,7 +90,7 @@ git checkout -b backport-foo
 Cherry pick using <code>-m 1</code>. Note that this'll create a single commit that
 references the merge, this'll not cherry pick the individual commits. This
 might not be what you want, but that was enough for my purpose.
-<pre><code>git cherry-pick -m 1 <merge-commit-id>
+<pre><code>git cherry-pick -m 1 &lt;merge-commit-id>
 </code></pre>
 </li>
 
