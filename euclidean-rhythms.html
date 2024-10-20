@@ -120,6 +120,11 @@ button {
 .playing {
   border-color: tomato;
 }
+
+footer {
+  margin-block: 20svh;
+  padding-block-start: 2.25em;
+}
 </style>
 
 <style>
@@ -242,8 +247,7 @@ const update1 = () => {
   for (const [j, v] of e38.entries()) {
     const on = intervalId && v && i == j;
     if (on) beep(0.01);
-    const div = divs[j];
-    div.setAttribute("data-state", on ? "on" : "off");
+    divs[j].setAttribute("data-state", on ? "on" : "off");
   }
   intervalId ? b1.classList.add("playing") : b1.classList.remove("playing");
 }
@@ -253,7 +257,7 @@ update1();
 // Demo 2 --- Cycle
 
 const b2 = document.querySelector("button.demo-2");
-const ticker2 = { state: initialCycleState, intervalId: undefined };
+const ticker2 = { state: { ...initialCycleState }, intervalId: undefined };
 
 b2.addEventListener("click", () => {
   if (ticker2.intervalId) {
@@ -275,8 +279,7 @@ const update2 = () => {
   for (const [j, v] of E(k, n).entries()) {
     const on = intervalId && v && p == j;
     if (on) beep(0.01);
-    const div = divs[j];
-    div.setAttribute("data-state", on ? "on" : "off");
+    divs[j].setAttribute("data-state", on ? "on" : "off");
   }
   intervalId ? b2.classList.add("playing") : b2.classList.remove("playing");
 }
@@ -320,54 +323,64 @@ const update3 = () => {
         beep(0.08, 0.001, 0.1);
       }
     }
-    const div = divs[j];
-    div.setAttribute("data-state", on ? (an ? "accent" : "on") : "off");
+    divs[j].setAttribute("data-state", on ? (an ? "accent" : "on") : "off");
   }
   intervalId ? b3.classList.add("playing") : b3.classList.remove("playing");
 }
 
 update3();
 
-// // Demo 4 --- Everything
+// Demo 4 --- Everything
 
-// const ticker4 = reactive({ state: initialCycleState, intervalId: undefined });
-// const everything = () => {
-//   if (ticker4.intervalId) {
-//     ticker4.intervalId = (clearInterval(ticker4.intervalId), undefined);
-//   } else {
-//     ticker4.intervalId = setInterval(() => {
-//       ticker4.state = cycleTick(ticker4.state);
-//     }, 1000 / 7);
-//   }
-// };
+const b4 = document.querySelector("button.demo-4");
+const ticker4 = { state: { ...initialCycleState }, intervalId: undefined };
 
-// const seq4 = computed(() => {
-//   const { k, n, p } = ticker4.state;
-//   const intervalId = ticker4.intervalId;
-//   const eKN = E(k, n);
-//   const seq38 = e38.map((v, i) => intervalId && v && p == i);
-//   const seqKN = eKN.map((v, i) => intervalId && v && p == i);
-//   const seq78 = e78.map((v, i) => intervalId && v && p == i);
-//   return { a: seq38, b: seqKN, c: seq78 };
-// });
+b4.addEventListener("click", () => {
+  if (ticker4.intervalId) {
+    ticker4.intervalId = (clearInterval(ticker4.intervalId), undefined);
+  } else {
+    ticker4.intervalId = setInterval(() => {
+      ticker4.state = cycleTick(ticker4.state);
+      update4();
+    }, 1000 / 7);
+  }
+  update4();
+});
 
-// watchEffect(() => {
-//   const { k, n, p } = ticker4.state;
-//   if (ticker4.intervalId) {
-//     if (seq4.value.a[p % 8]) {
-//       beep(0.01, 0.001, 0.1, 660);
-//     }
-//     if (seq4.value.b[p]) {
-//       beep(0.01);
-//       beep(0.005, 0.001, 0.02, 660);
-//     }
-//     if (seq4.value.c[p % 8]) {
-//       beep(0.1, 0.001, 0.1, 110);
-//     }
-//   }
-// });
+const update4 = () => {
+  const { intervalId, state } = ticker4;
+  const { k, n, p } = state;
 
-// const class4 = computed(() => [demo, ticker4.intervalId && playing]);
+  const divsA = document.querySelectorAll(".demo-4a > div")
+  for (const [j, v] of e38.entries()) {
+    const on = intervalId && v && (p % 8) == j;
+    if (on) beep(0.01, 0.001, 0.1, 660);
+    divsA[j].setAttribute("data-state", on ? "on" : "off");
+  }
+
+  const divsB = document.querySelectorAll(".demo-4b > div")
+  for (const div of divsB) div.removeAttribute("data-state");
+  for (const [j, v] of E(k, n).entries()) {
+    const on = intervalId && v && p == j;
+    if (on) {
+      beep(0.01);
+      beep(0.005, 0.001, 0.02, 660);
+    }
+    divsB[j].setAttribute("data-state", on ? "on" : "off");
+  }
+
+  const divsC = document.querySelectorAll(".demo-4c > div")
+  for (const [j, v] of e78.entries()) {
+    const on = intervalId && v && (p % 8) == j;
+    if (on) beep(0.1, 0.001, 0.1, 110);
+    divsC[j].setAttribute("data-state", on ? "on" : "off");
+  }
+
+  intervalId ? b4.classList.add("playing") : b4.classList.remove("playing");
+}
+
+update4();
+
 </script>
 
 </head>
@@ -535,22 +548,46 @@ patterns would've. It might even sound nice to some.
 </p>
 
 <div>
-  <div class="$style.beats">
-    <div v-for="s in seq4.a" data-on="s"></div>
-  </div>
-  <div class="$style.beats">
-    <div v-for="s in seq4.b" data-on="s"></div>
-  </div>
-  <div class="$style.beats">
-    <div v-for="s in seq4.c" data-on="s"></div>
-  </div>
+<div class="beats demo-4a">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</div>
+<div class="beats demo-4b">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</div>
+<div class="beats demo-4c">
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+</div>
 </div>
 
-<p><button @click="everything" class="demo-4">Everthing at once</button></p>
-
-<hr>
+<p><button class="demo-4">Everthing at once</button></p>
 
 <footer>
+
 <small>
 <p>
 There is also a <a href="https://mnvr.github.io/gm1k/e/">standalone single HTML
@@ -563,6 +600,7 @@ using JavaScript</a> that might help with understanding the code used to convert
 the output of Euclid's algorithm into sound in your browser.
 </p>
 </small>
+
 </footer>
 
 </body>
