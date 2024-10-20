@@ -49,7 +49,7 @@ export const beep = (
   duration: number,
   attack = 0.001,
   release = 0.1,
-  frequency = 440
+  frequency = 440,
 ) => {
   const ctx = getAudioContext();
   const osc = new OscillatorNode(ctx, { frequency });

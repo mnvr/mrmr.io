@@ -88,11 +88,6 @@ pre {
   }
 }
 
-:not(pre) > code {
-  padding: 0.5ch;
-  border: 1px solid var(--border-code);
-}
-
 blockquote {
   border-inline-start: 2px solid #bbb;
   margin-inline-start: 1rem;
@@ -118,12 +113,10 @@ button {
   font-size: 1rem;
   min-width: 5rem;
   border: 1px solid var(--border-code);
-  background-color: var(--border-code);
   border-radius: 3px;
-
 }
 
-button.playing {
+.playing {
   border-color: tomato;
 }
 </style>
@@ -131,8 +124,14 @@ button.playing {
 <script type="module">
 import { toggleFirstTone, beep } from "./js/javascript-audio.ts";
 
+const togglePlaying = (cls, cond) =>
+  Array.from(document.getElementsByClassName(cls)).forEach((e) =>
+    cond ? e.classList.remove("playing") : e.classList.add("playing"),
+  );
+
 let osc1;
-document.getElementById("tone").addEventListener("click", () => {
+document.querySelector("button.demo-1").addEventListener("click", () => {
+  togglePlaying("demo-1", osc1);
   osc1 = toggleFirstTone(osc1);
 })
 
@@ -187,7 +186,7 @@ code to compute the individual samples themselves.
 
 <p>Let's make a sound using the first method.</p>
 
-<pre><code>const ctx = new AudioContext();
+<pre class="demo-1"><code>const ctx = new AudioContext();
 ctx.resume();
 
 const osc = new OscillatorNode(ctx);
@@ -198,7 +197,7 @@ osc.start();
 </code></pre>
 
 <p>
-<button id="tone">Play / Pause</button>
+<button class="demo-1">Play / Pause</button>
 <br><br>That is what the button above does.
 </p>
 
