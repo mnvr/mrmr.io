@@ -11,26 +11,22 @@
 
 <style>
 :root {
-  --border-code: aliceblue;
+  --border-code: #7df9ff;
 }
 
 body {
-  margin: 4em;
+  margin: 4em 2em;
   line-height: 1.5;
   max-width: 40em;
 }
 
-@media (width < 34em) {
+@media (width < 40em) {
   body {
-    margin: 1em;
+    margin: 1em 0em;
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --border-code: #484c4e;
-  }
-
   body {
     background-color: hsl(240, 12%, 16%);
     color: hsl(200, 10%, 94%);
@@ -45,20 +41,40 @@ body {
   }
 }
 
+h2, h3, p, ol {
+  margin-inline: 3rem;
+}
+
 p, li {
   margin-block: 2.25em;
 }
 
+ol {
+  padding-inline-start: 2em;
+}
+
+li {
+  padding-inline-start: 1ch;
+}
+
 pre {
-  padding: 2ch;
-  padding-inline: 2.5ch;
+  padding: 2rem 3rem;
   border: 1px solid var(--border-code);
   overflow-x: auto;
 }
 
-li > pre {
-  margin-inline-start: -2.5ch;
+@media (width < 40em) {
+  h2, h3, p, ol {
+    margin-inline: 1rem;
+  }
+
+  pre {
+    padding-inline: 1rem;
+    border-inline: 0;
+  }
 }
+
+
 
 :not(pre) > code {
   padding: 0.5ch;
@@ -79,8 +95,6 @@ blockquote p {
 <body>
 
 <h2>Making sounds in Javascript</h2>
-
-<button @click="on1" :class="classB1">Play / Pause</button>
 
 <h3>First sound</h3>
 
@@ -103,8 +117,7 @@ code to compute the individual samples themselves.
 
 <p>Let's make a sound using the first method.</p>
 
-```js
-const ctx = new AudioContext();
+<pre><code>const ctx = new AudioContext();
 ctx.resume();
 
 const osc = new OscillatorNode(ctx);
@@ -112,9 +125,12 @@ const osc = new OscillatorNode(ctx);
 const mix = new GainNode(ctx, { gain: 0.1 });
 osc.connect(mix).connect(ctx.destination);
 osc.start();
-```
+</code></pre>
 
-That is what the button above does.
+
+That is what this button does.
+
+<button @click="on1" :class="classB1">Play / Pause</button>
 
 <h3>Beep</code>
 
