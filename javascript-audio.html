@@ -135,9 +135,6 @@ document.querySelector("button.demo-1").addEventListener("click", () => {
   togglePlaying("demo-1", osc1);
 })
 
-const toggleBeeps = (id) =>
-  id ? (clearInterval(id), undefined) : setInterval(() => beep(0.01), 1000 / 7);
-
 let osc2s = new Set();
 document.querySelector("button.demo-2").addEventListener("click", () => {
   togglePlaying("demo-2", true);
@@ -149,13 +146,15 @@ document.querySelector("button.demo-2").addEventListener("click", () => {
   };
 })
 
+const toggleBeeps = (id) =>
+  id ? (clearInterval(id), undefined) : setInterval(() => beep(0.01), 1000 / 7);
 
-// const osc2 = ref();
-// const on2 = () => {
-//   osc2.value = beep(0.2);
-//   osc2.value.onended = () => (osc2.value = undefined);
-// };
-// const classB2 = computed(() => [demo, osc2.value && playing]);
+let intervalId;
+document.querySelector("button.demo-3").addEventListener("click", () => {
+  intervalId = toggleBeeps(intervalId);
+  togglePlaying("demo-3", intervalId);
+})
+
 
 // const intervalId = ref();
 // const on3 = () => (intervalId.value = toggleBeeps(intervalId.value));
