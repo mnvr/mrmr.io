@@ -12,17 +12,19 @@
 
 :root {
   --bg: white;
-  --bg-pre: rgb(230 230 230 / 0.15);
   --text: oklch(25% 0 0);
   --soft: oklch(42% 0 0);
+  --bg-pre: rgb(230 230 230 / 0.15);
+  --outline: rgb(30 30 30 / 0.1);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: oklch(31.14% 0.021 285.75);
-    --bg-pre: rgb(30 30 30 / 0.3);
     --text: oklch(90% 0.008 286.75);
     --soft: oklch(78.61% 0.021 285.75);
+    --bg-pre: rgb(30 30 30 / 0.3);
+    --outline: rgb(230 230 230 / 0.07);
   }
 }
 
@@ -41,12 +43,16 @@ body {
   }
 }
 
+body {
+  margin-block-end: 20svh;
+}
+
 p, li {
   margin-block: 2.25em;
 }
 
 h3 {
-  margin-block-start: 4rem;
+  margin-block: 4rem 2.25rem;
 }
 
 ol {
@@ -73,8 +79,14 @@ pre {
 }
 
 :not(pre) > code {
-  border: 1px solid var(--bg-pre);
+  border: 1px solid var(--outline);
   padding: 1ch;
+}
+
+hr {
+  margin-block: 5rem;
+  border: 0;
+  border-block-end: 1px solid var(--outline);
 }
 
 </style>
@@ -105,6 +117,8 @@ live reloads on changes.
 
 Use <code>DEBUG=vite:* vite</code> to get Vite to talk more.
 
+<hr>
+
 <a href="#react-render">
 <h3 id="react-render">When does React render a component?</h3>
 </a>
@@ -122,6 +136,20 @@ When React renders a component, it will also render all its children.
 </li>
 
 </ol>
+
+<hr>
+
+<a href="#npm-check-updates">
+<h3 id="npm-check-updates">Updating package.json</h3>
+</a>
+
+<pre><code>npx npm-check-updates --interactive
+</code></pre>
+
+<p>updates <code>package.json</code>, not just the lock files. To update just a specific package,</p>
+
+<pre><code>npx npm-check-updates --interactive <i>&lt;package-name></i>
+</code></pre>
 
 </body>
 </html>
