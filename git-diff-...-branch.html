@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>git diff ...branch</title>
+<meta name="description" content="Viewing what changed in a branch">
+
+<style>
+:root {
+  --bg: white;
+  --text: oklch(25% 0 0);
+  --soft: oklch(42% 0 0);
+  --bg-pre: rgb(230 230 230 / 0.15);
+  --outline: rgb(30 30 30 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
+    --bg-pre: rgb(30 30 30 / 0.3);
+    --outline: rgb(230 230 230 / 0.1);
+  }
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+
+  margin: 4em;
+  max-width: 40rem;
+}
+
+@media (width < 34em) {
+  body {
+    margin: 1em;
+  }
+}
+
+body {
+  margin-block-end: 20svh;
+}
+
+p, li {
+  margin-block: 2em;
+}
+
+pre {
+  padding: 4ch;
+  background-color: var(--bg-pre);
+  overflow-y: auto;
+}
+
+@media (width < 34em) {
+  pre {
+    padding: 2ch;
+  }
+}
+
+:not(pre, h2) > code {
+  border: 1px solid var(--outline);
+  padding: 1ch;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2><code>git diff ...branch</code></h2>
+<p>Suppose we want to see the diff of what has changed in a particular branch.</p>
+
+<p>
+<code>git diff branch</code> will usually not do what we want: it will display
+the diff between the current code and the code in <code>branch</code>, while we
+often just are interested in the "changes" that were made in that branch.
+</p>
+
+<p>The correct invocation for that outcome is</p>
+
+<pre><code>git diff $(git merge-base branch HEAD) branch
+</code></pre>
+
+<p>
+Which shows the diff between the point where the branch branched off, and the
+branch.
+</p>
+
+<p>Since this common, there is a shorthand for this, the triple dot.</p>
+
+<pre><code>git diff HEAD...branch
+</code></pre>
+
+<p>where the <code>HEAD</code> can be omitted as it is the default</p>
+
+<pre><code>git diff ...branch
+</code></pre>
+
+</body>
+</html>
