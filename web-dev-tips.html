@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Assorted web dev tidbits</title>
+
+<style>
+
+:root {
+  --bg: white;
+  --text: oklch(25% 0 0);
+  --soft: oklch(42% 0 0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: oklch(31.14% 0.021 285.75);
+    --text: oklch(90% 0.008 286.75);
+    --soft: oklch(78.61% 0.021 285.75);
+  }
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+
+  margin: 4em;
+  max-width: 40rem;
+
+}
+
+@media (width < 34em) {
+  body {
+    margin: 1em;
+  }
+}
+
+p {
+  margin-block: 2.25em;
+}
+
+h3 {
+  margin-block-start: 4rem;
+}
+
+ol {
+  list-style-position: inside;
+  padding-inline-start: 0;
+}
+
+blockquote {
+  color: var(--soft);
+  font-style: italic;
+}
+
+a[href^="#"] {
+  color: inherit;
+  text-decoration: none;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Assorted web dev tidbits</h2>
+
+<a href="#react-render">
+<h3 id="react-render">When does React render a component?</h3>
+</a>
+
+<ol>
+
+<li>
+React will render a component iff its state changes.
+<blockquote>Context is state.</blockquote>
+</li>
+
+<li>
+When React renders a component, it will also render all its children.
+<blockquote>To opt a child out of this, memo it, or pass it as a prop.</blockquote>
+</li>
+
+</ol>
+
+</body>
+</html>
