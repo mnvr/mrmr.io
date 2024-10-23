@@ -12,6 +12,7 @@
 
 :root {
   --bg: white;
+  --bg-pre: rgb(230 230 230 / 0.15);
   --text: oklch(25% 0 0);
   --soft: oklch(42% 0 0);
 }
@@ -19,6 +20,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: oklch(31.14% 0.021 285.75);
+    --bg-pre: rgb(30 30 30 / 0.3);
     --text: oklch(90% 0.008 286.75);
     --soft: oklch(78.61% 0.021 285.75);
   }
@@ -31,7 +33,6 @@ body {
 
   margin: 4em;
   max-width: 40rem;
-
 }
 
 @media (width < 34em) {
@@ -40,7 +41,7 @@ body {
   }
 }
 
-p {
+p, li {
   margin-block: 2.25em;
 }
 
@@ -49,8 +50,11 @@ h3 {
 }
 
 ol {
-  list-style-position: inside;
-  padding-inline-start: 0;
+  padding-inline-start: 1rem;
+}
+
+ol li {
+  padding-inline-start: 1ch;
 }
 
 blockquote {
@@ -62,6 +66,17 @@ a[href^="#"] {
   color: inherit;
   text-decoration: none;
 }
+
+pre {
+  padding: 2ch;
+  background-color: var(--bg-pre);
+}
+
+:not(pre) > code {
+  border: 1px solid var(--bg-pre);
+  padding: 1ch;
+}
+
 </style>
 
 </head>
@@ -69,6 +84,26 @@ a[href^="#"] {
 <body>
 
 <h2>Assorted web dev tidbits</h2>
+
+<a href="#npx-vite">
+<h3 id="npx-vite">Replacement of Python's SimpleHTTPServer</h3>
+</a>
+
+Vite can be used as a quick (and better!) replacement for
+<code>python -m http.server 5173</code>.
+
+<pre><code>npx vite
+</code></pre>
+
+in any folder, and get a http server that serves the HTML in that directory with
+live reloads on changes.
+
+
+<a href="#vite-debug">
+<h3 id="vite-debug">Vite DEBUG</h3>
+</a>
+
+Use <code>DEBUG=vite:* vite</code> to get Vite to talk more.
 
 <a href="#react-render">
 <h3 id="react-render">When does React render a component?</h3>
