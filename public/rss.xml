@@ -32,6 +32,13 @@
       <pubDate>Thu, 29 Aug 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
+      <title>Assorted web dev notes</title>
+      <description></description>
+      <link>https://mrmr.io/web-dev-notes</link>
+      <guid>https://mrmr.io/web-dev-notes</guid>
+      <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>On the useful use of cat</title>
       <description>It is fine to begin your shell commands with cat</description>
       <link>https://mrmr.io/cat</link>
