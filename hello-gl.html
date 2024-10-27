@@ -85,7 +85,7 @@ canvas {
   aspect-ratio: 2/1;
 }
 
-header, p, blockquote {
+header, p, blockquote, h3, iframe {
   max-width: 34rem;
   margin-inline: 1rem;
 }
@@ -121,13 +121,22 @@ pre {
   background-color: var(--code-bg);
 }
 
-
 blockquote {
   opacity: 0.5;
   border-inline-start: 2px solid #888;
   margin-inline: 2px;
 }
 
+#bonus > pre {
+  max-width: 100%;
+  font-size: smaller;
+  padding: 0 1rem 2ch 1rem;
+  background: transparent;
+}
+
+iframe {
+  margin-block-end: 3rem;
+}
 </style>
 
 <script type="module">
@@ -329,6 +338,33 @@ That's it, that's all it took to create that WebGL canvas you saw at the top of
 this page. <span class="dot">Our lovely white dot on a blue ocean of
 nothingness.</span>
 </p>
+
+<section id="bonus">
+<h3>Bonus</h3>
+
+<p>
+  Here is a 499 character standalone HTML file (shown below in an iframe) that
+  shows an slowly pulsing WebGL box.
+</p>
+
+<pre><code>&lt;canvas id=c>&lt;script>g=document.getElementById(`c`).getContext(`webgl`);a=35633
+S=c=>(g.shaderSource(s=g.createShader(a--),
+`precision highp float;uniform float t;void main(){gl_`+c+`0.,1.);}`),g.compileShader(s),s)
+g.attachShader(p=g.createProgram(),S(`PointSize=100.;gl_Position=vec4(0.,0.,`))
+g.attachShader(p,S(`FragColor=vec4(gl_FragCoord.x,sin(t),`));g.linkProgram(p);g.useProgram(p)
+d=n=>(g.uniform1f(g.getUniformLocation(p,`t`),n/a),g.drawArrays(0,0,1),requestAnimationFrame(d))
+d()&lt;/script>
+</code></pre>
+
+<iframe srcdoc="<canvas id=c><script>g=document.getElementById(`c`).getContext(`webgl`);a=35633
+S=c=>(g.shaderSource(s=g.createShader(a--),
+`precision highp float;uniform float t;void main(){gl_`+c+`0.,1.);}`),g.compileShader(s),s)
+g.attachShader(p=g.createProgram(),S(`PointSize=100.;gl_Position=vec4(0.,0.,`))
+g.attachShader(p,S(`FragColor=vec4(gl_FragCoord.x,sin(t),`));g.linkProgram(p);g.useProgram(p)
+d=n=>(g.uniform1f(g.getUniformLocation(p,`t`),n/a),g.drawArrays(0,0,1),requestAnimationFrame(d))
+d()</script>"></iframe>
+
+</section>
 
 </body>
 </html>
