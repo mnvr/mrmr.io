@@ -45,21 +45,21 @@ canvas {
   position: absolute;
   left: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
 
-<!-- <script src="https://q5js.org/q5.js"></script> -->
-<script src="https://q5js.org/q5.min.js"></script>
 <script type="module">
-import { draw } from "./js/become/sketch.ts";
+import { sketch } from "./js/sketch/become.ts";
 
-const q5 = new Q5();
-createCanvas(window.innerWidth, window.innerHeight);
-q5.draw = () => draw(q5);
+sketch(document.getElementById("c"));
 </script>
 </head>
 
 <body>
+
+<canvas id="c"></canvas>
 
 <div id="poem-container">
 
