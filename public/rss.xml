@@ -53,6 +53,13 @@
       <pubDate>Thu, 01 Aug 2024 00:00:00 GMT</pubDate>
    </item>
    <item>
+      <title>Morning</title>
+      <description>A poem</description>
+      <link>https://mrmr.io/morning</link>
+      <guid>https://mrmr.io/morning</guid>
+      <pubDate>Wed, 27 Mar 2024 00:00:00 GMT</pubDate>
+   </item>
+   <item>
       <title>On the useful use of cat</title>
       <description>It is fine to begin your shell commands with cat</description>
       <link>https://mrmr.io/cat</link>
