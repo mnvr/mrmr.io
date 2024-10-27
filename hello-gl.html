@@ -137,6 +137,12 @@ blockquote {
 iframe {
   margin-block-end: 3rem;
 }
+
+@media (width < 350px) {
+  iframe {
+    margin-inline: 0;
+  }
+}
 </style>
 
 <script type="module">
@@ -362,7 +368,7 @@ S=c=>(g.shaderSource(s=g.createShader(a--),
 g.attachShader(p=g.createProgram(),S(`PointSize=100.;gl_Position=vec4(0.,0.,`))
 g.attachShader(p,S(`FragColor=vec4(gl_FragCoord.x,sin(t),`));g.linkProgram(p);g.useProgram(p)
 d=n=>(g.uniform1f(g.getUniformLocation(p,`t`),n/a),g.drawArrays(0,0,1),requestAnimationFrame(d))
-d()</script>"></iframe>
+d()</script>" loading="lazy" width="315" height="170"></iframe>
 
 </section>
 
