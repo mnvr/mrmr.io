@@ -6,7 +6,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Assorted web dev tidbits</title>
+<title>Assorted web dev notes</title>
 
 <style>
 
@@ -47,17 +47,25 @@ body {
   margin-block-end: 20svh;
 }
 
-p, li {
+p {
   margin-block: 2.25em;
 }
 
-h3 {
-  margin-block: 4rem 2.25rem;
-  scroll-margin-block-start: 4rem;
+ol#toc {
+  margin-block: 2.25em 5.5em;
+
+  li {
+    margin-block: 0.5em;
+  }
 }
 
-h3 a:hover::after {
-  content: " #";
+ol:not(#toc) li {
+  margin-block: 2.25em;
+}
+
+h3, h4 {
+  margin-block: 4rem 2.25rem;
+  scroll-margin-block-start: 4rem;
 }
 
 ol {
@@ -71,11 +79,6 @@ ol li {
 blockquote {
   color: var(--soft);
   font-style: italic;
-}
-
-a[href^="#"] {
-  color: inherit;
-  text-decoration: none;
 }
 
 pre {
@@ -95,18 +98,33 @@ hr {
   border-block-end: 1px solid var(--outline);
 }
 
+a {
+  color: rebeccapurple;
+  text-underline-offset: 0.3em;
+}
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: lightsteelblue;
+  }
+}
 </style>
 
 </head>
 
 <body>
 
-<h2>Assorted web dev tidbits</h2>
+<h2>Assorted web dev notes</h2>
+
+<ol id="toc">
+<li><a href="#npx-vite">Vite as SimpleHTTPServer</a></li>
+<li><a href="#react-render">When does React render a component?</a></li>
+<li><a href="#npm-check-updates">Updating package.json</a></li>
+<li><a href="#diffs">Colorful diffs of arbitrary files</a></li>
+</ol>
 
 <h3 id="npx-vite">
-<a href="#npx-vite">
 Replacement of Python's SimpleHTTPServer
-</a>
 </h3>
 
 Vite can be used as a quick (and better!) replacement for
@@ -119,18 +137,16 @@ in any folder, and get a http server that serves the HTML in that directory with
 live reloads on changes.
 
 
-<h3 id="vite-debug">
-<a href="#vite-debug">
+<h4 id="vite-debug">
 Vite DEBUG
-</a>
-</h3>
+</h4>
 
 Use <code>DEBUG=vite:* vite</code> to get Vite to talk more.
 
 <hr>
 
 <h3 id="react-render">
-<a href="#react-render">When does React render a component?</a>
+When does React render a component?
 </h3>
 
 <ol>
@@ -149,11 +165,8 @@ When React renders a component, it will also render all its children.
 
 <hr>
 
-
 <h3 id="npm-check-updates">
-<a href="#npm-check-updates">
 Updating package.json
-</a>
 </h3>
 
 <pre><code>npx npm-check-updates --interactive
@@ -168,8 +181,7 @@ Updating package.json
 <hr>
 
 <h3 id="diffs">
-<a href="#diffs">Colorful diffs of arbitrary files
-</a>
+Colorful diffs of arbitrary files
 </h3>
 
 <pre><code>git diff --no-index b/oo f/ar
