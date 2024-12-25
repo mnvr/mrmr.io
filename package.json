@@ -8,7 +8,7 @@
     "fmt": "prettier --write ."
   },
   "devDependencies": {
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "tinyglobby": "^0.2.10",
     "vite": "^6.0.5"
   }

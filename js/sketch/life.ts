@@ -73,7 +73,6 @@ export const sketch = (canvas: HTMLCanvasElement) => {
     addRPentomino(...nearestCell(mx, my));
   });
 
-
   const tick = () => requestAnimationFrame(draw);
   let tnext = 0;
 
