@@ -39,7 +39,14 @@ hr {
 }
 
 blockquote {
-  font-size: 1.4rem;
+  font-size: x-large;
+  overflow-x: scroll;
+}
+
+@media (width <= 450px) {
+  blockquote {
+    margin-inline: 0;
+  }
 }
 
 pre {
@@ -91,22 +98,26 @@ of other numbers. Everything else is commentary.
 
 <hr>
 
+<p>
 A common pattern in these equations is to find an expression of the sort
+</p>
 
 <blockquote>
 <math><msup><mi>e</mi><mrow><mi>i</mi><mi>t</mi></mrow></msup></math>
 </blockquote>
 
+<p>
 This confused me for the longest time. Now I know what it means - it is a number
 on the unit circle! These numbers are common since they are a convenient way of
 describing a rotation, or a phase shift of a periodic process. Let us arrive at
 this conclusion piece by piece.
+</p>
 
 <hr>
 
-Firstly, what is <math><msup><mi>e</mi></math>?
+<p>Firstly, what is <math><msup><mi>e</mi></math>?</p>
 
-Consider the following equation:
+<p>Consider the following equation:</p>
 
 <blockquote>
 <math>
@@ -190,7 +201,129 @@ stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at
 
 <p>
 So <math><mi>e</mi></math> is the value of the exponential function when it is
-evaluated at <math><mn>1</mn></math>.
+evaluated at <math><mn>1</mn></math>. Since <math><mi>e</mi></math>, the
+constant, is so ubiquitous, it has somewhat come to overshadow the function it
+originates from, and sometimes it just stands in for the entire function itself.
+For example, people sometimes write
+<math><msup><mi>e</mi><mi>x</mi></msup></math> when what they mean is
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>.
+</p>
+
+<p>
+While confusing, this is mathematically correct, because the exponential
+function obeys the following identity
+</p>
+
+<blockquote>
+<math>
+<mi>exp</mi>
+<mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>.</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>y</mi><mo stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+This can be seen by plugging in the values into the definition above and doing
+some symbolic algebra to convince ourselves. Assuming we're convinced, then it
+is easy to see that, for example,
+</p>
+
+<blockquote>
+<math>
+<msup><mi>e</mi><mi>3</mi></msup>
+<mo>=</mo>
+<msup><mrow><mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mi>3</mi></msup>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>.</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>.</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+So <math><msup><mi>e</mi><mi>x</mi></msup></math> is equivalent to
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>.
+</p>
+
+<p>
+This equivalence seems irrelevant, since multiplying <math><mi>e</mi></math> by
+itself <math><mi>x</mi></math> times seems a good enough way to arrive at the
+same result, and also matches the notation for raising to power that we're
+already familiar with, then why remind ourselves that it is a shorthand for an
+underlying function evaluation?
+</p>
+
+<p>
+Because it allows us to see what complex exponentiation means.
+</p>
+
+<hr>
+
+<p>
+A complex number is a tragedy of nomenclature. They are neither complex, nor
+imaginary.
+</p>
+
+<p>
+This is perhaps an opportune point to repeat the diatribe I started with. Number
+are just things defined by their relations, nothing more can be said about them.
+We however get misled by labels attached to some of them (e.g. complex number)
+or their visual analogies (showing complex numbers on a 2D plane) to think of
+them as something they're not.
+</p>
+
+<p>
+So forget the fact that a complex number has two components, or that it is
+different from a real number. Just think of all of them as just things that we
+can relate to each other.
+</p>
+
+<p>
+One such relation is
+</p>
+
+<blockquote>
+<math>
+<mi>x</mi><mo>.</mo><mi>x</mi>
+<mo>=</mo>
+<mn>-1</mn>
+</math>
+</blockquote>
+
+<p>
+The number <math><mi>x</mi></math> that satisfies this relationship is called
+<math><mi>i</mi></math>. It is a so called complex number, and is not one of the
+numbers that we're familiar with intuitively (but I'm sure if we give it a few
+hundred years, children will find complex numbers as intuitive as we find real
+numbers today), but it is in no way un<em>real</em>. It is as real as real
+numbers, and in fact more so, because complex numbers are closed while real
+numbers are incomplete: what we just found, the square root of minus 1, an
+eminently reasonable question, does not have its answer in real numbers.
+</p>
+
+<hr>
+
+<p>
+Figuratively and literally, complex numbers open another dimension to us. But
+when we start putting complex numbers in the relations we had previously used
+for with only real numbers, we face new questions. For example, what does it
+mean to raise <math><mi>e</mi></math> to the power of a complex number? Or more
+specifically, since we've only seen one complex number so far,
+<math><mi>i</mi></math>, what does
+<math><msup><mi>e</mi><mi>i</mi></msup></math> mean?
+</p>
+
+<p>
+The repeated multiplication doesn't work.
 </p>
 
 </body>
