@@ -13,6 +13,37 @@
 body {
   margin: 3em;
   line-height: 1.7;
+  max-width: 45rem;
+}
+
+p {
+  margin-block: 2.25rem;
+}
+
+p.footnote {
+  margin-block: 1em 2.25rem;
+  margin-inline: 1em;
+  font-size: small;
+}
+
+p:has(+ p.footnote) {
+  margin-block-end: 0;
+}
+
+hr {
+  margin-block: 2.75rem;
+
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.1;
+}
+
+blockquote {
+  font-size: 1.4rem;
+}
+
+pre {
+  overflow-x: scroll;
 }
 
 footer {
@@ -37,9 +68,130 @@ footer {
 
 <body>
 
-<h2>
+<h1>
 What is <math><msup><mi>e</mi><mrow><mi>i</mi><mi>t</mi></mrow></msup></math>
-</h2>
+</h1>
+
+<p>
+Forget what you have seen - numbers on the number line, complex numbers on the
+xy graph.
+</p>
+
+<p>
+Numbers are things. All that we know about these things are the equations that
+relate them to other things (numbers). Numbers don't actually lie on the number
+line, that is a convenient visualization but like all analogies it starts to be
+harmful when we insist on mistaking the analogy for the territory.
+</p>
+
+<p>
+All that can be said about a number is the relations that describe it in terms
+of other numbers. Everything else is commentary.
+</p>
+
+<hr>
+
+A common pattern in these equations is to find an expression of the sort
+
+<blockquote>
+<math><msup><mi>e</mi><mrow><mi>i</mi><mi>t</mi></mrow></msup></math>
+</blockquote>
+
+This confused me for the longest time. Now I know what it means - it is a number
+on the unit circle! These numbers are common since they are a convenient way of
+describing a rotation, or a phase shift of a periodic process. Let us arrive at
+this conclusion piece by piece.
+
+<hr>
+
+Firstly, what is <math><msup><mi>e</mi></math>?
+
+Consider the following equation:
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>x</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+There are reasons† why a sequence of operations as described by the right hand
+side arises commonly in nature's, and in our own, undertakings. So much so that
+we have given a name to this function - it is called the exponential function.
+</p>
+
+<p class="footnote">
+† e.g., it is the fixed point of derivation. That is, <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> is the
+(only) function whose derivative is equal to itself. That is, the value of
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> at any number <math><mi>x</mi></math> is also
+equal to the rate of change of <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at
+<math><mi>x</mi></math>.
+</p>
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>x</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>What is the value of this function when we evaluate it at 1?</p>
+
+<pre><code>$ node
+> factorial = (n) => n == 0 ? 1 : n * factorial(n - 1)
+[Function: factorial]
+> exp = (x) => Array(99).fill().reduce((s, _, i) => s + x ** i / factorial(i), 0)
+[Function: exp]
+> exp(1)
+2.7182818284590455
+</code></pre>
+
+<p>That looks familiar - it is <math><mi>e</mi></math>.</p>
+
+<p>
+So <math><mi>e</mi></math> is the value of the exponential function when it is
+evaluated at <math><mn>1</mn></math>.
+</p>
 
 </body>
 </html>
