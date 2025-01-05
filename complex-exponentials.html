@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>What is e^it</title>
-<meta name="description" content="Complex numbers on the unit circle">
+<meta name="description" content="The unit circle!">
 
 <style>
 body {
@@ -39,8 +39,15 @@ hr {
 }
 
 blockquote {
-  font-size: x-large;
-  overflow-x: scroll;
+  font-size: larger;
+}
+
+@media (width <= 600px) {
+  blockquote {
+    /* Don't do this always, otherwise I see that sometimes Chrome is adding
+       vertical scroll bars too. */
+    overflow-x: scroll;
+  }
 }
 
 @media (width <= 450px) {
@@ -158,6 +165,12 @@ stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> is the
 stretchy="false">)</mo></math> at any number <math><mi>x</mi></math> is also
 equal to the rate of change of <math><mi>exp</mi><mo
 stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at
+<math><mi>x</mi></math>. When the value of <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> is at
+<math><mi>x</mi></math> is large, it increases faster; and when it is small, it
+increasing slower, but it is not an approximate relationship, the rate of change
+is exactly equal to the value of <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at
 <math><mi>x</mi></math>.
 </p>
 
@@ -227,9 +240,10 @@ function obeys the following identity
 </blockquote>
 
 <p>
-This can be seen by plugging in the values into the definition above and doing
-some symbolic algebra to convince ourselves. Assuming we're convinced, then it
-is easy to see that, for example,
+This can be seen by plugging in the values into the definition of
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> above and doing some symbolic algebra to convince
+ourselves. Assuming we're convinced, then it is easy to see that, for example,
 </p>
 
 <blockquote>
@@ -283,8 +297,10 @@ them as something they're not.
 
 <p>
 So forget the fact that a complex number has two components, or that it is
-different from a real number. Just think of all of them as just things that we
-can relate to each other.
+different from a real number. Just think of all of them, real or complex, as
+just <i>things</i> that we can relate to each other, and all the ways they
+relate to other numbers is their very <i>definition</i>, they have no inherent
+existence of their own.
 </p>
 
 <p>
@@ -301,13 +317,14 @@ One such relation is
 
 <p>
 The number <math><mi>x</mi></math> that satisfies this relationship is called
-<math><mi>i</mi></math>. It is a so called complex number, and is not one of the
-numbers that we're familiar with intuitively (but I'm sure if we give it a few
-hundred years, children will find complex numbers as intuitive as we find real
-numbers today), but it is in no way un<em>real</em>. It is as real as real
-numbers, and in fact more so, because complex numbers are closed while real
-numbers are incomplete: what we just found, the square root of minus 1, an
-eminently reasonable question, does not have its answer in real numbers.
+<math><mi>i</mi></math>. It is a complex number; numbers that we're less
+familiar with intuitively (but I'm sure if we give it a few hundred years,
+children will find complex numbers as intuitive as we find real numbers today),
+but it is in no way un<em>real</em>. It is as real as real numbers, and in fact
+more so, because complex numbers are <b><i>closed</i></b> while real numbers are
+incomplete: what we just found, the square root of minus 1, an eminently
+reasonable question, does not have its answer in real numbers, but no matter
+what you do to complex numbers, you still get back a complex number.
 </p>
 
 <hr>
@@ -323,7 +340,57 @@ specifically, since we've only seen one complex number so far,
 </p>
 
 <p>
-The repeated multiplication doesn't work.
+The repeated multiplication doesn't work. We effortlessly think of
+<math><msup><mi>e</mi><mn>3</mn></msup></math> as
+<math><mi>e</mi></math> multiplied by itself <math><mn>3</mn></math> times,
+<math><mi>e</mi><mo>.</mo><mi>e</mi><mo>.</mo><mi>e</mi></math>, but how do we
+multiply <math><mi>e</mi></math> by itself <math><mi>i</mi></math> times?
+</p>
+
+<p>
+We're asking the wrong question, and getting confused because we're confusing
+the notational shorthand for the real thing.
+<math><msup><mi>e</mi><mi>x</mi></msup></math> is a shorthand for
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>, so instead of wondering what is
+<math><msup><mi>e</mi><mi>i</mi></msup></math>, what we actually want to know is
+what is <math><mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo
+stretchy="false">)</mo></math>.
+</p>
+
+<p>
+This is a simple question with a easy to obtain answer. We can just plug in
+<math><mi>i</mi></math> in the definition of <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>
+</p>
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+Hmm. All these symbols Manav, what do they mean?
 </p>
 
 </body>
