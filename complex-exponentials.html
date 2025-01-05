@@ -76,6 +76,15 @@ footer {
     color: ghostwhite;
   }
 }
+
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid rgba(from green r g b / 0.3);
+  padding: 0.5em 1em;
+}
 </style>
 
 </head>
@@ -243,14 +252,26 @@ ourselves. Assuming we're convinced, then it is easy to see that, for example,
 <blockquote>
 <math>
 <msup><mi>e</mi><mi>3</mi></msup>
+</math>
+<br>
+<math>
 <mo>=</mo>
 <msup><mrow><mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><mi>3</mi></msup>
+</math>
+<br>
+<math>
 <mo>=</mo>
 <mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>.</mo>
 <mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo><mo>.</mo>
 <mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo>
+</math>
+<br>
+<math>
 <mo>=</mo>
 <mi>exp</mi><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo>
+</math>
+<br>
+<math>
 <mo>=</mo>
 <mi>exp</mi><mo stretchy="false">(</mo><mn>3</mn><mo stretchy="false">)</mo>
 </math>
@@ -393,7 +414,7 @@ Hmm. All these symbols Manav, what do they mean?
 Unless you're the sort of person who skips footnotes, you'd remember how we
 talked about <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
 stretchy="false">)</mo></math> being a fixed point of derivation. Let's putter
-around with this thought.
+around with that thought.
 </p>
 
 <p>
@@ -430,7 +451,7 @@ sure how to formulate that as an equation.
 ‡ There is a mathematical convention (I think?) that I realized after an
 embarrasingly long time: constants are represented by <math><mi>a</mi></math>,
 <math><mi>b</mi></math>, <math><mi>c</mi></math> etc, while variables are
-represented by  <math><mi>x</mi></math>,  <math><mi>y</mi></math>,
+represented by <math><mi>x</mi></math>, <math><mi>y</mi></math>,
 <math><mi>z</mi></math> etc.
 </p>
 
@@ -461,25 +482,210 @@ If we consider them as distinct groups, we can start building a tower of
 changeability. That sounds interesting, let's try that.
 </p>
 
+<table>
+<th><math><mi>f</mi></math></th>
+<th><math><mi>d</mi><mi>f</mi><mo>/</mo><mi>d</mi><mi>x</mi></math></th>
+</thead>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>a</mi></math></td>
+<td><math><mn>0</mn></math></td>
+</tr>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>x</mi></math></td>
+<td><math><mi>a</mi></math></td>
+</tr>
+</table>
+
+<p>
+This allows us to find out the rate of change <i>of</i> the rate of
+change, i.e., the second derivative. We just go one step up in the tower. So if
+we start with a linear function <math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>x</mi></math>, like my age, its derivative
+would be a constant function <math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>a</mi></math>, and we can look up
+<i>its</i> derivative one row up in the tower to find out the second derivative
+of my age is <math><mn>0</mn></math>.
+</p>
+
+<p>
+Enough words, I think I'm belabouring the point. Let's move on with our
+sequence.
+</p>
+
 <p>
 Next up, we can think of functions whose rate of change when evaluated for some
 number <math><mi>x</mi></math> is in some way related to value of
-<math><mi>x</mi></math> itself.
+<math><mi>x</mi></math> itself. These are functions of the form
+<math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math>. For
+example, if I go to a meeting and before the meeting starts, each person present
+does a handshake with each other person present there, then the number of
+handshakes we'll end up doing, <math><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mfrac><mrow><mi>x</mi><mo>.</mo><mo
+stretchy="false">(</mo><mi>x</mi><mo>-</mo><mn>1</mn><mo
+stretchy="false">)</mo></mrow><mn>2</mn></mfrac></math>, is (almost) the square
+of the number of people <math><mi>x</mi></math>. These numbers grow large very
+quickly - for a meeting of 7 people, there will be 49 handshakes - because for
+each new person added to the meeting, the number of handshakes that'll increase
+is (roughly) equal to the number of people now in the meeting.
 </p>
+
+<p>
+We can continue this pattern. For example, we can think of functions whose
+<i>rate of change</i> when evaluated for some number <math><mi>x</mi></math> is
+in some way related to <math><msup><mi>x</mi><mn>2</mn></msup></math>. These
+turn out to be functions of the form <math><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup></math>.
+Putting these guys in our tower,
+</p>
+
+<table>
+<th><math><mi>f</mi></math></th>
+<th><math><mi>d</mi><mi>f</mi><mo>/</mo><mi>d</mi><mi>x</mi></math></th>
+</thead>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>a</mi></math></td>
+<td><math><mn>0</mn></math></td>
+</tr>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mi>x</mi></math></td>
+<td><math><mi>a</mi></math></td>
+</tr>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup></math></td>
+<td><math><mi>x</mi></math></td>
+</tr>
+<tr>
+<td><math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><msup><mi>x</mi><mn>3</mn></msup></math></td>
+<td><math><msup><mi>x</mi><mn>2</mn></msup></math></td>
+</tr>
+<tr>
+<td><math><mo>…</mo></math></td>
+<td><math><mo>…</mo></math></td>
+</tr>
+</table>
+
+<p>
+Does this tower ever reach a function <math><mi>f</mi></math> whose the rate of
+change when evaluated for some value <math><mi>x</mi></math> is in some way
+related to <math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> itself?
+</p>
+
+<p>
+Yes! Consider
+</p>
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>x</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+For this function, the rate of change is equal to the function itself. That is,
+<math><mfrac><mrow><mi>d</mi><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>.
+</p>
+
+<p>
+What is this <math><mi>f</mi></math>? Why, it is the exponential function,
+<math><mi>exp</mi></math>, that we'd been talking about earlier. And this is
+what it means for it to be a <b>fixed point</b> - unlike the other functions
+we've seen so far, no matter how many times we take the derivative of
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>, we get back the exact same function
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> again. Put differently, it forms a (1-)cycle,
+like the ouroboros, the snake eating its own tail.
+</p>
+
+<p>
+So a natural next question to ask would be - is a function that forms a 2-cycle?
+That is, if we take its derivative twice, we get back the same function again?
+</p>
+
+<p>
+Somewhat surprisingly, there is! And not one, but a pair of them -
+<math><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> and <math><mi>cos</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>. There is a
+asymmetry, we get back the negative of where we started with, but let's sweep
+that under the rug for now. Also, for notational convenience, let us use
+<math><mi>d</mi><mo>′</mo></math> to mean the derivative and
+<math><mi>d</mi><mo>″</mo></math> to mean taking the derivative twice. Then,
+</p>
+
+<blockquote>
+<math>
+<mi>d</mi><mo>″</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mi>d</mi><mo>′</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mo>-</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+</math>
+</blockquote>
 
 
 <p>
-Next up, we can think of functions whose rate of change when evaluated for some
-value is related to their
-value
-When the value of <math><mi>exp</mi><mo
-stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> is at
-<math><mi>x</mi></math> is large, it increases faster; and when it is small, it
-increasing slower, but it is not an approximate relationship, the rate of change
-is exactly equal to the value of <math><mi>exp</mi><mo
-stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at
-<math><mi>x</mi></math>.
+This same 2-cycle works even if we start with the cosine function instead.
 </p>
+
+<blockquote>
+<math>
+<mi>d</mi><mo>″</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mo>-</mo>
+<mi>d</mi><mo>′</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mo>-</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+So these functions are like yin and yang, each engendering each other again, and
+again. But philosophy aside, this behaviour is indeed is quite curious, and one
+would imagine that there must be some internal similarity of these two functions
+to the exponential function, which forms a cycle by itself, for them to form a
+cyclic pair. Or viewed from the other end, it is natural to wonder if we can
+somehow combine <math><mi>sin</mi></math> and <math><mi>cos</mi></math>
+to get <math><mi>exp</mi></math>.
+</p>
+
 
 </body>
 </html>
