@@ -791,13 +791,13 @@ reminder, a polynomial is a function that looks like this:
 <math>
 <mi>polynomial</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
 <mo>=</mo>
-<msub><mn>c</mn><mn>0</mn></msub>
+<msub><mi>c</mi><mn>0</mn></msub>
 <mo>+</mo>
-<msub><mn>c</mn><mn>1</mn></msub><mi>x</mi>
+<msub><mi>c</mi><mn>1</mn></msub><mi>x</mi>
 <mo>+</mo>
-<msub><mn>c</mn><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
 <mo>+</mo>
-<msub><mn>c</mn><mn>3</mn></msub><msup><mi>x</mi><mn>3</mn></msup>
+<msub><mi>c</mi><mn>3</mn></msub><msup><mi>x</mi><mn>3</mn></msup>
 <mo>+</mo>
 <mo>…</mo>
 </math>
@@ -828,11 +828,11 @@ stretchy="false">)</mo></math> using one of them. It will have the form:
 <math>
 <mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
 <mo>=</mo>
-<msub><mn>c</mn><mn>0</mn></msub>
+<msub><mi>c</mi><mn>0</mn></msub>
 <mo>+</mo>
-<msub><mn>c</mn><mn>1</mn></msub><mi>x</mi>
+<msub><mi>c</mi><mn>1</mn></msub><mi>x</mi>
 <mo>+</mo>
-<msub><mn>c</mn><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
 </math>
 </blockquote>
 
@@ -863,7 +863,7 @@ stretchy="false">(</mo><mi>0</mi><mo
 stretchy="false">)</mo><mo>=</mo><mn>1</mn></math>, we can start by making our
 approximation <math><mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo
 stretchy="false">)</mo></math> also equal to 1 at 0. This lets us deduce the
-value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
+value of the constant <math><msub><mi>c</mi><mn>0</mn></msub></math>.
 </p>
 
 <blockquote>
@@ -882,11 +882,11 @@ value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
 </mtr>
 <mtr>
 <mtd>
-<msub><mn>c</mn><mn>0</mn></msub>
+<msub><mi>c</mi><mn>0</mn></msub>
 <mo>+</mo>
-<msub><mn>c</mn><mn>1</mn></msub><mn>0</mn>
+<msub><mi>c</mi><mn>1</mn></msub><mn>0</mn>
 <mo>+</mo>
-<msub><mn>c</mn><mn>2</mn></msub><msup><mn>0</mn><mn>2</mn></msup>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mn>0</mn><mn>2</mn></msup>
 </mtd>
 <mtd>
 <mo>=</mo>
@@ -897,7 +897,7 @@ value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
 </mtr>
 <mtr>
 <mtd>
-<msub><mn>c</mn><mn>0</mn></msub>
+<msub><mi>c</mi><mn>0</mn></msub>
 </mtd>
 <mtd>
 <mo>=</mo>
@@ -912,71 +912,439 @@ value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
 
 <p>
 Alright. Next up, we can try to imagine that <i>around</i> the input 0, if our
-approximation should have the same "slope" as <math><mn>exp</mn></math>, then it
-should have the same derivative as of <math><mn>exp</mn></math> at 0. And we
-can easily deduce that the derivative of <math><mn>exp</mn></math> at 0 is,
+approximation should have the same "shape" as <math><mn>exp</mn></math>, then it
+should have the same derivative as of <math><mn>exp</mn></math> at 0. Let us
+find the derivative of f.
 </p>
 
 <blockquote>
 <math>
-<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo><mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo
-stretchy="false">)</mo><mo>)</mo>
-
-
-<mi>d</mi><mo>″</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
 <mo>=</mo>
-<mo>-</mo>
-<mi>d</mi><mo>′</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<msub><mi>c</mi><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mi>c</mi><mn>1</mn></msub><mi>x</mi>
+<mo>+</mo>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<mo>)</mo>
 <mo>=</mo>
-<mo>-</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<msub><mi>c</mi><mn>1</mn></msub>
+<mo>+</mo>
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub><mi>x</mi>
+
 </math>
 </blockquote>
 
-<math><mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
-
-
-<mo>=</mo><mi>f</mi><mo
-stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>.
-
-
-
-
-d/dx (1 + x) = 1
-
-d/dx exp(0) = exp(0) = 1
-
-d/dx (c1 + c2 * x) = 1
-d/dx (1 + c2 * x) = 1
-c2 = 1
-
-d/dx (c1 + c2 * x + c3 * x2) = 1
-d/dx d/dx (1 + x + c3 * x2) = 1
-d/dx (1 + 2 * c3 * x) = 1
-2 * c3 = 1
-
-
-0 + c2 = 1 + c2 * x
-
-
-
-d/dx (1 + x + x2) = 1 + 2x
 <p>
-What about <i>around</i> 0 – how does <math><mi>exp</mi><mo
-stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> look like
-around 0? We could take the derivative of the function at 0 to see which way it
-"slopes", and add that to our existing approximation (i.e.,
-<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo><mo>=</mo><mn>1</mn></math>) to get an even better
-approximation.
+And we can easily deduce that the derivative of <math><mn>exp</mn></math> at 0
+is 1.
+</p>
+
+<blockquote>
+<math>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+</math>
+</blockquote>
+
+<p>
+This lets us deduce the value of the constant
+<math><msub><mi>c</mi><mn>1</mn></msub></math>, since we're seting its
+derivative at 0 to be equal to the derivative of <math><mi>exp</mi></math> at 0
+to give our approximation the same slope.
+</p>
+
+<blockquote>
+<math>
+<mtable>
+<mtr>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mi>c</mi><mn>1</mn></msub>
+<mo>+</mo>
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub><mn>0</mn>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mi>c</mi><mn>1</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+</mtable>
+</math>
+</blockquote>
+
+<p>
+Continuing with this shape chasing, we can set the second derivative of
+<math><mi>f</mi></math> at 0 to be equal to the second derivative of
+<math><mi>exp</mi></math> at 0 so that so that "shape" of our approximation
+around 0 is the same as the shape of <math><mi>exp</mi></math> around 0. The
+second derivative of f is
+</p>
+
+<blockquote>
+<math>
+
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>=</mo>
+
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<msub><mi>c</mi><mn>1</mn></msub>
+<mo>+</mo>
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub><mi>x</mi>
+<mo>)</mo>
+<mo>=</mo>
+
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub>
+
+</math>
+</blockquote>
+
+<p>
+And the second derivative of <math><mn>exp</mn></math> at 0 is 1.
+</p>
+
+<blockquote>
+<math>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+</math>
+</blockquote>
+
+<p>
+And we can combine these two pieces of information to deduce the value of
+<math><msub><mi>c</mi><mn>2</mn></msub></math>
+</p>
+
+<blockquote>
+<math>
+<mtable>
+<mtr>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mi>c</mi><mn>2</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mfrac><mn>1</mn><mn>2</mn></mfrac>
+</mtd>
+</mtr>
+</mtable>
+</math>
+</blockquote>
+
+<p>
+So we have managed to deduce all three of the constants for our quadratic
+approximation, giving us
+</p>
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mi>x</mi>
+<mo>+</mo>
+<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac><msup>
+</math>
+</blockquote>
+
+<p>
+If you notice above, when we were deducing the constants for each term, the
+previous constants did not matter – they effectively get <i>wiped out</i> when
+we take the <i>n</i>th derivative. This means is that to extend our
+approximation by a degree, we just need to consider the next derivative to
+compute the constant for the latest degree; the previous approximation still
+remains valid otherwise.
 </p>
 
 <p>
-While we don't yet have the function's definition, we do have the
+So let us go one degree higher, and consider degree 3 polynomials,
+affectionately called cubic polynomials. That is, let us find an approximation
+to <math><mi>exp</mi></math> of the form
 </p>
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<msub><mi>c</mi><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mi>c</mi><mn>1</mn></msub><mi>x</mi>
+<mo>+</mo>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<mo>+</mo>
+<msub><mi>c</mi><mn>3</mn></msub><msup><mi>x</mi><mn>3</mn></msup>
+</math>
+</blockquote>
+
+<p>
+As I mentioned, the way we're deducing these constants means that the previous
+ones remain untouched, so we already know the values of
+<math><msub><mi>c</mi><mn>0</mn></msub></math>,
+<math><msub><mi>c</mi><mn>1</mn></msub></math> and
+<math><msub><mi>c</mi><mn>2</mn></msub></math>; we just need to deduce
+<math><msub><mi>c</mi><mn>3</mn></msub></math>.
+</p>
+
+<p>
+We continue our shape chasing, and set the third derivative of
+<math><mi>f</mi></math> at 0 to be equal to the third derivative of
+<math><mi>exp</mi></math> at 0. The third derivative of f is
+</p>
+
+<blockquote>
+<math>
+<mtable>
+
+<mtr>
+<mtd></mtd>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>)</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<msub><mi>c</mi><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mi>c</mi><mn>1</mn></msub><mi>x</mi>
+<mo>+</mo>
+<msub><mi>c</mi><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<mo>+</mo>
+<msub><mi>c</mi><mn>3</mn></msub><msup><mi>x</mi><mn>3</mn></msup>
+<mo>)</mo>
+<mo>)</mo>
+<mo>)</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<msub><mi>c</mi><mn>1</mn></msub>
+<mo>+</mo>
+<mn>2</mn><mo>.</mo><msub><mi>c</mi><mn>2</mn></msub><mi>x</mi>
+<mo>+</mo>
+<mn>3</mn><mo>.</mo><msub><mi>c</mi><mn>3</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<mo>)</mo>
+<mo>)</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<msub><mi>c</mi><mn>2</mn></msub>
+<mo>+</mo>
+<mn>2</mn><mo>.</mo><mn>3</mn><mo>.</mo><msub><mi>c</mi><mn>3</mn></msub><mi>x</mi>
+<mo>)</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mn>1</mn><mo>.</mo><mn>2</mn><mo>.</mo><mn>3</mn><mo>.</mo><msub><mi>c</mi><mn>3</mn></msub>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mn>3</mn><mo>!</mo><mo>.</mo><msub><mi>c</mi><mn>3</mn></msub>
+</mtd>
+</mtr>
+
+</mtable>
+
+</math>
+</blockquote>
+
+<p>
+And the third derivative of <math><mn>exp</mn></math> at 0 is 1.
+</p>
+
+<blockquote>
+<math>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>=</mo>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+</math>
+</blockquote>
+
+<p>
+Combining these two pieces of information, we can deduce the value of
+<math><msub><mi>c</mi><mn>3</mn></msub></math>
+</p>
+
+<blockquote>
+<math>
+<mtable>
+<mtr>
+<mtd>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mi>c</mi><mn>2</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mfrac><mn>1</mn><mn>2</mn></mfrac>
+</mtd>
+</mtr>
+</mtable>
+</math>
+</blockquote>
+
+<p>
+So we have managed to deduce all three of the constants for our quadratic
+approximation, giving us
+</p>
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mi>x</mi>
+<mo>+</mo>
+<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac><msup>
+</math>
+</blockquote>
 
 
 </body>
