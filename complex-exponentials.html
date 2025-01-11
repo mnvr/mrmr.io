@@ -683,8 +683,56 @@ would imagine that there must be some internal similarity of these two functions
 to the exponential function, which forms a cycle by itself, for them to form a
 cyclic pair. Or viewed from the other end, it is natural to wonder if we can
 somehow combine <math><mi>sin</mi></math> and <math><mi>cos</mi></math>
-to get <math><mi>exp</mi></math>.
+to get <math><mi>exp</mi></math>?
 </p>
+
+<hr>
+
+Let's look at the formula for the exponential function again
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>x</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+I gave you the formula, and someone gave it to me, but what if I told you we can
+derive it from first principles?
+</p>
+
+<p>
+Alright, here goes. Let us try to come up with a function to approximate
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> without using the definition above. Let us say we
+know that <math><mi>exp</mi><mo stretchy="false">(</mo><mn>0</mn><mo
+stretchy="false">)</mo></math> is 1 (this fact can either be given to us, or we
+could guess at it by considering the interpretation of
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> as
+<math><msup><mi>e</mi><mi>x</mi></msup></math>, and then recalling that the
+anything raised to the power of 0 is 1).
+</p>
+
 
 
 </body>
