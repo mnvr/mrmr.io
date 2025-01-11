@@ -74,6 +74,7 @@ pre {
 
 footer {
   opacity: 0.7;
+  margin-block: 4rem 5rem;
 }
 
 @media (width < 24em) {
@@ -1557,13 +1558,487 @@ The series expansion of <math><mi>sin</mi></math> and
 </li>
 <li>
 <math><mi>i</mi></math> is the square root of <math><mn>-1</mn></math> (that's
-its very definition: <math><mi>i</mi><mo>.</mo><mi>i</mi>
+its very definition:
+<math><msup><mi>i</mi><mn>2</mn></msup><mo>=</mo><mi>i</mi><mo>.</mo><mi>i</mi>
 <mo>=</mo><mn>-1</mn></math>)</li>
 </ol>
 
 <p>
 Alright, let go.
 </p>
+
+<blockquote>
+<math>
+<mtable>
+
+<mtr>
+<mtd><mo></mo></mtd>
+<mtd>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>4</mn></msup></mrow>
+  <mrow><mn>4</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>5</mn></msup></mrow>
+  <mrow><mn>5</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>6</mn></msup></mrow>
+  <mrow><mn>6</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>7</mn></msup></mrow>
+  <mrow><mn>7</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>4</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>5</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>6</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup><mo>.</mo><msup><mi>i</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>7</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>i</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mi>i</mi>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>4</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mi>i</mi>
+  <mrow><mn>5</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>6</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mi>i</mi>
+  <mrow><mn>7</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd><mo>=</mo></mtd>
+<mtd>
+
+<mo>(</mo>
+<mn>1</mn>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>4</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>6</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+<mo>)</mo>
+
+<mo>+</mo>
+
+<mrow><mi>i</mi></mrow>
+<mo>(</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>5</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>-</mo>
+<mfrac>
+  <mn>1</mn>
+  <mrow><mn>7</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+<mo>)</mo>
+
+</mtd>
+</mtr>
+
+<mtr>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo>
+<mo>+</mo>
+<mi>i</mi>
+<mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo>
+</mtd>
+
+</mtr>
+
+</mtable>
+
+</math>
+</blockquote>
+
+<p>
+Aha. So <math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo>
+<mo>+</mo>
+<mi>i</mi>
+<mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo>
+</math>. That is, the value <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>i</mi><mo stretchy="false">)</mo></math>, which is
+the result of evaluating the exponential function <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> at the
+complex number <math><mi>i</mi></math> is a complex number whose "real" part
+(i.e. the x-component) is <math><mi>cos</mi><mo
+stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo></math>, and whose
+"imaginary" part (i.e., the y-component) is <math><mi>sin</mi><mo
+stretchy="false">(</mo><mi>1</mi><mo stretchy="false">)</mo></math>.
+</p>
+
+<p>
+But that's not all. The above algebra works even if we multiply the input by any
+arbitrary number <math><mi>t</mi></math>. That is,
+</p>
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo>.</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>+</mo>
+<mi>i</mi>
+<mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+This is known as Euler's formula, after Swiss mathematician Leonard Euler who
+noticed it 300 years ago. It makes precise our intuitive guess in the last
+section, where we thought that <math><mi>cos</mi></math> and
+<math><mi>sin</mi></math> were like pieces of a jigsaw puzzle that should fit
+together to form <math><mi>exp</mi></math>. Except, that this jigsaw puzzle
+cannot be assembled in the domain of so called real numbers, we need to level up
+and use the "really real" numbers - i.e., complex numbers - to see this truth.
+</p>
+
+<p>
+The pudding is yet to come. So now that we know that the result of evaluting the
+exponential function <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> at any multiple
+<math><mi>i</mi><mo>.</mo><mi>t</mi></math> of the complex number <math><mi>i</mi></math>
+will be a complex number with the rectangular form of <math><mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>+</mo><mi>i</mi><mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo
+stretchy="false">)</mo></math>, and recalling that the length (aka
+<i>magnitude</i>) of a complex number is the square root of the sum of the
+squares of its two rectangular form components, we can use basic arithmetic to
+deduce that the length of such numbers is always 1.
+</p>
+
+<p>
+
+</p>
+
+<blockquote>
+<math>
+<mtable>
+
+<mtr>
+<mtd></mtd>
+<mtd><mi>magnitude</mi><mo>(</mo><mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo>.</mo><mi>t</mi><mo stretchy="false">)</mo><mo>)</mo></mtd>
+</mtr>
+
+<mtr>
+<mtd>=</mtd>
+<mtd><mi>magnitude</mi><mo>(</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>+</mo><mi>i</mi><mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mo>)</mo></mtd>
+</mtr>
+
+<mtr>
+<mtd>=</mtd>
+<mtd>
+<msqrt>
+<msup><mrow><mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+<mo>+</mo>
+<msup><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+</msqrt>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd>=</mtd>
+<mtd>1</mtd>
+</mtr>
+
+</mtable>
+</math>
+</blockquote>
+
+<p>
+The last step follows from the fact that if you draw a right angle triangle from
+origin to any point on the circle of radius <math><mi>r</mi></math>, then
+Pythagoras' 2500 year old discovery tells us that
+</p>
+
+<blockquote>
+<math>
+<mrow><msup><mi>r</mi><mn>2</mn></mrow>
+<mo>=</mo>
+<mrow><msup><mi>x</mi><mn>2</mn></mrow>
+<mo>+</mo>
+<mrow><msup><mi>y</mi><mn>2</mn></mrow>
+</math>
+</blockquote>
+
+<p>
+Where <math><mi>x</mi></math> and <math><mi>y</mi></math> are, respectively, the
+projections of this point on the x- and y- axis. Dividing both sides by
+<math><mrow><msup><mi>r</mi><mn>2</mn></mrow></math>, and noticing that
+<math><mfrac><mi>x</mi><mi>r</mi></mfrac></math> and
+<math><mfrac><mi>y</mi><mi>r</mi></mfrac></math> are the definitions of the sine
+and cosine functions,
+</p>
+
+<blockquote>
+<math>
+<mtable>
+
+<mtr>
+<mtd>
+<mrow><msup><mi>r</mi><mn>2</mn></mrow>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mrow><msup><mi>x</mi><mn>2</mn></mrow>
+<mo>+</mo>
+<mrow><msup><mi>y</mi><mn>2</mn></mrow>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd>
+<mn>1</mn>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mfrac><mrow><msup><mi>x</mi><mn>2</mn></mrow><mrow><msup><mi>r</mi><mn>2</mn></mrow></mfrac>
+<mo>+</mo>
+<mfrac><mrow><msup><mi>y</mi><mn>2</mn></mrow><mrow><msup><mi>r</mi><mn>2</mn></mrow></mfrac>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd>
+<mn>1</mn>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<msup><mrow><mo>(</mo><mfrac><mi>x</mi><mi>r</mi></mfrac><mo>)</mo></mrow><mn>2</mn></msup>
+<mo>+</mo>
+<msup><mrow><mo>(</mo><mfrac><mi>y</mi><mi>r</mi></mfrac><mo>)</mo></mrow><mn>2</mn></msup>
+</mtd>
+</mtr>
+
+<mtr>
+<mtd>
+<mn>1</mn>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<msup><mrow><mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+<mo>+</mo>
+<msup><mrow><mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow><mn>2</mn></msup>
+</mtd>
+</mtr>
+
+</mtable>
+</math>
+</blockquote>
+
+<p>
+So we've deduced that the value of <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>i</mi><mo>.</mo><mi>t</mi><mo
+stretchy="false">)</mo></math> is a always a complex number of length 1. What
+does that mean? It means that these points are always on the unit circle!
+</p>
+
+<p>
+So there you have it. The exponential function <math><mi>exp</mi></math> takes
+complex numbers that lie on a straight line, the so called imaginary axis (all
+and any multiples of <math><mi>i</mi></math>, i.e. complex numbers of the form
+<math><mi>i</mi><mo>.</mo><mi>t</mi></math> for any arbitrary value
+<math><mi>t</mi></math>) and maps them onto complex numbers that all lie on the
+unit circle (a circle is a 2D creature, and lives on the complex plane). Because
+of an abuse of notation, this is sometimes written as
+</p>
+
+<blockquote>
+<math>
+<msup><mi>e</mi><mrow><mi>i</mi><mi>t</mi></mrow></msup>
+<mo>=</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>+</mo>
+<mi>i</mi>
+<mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+but to avoid confusing ourselves, it is better to see that the above is a
+shorthand for the relationship
+</p>
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>i</mi><mo>.</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+<mo>+</mo>
+<mi>i</mi>
+<mo>.</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<p>
+A circle epitomizes periodic motion, and so this relationship is ubiquitous
+anytime we're dealing with phenomena that exhibit periodic motion, as it allows
+us to map linear inputs (points on the imaginary axis) to a periodic one (points
+on the unit circle).
+</p>
+
+<p>
+We also took a detour that showed us that two other functions that are commonly
+brought up as examples of periodic motion - <math><mi>sin</mi></math> and
+<math><mi>cos</mi></math> - are actually components of the quintessential
+periodic motion: movement around a circle.
+</p>
+
+<footer>
+<small><i>
+Manav Rathi<br>
+Jan 2025
+</i></small>
+</footer>
 
 </body>
 </html>
