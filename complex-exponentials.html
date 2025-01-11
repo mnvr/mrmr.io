@@ -30,6 +30,18 @@ p:has(+ p.footnote) {
   margin-block-end: 0;
 }
 
+p:has(+ ol) {
+  margin-block-end: 1.5rem;
+}
+
+ol + p {
+  margin-block-start: 1.5rem;
+}
+
+li {
+  margin-block: 1rem;
+}
+
 hr {
   margin-block: 2.75rem;
 
@@ -441,6 +453,7 @@ think of are mathematical in nature, say defining <math><mi>f</mi><mo
 stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> as the ratio
 of the circumference of a circle to its radius.
 </p>
+
 <p class="footnote">
 As Heraclitus mentioned, perhaps the only constant is change, though I'm not
 sure how to formulate that as an equation.
@@ -634,14 +647,11 @@ That is, if we take its derivative twice, we get back the same function again?
 </p>
 
 <p>
-Somewhat surprisingly, there is! And not one, but a pair of them -
+Somewhat surprisingly, there is! The pair
 <math><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
 stretchy="false">)</mo></math> and <math><mi>cos</mi><mo
-stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>. There is a
-asymmetry, we get back the negative of where we started with, but let's sweep
-that under the rug for now. Also, for notational convenience, let us use
-<math><mi>d</mi><mo>′</mo></math> to mean the derivative and
-<math><mi>d</mi><mo>″</mo></math> to mean taking the derivative twice. Then,
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> cycle back
+to each other after two steps.
 </p>
 
 <blockquote>
@@ -656,6 +666,18 @@ stretchy="false">)</mo>
 stretchy="false">)</mo>
 </math>
 </blockquote>
+
+<p class="footnote">
+Note that, for notational convenience, I'm using use
+<math><mi>d</mi><mo>′</mo></math> to mean the derivative and
+<math><mi>d</mi><mo>″</mo></math> to mean taking the derivative twice.
+</p>
+
+<p>
+There is a slight asymmetry, we get back the negative of where we started with,
+and I don't know what to make of it except perhaps that is the reason which
+makes this a 2-cycle instead of a 1-cycle.
+</p>
 
 
 <p>
@@ -678,17 +700,20 @@ stretchy="false">)</mo>
 
 <p>
 So these functions are like yin and yang, each engendering each other again, and
-again. But philosophy aside, this behaviour is indeed is quite curious, and one
-would imagine that there must be some internal similarity of these two functions
-to the exponential function, which forms a cycle by itself, for them to form a
-cyclic pair. Or viewed from the other end, it is natural to wonder if we can
-somehow combine <math><mi>sin</mi></math> and <math><mi>cos</mi></math>
+again, ad infinitum. Philosophical glee aside, this behaviour is indeed quite
+curious, and one would imagine that there must be some internal similarity
+between these two functions and the exponential function, which forms a cycle by
+itself, for them to form a cyclic pair. Or viewed from the other end, it is
+natural to wonder if we can somehow combine <math><mi>sin</mi></math> and
+<math><mi>cos</mi></math>
 to get <math><mi>exp</mi></math>?
 </p>
 
 <hr>
 
+<p>
 Let's look at the formula for the exponential function again
+</p>
 
 <blockquote>
 <math>
@@ -721,18 +746,173 @@ derive it from first principles?
 </p>
 
 <p>
-Alright, here goes. Let us try to come up with a function to approximate
+Alright, here goes. Let us try to come up with a polynomial to approximate
 <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo></math> without using the definition above. Let us say we
-know that <math><mi>exp</mi><mo stretchy="false">(</mo><mn>0</mn><mo
-stretchy="false">)</mo></math> is 1 (this fact can either be given to us, or we
-could guess at it by considering the interpretation of
-<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo></math> as
-<math><msup><mi>e</mi><mi>x</mi></msup></math>, and then recalling that the
-anything raised to the power of 0 is 1).
+stretchy="false">)</mo></math> without using the definition above. As a
+reminder, a polynomial is a function that looks like this:
 </p>
 
+<blockquote>
+<math>
+<mi>polynomial</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<msub><mn>c</mn><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mn>c</mn><mn>1</mn></msub><mi>x</mi>
+<mo>+</mo>
+<msub><mn>c</mn><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+<mo>+</mo>
+<msub><mn>c</mn><mn>3</mn></msub><msup><mi>x</mi><mn>3</mn></msup>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+That is, it is a sum of successive powers of the input <math><mi>x</mi></math>
+to the function. Each power has a constant factor
+<math><msub><mi>c</mi><mi>i</mi></msub></math> associated with it, to "scale"
+its contribution to the function. This constant can also be zero, in which case
+that particular power of <math><mi>x</mi></math> will not be involved at all.
+</p>
+
+<p>
+The highest power of <math><mi>x</mi></math> with a non-zero constant associated
+with it is called the degree of the polynomial. Polynomials of degree 0 are
+constants, of degree 1 are lines, and of degree 2 are parabolas.
+</p>
+
+<p>
+Since polynomials of degree too are quite common, they also have a nickname –
+they're called quadratic functions, or quadratic polynomials. Let's start by
+approximating <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> using one of them. It will have the form:
+</p>
+
+<blockquote>
+<math>
+<mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<msub><mn>c</mn><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mn>c</mn><mn>1</mn></msub><mi>x</mi>
+<mo>+</mo>
+<msub><mn>c</mn><mn>2</mn></msub><msup><mi>x</mi><mn>2</mn></msup>
+</math>
+</blockquote>
+
+<p>
+We will make use of two facts:
+</p>
+<ol>
+<li>
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> is a fixed point of derivation, that is, the
+derivative of <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> is <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> itself.
+</li>
+<li><math><mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo
+stretchy="false">)</mo><mo>=</mo><mn>1</mn></math> (this
+fact can either be given to us, or we could guess at it by considering the
+interpretation of <math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math> as
+<math><msup><mi>e</mi><mi>x</mi></msup></math>, and then recalling that the
+anything raised to the power of 0 is 1)
+</li>
+</ol>
+
+<p>
+Where do we start? Well, since <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>0</mi><mo
+stretchy="false">)</mo><mo>=</mo><mn>1</mn></math>, we can start by making our
+approximation <math><mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo
+stretchy="false">)</mo></math> also equal to 1 at 0. This lets us deduce the
+value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
+</p>
+
+<blockquote>
+<math>
+<mtable>
+<mtr>
+<mtd>
+<mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mn>c</mn><mn>0</mn></msub>
+<mo>+</mo>
+<msub><mn>c</mn><mn>1</mn></msub><mn>0</mn>
+<mo>+</mo>
+<msub><mn>c</mn><mn>2</mn></msub><msup><mn>0</mn><mn>2</mn></msup>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+<mtr>
+<mtd>
+<msub><mn>c</mn><mn>0</mn></msub>
+</mtd>
+<mtd>
+<mo>=</mo>
+</mtd>
+<mtd>
+<mn>1</mn>
+</mtd>
+</mtr>
+</mtable>
+</math>
+</blockquote>
+
+<p>
+Alright. Next up, we can try to imagine that <i>around</i> the input 0, if our
+approximation should have the same "shape" as <math><mn>exp</mn></math>, then it
+should have the same derivative as of <math><mn>exp</mn></math> at 0.
+</p>
+
+d/dx (1 + x) = 1
+
+d/dx exp(0) = exp(0) = 1
+
+d/dx (c1 + c2 * x) = 1
+d/dx (1 + c2 * x) = 1
+c2 = 1
+
+d/dx (c1 + c2 * x + c3 * x2) = 1
+d/dx d/dx (1 + x + c3 * x2) = 1
+d/dx (1 + 2 * c3 * x) = 1
+2 * c3 = 1
+
+
+0 + c2 = 1 + c2 * x
+
+
+
+d/dx (1 + x + x2) = 1 + 2x
+<p>
+What about <i>around</i> 0 – how does <math><mi>exp</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> look like
+around 0? We could take the derivative of the function at 0 to see which way it
+"slopes", and add that to our existing approximation (i.e.,
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>=</mo><mn>1</mn></math>) to get an even better
+approximation.
+</p>
+
+<p>
+While we don't yet have the function's definition, we do have the
+</p>
 
 
 </body>
