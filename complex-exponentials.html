@@ -431,7 +431,7 @@ around with that thought.
 
 <p>
 At the simplest, we can think of a function whose value never changes. The
-number of suns in the sky††. No matter at how long after birth (i.e.,
+number of suns in the sky†. No matter at how long after birth (i.e.,
 <math><mi>x</mi></math>) I'm trying to evaluate the number of suns in the sky
 (i.e., <math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
 stretchy="false">)</mo></math>), I still get back the same answer
@@ -442,7 +442,7 @@ stretchy="false">)</mo></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>=</mo
 </p>
 
 <p class="footnote">
-†† It is hard to come up with physical examples that are strictly true. One can
+† It is hard to come up with physical examples that are strictly true. One can
 come up with exotic examples, say considering <math><mi>f</mi><mo
 stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math> as the speed
 of light in a vaccum at some space-time coordinate <math><mi>x</mi></math>,
@@ -1121,7 +1121,7 @@ approximation, giving us
 <mo>+</mo>
 <mi>x</mi>
 <mo>+</mo>
-<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac><msup>
+<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac>
 </math>
 </blockquote>
 
@@ -1292,7 +1292,9 @@ Combining these two pieces of information, we can deduce the value of
 <mtd>
 <mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
 <mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
 <mi>f</mi><mo stretchy="false">(</mo><mi>0</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
 <mo>)</mo>
 <mo>)</mo>
 </mtd>
@@ -1305,7 +1307,7 @@ Combining these two pieces of information, we can deduce the value of
 </mtr>
 <mtr>
 <mtd>
-<mn>2</mn><mo>.</mo><msub>2<mi>c</mi><mn>2</mn></msub>
+<mn>3</mn><mo>!</mo><mo>.</mo><msub><mi>c</mi><mn>3</mn></msub>
 </mtd>
 <mtd>
 <mo>=</mo>
@@ -1322,7 +1324,7 @@ Combining these two pieces of information, we can deduce the value of
 <mo>=</mo>
 </mtd>
 <mtd>
-<mfrac><mn>1</mn><mn>2</mn></mfrac>
+<mfrac><mn>1</mn><mrow><mn>3</mn><mo>!</mo></mrow></mfrac>
 </mtd>
 </mtr>
 </mtable>
@@ -1330,8 +1332,7 @@ Combining these two pieces of information, we can deduce the value of
 </blockquote>
 
 <p>
-So we have managed to deduce all three of the constants for our quadratic
-approximation, giving us
+Giving us the cubic equation
 </p>
 
 <blockquote>
@@ -1342,10 +1343,83 @@ approximation, giving us
 <mo>+</mo>
 <mi>x</mi>
 <mo>+</mo>
-<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac><msup>
+<mfrac><msup><mi>x</mi><mn>2</mn></msup><mn>2</mn></mfrac>
+<mo>+</mo>
+<mfrac><msup><mi>x</mi><mn>3</mn></msup><mrow><mn>3</mn><mo>!</mo></mrow></mfrac>
 </math>
 </blockquote>
 
+Do you see where we're going? We're getting something that very closely
+resembles the formula for the exponential function!
+
+<blockquote>
+<math>
+<mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>=</mo>
+<mn>1</mn>
+<mo>+</mo>
+<mfrac>
+  <mrow><mi>x</mi></mrow>
+  <mrow><mn>1</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>2</mn></msup></mrow>
+  <mrow><mn>2</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mfrac>
+  <mrow><msup><mi>x</mi><mn>3</mn></msup></mrow>
+  <mrow><mn>3</mn><mo>!</mo></mrow>
+</mfrac>
+<mo>+</mo>
+<mo>…</mo>
+</math>
+</blockquote>
+
+<p>
+This is not a coincidence. If we continue this process, increasing the degree of
+the polynomial one by one, we will get this same formula. It is an infinite
+degree polynomial, and these are called series†. Further, this turns out
+not to be an approximation, but is <i>exactly</i> equal to
+<math><mi>exp</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>; indeed, that's how we first defined
+<math><mi>exp</mi></math>.
+</p>
+
+<p class="footnote">
+† This particular one is called a Taylor series.
+</p>
+
+<hr>
+
+<p>
+We should pause here for a minute to marvel at the magnificient vista we've
+reached. We were able to deduce the exact definition of a function just by the
+information of its derivatives at a <i>single</i> input. The derivatives of a
+single value contained the definition of the entire function!?
+</p>
+
+<p>
+You might think that this is a special case: <math><mi>exp</mi></math>
+is the fixed point of the derivative operator, and maybe there is some hoogedly
+poogedly going on for that special case. Well, you're not entire wrong, but
+you're not entirely right either - <math><mi>exp</mi></math> isn't the only
+function for which we can use the above method to derive its definition just
+from the values of its derivatives at some input. There are other such
+functions†. Can you guess two of them?
+</p>
+
+<p>
+<math><mi>sin</mi></math> and <math><mi>cos</mi></math>!
+</p>
+
+<p class="footnote" style="margin-block-start: 2.25rem;">
+† You're partially right because this <strikethrough>trick</strikethrough>
+method cannot be applied to all functions. It is working here because the
+functions we're considering are "smooth", that is, they are infinitely
+differentiable.
+</p>
 
 </body>
 </html>
