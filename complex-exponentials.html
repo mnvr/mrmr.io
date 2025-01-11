@@ -482,12 +482,32 @@ after birth I'm trying to evaluate my age (i.e., <math><mi>x</mi></math>).
 
 <p>
 These functions look like lines, which is why they are called
-<i>linear</i>. Let us mentally tag this group as functions whose derivative is a
-constant. Although if we put it that way, we can think of
-<math><mn>0</mn></math> as just another constant, so our previous group of
-unchanging functions really is part of this current group of functions that we
-are considering. Indeed, constant functions are also lines, just horizontal
-ones, so both these groups are the same thing that way.
+<i>linear</i>. Let us mentally tag this group as functions whose derivative is
+a constant.
+</p>
+
+<p class="footnote">
+While I can't explain what the derivative is in a footnote, what I do want to
+re-emphasize is that the derivative is an <i>operator</i> - it takes a function
+and returns a function. This is different from regular functions, which take a
+number and return a new number. So the derivative of a function
+<math><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo></math>,
+<math><mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>)</mo></math>,
+is another <i>function</i>, say <math><mi>d′</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>. This sounds
+complicated when put into words, but those of you who have written code would
+recognize this sort of a meta-function as quite common in programming, and
+they're not all that complicated either.
+</p>
+
+
+<p>
+Note that we can think of <math><mn>0</mn></math> as just another constant, so
+our previous group of unchanging functions really is part of this current group
+of functions that we are considering. Indeed, constant functions are also lines,
+just horizontal ones, so both these groups are the same thing that way.
 </p>
 
 <p>
@@ -624,8 +644,9 @@ Yes! Consider
 
 <p>
 For this function, the rate of change is equal to the function itself. That is,
-<math><mfrac><mrow><mi>d</mi><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mi>f</mi><mo
+<math><mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo><mo>)</mo><mo>=</mo><mi>f</mi><mo
 stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>.
 </p>
 
@@ -656,22 +677,26 @@ to each other after two steps.
 
 <blockquote>
 <math>
-<mi>d</mi><mo>″</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+
 <mo>=</mo>
-<mi>d</mi><mo>′</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+
 <mo>=</mo>
-<mo>-</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<mo>-</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+
 </math>
 </blockquote>
-
-<p class="footnote">
-Note that, for notational convenience, I'm using use
-<math><mi>d</mi><mo>′</mo></math> to mean the derivative and
-<math><mi>d</mi><mo>″</mo></math> to mean taking the derivative twice.
-</p>
 
 <p>
 There is a slight asymmetry, we get back the negative of where we started with,
@@ -684,17 +709,28 @@ makes this a 2-cycle instead of a 1-cycle.
 This same 2-cycle works even if we start with the cosine function instead.
 </p>
 
+
 <blockquote>
 <math>
-<mi>d</mi><mo>″</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+<mo>)</mo>
+
 <mo>=</mo>
+
+<mfrac><mi>d</mi><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo>
 <mo>-</mo>
-<mi>d</mi><mo>′</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+<mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+<mo>)</mo>
+
 <mo>=</mo>
-<mo>-</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
-stretchy="false">)</mo>
+
+<mo>-</mo>
+<mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo>
+
 </math>
 </blockquote>
 
@@ -703,10 +739,9 @@ So these functions are like yin and yang, each engendering each other again, and
 again, ad infinitum. Philosophical glee aside, this behaviour is indeed quite
 curious, and one would imagine that there must be some internal similarity
 between these two functions and the exponential function, which forms a cycle by
-itself, for them to form a cyclic pair. Or viewed from the other end, it is
+itself, for these two to form a cyclic pair. Or viewed from the other end, it is
 natural to wonder if we can somehow combine <math><mi>sin</mi></math> and
-<math><mi>cos</mi></math>
-to get <math><mi>exp</mi></math>?
+<math><mi>cos</mi></math> to get <math><mi>exp</mi></math>?
 </p>
 
 <hr>
@@ -877,9 +912,38 @@ value of the constant <math><msub><mn>c</mn><mn>0</mn></msub></math>.
 
 <p>
 Alright. Next up, we can try to imagine that <i>around</i> the input 0, if our
-approximation should have the same "shape" as <math><mn>exp</mn></math>, then it
-should have the same derivative as of <math><mn>exp</mn></math> at 0.
+approximation should have the same "slope" as <math><mn>exp</mn></math>, then it
+should have the same derivative as of <math><mn>exp</mn></math> at 0. And we
+can easily deduce that the derivative of <math><mn>exp</mn></math> at 0 is,
 </p>
+
+<blockquote>
+<math>
+<mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mo>(</mo><mi>exp</mi><mo stretchy="false">(</mo><mi>0</mi><mo
+stretchy="false">)</mo><mo>)</mo>
+
+
+<mi>d</mi><mo>″</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mo>-</mo>
+<mi>d</mi><mo>′</mo><mi>sin</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+<mo>=</mo>
+<mo>-</mo><mi>cos</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+</math>
+</blockquote>
+
+<math><mfrac><mrow><mi>d</mi></mrow><mrow><mi>d</mi><mi>x</mi></mrow></mfrac><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo
+stretchy="false">)</mo>
+
+
+<mo>=</mo><mi>f</mi><mo
+stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></math>.
+
+
+
 
 d/dx (1 + x) = 1
 
