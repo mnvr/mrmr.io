@@ -10,6 +10,10 @@
 <meta name="description" content="Two sine waves, in motion">
 
 <style>
+#root {
+  min-height: 90svh;
+  border: 1px solid #000;
+}
 </style>
 
 <script type="module">
@@ -22,17 +26,38 @@ const togglePlay = () => {
     playing = false;
     return;
   }
-  if (!ctx) ctx = getAudioContext();
-  playing / true;
+  if (!ctx) {
+    ctx = new AudioContext();
+    prep();
+  }
+  ctx.resume();
+  playing = true;
   console.log(ctx);
 }
+
+const prep = () => {
+  const osc1 = new OscillatorNode(ctx, { frequency: 432 });
+  const env1 = new GainNode(ctx);
+  const t = ctx.currentTime;
+
+  // 100 ms linear ramp.
+  env1.gain.setValueCurveAtTime([0, 1], t, 0.1);
+
+  const mix = new GainNode(ctx, { gain: 0.1 });
+
+  osc1.connect(env1).connect(mix).connect(ctx.destination);
+  osc1.start();
+}
+
+const root = document.querySelector("#root");
+root.addEventListener("click", togglePlay);
 </script>
 
 </head>
 
-<body onClick="togglePlay">
+<body>
 
-Test
+<div id="root"></div>
 
 </body>
 </html>
