@@ -73,8 +73,11 @@ pre {
 }
 
 footer {
-  opacity: 0.7;
   margin-block: 4rem 5rem;
+}
+
+footer p:first-child {
+  opacity: 0.7;
 }
 
 @media (width < 24em) {
@@ -83,11 +86,18 @@ footer {
   }
 }
 
+a {
+  text-decoration: none;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     background-color: hsl(240, 64%, 7%);
     color: ghostwhite;
   }
+
+  a         {  color: #a2cffe; }
+  a:visited {  color: #ca9bf7; }
 }
 
 table {
@@ -2034,10 +2044,15 @@ periodic motion: movement around a circle.
 </p>
 
 <footer>
+<p>
 <small><i>
 Manav Rathi<br>
 Jan 2025
 </i></small>
+</p>
+<p><small>
+I also wrote about the <a href="/cycles">philosophy</a> of circles.
+</small></p>
 </footer>
 
 </body>
